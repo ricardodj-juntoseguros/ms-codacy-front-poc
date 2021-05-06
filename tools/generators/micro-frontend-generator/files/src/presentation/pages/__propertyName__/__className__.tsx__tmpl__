@@ -1,0 +1,14 @@
+import React from 'react'
+import { Provider } from 'react-redux';
+import { store } from '../../../config/store'
+
+function <%= className %>() {
+  return (
+    <Provider store={store}>
+      <h1>Hello <%= className %></h1>
+    </Provider>
+  );
+}
+
+export default <%= className %>;
+

@@ -1,0 +1,5 @@
+interface <%= className %>DTO {
+
+}
+
+export default <%= className %>DTO;

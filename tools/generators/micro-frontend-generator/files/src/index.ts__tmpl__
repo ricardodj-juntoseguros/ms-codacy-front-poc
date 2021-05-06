@@ -1,0 +1,3 @@
+import <%= className %> from './presentation/pages/<%= propertyName %>';
+
+export default <%= className %>;

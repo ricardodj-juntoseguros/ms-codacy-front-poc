@@ -1,0 +1,10 @@
+import { configureStore } from '@reduxjs/toolkit';
+import <%= className %>Reducer from '../application/features/create<%= className %>/<%= className %>Slice';
+
+export const store = configureStore({
+  reducer: {
+    <%= propertyName %>: <%= className %>Reducer,
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;

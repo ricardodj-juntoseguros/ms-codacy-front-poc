@@ -1,0 +1,9 @@
+import axios from 'axios';
+
+import <%= className %> from '../../types/dto/<%= className %>DTO';
+
+async function create(<%= propertyName %>: <%= className %>) {
+  return axios.post('http://localhost:3333/api/<%= fileName %>', <%= propertyName %>);
+}
+
+export { create };

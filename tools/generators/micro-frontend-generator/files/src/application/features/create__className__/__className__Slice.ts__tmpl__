@@ -1,0 +1,55 @@
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../../config/store';
+import <%= className %> from '../../types/model/<%= className %>Model';
+import { create as create<%= className %> } from './<%= className %>Api'
+
+const initialState: <%= className %> = {
+  <%= propertyName %>: null,
+  isLoading: false,
+  error: null
+};
+
+export const post<%= className %> = createAsyncThunk(
+  '<%= propertyName %>/post<%= className %>',
+  async (<%= propertyName %>: <%= className %>, thunkAPI) => {
+    const response = await create<%= className %>(<%= propertyName %>)
+    return response.data
+  }
+)
+
+export const <%= propertyName %>Slice = createSlice({
+  name: '<%= propertyName %>',
+  initialState,
+  reducers: {
+    create: (state, action: PayloadAction<<%= className %>>) => {
+      state.<%= propertyName %> = action.payload;
+      state.isLoading = false;
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(post<%= className %>.pending, (state: <%= className %>) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        post<%= className %>.fulfilled,
+        (state: <%= className %>, action: PayloadAction<<%= className %>>) => {
+          state.isLoading = false;
+          state.<%= propertyName %> = action.payload;
+          state.error = null;
+        }
+      )
+      .addCase(post<%= className %>.rejected, (state: <%= className %>, action) => {
+        state.<%= propertyName %> = null;
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
+  },
+});
+
+export const { create } = <%= propertyName %>Slice.actions;
+
+export const select<%= className %> = (state: RootState) => state.<%= propertyName %>;
+
+export default <%= propertyName %>Slice.reducer;

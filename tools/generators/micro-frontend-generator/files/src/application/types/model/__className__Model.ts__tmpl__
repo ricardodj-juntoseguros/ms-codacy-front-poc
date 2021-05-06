@@ -1,0 +1,8 @@
+import <%= className %>DTO from '../dto/<%= className %>DTO';
+
+interface <%= className %> {
+  <%= propertyName %>: <%= className %>DTO
+  isLoading: boolean
+  error: string
+}
+export default <%= className %>;
