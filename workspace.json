@@ -1,10 +1,173 @@
 {
-  
-  
   "version": 2,
-  
-  "projects": {},
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/react"
+  },
+  "defaultProject": "plataforma",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
+      }
+    }
+  },
+  "projects": {
+    "plataforma": {
+      "root": "apps/plataforma",
+      "sourceRoot": "apps/plataforma/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/plataforma",
+            "index": "apps/plataforma/src/index.html",
+            "main": "apps/plataforma/src/main.tsx",
+            "polyfills": "apps/plataforma/src/polyfills.ts",
+            "tsConfig": "apps/plataforma/tsconfig.app.json",
+            "assets": [
+              "apps/plataforma/src/favicon.ico",
+              "apps/plataforma/src/assets"
+            ],
+            "styles": ["apps/plataforma/src/styles.scss"],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/plataforma/src/environments/environment.ts",
+                  "with": "apps/plataforma/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "plataforma:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "plataforma:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/plataforma/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/plataforma"],
+          "options": {
+            "jestConfig": "apps/plataforma/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "digital": {
+      "root": "apps/digital",
+      "sourceRoot": "apps/digital/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/digital",
+            "index": "apps/digital/src/index.html",
+            "main": "apps/digital/src/main.tsx",
+            "polyfills": "apps/digital/src/polyfills.ts",
+            "tsConfig": "apps/digital/tsconfig.app.json",
+            "assets": [
+              "apps/digital/src/favicon.ico",
+              "apps/digital/src/assets"
+            ],
+            "styles": ["apps/digital/src/styles.scss"],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/digital/src/environments/environment.ts",
+                  "with": "apps/digital/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "digital:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "digital:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/digital/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/digital"],
+          "options": {
+            "jestConfig": "apps/digital/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
   }
 }
