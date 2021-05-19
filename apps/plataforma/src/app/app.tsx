@@ -5,7 +5,7 @@ import { InputBase } from 'junto-design-system/src/components/InputBase';
 export function App() {
   return (
     <div className={styles.container}>
-      <span>Hello World</span>
+      <span>Welcome to plataforma!</span>
       <br />
       <br />
       <Button>Awesome Button</Button>
