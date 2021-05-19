@@ -168,6 +168,29 @@
           }
         }
       }
+    },
+    "step-container": {
+      "root": "libs/shared/ui/step-container",
+      "sourceRoot": "libs/shared/ui/step-container/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/ui/step-container/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/ui/step-container"],
+          "options": {
+            "jestConfig": "libs/shared/ui/step-container/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

@@ -1,0 +1,10 @@
+import styles from './<%= className %>.module.scss';
+
+export function <%= className %>() {
+  return (
+    <main className={styles['<%= fileName %>']}>
+      <h1>Hello <%= className %></h1>
+    </main>
+  );
+}
+

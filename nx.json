@@ -18,11 +18,17 @@
       }
     }
   },
+  "workspaceLayout": {
+    "libsDir": "libs"
+  },
   "projects": {
     "plataforma": {
       "tags": []
     },
     "digital": {
+      "tags": []
+    },
+    "step-container": {
       "tags": []
     }
   }
