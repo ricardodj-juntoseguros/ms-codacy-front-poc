@@ -2,9 +2,10 @@ module.exports = {
   displayName: 'plataforma',
   preset: '../../jest.preset.js',
   transform: {
-    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
-    '^.+\\.[tj]sx?$': 'babel-jest',
+    '.+\\.(js|jsx)$': 'babel-jest',
+    '.+\\.(ts|tsx)$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/plataforma',
+  transformIgnorePatterns: ['node_modules/(?!junto-design-system/.*)'],
 };
