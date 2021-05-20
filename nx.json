@@ -30,6 +30,9 @@
     },
     "step-container": {
       "tags": []
+    },
+    "policyholder-and-modality-search": {
+      "tags": []
     }
   }
 }

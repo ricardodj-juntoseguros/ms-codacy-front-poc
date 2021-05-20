@@ -191,6 +191,31 @@
           }
         }
       }
+    },
+    "policyholder-and-modality-search": {
+      "root": "libs/components/plataforma/policyholder-and-modality-search",
+      "sourceRoot": "libs/components/plataforma/policyholder-and-modality-search/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/components/plataforma/policyholder-and-modality-search/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/components/plataforma/policyholder-and-modality-search"
+          ],
+          "options": {
+            "jestConfig": "libs/components/plataforma/policyholder-and-modality-search/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }
