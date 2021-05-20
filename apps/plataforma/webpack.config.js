@@ -1,4 +1,5 @@
 const nrwlConfig = require('@nrwl/react/plugins/webpack.js');
+const path = require('path');
 
 module.exports = (config, context) => {
   nrwlConfig(config);
@@ -7,6 +8,18 @@ module.exports = (config, context) => {
     ...config,
     resolve: {
       extensions: [...config.resolve.extensions, '.scss'],
+      alias: {
+        ...config.resolve.alias,
+        '@libs': path.resolve(__dirname, '..', '..', 'libs'),
+        '@junto-design-system': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'shared',
+          'junto-design-system',
+        ),
+      },
     },
     module: {
       ...config.module,

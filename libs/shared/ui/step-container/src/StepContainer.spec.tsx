@@ -8,7 +8,7 @@ describe('StepContainer', () => {
     const { baseElement, getByText } = render(
       <StepContainer stepNumber={1}>
         <h1>StepContainer</h1>
-      </StepContainer>
+      </StepContainer>,
     );
 
     expect(baseElement).toBeInTheDocument();
@@ -19,9 +19,9 @@ describe('StepContainer', () => {
     const { getByText } = render(
       <StepContainer stepNumber={123}>
         <h1>StepContainer</h1>
-      </StepContainer>
+      </StepContainer>,
     );
 
     expect(getByText('123')).toBeInTheDocument();
-  })
+  });
 });

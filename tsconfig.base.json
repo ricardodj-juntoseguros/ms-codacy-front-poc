@@ -15,13 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@platform-web/shared/ui/step-container": [
-        "libs/shared/ui/step-container/src/index.ts"
-      ],
-      "@platform-web/policyholder-and-modality-search": [
-        "libs/components/plataforma/policyholder-and-modality-search/src/index.ts"
-      ]
+      "@libs/*": ["libs/*"],
+      "@junto-design-system": ["libs/shared/junto-design-system"]
     }
   },
+  "include": ["**/*.d.ts"],
   "exclude": ["tmp"]
 }

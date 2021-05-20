@@ -4,11 +4,9 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "composite": false
+    "allowSyntheticDefaultImports": true
   },
   "files": [],
-  "include": ["**/*.d.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

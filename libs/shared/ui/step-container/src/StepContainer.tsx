@@ -9,17 +9,21 @@ export interface StepContainerProps {
   children: ReactNode | HTMLElement;
 }
 
-export function StepContainer(props: StepContainerProps) {
+export function StepContainer({
+  children,
+  stepNumber,
+  active,
+}: StepContainerProps) {
   return (
     <div className={styles['step-container']} data-testid="step-container">
-      <span className={className(
-        styles['step-container__step-number'],
-        { [styles['step-container__step-number--active']]: props.active }
-      )
-      }>
-        {props.stepNumber}
+      <span
+        className={className(styles['step-container__step-number'], {
+          [styles['step-container__step-number--active']]: active,
+        })}
+      >
+        {stepNumber}
       </span>
-        {props.children}
+      {children}
     </div>
   );
 }

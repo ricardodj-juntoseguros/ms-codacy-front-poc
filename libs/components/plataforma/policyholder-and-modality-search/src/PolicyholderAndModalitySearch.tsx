@@ -1,8 +1,5 @@
+import { SearchInput, LinkButton, Dropdown } from '@junto-design-system';
 import styles from './PolicyholderAndModalitySearch.module.scss';
-
-import { SearchInput } from 'junto-design-system/src/components/SearchInput';
-import { LinkButton } from 'junto-design-system/src/components/LinkButton';
-import { Dropdown } from 'junto-design-system/src/components/Dropdown';
 
 export interface DropdownOptionsProps {
   label: string;
@@ -21,10 +18,22 @@ export interface PolicyholderAndModalitySearchProps {
   handlePolicyholderDetails(): void;
 }
 
-
-export function PolicyholderAndModalitySearch(props: PolicyholderAndModalitySearchProps) {
+export function PolicyholderAndModalitySearch({
+  searchOptions,
+  modalityOptions,
+  subsidiaryOptions,
+  hasValidPolicyholder,
+  searchValue,
+  handleSetSearchValue,
+  handleSetModalityValue,
+  handleSetSubsidiaryValue,
+  handlePolicyholderDetails,
+}: PolicyholderAndModalitySearchProps) {
   return (
-    <main className={styles['policyholder-search']} data-testid="policyholder-search">
+    <main
+      className={styles['policyholder-search']}
+      data-testid="policyholder-search"
+    >
       <h2 className={styles['policyholder-search__title']}>
         Digite o <strong>CNPJ</strong> ou a <strong>razão social</strong> do
         tomador e selecione a <strong>modalidade</strong> do seguro
@@ -37,38 +46,44 @@ export function PolicyholderAndModalitySearch(props: PolicyholderAndModalitySear
             type="text"
             label="CNPJ ou Razão Social"
             placeholder=" "
-            onChange={props.handleSetSearchValue}
-            value={props.searchValue}
+            onChange={handleSetSearchValue}
+            value={searchValue}
             icon="search"
-            options={props.searchOptions}
+            options={searchOptions}
           />
         </div>
 
-        {props.hasValidPolicyholder && (
+        {hasValidPolicyholder && (
           <LinkButton
             label="Ver detalhes deste tomador"
             size="small"
-            onClick={props.handlePolicyholderDetails}
+            onClick={handlePolicyholderDetails}
           />
         )}
 
-          <div className={styles['policyholder-search__modality-wrapper']} data-testid="policyholder-modality">
-            <Dropdown
-              placeholder="Selecione a modalidade"
-              options={props.modalityOptions}
-              isSearchable={false}
-              isDisabled={!props.hasValidPolicyholder}
-              onChange={props.handleSetModalityValue}
-            />
-          </div>
+        <div
+          className={styles['policyholder-search__modality-wrapper']}
+          data-testid="policyholder-modality"
+        >
+          <Dropdown
+            placeholder="Selecione a modalidade"
+            options={modalityOptions}
+            isSearchable={false}
+            isDisabled={!hasValidPolicyholder}
+            onChange={handleSetModalityValue}
+          />
+        </div>
 
-        {props.subsidiaryOptions.length !== 0 && (
-          <div className={styles['policyholder-search__subsidiary-wrapper']} data-testid="policyholder-subsidiary">
+        {subsidiaryOptions.length !== 0 && (
+          <div
+            className={styles['policyholder-search__subsidiary-wrapper']}
+            data-testid="policyholder-subsidiary"
+          >
             <Dropdown
               placeholder="Selecione a filial"
-              options={props.subsidiaryOptions}
+              options={subsidiaryOptions}
               isSearchable={false}
-              onChange={props.handleSetSubsidiaryValue}
+              onChange={handleSetSubsidiaryValue}
             />
           </div>
         )}
