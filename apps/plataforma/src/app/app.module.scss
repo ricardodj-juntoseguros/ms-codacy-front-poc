@@ -1,9 +1,6 @@
 @import 'junto-design-system/src/core/scss/styles.scss';
 
 .container {
-  span {
-    color: color('brand-primary');
-    @include font('base');
-  }
+  max-width: 638px;
+  margin: 0 auto;
 }
-

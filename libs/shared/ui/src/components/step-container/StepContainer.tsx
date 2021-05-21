@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import className from 'classnames';
 
-import styles from './Stepcontainer.module.scss';
+import styles from './StepContainer.module.scss';
 
 export interface StepContainerProps {
   stepNumber: number;
   active?: boolean;
-  title?: string | JSX.Element;
-  children: ReactNode | HTMLElement;
+  title: ReactNode;
+  children: ReactNode;
 }
 
 export function StepContainer({

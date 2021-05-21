@@ -2,8 +2,9 @@
 
 .step-container {
   display: flex;
+  flex: 1;
   flex-direction: row;
-  width: 100%;
+
 }
 
 .step-container__step-number {
@@ -27,16 +28,21 @@
 }
 
 .step-container__step-content {
-  width: calc(100% - 48px);
+  display: flex;
+  flex:1;
+  flex-direction: column;
 
   &__header,
   &__header h2 {
     @include font('l');
     @include margin('none', 'none', 'l', 'none');
-    color: color('grey-600');
+    color: color('dark');
+    height: 50px;
+    display: flex;
+    align-items: center;
 
-    & strong {
-      text-transform: uppercase;
+    title {
+      display: block;
     }
   }
 }
