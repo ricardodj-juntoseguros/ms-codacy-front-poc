@@ -1,5 +1,5 @@
 import { InputBase, Button } from '@junto-design-system';
-import { StepContainer } from '@libs/shared/ui/step-container/src';
+import { StepContainer } from '@libs/shared/ui/src/components/stepcontainer';
 import styles from './app.module.scss';
 
 export function App() {

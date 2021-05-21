@@ -1,18 +1,20 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import className from 'classnames';
 
-import styles from './StepContainer.module.scss';
+import styles from './Stepcontainer.module.scss';
 
 export interface StepContainerProps {
   stepNumber: number;
   active?: boolean;
+  title?: string | JSX.Element;
   children: ReactNode | HTMLElement;
 }
 
 export function StepContainer({
-  children,
   stepNumber,
   active,
+  title,
+  children,
 }: StepContainerProps) {
   return (
     <div className={styles['step-container']} data-testid="step-container">
@@ -23,7 +25,14 @@ export function StepContainer({
       >
         {stepNumber}
       </span>
-      {children}
+      <div className={className(styles['step-container__step-content'])}>
+        <div
+          className={className(styles['step-container__step-content__header'])}
+        >
+          {title}
+        </div>
+        {children}
+      </div>
     </div>
   );
 }

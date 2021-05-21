@@ -34,11 +34,6 @@ export function PolicyholderAndModalitySearch({
       className={styles['policyholder-search']}
       data-testid="policyholder-search"
     >
-      <h2 className={styles['policyholder-search__title']}>
-        Digite o <strong>CNPJ</strong> ou a <strong>razão social</strong> do
-        tomador e selecione a <strong>modalidade</strong> do seguro
-      </h2>
-
       <form>
         <div className={styles['policyholder-search__search-wrapper']}>
           <SearchInput

@@ -1,23 +1,12 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
+  "cli": { "defaultCollection": "@nrwl/react" },
   "defaultProject": "plataforma",
   "generators": {
     "@nrwl/react": {
-      "application": {
-        "style": "scss",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "scss"
-      },
-      "library": {
-        "style": "scss",
-        "linter": "eslint"
-      }
+      "application": { "style": "scss", "linter": "eslint", "babel": true },
+      "component": { "style": "scss" },
+      "library": { "style": "scss", "linter": "eslint" }
     }
   },
   "projects": {
@@ -70,13 +59,9 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "plataforma:build"
-          },
+          "options": { "buildTarget": "plataforma:build" },
           "configurations": {
-            "production": {
-              "buildTarget": "plataforma:build:production"
-            }
+            "production": { "buildTarget": "plataforma:build:production" }
           }
         },
         "lint": {
@@ -144,13 +129,9 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "digital:build"
-          },
+          "options": { "buildTarget": "digital:build" },
           "configurations": {
-            "production": {
-              "buildTarget": "digital:build:production"
-            }
+            "production": { "buildTarget": "digital:build:production" }
           }
         },
         "lint": {
@@ -169,49 +150,43 @@
         }
       }
     },
-    "step-container": {
-      "root": "libs/shared/ui/step-container",
-      "sourceRoot": "libs/shared/ui/step-container/src",
+    "plataforma-ui": {
+      "root": "libs/plataforma/ui",
+      "sourceRoot": "libs/plataforma/ui/src",
       "projectType": "library",
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/shared/ui/step-container/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/plataforma/ui/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/ui/step-container"],
+          "outputs": ["coverage/libs/plataforma/ui"],
           "options": {
-            "jestConfig": "libs/shared/ui/step-container/jest.config.js",
+            "jestConfig": "libs/plataforma/ui/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "policyholder-and-modality-search": {
-      "root": "libs/components/plataforma/policyholder-and-modality-search",
-      "sourceRoot": "libs/components/plataforma/policyholder-and-modality-search/src",
+    "shared-ui": {
+      "root": "libs/shared/ui",
+      "sourceRoot": "libs/shared/ui/src",
       "projectType": "library",
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/components/plataforma/policyholder-and-modality-search/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/shared/ui/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/components/plataforma/policyholder-and-modality-search"
-          ],
+          "outputs": ["coverage/libs/shared/ui"],
           "options": {
-            "jestConfig": "libs/components/plataforma/policyholder-and-modality-search/jest.config.js",
+            "jestConfig": "libs/shared/ui/jest.config.js",
             "passWithNoTests": true
           }
         }

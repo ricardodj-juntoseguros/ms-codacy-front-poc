@@ -8,6 +8,7 @@
 
 .step-container__step-number {
   @include font('l');
+  @include margin('none', 'm', 'none', 'none');
   color: color('grey-400');
 
   display: flex;
@@ -15,7 +16,6 @@
   align-items: center;
   width: 48px;
   height: 48px;
-  margin-right: margin('none', 'm', 'none', 'none');
   border: 2px solid color('grey-200');
   border-radius: 30px;
   transition: all 0.3s ease 0s;
@@ -23,5 +23,20 @@
   &--active {
     color: color('grey-600');
     border: 2px solid color('brand-primary');
+  }
+}
+
+.step-container__step-content {
+  width: calc(100% - 48px);
+
+  &__header,
+  &__header h2 {
+    @include font('l');
+    @include margin('none', 'none', 'l', 'none');
+    color: color('grey-600');
+
+    & strong {
+      text-transform: uppercase;
+    }
   }
 }
