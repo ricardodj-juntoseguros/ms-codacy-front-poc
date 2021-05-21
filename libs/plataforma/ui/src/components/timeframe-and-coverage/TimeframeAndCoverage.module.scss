@@ -1,0 +1,19 @@
+@import 'junto-design-system/src/core/scss/styles.scss';
+
+.timeframe-coverage__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeframe-coverage__form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.timeframe-coverage__form-field {
+  margin-bottom: spacing('l');
+  margin-right: spacing('m');
+  flex: 1 0 304px;
+}
