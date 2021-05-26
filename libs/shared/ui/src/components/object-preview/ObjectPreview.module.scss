@@ -1,0 +1,29 @@
+@import 'junto-design-system/src/core/scss/styles.scss';
+
+.object-preview {
+  background: color('white');
+  box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.1);
+  border-radius: 8px 35px 8px 8px;
+  position: relative;
+  @include padding('xxl-2', 'xxl-4', 'xxl-2', 'xxl-4');
+  @include font('xs');
+  color: color('grey-500');
+  text-align: justify;
+
+  &::after {
+    background: 0 0 / cover no-repeat url('./assets/ear.svg');
+    content: '';
+    height: 78px;
+    position: absolute;
+    right: -22px;
+    top: -18px;
+    width: 78px;
+  }
+
+  &__title {
+    @include font('sm');
+    color: color('dark');
+    margin-bottom: 8px;
+    display: block;
+  }
+}
