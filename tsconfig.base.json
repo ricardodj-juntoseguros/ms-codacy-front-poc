@@ -16,7 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@libs/*": ["libs/*"],
-      "@junto-design-system": ["libs/shared/junto-design-system"]
+      "@junto-design-system": ["libs/shared/junto-design-system"],
+      "@platform-web/corretor-emissao": [
+        "modules/corretor-emissao/src/index.ts"
+      ]
     }
   },
   "include": ["**/*.d.ts"],
