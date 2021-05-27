@@ -1,7 +1,7 @@
-import { RateCalculation } from '@libs/plataforma/ui/src/components/rate-calculation';
 import { StepContainer } from '@libs/shared/ui/src/components/step-container';
-import { TimeframeAndCoverage } from '@libs/plataforma/ui/src/components/timeframe-and-coverage';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { TimeframeAndCoverage } from '../components/timeframe-and-coverage';
+import { RateCalculation } from '../components/rate-calculation';
 
 import styles from './app.module.scss';
 

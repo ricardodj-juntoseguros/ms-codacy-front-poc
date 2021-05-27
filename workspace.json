@@ -1,23 +1,12 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
+  "cli": { "defaultCollection": "@nrwl/react" },
   "defaultProject": "plataforma",
   "generators": {
     "@nrwl/react": {
-      "application": {
-        "style": "scss",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "scss"
-      },
-      "library": {
-        "style": "scss",
-        "linter": "eslint"
-      }
+      "application": { "style": "scss", "linter": "eslint", "babel": true },
+      "component": { "style": "scss" },
+      "library": { "style": "scss", "linter": "eslint" }
     }
   },
   "projects": {
@@ -70,13 +59,9 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "plataforma:build"
-          },
+          "options": { "buildTarget": "plataforma:build" },
           "configurations": {
-            "production": {
-              "buildTarget": "plataforma:build:production"
-            }
+            "production": { "buildTarget": "plataforma:build:production" }
           }
         },
         "lint": {
@@ -144,13 +129,9 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "digital:build"
-          },
+          "options": { "buildTarget": "digital:build" },
           "configurations": {
-            "production": {
-              "buildTarget": "digital:build:production"
-            }
+            "production": { "buildTarget": "digital:build:production" }
           }
         },
         "lint": {
@@ -164,27 +145,6 @@
           "outputs": ["coverage/apps/digital"],
           "options": {
             "jestConfig": "apps/digital/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "plataforma-ui": {
-      "root": "libs/plataforma/ui",
-      "sourceRoot": "libs/plataforma/ui/src",
-      "projectType": "library",
-      "targets": {
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/plataforma/ui/**/*.{ts,tsx,js,jsx}"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/plataforma/ui"],
-          "options": {
-            "jestConfig": "libs/plataforma/ui/jest.config.js",
             "passWithNoTests": true
           }
         }
