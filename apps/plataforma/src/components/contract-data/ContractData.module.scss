@@ -1,0 +1,70 @@
+@import 'junto-design-system/src/core/scss/styles.scss';
+
+.contract-data__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.contract-data__form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  & .contract-data__form-field:nth-child(n) {
+    margin-left: spacing('s');
+    margin-right: spacing('s');
+  }
+
+  & .contract-data__form-field:first-child {
+   margin-left: spacing('none');
+  }
+
+  & .contract-data__form-field:last-child {
+    margin-right: spacing('none');
+  }
+}
+
+.contract-data__form-field {
+  flex: 1;
+  margin-bottom: spacing('m');
+}
+
+.contract-data__form-info-preview {
+  margin-top: spacing('s');
+  margin-bottom: spacing('l');
+
+  & p {
+    margin: 0;
+  }
+
+  & p:first-child {
+    @include font('xs');
+    color: color('grey-500');
+    margin-bottom: spacing('xs')
+  }
+
+  & p ~ p {
+    @include font('base');
+    color: color('dark');
+  }
+}
+
+.contract-data__form-toggle {
+  @include margin('s', 'none', 'l', 'none');
+  flex: 1;
+}
+
+@media (max-width: 576px){
+  .contract-data__form-row {
+    flex-direction: column;
+
+    & .contract-data__form-field {
+      flex: 1;
+    }
+
+    & .contract-data__form-field:nth-child(n) {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
