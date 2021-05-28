@@ -1,5 +1,16 @@
-import { Dropdown, SearchInput, DateInput, NumberInput, Toggle, TextArea, TagInput } from '@libs/shared/junto-design-system';
-import { ObjectPreview, ObjectPreviewProps } from '@libs/shared/ui/src/components/object-preview';
+import {
+  Dropdown,
+  SearchInput,
+  DateInput,
+  NumberInput,
+  Toggle,
+  TextArea,
+  TagInput,
+} from '@libs/shared/junto-design-system';
+import {
+  ObjectPreview,
+  ObjectPreviewProps,
+} from '@libs/shared/ui/src/components/object-preview';
 import classNames from 'classnames';
 import styles from './ContractData.module.scss';
 
@@ -31,30 +42,28 @@ export interface ContractDataProps {
   handleSetComments(value: string): void;
 }
 
-export function ContractData(
-  {
-    insuredValue,
-    searchInsuredOptions,
-    addressOptions,
-    insuredType,
-    contractNumber,
-    attachmentNotice,
-    policyPreview,
-    installmentOptions,
-    firstInstallment,
-    policyInProgress,
-    comments,
-    handleSetInsuredValue,
-    handleSetAddress,
-    handleSetContractNumber,
-    handleSetAttachmentNotice,
-    handleSetInstallment,
-    handleSetEmails,
-    handleSetFirstInstallment,
-    handleSetPolicyInProgress,
-    handleSetComments,
-  }: ContractDataProps,
-) {
+export function ContractData({
+  insuredValue,
+  searchInsuredOptions,
+  addressOptions,
+  insuredType,
+  contractNumber,
+  attachmentNotice,
+  policyPreview,
+  installmentOptions,
+  firstInstallment,
+  policyInProgress,
+  comments,
+  handleSetInsuredValue,
+  handleSetAddress,
+  handleSetContractNumber,
+  handleSetAttachmentNotice,
+  handleSetInstallment,
+  handleSetEmails,
+  handleSetFirstInstallment,
+  handleSetPolicyInProgress,
+  handleSetComments,
+}: ContractDataProps) {
   return (
     <div className={styles['contract-data__wrapper']}>
       <div className={styles['contract-data__form-field']}>
@@ -81,20 +90,21 @@ export function ContractData(
       <div
         className={classNames(
           styles['contract-data__form-field'],
-          styles['contract-data__form-info-preview']
-        )}>
+          styles['contract-data__form-info-preview'],
+        )}
+      >
         <p>Tipo de segurado</p>
         <p>{insuredType}</p>
       </div>
 
       <div className={styles['contract-data__form-field']}>
-         <TextArea
+        <TextArea
           label=" "
           placeholder="N.º do contrato/edital"
           value={contractNumber}
-          onChange={(e) => handleSetContractNumber(e.target.value)}
+          onChange={e => handleSetContractNumber(e.target.value)}
           maxLength={500}
-         />
+        />
       </div>
 
       <div className={styles['contract-data__form-field']}>
@@ -106,14 +116,16 @@ export function ContractData(
         />
       </div>
 
-      <div className={classNames(
+      <div
+        className={classNames(
           styles['contract-data__form-field'],
-          styles['contract-data__form-info-preview']
-        )}>
-          <ObjectPreview
-            title={policyPreview.title}
-            description={policyPreview.description}
-          />
+          styles['contract-data__form-info-preview'],
+        )}
+      >
+        <ObjectPreview
+          title={policyPreview.title}
+          description={policyPreview.description}
+        />
       </div>
 
       <div className={styles['contract-data__form-row']}>
@@ -143,12 +155,12 @@ export function ContractData(
       </div>
 
       <div className={styles['contract-data__form-toggle']}>
-          <Toggle
-            name="policyInProgess"
-            label="Este processo trata-se de uma apólice em andamento"
-            checked={policyInProgress}
-            onChange={handleSetPolicyInProgress}
-          />
+        <Toggle
+          name="policyInProgess"
+          label="Este processo trata-se de uma apólice em andamento"
+          checked={policyInProgress}
+          onChange={handleSetPolicyInProgress}
+        />
       </div>
 
       <div className={styles['contract-data__form-field']}>
@@ -156,7 +168,7 @@ export function ContractData(
           label=" "
           placeholder="Observações"
           value={comments}
-          onChange={(e) => handleSetComments(e.target.value)}
+          onChange={e => handleSetComments(e.target.value)}
         />
       </div>
     </div>

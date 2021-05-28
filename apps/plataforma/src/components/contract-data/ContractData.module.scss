@@ -16,7 +16,7 @@
   }
 
   & .contract-data__form-field:first-child {
-   margin-left: spacing('none');
+    margin-left: spacing('none');
   }
 
   & .contract-data__form-field:last-child {
@@ -40,7 +40,7 @@
   & p:first-child {
     @include font('xs');
     color: color('grey-500');
-    margin-bottom: spacing('xs')
+    margin-bottom: spacing('xs');
   }
 
   & p ~ p {
@@ -54,7 +54,7 @@
   flex: 1;
 }
 
-@media (max-width: 576px){
+@media (max-width: 576px) {
   .contract-data__form-row {
     flex-direction: column;
 

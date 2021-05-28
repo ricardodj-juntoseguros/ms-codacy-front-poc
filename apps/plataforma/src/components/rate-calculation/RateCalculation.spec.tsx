@@ -1,9 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-
 import { RateCalculation, RateCalculationProps } from './RateCalculation';
-
 
 describe('RateCalculation', () => {
   const handleDownloadQuote = jest.fn();
@@ -19,7 +17,7 @@ describe('RateCalculation', () => {
       comissionPercent: '10',
       standardRateValue: 0,
       handleChangeStandardRate,
-      handleDownloadQuote
+      handleDownloadQuote,
     };
   });
 
@@ -42,8 +40,8 @@ describe('RateCalculation', () => {
     const { getByRole } = render(<RateCalculation {...mockProps} />);
 
     const input = getByRole('textbox');
-    fireEvent.change(input, { target: { value: 123}});
+    fireEvent.change(input, { target: { value: 123 } });
 
-    expect(handleChangeStandardRate).toHaveBeenCalledWith(123)
+    expect(handleChangeStandardRate).toHaveBeenCalledWith(123);
   });
 });

@@ -4,7 +4,6 @@
   display: flex;
   flex: 1;
   flex-direction: row;
-
 }
 
 .step-container__step-number {
@@ -29,7 +28,7 @@
 
 .step-container__step-content {
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
 
   &__header,

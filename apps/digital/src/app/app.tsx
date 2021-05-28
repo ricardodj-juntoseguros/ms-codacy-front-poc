@@ -7,11 +7,7 @@ export function App() {
   return (
     <div className={styles.container}>
       <span>Welcome to digital!</span>
-      <StepContainer
-        stepNumber={1}
-        active
-        title={<title>Digital</title>}
-      >
+      <StepContainer stepNumber={1} active title={<title>Digital</title>}>
         <Button>Awesome Button</Button>
         <InputBase
           label="Awesome Input"

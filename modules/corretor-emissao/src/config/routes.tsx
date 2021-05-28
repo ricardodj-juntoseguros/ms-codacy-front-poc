@@ -1,8 +1,15 @@
 import React from 'react';
-import { Switch, Route } from 'react-router';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { FlowContainer } from '../presentation/pages';
 
 const Routes: React.FC = () => (
-  <Switch>{/* <Route path="/" component={Component} /> */}</Switch>
+  <BrowserRouter basename="emissao">
+    <Switch>
+      <Route path="/" exact component={FlowContainer} />
+      <Route path="/teste" exact component={FlowContainer} />
+      <Route path="/teste/:id" component={FlowContainer} />
+    </Switch>
+  </BrowserRouter>
 );
 
 export default Routes;

@@ -12,7 +12,6 @@ export interface RateCalculationProps {
   handleDownloadQuote(): void;
 }
 
-
 export function RateCalculation({
   maxRate,
   finalPrize,
@@ -20,7 +19,7 @@ export function RateCalculation({
   comissionPercent,
   standardRateValue,
   handleChangeStandardRate,
-  handleDownloadQuote
+  handleDownloadQuote,
 }: RateCalculationProps) {
   return (
     <div className={styles['rate-calculation']} data-testid="rate-calculation">
@@ -38,8 +37,9 @@ export function RateCalculation({
           value={standardRateValue}
         />
       </div>
-      <div className={styles['rate-calculation__final-values-wrapper']}
-           data-testid="rate-calculation-final-values"
+      <div
+        className={styles['rate-calculation__final-values-wrapper']}
+        data-testid="rate-calculation-final-values"
       >
         <article>
           <h3>Prêmio final</h3>
@@ -49,11 +49,7 @@ export function RateCalculation({
           <h3>Comissão final</h3>
           <span>
             <p>R$ {finalCommission}</p>
-            <Tag
-              variant="neutral"
-            >
-              {comissionPercent}%
-            </Tag>
+            <Tag variant="neutral">{comissionPercent}%</Tag>
           </span>
         </article>
       </div>
@@ -65,5 +61,3 @@ export function RateCalculation({
     </div>
   );
 }
-
-

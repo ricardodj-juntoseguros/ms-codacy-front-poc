@@ -8,9 +8,4 @@ yarn-error.log*
 .eslintignore
 .lintstagedrc.json
 .prettierignore
-*.scss
-*.css
-*.json
-*.html
 *.png
-*.svg

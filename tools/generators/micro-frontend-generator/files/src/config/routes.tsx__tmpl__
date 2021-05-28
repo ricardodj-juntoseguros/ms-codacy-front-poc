@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router';
 
 const Routes: React.FC = () => (
   <Switch>
-         {/* <Route path="/" component={Component} /> */}
+         {/*  path="/" component={Component} /> */}
   </Switch>
 )
 
