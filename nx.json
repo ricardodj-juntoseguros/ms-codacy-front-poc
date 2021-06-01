@@ -15,7 +15,6 @@
   "projects": {
     "plataforma": { "tags": [] },
     "digital": { "tags": [] },
-    "shared-ui": { "tags": [] },
     "corretor-emissao": { "tags": [] }
   }
 }

@@ -7,32 +7,35 @@ import PolicyholderAndModalitySearch, {
 } from './PolicyholderAndModalitySearch';
 
 describe('PolicyholderAndModalitySearch', () => {
-  const handleSetSearchValue = jest.fn();
-  const handleSetModalityValue = jest.fn();
-  const handleSetSubsidiaryValue = jest.fn();
+  const onChangeSearchValue = jest.fn();
+  const onSelectPolicyholder = jest.fn();
   const handlePolicyholderDetails = jest.fn();
+  const onChangeModalityValue = jest.fn();
+  const onChangeSubsidiaryValue = jest.fn();
+
   let propsMock: PolicyholderAndModalitySearchProps =
     {} as PolicyholderAndModalitySearchProps;
 
   beforeEach(() => {
     propsMock = {
-      searchOptions: ['Test 01', 'Test 02', 'Test 03', 'Test 04'],
-      modalityOptions: [
-        { label: 'Modality 01', value: 'Modality 01' },
-        { label: 'Modality 02', value: 'Modality 02' },
-        { label: 'Modality 03', value: 'Modality 03' },
-      ],
-      subsidiaryOptions: [
-        { label: 'Subsidiary 01', value: 'Subsidiary 01' },
-        { label: 'Subsidiary 02', value: 'Subsidiary 02' },
-        { label: 'Subsidiary 03', value: 'Subsidiary 03' },
-      ],
-      hasValidPolicyholder: false,
       searchValue: '',
-      handleSetSearchValue,
-      handleSetModalityValue,
-      handleSetSubsidiaryValue,
+      onChangeSearchValue,
+      onSelectPolicyholder,
+      policyholderOptions: [],
+      hasValidPolicyholder: false,
       handlePolicyholderDetails,
+      modalityOptions: [
+        { id: 1, description: 'Modality 01' },
+        { id: 2, description: 'Modality 02' },
+        { id: 3, description: 'Modality 03' },
+      ],
+      onChangeModalityValue,
+      subsidiaryOptions: [
+        { id: 1, label: 'Subsidiary 01' },
+        { id: 2, label: 'Subsidiary 02' },
+        { id: 3, label: 'Subsidiary 03' },
+      ],
+      onChangeSubsidiaryValue,
     };
   });
 
@@ -43,7 +46,7 @@ describe('PolicyholderAndModalitySearch', () => {
     expect(baseElement).toBeInTheDocument();
   });
 
-  it('should call the handleSetSearchValue when the search input is changed', () => {
+  it('should call the onChangeSearchValue when the search input is changed', () => {
     const { getAllByRole } = render(
       <PolicyholderAndModalitySearch {...propsMock} />,
     );
@@ -51,10 +54,10 @@ describe('PolicyholderAndModalitySearch', () => {
     const inputs = getAllByRole('textbox');
     fireEvent.change(inputs[0], { target: { value: 'Test 01' } });
 
-    expect(handleSetSearchValue).toHaveBeenCalledWith('Test 01');
+    expect(onChangeSearchValue).toHaveBeenCalledWith('Test 01');
   });
 
-  it('should call the handleSetModalityValue when the modality input is changed', async () => {
+  it('should call the onChangeModalityValue when the modality input is changed', async () => {
     propsMock.hasValidPolicyholder = true;
     const { getAllByRole } = render(
       <PolicyholderAndModalitySearch {...propsMock} />,
@@ -63,7 +66,7 @@ describe('PolicyholderAndModalitySearch', () => {
     const modalitySelect = getAllByRole('textbox')[1];
     await selectEvent.select(modalitySelect, 'Modality 01');
 
-    expect(handleSetModalityValue).toBeCalledTimes(1);
+    expect(onChangeModalityValue).toBeCalledTimes(1);
   });
 
   it('should show the policyHolderDetails button when the hasValidPolicyholder property is true', () => {
@@ -74,7 +77,7 @@ describe('PolicyholderAndModalitySearch', () => {
     expect(getByRole('button')).toBeInTheDocument();
   });
 
-  it('should call PolicyholderDetails when the button is clicked', () => {
+  it('should call policyholderDetails when the button is clicked', () => {
     propsMock.hasValidPolicyholder = true;
     const { getByRole } = render(
       <PolicyholderAndModalitySearch {...propsMock} />,
@@ -99,7 +102,7 @@ describe('PolicyholderAndModalitySearch', () => {
     ).toBe(1);
   });
 
-  it('should call the handleSetSubsidiaryValue when the subsidiary input is changed', async () => {
+  it('should call the onChangeSubsidiaryValue when the subsidiary input is changed', async () => {
     const { getAllByRole } = render(
       <PolicyholderAndModalitySearch {...propsMock} />,
     );
@@ -107,7 +110,7 @@ describe('PolicyholderAndModalitySearch', () => {
     const subsidiarySelect = getAllByRole('textbox')[2];
     await selectEvent.select(subsidiarySelect, 'Subsidiary 02');
 
-    expect(handleSetSubsidiaryValue).toBeCalledTimes(1);
+    expect(onChangeSubsidiaryValue).toBeCalledTimes(1);
   });
 
   it('should not render the field on the screen if there is no subsidiary', async () => {

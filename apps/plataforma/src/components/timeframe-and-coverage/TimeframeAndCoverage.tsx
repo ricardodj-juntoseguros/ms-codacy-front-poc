@@ -9,10 +9,10 @@ export interface TimeframeAndCoverageProps {
   durationInDays?: number;
   coverageValue?: number;
   policyholderLimit: number;
-  handleTimeframeStartChange?(startDate: Date): void;
-  handleTimeframeEndChange?(endDate: Date): void;
-  handleDurationInDaysChange?(days: number): void;
-  handleCoverageValueChange?(value: number): void;
+  handleTimeframeStartChange(startDate: Date): void;
+  handleTimeframeEndChange(endDate: Date): void;
+  handleDurationInDaysChange(days: number): void;
+  handleCoverageValueChange(value: number): void;
 }
 
 export function TimeframeAndCoverage({

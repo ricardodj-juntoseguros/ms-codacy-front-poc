@@ -1,13 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { FlowContainer } from '../presentation/pages';
+import { QuoteContainer } from '../presentation/pages/quoteContainer';
 
 const Routes: React.FC = () => (
-  <BrowserRouter basename="emissao">
+  <BrowserRouter basename="cotacao">
     <Switch>
-      <Route path="/" exact component={FlowContainer} />
-      <Route path="/teste" exact component={FlowContainer} />
-      <Route path="/teste/:id" component={FlowContainer} />
+      <Route path="/" exact component={QuoteContainer} />
     </Switch>
   </BrowserRouter>
 );

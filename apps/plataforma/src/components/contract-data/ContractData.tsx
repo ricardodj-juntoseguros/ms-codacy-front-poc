@@ -6,36 +6,29 @@ import {
   Toggle,
   TextArea,
   TagInput,
+  DropdownOption,
 } from '@libs/shared/junto-design-system';
-import {
-  ObjectPreview,
-  ObjectPreviewProps,
-} from '@libs/shared/ui/src/components/object-preview';
+import { ObjectPreview, ObjectPreviewProps } from '@libs/shared/ui';
 import classNames from 'classnames';
 import styles from './ContractData.module.scss';
-
-export interface DropdownOptionsProps {
-  label: string;
-  value: string;
-}
 
 export interface ContractDataProps {
   searchInsuredOptions: Array<string>;
   insuredValue: string;
-  addressOptions: Array<DropdownOptionsProps>;
+  addressOptions: Array<DropdownOption>;
   insuredType: string;
   contractNumber: string;
   attachmentNotice: number;
   policyPreview: ObjectPreviewProps;
-  installmentOptions: Array<DropdownOptionsProps>;
+  installmentOptions: Array<DropdownOption>;
   firstInstallment: Date;
   policyInProgress: boolean;
   comments: string;
   handleSetInsuredValue(option: string): void;
-  handleSetAddress(option: DropdownOptionsProps): void;
+  handleSetAddress(option: DropdownOption | null): void;
   handleSetContractNumber(value: string): void;
   handleSetAttachmentNotice(value: number): void;
-  handleSetInstallment(option: DropdownOptionsProps): void;
+  handleSetInstallment(option: DropdownOption | null): void;
   handleSetFirstInstallment(value: Date): void;
   handleSetEmails(emails: string[]): void;
   handleSetPolicyInProgress(): void;
@@ -67,7 +60,7 @@ export function ContractData({
   return (
     <div className={styles['contract-data__wrapper']}>
       <div className={styles['contract-data__form-field']}>
-        <SearchInput
+        {/* <SearchInput
           label="CNPJ ou razão social do segurado"
           placeholder=" "
           type="text"
@@ -75,7 +68,7 @@ export function ContractData({
           value={insuredValue}
           icon="search"
           options={searchInsuredOptions}
-        />
+        /> */}
       </div>
 
       <div className={styles['contract-data__form-field']}>
@@ -150,7 +143,7 @@ export function ContractData({
         <TagInput
           label="Adicionar e-mails para recebimento da apólice"
           placeholder=" "
-          onChange={e => handleSetEmails(e)}
+          onValueChange={handleSetEmails}
         />
       </div>
 

@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import CorretorEmissaoReducer from '../application/features/createCorretorEmissao/CorretorEmissaoSlice';
+import PolicyholderAndModalitySearchSlice from '../application/features/policyholderAndModalitySearch/PolicyholderAndModalitySearchSlice';
 
 export const store = configureStore({
   reducer: {
-    corretorEmissao: CorretorEmissaoReducer,
+    policyholderAndModalitySearch: PolicyholderAndModalitySearchSlice,
   },
 });
 

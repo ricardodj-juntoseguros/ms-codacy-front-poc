@@ -49,6 +49,8 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'no-unused-expressions': 'off',
+    'no-param-reassign': 'off',
+    'class-methods-use-this': 'off',
   },
   overrides: [
     {

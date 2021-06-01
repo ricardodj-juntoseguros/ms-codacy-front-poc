@@ -1,0 +1,6 @@
+{
+  "createReactTSXComponent.stylesFormat": "SCSS",
+  "createReactTSXComponent.useCSSModule": true,
+  "createReactTSXComponent.useReactImport": false,
+  "jestrunner.jestCommand": "yarn test --"
+}
