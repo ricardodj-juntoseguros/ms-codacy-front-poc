@@ -47,11 +47,11 @@ export function SearchContainer() {
   }
 
   function handlePolicyholderSelection(data: PolicyholderModel) {
-    const { federalId } = data;
+    const { federalId, id } = data;
     dispatch(resetSearch());
     dispatch(setPolicyholder(data));
     dispatch(getModalityByPolicyHolder(federalId));
-    dispatch(getSubsidiaryByPolicyHolder(federalId));
+    dispatch(getSubsidiaryByPolicyHolder(id));
   }
 
   function handleModalitySelection(data: ModalityModel) {

@@ -2,7 +2,8 @@ import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import selectEvent from 'react-select-event';
 
-import PolicyholderAndModalitySearch, {
+import {
+  PolicyholderAndModalitySearch,
   PolicyholderAndModalitySearchProps,
 } from './PolicyholderAndModalitySearch';
 

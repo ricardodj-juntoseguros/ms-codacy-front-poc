@@ -23,7 +23,8 @@
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "server": "json-server --watch server.json --port 4300"
   },
   "private": true,
   "dependencies": {
@@ -80,6 +81,7 @@
     "git-commit-msg-linter": "^3.1.0",
     "husky": "^4.3.8",
     "jest": "26.2.2",
+    "json-server": "^0.16.3",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "ts-jest": "^26.5.6",

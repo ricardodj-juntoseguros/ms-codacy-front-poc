@@ -7,14 +7,13 @@ import PolicyholderAndModalitySearchApi from '../PolicyholderAndModalitySearchAp
 
 export const getSubsidiaryByPolicyHolder = createAsyncThunk(
   'policyholderAndModalitySearch/getSubsidiaryByPolicyHolder',
-  async (federalId: string) => {
+  async (id: number) => {
     const response =
-      await PolicyholderAndModalitySearchApi.getSubsidiaryByPolicyHolder(
-        federalId,
-      );
+      await PolicyholderAndModalitySearchApi.getSubsidiaryByPolicyHolder(id);
 
     const data: SubsidiaryModel[] = response.data.map(item => ({
-      ...item,
+      id: item.id,
+      label: item.name,
     }));
 
     return data;

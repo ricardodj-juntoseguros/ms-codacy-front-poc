@@ -15,7 +15,7 @@ export const searchPolicyHolder = createAsyncThunk(
     const data: PolicyholderModel[] = response.data.map(item => ({
       id: item.id,
       federalId: item.federalId,
-      companyName: item.companyName,
+      companyName: item.name,
       subsidiaries: [],
     }));
 

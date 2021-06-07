@@ -14,7 +14,8 @@ export const getModalityByPolicyHolder = createAsyncThunk(
       );
 
     const data: ModalityModel[] = response.data.map(item => ({
-      ...item,
+      id: item.id,
+      description: item.externalDescription || item.externalDescription || '',
     }));
 
     return data;

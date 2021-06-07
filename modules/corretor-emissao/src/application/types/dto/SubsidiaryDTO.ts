@@ -1,4 +1,6 @@
 export interface SubsidiaryDTO {
   id: number;
-  label: string;
+  headquartersId: number;
+  name: string;
+  federalId: string;
 }

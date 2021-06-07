@@ -2,18 +2,16 @@
 
 .timeframe-coverage__wrapper {
   display: flex;
-  flex-direction: column;
+  gap: spacing('m');
 }
 
 .timeframe-coverage__form-row {
   display: flex;
-  flex-direction: row;
+  flex: 1;
+  flex-direction: column;
   flex-wrap: wrap;
-  justify-content: space-evenly;
 }
 
 .timeframe-coverage__form-field {
   margin-bottom: spacing('l');
-  margin-right: spacing('m');
-  flex: 1 0 304px;
 }

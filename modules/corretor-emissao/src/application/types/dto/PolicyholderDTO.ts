@@ -1,5 +1,5 @@
 export interface PolicyholderDTO {
   id: number;
-  companyName: string;
+  name: string;
   federalId: string;
 }

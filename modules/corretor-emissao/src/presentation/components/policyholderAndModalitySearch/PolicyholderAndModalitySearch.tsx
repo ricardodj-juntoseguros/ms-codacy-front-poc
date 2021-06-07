@@ -39,32 +39,32 @@ export function PolicyholderAndModalitySearch({
   onChangeSubsidiaryValue,
 }: PolicyholderAndModalitySearchProps) {
   const mapPolicyholderOptions = useMemo(() => {
-    return policyholderOptions.map(p => ({
-      ...p,
-      label: `${p.companyName} - ${p.federalId}`,
-      id: p.id,
+    return policyholderOptions.map(policyholder => ({
+      ...policyholder,
+      label: `${policyholder.companyName} - ${policyholder.federalId}`,
+      id: policyholder.id,
     }));
   }, [policyholderOptions]);
 
   const mapModalityOptions: DropdownOption[] = useMemo(() => {
-    return modalityOptions.map(m => ({
-      ...m,
-      label: m.description,
-      value: m.id,
+    return modalityOptions.map(modality => ({
+      ...modality,
+      label: modality.description,
+      value: modality.id,
     }));
   }, [modalityOptions]);
 
   const mapSubsidiaryOptions: DropdownOption[] = useMemo(() => {
-    return subsidiaryOptions.map(s => ({
-      ...s,
-      label: s.label,
-      value: s.id,
+    return subsidiaryOptions.map(subsidiary => ({
+      ...subsidiary,
+      label: subsidiary.label,
+      value: subsidiary.id,
     }));
   }, [subsidiaryOptions]);
 
   function onChangePolicyholderSearch(option: OptionProps) {
     const selectedPolicyholder = policyholderOptions.find(
-      p => p.id === option.id,
+      policyholder => policyholder.id === option.id,
     );
 
     if (selectedPolicyholder) onSelectPolicyholder(selectedPolicyholder);
@@ -72,7 +72,9 @@ export function PolicyholderAndModalitySearch({
 
   function onChangeModalityDropdown(option: DropdownOption | null) {
     if (option) {
-      const selectedModality = modalityOptions.find(m => m.id === option.value);
+      const selectedModality = modalityOptions.find(
+        modality => modality.id === option.value,
+      );
       if (selectedModality) onChangeModalityValue(selectedModality);
     }
   }
@@ -80,7 +82,7 @@ export function PolicyholderAndModalitySearch({
   function onChangeSubsidiaryDropdown(option: DropdownOption | null) {
     if (option) {
       const selectedSubsidiary = subsidiaryOptions.find(
-        m => m.id === option.value,
+        subsidiary => subsidiary.id === option.value,
       );
       if (selectedSubsidiary) onChangeSubsidiaryValue(selectedSubsidiary);
     }
@@ -91,58 +93,54 @@ export function PolicyholderAndModalitySearch({
       className={styles['policyholder-search']}
       data-testid="policyholder-search"
     >
-      <form>
-        <div className={styles['policyholder-search__search-wrapper']}>
-          <SearchInput
-            data-testid="policyholder-input-search"
-            type="text"
-            label="CNPJ ou Razão Social"
-            placeholder="Pesquise o tomador pelo CNPJ ou Razão Social"
-            onChange={onChangeSearchValue}
-            value={searchValue}
-            icon="search"
-            options={mapPolicyholderOptions}
-            onValueSelected={onChangePolicyholderSearch}
-          />
-        </div>
+      <div className={styles['policyholder-search__search-wrapper']}>
+        <SearchInput
+          data-testid="policyholder-input-search"
+          type="text"
+          label="CNPJ ou Razão Social"
+          placeholder="Pesquise o tomador pelo CNPJ ou Razão Social"
+          onChange={onChangeSearchValue}
+          value={searchValue}
+          icon="search"
+          options={mapPolicyholderOptions}
+          onValueSelected={onChangePolicyholderSearch}
+        />
+      </div>
 
-        {hasValidPolicyholder && (
-          <LinkButton
-            label="Ver detalhes deste tomador"
-            size="small"
-            onClick={handlePolicyholderDetails}
-          />
-        )}
+      {hasValidPolicyholder && (
+        <LinkButton
+          label="Ver detalhes deste tomador"
+          size="small"
+          onClick={handlePolicyholderDetails}
+        />
+      )}
 
+      <div
+        className={styles['policyholder-search__modality-wrapper']}
+        data-testid="policyholder-modality"
+      >
+        <Dropdown
+          placeholder="Selecione a modalidade"
+          options={mapModalityOptions}
+          isSearchable={false}
+          isDisabled={!hasValidPolicyholder}
+          onChange={onChangeModalityDropdown}
+        />
+      </div>
+
+      {subsidiaryOptions.length !== 0 && (
         <div
-          className={styles['policyholder-search__modality-wrapper']}
-          data-testid="policyholder-modality"
+          className={styles['policyholder-search__subsidiary-wrapper']}
+          data-testid="policyholder-subsidiary"
         >
           <Dropdown
-            placeholder="Selecione a modalidade"
-            options={mapModalityOptions}
+            placeholder="Selecione a filial"
+            options={mapSubsidiaryOptions}
             isSearchable={false}
-            isDisabled={!hasValidPolicyholder}
-            onChange={onChangeModalityDropdown}
+            onChange={onChangeSubsidiaryDropdown}
           />
         </div>
-
-        {subsidiaryOptions.length !== 0 && (
-          <div
-            className={styles['policyholder-search__subsidiary-wrapper']}
-            data-testid="policyholder-subsidiary"
-          >
-            <Dropdown
-              placeholder="Selecione a filial"
-              options={mapSubsidiaryOptions}
-              isSearchable={false}
-              onChange={onChangeSubsidiaryDropdown}
-            />
-          </div>
-        )}
-      </form>
+      )}
     </main>
   );
 }
-
-export default PolicyholderAndModalitySearch;
