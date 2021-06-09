@@ -57,7 +57,7 @@ describe('ContractData', () => {
   it('should call handleSetContractNumber with the value entered in the field', () => {
     const { getAllByRole } = render(<ContractData {...contractDataMock} />);
     const inputs = getAllByRole('textbox');
-    fireEvent.change(inputs[2], { target: { value: 'Contract number' } });
+    fireEvent.change(inputs[1], { target: { value: 'Contract number' } });
 
     expect(handleSetContractNumber).toHaveBeenCalledWith('Contract number');
   });
@@ -73,7 +73,7 @@ describe('ContractData', () => {
   it('should call handleSetComments with the value entered in the field', () => {
     const { getAllByRole } = render(<ContractData {...contractDataMock} />);
     const inputs = getAllByRole('textbox');
-    fireEvent.change(inputs[7], { target: { value: 'Comments' } });
+    fireEvent.change(inputs[6], { target: { value: 'Comments' } });
 
     expect(handleSetComments).toHaveBeenCalledWith('Comments');
   });

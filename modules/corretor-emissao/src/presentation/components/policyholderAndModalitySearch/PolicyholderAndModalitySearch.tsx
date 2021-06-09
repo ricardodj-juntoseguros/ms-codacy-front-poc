@@ -96,12 +96,10 @@ export function PolicyholderAndModalitySearch({
       <div className={styles['policyholder-search__search-wrapper']}>
         <SearchInput
           data-testid="policyholder-input-search"
-          type="text"
           label="CNPJ ou Razão Social"
           placeholder="Pesquise o tomador pelo CNPJ ou Razão Social"
           onChange={onChangeSearchValue}
           value={searchValue}
-          icon="search"
           options={mapPolicyholderOptions}
           onValueSelected={onChangePolicyholderSearch}
         />
