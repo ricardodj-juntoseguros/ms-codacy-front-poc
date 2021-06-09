@@ -8,7 +8,7 @@ export function QuoteContainer() {
   return (
     <div className={styles['quote-container__wrapper']}>
       <SearchContainer />
-      <TimeframeAndCoverageContainer />
+      <TimeframeAndCoverageContainer maxCoverageDays={120} policyholderLimit={50000} />
       <RateCalculationContainer />
     </div>
   );

@@ -1,11 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
-import {
-  PolicyholderAndModalitySearchModel,
-  PolicyholderModel,
-  ModalityModel,
-  SubsidiaryModel,
-} from '../../types/model';
+import { PolicyholderAndModalitySearchModel } from '../../types/model';
 import {
   searchPolicyHolder,
   searchPolicyHolderPending,
@@ -26,12 +21,9 @@ import {
 const initialState: PolicyholderAndModalitySearchModel = {
   policyholderOptions: [],
   loadingSearchPolicyholder: false,
-  policyholder: null,
   modalityOptions: [],
   loadingGetModalities: false,
   subsidiaryOptions: [],
-  subsidiary: null,
-  modality: null,
   loadingDetails: false,
 };
 
@@ -42,25 +34,10 @@ export const policyholderAndModalitySearchSlice = createSlice({
     resetSearch: state => {
       state.policyholderOptions = [];
       state.loadingSearchPolicyholder = false;
-      state.policyholder = null;
       state.modalityOptions = [];
       state.loadingGetModalities = false;
       state.subsidiaryOptions = [];
-      state.subsidiary = null;
-      state.modality = null;
       state.loadingDetails = false;
-    },
-    setPolicyholder: (
-      state,
-      action: PayloadAction<PolicyholderModel | null>,
-    ) => {
-      state.policyholder = action.payload;
-    },
-    setModality: (state, action: PayloadAction<ModalityModel | null>) => {
-      state.modality = action.payload;
-    },
-    setSubsidiary: (state, action: PayloadAction<SubsidiaryModel | null>) => {
-      state.subsidiary = action.payload;
     },
   },
   extraReducers: builder => {
@@ -90,7 +67,6 @@ export const policyholderAndModalitySearchSlice = createSlice({
 export const selectPolicyholderAndModalitySearch = (state: RootState) =>
   state.policyholderAndModalitySearch;
 
-export const { resetSearch, setPolicyholder, setModality, setSubsidiary } =
-  policyholderAndModalitySearchSlice.actions;
+export const { resetSearch } = policyholderAndModalitySearchSlice.actions;
 
 export default policyholderAndModalitySearchSlice.reducer;

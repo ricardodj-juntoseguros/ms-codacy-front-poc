@@ -16,7 +16,6 @@ export const searchPolicyHolder = createAsyncThunk(
       id: item.id,
       federalId: item.federalId,
       companyName: item.name,
-      subsidiaries: [],
     }));
 
     return data;

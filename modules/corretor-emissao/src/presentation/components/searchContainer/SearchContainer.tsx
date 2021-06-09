@@ -8,10 +8,13 @@ import { PolicyholderAndModalitySearch } from '../../components/policyholderAndM
 import {
   selectPolicyholderAndModalitySearch,
   resetSearch,
+} from '../../../application/features/policyholderAndModalitySearch/PolicyholderAndModalitySearchSlice';
+import {
   setPolicyholder,
   setModality,
   setSubsidiary,
-} from '../../../application/features/policyholderAndModalitySearch/PolicyholderAndModalitySearchSlice';
+  selectQuote
+} from '../../../application/features/quote/QuoteSlice';
 import {
   PolicyholderModel,
   ModalityModel,
@@ -21,13 +24,15 @@ import {
 export function SearchContainer() {
   const dispatch = useDispatch();
   const {
-    policyholder,
     policyholderOptions,
     loadingSearchPolicyholder,
     modalityOptions,
     loadingGetModalities,
     subsidiaryOptions,
   } = useSelector(selectPolicyholderAndModalitySearch);
+  const {
+    policyholder,
+  } = useSelector(selectQuote);
 
   const [searchValue, setSearchValue] = useState('');
 

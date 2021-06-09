@@ -6,8 +6,8 @@ import styles from './TimeframeAndCoverage.module.scss';
 export interface TimeframeAndCoverageProps {
   timeframeStart: Date | null;
   timeframeEnd: Date | null;
-  durationInDays: number;
-  coverageValue: number;
+  durationInDays?: number;
+  coverageValue?: number;
   policyholderLimit: number;
   maxCoverageDays: number;
   errorMessageDate: string;
@@ -16,7 +16,7 @@ export interface TimeframeAndCoverageProps {
   handleTimeframeStartChange: (startDate: Date) => void;
   handleTimeframeEndChange: (endDate: Date) => void;
   handleDurationInDaysChange: (days: number) => void;
-  handleCoverageValueChange: (value: number) => void;
+  handleCoverageValueChange: (value?: number) => void;
   validateDateRange: (dateStart: Date, dateEnd: Date) => boolean;
 }
 

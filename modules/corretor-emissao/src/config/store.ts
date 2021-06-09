@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import PolicyholderAndModalitySearchSlice from '../application/features/policyholderAndModalitySearch/PolicyholderAndModalitySearchSlice';
-import TimeframeAndCoverageSlice from '../application/features/timeframeAndCoverage/TimeframeAndCoverageSlice';
+import QuoteSlice from '../application/features/quote/QuoteSlice';
 
 export const store = configureStore({
   reducer: {
+    quote: QuoteSlice,
     policyholderAndModalitySearch: PolicyholderAndModalitySearchSlice,
-    timeframeAndCoverage: TimeframeAndCoverageSlice,
   },
 });
 
