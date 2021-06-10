@@ -21,6 +21,9 @@
       "@junto-design-system": ["libs/shared/junto-design-system"],
       "@platform-web/corretor-emissao": [
         "modules/corretor-emissao/src/index.ts"
+      ],
+      "@platform-web/infrastructure/http-client": [
+        "libs/infrastructure/http-client/src/index.ts"
       ]
     }
   },

@@ -1,32 +1,51 @@
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import { IHttpClient } from "../IHttpClient";
 import IHttpClientRequestParameters from "../types/IHttpClientRequestParameters";
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export class AxiosHttpClient implements IHttpClient {
   protected readonly instance: AxiosInstance;
 
-  public constructor(baseURL: string) {
+  public constructor(baseURL: string, timeout?: number) {
     this.instance = axios.create({
-      baseURL: baseURL,
+      baseURL,
+      timeout
     });
 
     // this._initializeResponseInterceptor();
   }
 
   public delete<T>(parameters: IHttpClientRequestParameters): Promise<T> {
-    throw new Error("Method not implemented.");
+    return this.doRequest(parameters, 'DELETE');
   }
 
   public get<T>(parameters: IHttpClientRequestParameters): Promise<T> {
+    return this.doRequest(parameters, 'GET');
+  }
+
+  public patch<T>(parameters: IHttpClientRequestParameters): Promise<T> {
+    return this.doRequest(parameters, 'PATCH');
+  }
+
+  public post<T>(parameters: IHttpClientRequestParameters): Promise<T> {
+    return this.doRequest(parameters, 'POST');
+  }
+
+  public put<T>(parameters: IHttpClientRequestParameters): Promise<T> {
+    return this.doRequest(parameters, 'PUT');
+  }
+
+  private doRequest<T>(parameters: IHttpClientRequestParameters, method: Method): Promise<T> {
     return new Promise<T>((resolve, reject) => {
-      const { url, headers } = parameters
+      const { url, headers, payload } = parameters
 
       const options: AxiosRequestConfig = {
-        headers: headers
+        url,
+        headers,
+        method,
+        data: payload
       }
 
-      this.instance
-        .get(url, options)
+      this.instance.request(options)
         .then((response: any) => {
           resolve(response.data as T)
         })
@@ -34,14 +53,6 @@ export class AxiosHttpClient implements IHttpClient {
           reject(response)
         })
     });
-  }
-
-  public post<T>(parameters: IHttpClientRequestParameters): Promise<T> {
-    throw new Error("Method not implemented.");
-  }
-
-  public put<T>(parameters: IHttpClientRequestParameters): Promise<T> {
-    throw new Error("Method not implemented.");
   }
 
   // private _initializeResponseInterceptor = () => {

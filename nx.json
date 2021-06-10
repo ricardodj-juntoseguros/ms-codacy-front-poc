@@ -15,6 +15,7 @@
   "projects": {
     "plataforma": { "tags": [] },
     "digital": { "tags": [] },
-    "corretor-emissao": { "tags": [] }
+    "corretor-emissao": { "tags": [] },
+    "infrastructure-http-client": { "tags": [] }
   }
 }

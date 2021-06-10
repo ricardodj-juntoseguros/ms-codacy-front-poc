@@ -169,6 +169,27 @@
           }
         }
       }
+    },
+    "infrastructure-http-client": {
+      "root": "libs/infrastructure/http-client",
+      "sourceRoot": "libs/infrastructure/http-client/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/infrastructure/http-client/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/infrastructure/http-client"],
+          "options": {
+            "jestConfig": "libs/infrastructure/http-client/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }
