@@ -3,18 +3,18 @@ import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters'
 
 interface LoginResponseModel {
   user?: any;
-  token: string
+  token: string;
 }
 interface UserResponseModel {
-  age: number,
-  name: string,
+  age: number;
+  name: string;
 }
 interface TaskCreateResponseModel {
-  success: boolean,
+  success: boolean;
   data: {
-    _id: string
-    description: string
-  },
+    _id: string;
+    description: string;
+  };
 }
 
 // upgrade defautl timeout
@@ -26,19 +26,21 @@ describe('Axios HTTP client', () => {
 
   beforeEach(async () => {
     if (!instance)
-      instance = new AxiosHttpClient('https://api-nodejs-todolist.herokuapp.com', 10000);
+      instance = new AxiosHttpClient(
+        'https://api-nodejs-todolist.herokuapp.com',
+        10000,
+      );
 
-    if (!token)
-      await authenticate();
+    if (!token) await authenticate();
   });
   it('should execute GET method without error', async () => {
     const headers = {
-      'Authorization': `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    };
 
     const getParameters: IHttpClientRequestParameters = {
       url: '/user/me',
-      headers
+      headers,
     };
 
     const response = await instance.get<UserResponseModel>(getParameters);
@@ -48,7 +50,7 @@ describe('Axios HTTP client', () => {
 
   it('should execute POST method without error', async () => {
     const taskDescription = 'create task';
-    const response = await createTask('create task')
+    const response = await createTask('create task');
     expect(response.data.description).toEqual(taskDescription);
   });
 
@@ -56,17 +58,17 @@ describe('Axios HTTP client', () => {
     const id = await (await createTask('create task')).data._id;
 
     const headers = {
-      'Authorization': `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    };
 
     const payload = {
-      'completed': true,
-    }
+      completed: true,
+    };
 
     const getParameters: IHttpClientRequestParameters = {
       url: `/task/${id}`,
       headers,
-      payload
+      payload,
     };
 
     const response = await instance.put<TaskCreateResponseModel>(getParameters);
@@ -77,36 +79,38 @@ describe('Axios HTTP client', () => {
     const id = await (await createTask('create task')).data._id;
 
     const headers = {
-      'Authorization': `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    };
 
     const payload = {
-      'completed': true,
-    }
+      completed: true,
+    };
 
     const getParameters: IHttpClientRequestParameters = {
       url: `/task/${id}`,
       headers,
-      payload
+      payload,
     };
 
-    const response = await instance.delete<TaskCreateResponseModel>(getParameters);
+    const response = await instance.delete<TaskCreateResponseModel>(
+      getParameters,
+    );
     expect(response.success).toEqual(true);
   });
 
   async function createTask(description: string) {
     const headers = {
-      'Authorization': `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    };
 
     const payload = {
-      'description': description,
-    }
+      description,
+    };
 
     const getParameters: IHttpClientRequestParameters = {
       url: '/task',
       headers,
-      payload
+      payload,
     };
 
     return await instance.post<TaskCreateResponseModel>(getParameters);
@@ -114,13 +118,13 @@ describe('Axios HTTP client', () => {
 
   async function authenticate() {
     const data = {
-      'email': 'muh.nurali43@gmail.com',
-      'password': '12345678'
-    }
+      email: 'muh.nurali43@gmail.com',
+      password: '12345678',
+    };
 
     const getParameters: IHttpClientRequestParameters = {
       url: '/user/login',
-      payload: data
+      payload: data,
     };
 
     const response = await instance.post<LoginResponseModel>(getParameters);

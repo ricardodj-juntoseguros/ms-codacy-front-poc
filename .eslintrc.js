@@ -51,6 +51,8 @@ module.exports = {
     'no-unused-expressions': 'off',
     'no-param-reassign': 'off',
     'class-methods-use-this': 'off',
+    'no-underscore-dangle': 'off',
+    'no-return-await': 'off',
   },
   overrides: [
     {

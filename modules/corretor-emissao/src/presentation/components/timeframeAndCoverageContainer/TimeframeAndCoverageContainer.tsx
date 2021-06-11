@@ -12,12 +12,15 @@ export interface TimeframeAndCoverageContainerProps {
 
 export function TimeframeAndCoverageContainer({
   policyholderLimit,
-  maxCoverageDays
+  maxCoverageDays,
 }: TimeframeAndCoverageContainerProps) {
-  const [timeframeStart, setTimeframeStart] = useState<Date | null>(startOfDay(new Date()));
+  const [timeframeStart, setTimeframeStart] = useState<Date | null>(
+    startOfDay(new Date()),
+  );
   const [timeframeEnd, setTimeframeEnd] = useState<Date | null>(null);
   const [durationInDays, setDurationInDays] = useState<number>();
-  const [coverageValue, setCoverageValue] = useState<number | undefined>(policyholderLimit);
+  const [coverageValue, setCoverageValue] =
+    useState<number | undefined>(policyholderLimit);
   const [errorMessageDate, setErrorMessageDate] = useState('');
   const [errorMessageCoverageDays, setErrorMessageCoverageDays] = useState('');
   const [errorMessageCoverageAmount, setErrorMessageCoverageAmount] =
@@ -66,9 +69,7 @@ export function TimeframeAndCoverageContainer({
 
   const validateMaxCoverageDays = useCallback(() => {
     if (!durationInDays) {
-      setErrorMessageCoverageDays(
-        `Informe a duração da vigência!`,
-      );
+      setErrorMessageCoverageDays(`Informe a duração da vigência!`);
       return false;
     }
     if (durationInDays > maxCoverageDays) {
@@ -91,9 +92,7 @@ export function TimeframeAndCoverageContainer({
 
   const validateCoverageAmount = useCallback(() => {
     if (!coverageValue) {
-      setErrorMessageCoverageAmount(
-        'Digite o valor da cobertura!',
-      );
+      setErrorMessageCoverageAmount('Digite o valor da cobertura!');
       return false;
     }
     if (coverageValue > policyholderLimit) {
@@ -128,7 +127,7 @@ export function TimeframeAndCoverageContainer({
   ]);
 
   useEffect(() => {
-    if (isValidSteep && (coverageValue && timeframeStart && durationInDays)) {
+    if (isValidSteep && coverageValue && timeframeStart && durationInDays) {
       dispatch(
         setTimeframeAndCoverageData({
           timeframeStart,

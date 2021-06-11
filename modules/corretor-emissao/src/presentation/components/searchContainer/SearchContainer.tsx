@@ -13,7 +13,7 @@ import {
   setPolicyholder,
   setModality,
   setSubsidiary,
-  selectQuote
+  selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
 import {
   PolicyholderModel,
@@ -30,9 +30,7 @@ export function SearchContainer() {
     loadingGetModalities,
     subsidiaryOptions,
   } = useSelector(selectPolicyholderAndModalitySearch);
-  const {
-    policyholder,
-  } = useSelector(selectQuote);
+  const { policyholder } = useSelector(selectQuote);
 
   const [searchValue, setSearchValue] = useState('');
 

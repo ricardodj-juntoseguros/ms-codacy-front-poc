@@ -1,20 +1,24 @@
-import { StepContainer } from "@libs/shared/ui";
-import { useState } from "react";
-import { RateCalculation } from "../rate-calculation";
+import { StepContainer } from '@libs/shared/ui';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectQuote,
+  setStandardRate,
+} from '../../../application/features/quote/QuoteSlice';
+import { RateCalculation } from '../rateCalculation';
 
 export function RateCalculationContainer() {
-  const [maxRate, setMaxRate] = useState('');
-  const [finalPrize, setFinalPrize] = useState('');
-  const [finalCommission, setFinalCommission] = useState('');
-  const [comissionPercent, setComissionPercent] = useState('');
-  const [standardRateValue, setStandardRateValue] = useState(0);
+  const dispatch = useDispatch();
+  const { pricing } = useSelector(selectQuote);
+
+  const { maxRate, finalPrize, commissionValue, commissionFee, feeStandard } =
+    pricing;
 
   function handleChangeStandardRate(value: number) {
-    setStandardRateValue(value);
+    dispatch(setStandardRate(value));
   }
 
   function handleDownloadQuote() {
-    console.log('download')
+    console.log('download');
   }
 
   function StepTitle() {
@@ -22,7 +26,7 @@ export function RateCalculationContainer() {
       <title>
         Calcule a <strong>taxa</strong>
       </title>
-    )
+    );
   }
 
   return (
@@ -31,10 +35,10 @@ export function RateCalculationContainer() {
         <RateCalculation
           maxRate={maxRate}
           finalPrize={finalPrize}
-          finalCommission={finalCommission}
-          comissionPercent={comissionPercent}
-          standardRateValue={standardRateValue}
-          handleChangeStandardRate={() => handleChangeStandardRate}
+          finalCommission={commissionValue}
+          comissionPercent={commissionFee}
+          standardRateValue={feeStandard}
+          handleChangeStandardRate={value => handleChangeStandardRate(value)}
           handleDownloadQuote={() => handleDownloadQuote}
         />
       </StepContainer>

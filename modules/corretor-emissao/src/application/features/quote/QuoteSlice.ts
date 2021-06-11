@@ -6,13 +6,25 @@ import {
   SubsidiaryModel,
   QuoteModel,
   TimeframeAndCoverageModel,
+  InsuredModel,
+  AddressModel,
+  InstallmentModel,
+  ContractDataModel,
+  PricingModel,
 } from '../../types/model';
 
 const initialState: QuoteModel = {
   policyholder: null,
   modality: null,
   subsidiary: null,
-  timeframeAndCoverage: null,
+  timeframeAndCoverage: {} as TimeframeAndCoverageModel,
+  contractData: {
+    policyInProgress: false,
+  } as ContractDataModel,
+  pricing: {
+    maxRate: 11.99,
+  } as PricingModel,
+  installments: [],
 };
 
 export const quoteSlice = createSlice({
@@ -37,6 +49,39 @@ export const quoteSlice = createSlice({
     ) => {
       state.timeframeAndCoverage = action.payload;
     },
+    setStandardRate: (state, action: PayloadAction<number>) => {
+      state.pricing.feeStandard = action.payload;
+    },
+    setContractInsured: (state, action: PayloadAction<InsuredModel>) => {
+      state.contractData.insured = action.payload;
+    },
+    setContractInsuredAddress: (state, action: PayloadAction<AddressModel>) => {
+      state.contractData.address = action.payload;
+    },
+    setContractInstallment: (
+      state,
+      action: PayloadAction<InstallmentModel>,
+    ) => {
+      state.contractData.installment = action.payload;
+    },
+    setContractNumber: (state, action: PayloadAction<string>) => {
+      state.contractData.contractNumber = action.payload;
+    },
+    setContractAttachmentNotice: (state, action: PayloadAction<string>) => {
+      state.contractData.attachmentNotice = action.payload;
+    },
+    setContractFirstInstallment: (state, action: PayloadAction<Date>) => {
+      state.contractData.firstInstallment = action.payload;
+    },
+    setContractPolicyInProgress: (state, action: PayloadAction<boolean>) => {
+      state.contractData.policyInProgress = action.payload;
+    },
+    setContractContacts: (state, action: PayloadAction<string[]>) => {
+      state.contractData.contacts = action.payload;
+    },
+    setContractComments: (state, action: PayloadAction<string>) => {
+      state.contractData.comments = action.payload;
+    },
   },
 });
 
@@ -47,6 +92,16 @@ export const {
   setModality,
   setSubsidiary,
   setTimeframeAndCoverageData,
+  setStandardRate,
+  setContractInsured,
+  setContractInsuredAddress,
+  setContractInstallment,
+  setContractNumber,
+  setContractAttachmentNotice,
+  setContractFirstInstallment,
+  setContractPolicyInProgress,
+  setContractContacts,
+  setContractComments,
 } = quoteSlice.actions;
 
 export default quoteSlice.reducer;

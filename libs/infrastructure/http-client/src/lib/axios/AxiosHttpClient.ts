@@ -1,6 +1,6 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
-import { IHttpClient } from "../IHttpClient";
-import IHttpClientRequestParameters from "../types/IHttpClientRequestParameters";
+import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
+import { IHttpClient } from '../IHttpClient';
+import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters';
 
 export class AxiosHttpClient implements IHttpClient {
   protected readonly instance: AxiosInstance;
@@ -8,7 +8,7 @@ export class AxiosHttpClient implements IHttpClient {
   public constructor(baseURL: string, timeout?: number) {
     this.instance = axios.create({
       baseURL,
-      timeout
+      timeout,
     });
 
     // this._initializeResponseInterceptor();
@@ -34,24 +34,28 @@ export class AxiosHttpClient implements IHttpClient {
     return this.doRequest(parameters, 'PUT');
   }
 
-  private doRequest<T>(parameters: IHttpClientRequestParameters, method: Method): Promise<T> {
+  private doRequest<T>(
+    parameters: IHttpClientRequestParameters,
+    method: Method,
+  ): Promise<T> {
     return new Promise<T>((resolve, reject) => {
-      const { url, headers, payload } = parameters
+      const { url, headers, payload } = parameters;
 
       const options: AxiosRequestConfig = {
         url,
         headers,
         method,
-        data: payload
-      }
+        data: payload,
+      };
 
-      this.instance.request(options)
+      this.instance
+        .request(options)
         .then((response: any) => {
-          resolve(response.data as T)
+          resolve(response.data as T);
         })
         .catch((response: any) => {
-          reject(response)
-        })
+          reject(response);
+        });
     });
   }
 

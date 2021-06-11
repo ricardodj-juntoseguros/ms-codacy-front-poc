@@ -1,3 +1,14 @@
 {
-  "src/**/*": ["yarn lint-fix", "yarn linter-fix"]
+  "apps/**/*": [
+    "yarn lint-fix",
+    "yarn linter-fix"
+  ],
+  "libs/**/*": [
+    "yarn lint-fix",
+    "yarn linter-fix"
+  ],
+  "modules/**/*": [
+    "yarn lint-fix",
+    "yarn linter-fix"
+  ]
 }
