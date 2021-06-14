@@ -24,6 +24,9 @@
       ],
       "@platform-web/infrastructure/http-client": [
         "libs/infrastructure/http-client/src/index.ts"
+      ],
+      "@hooks":[
+        "libs/shared/hooks"
       ]
     }
   },
