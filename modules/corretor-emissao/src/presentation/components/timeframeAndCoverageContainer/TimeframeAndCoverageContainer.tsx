@@ -1,9 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StepContainer } from '@libs/shared/ui';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isAfter, startOfDay } from 'date-fns';
+import { TimeframeAndCoverageModel } from 'modules/corretor-emissao/src/application/types/model';
+import { generateQuote } from '../../../application/features/quote/thunks/generateQuote';
+import {
+  selectFlow,
+  setStepStatus,
+} from '../../../application/features/flow/FlowSlice';
 import { TimeframeAndCoverage } from '../timeframeAndCoverage';
-import { setTimeframeAndCoverageData } from '../../../application/features/quote/QuoteSlice';
+import {
+  selectQuote,
+  setTimeframeAndCoverageData,
+} from '../../../application/features/quote/QuoteSlice';
 
 export interface TimeframeAndCoverageContainerProps {
   policyholderLimit: number;
@@ -27,6 +36,12 @@ export function TimeframeAndCoverageContainer({
     useState('');
 
   const dispatch = useDispatch();
+  const { timeframeAndCoverage } = useSelector(selectQuote);
+
+  const { steps } = useSelector(selectFlow);
+  const stepConfig = steps.find(
+    step => step.name === 'timeframeAndCoverageContainer',
+  );
 
   function StepTitle() {
     return (
@@ -136,7 +151,7 @@ export function TimeframeAndCoverageContainer({
         }),
       );
     } else {
-      dispatch(setTimeframeAndCoverageData(null));
+      dispatch(setTimeframeAndCoverageData({} as TimeframeAndCoverageModel));
     }
   }, [
     coverageValue,
@@ -148,9 +163,32 @@ export function TimeframeAndCoverageContainer({
     timeframeStart,
   ]);
 
+  useEffect(() => {
+    if (isValidSteep && coverageValue && timeframeStart && durationInDays) {
+      dispatch(
+        setStepStatus({
+          name: 'timeframeAndCoverageContainer',
+          isCompleted: true,
+        }),
+      );
+      dispatch(generateQuote(timeframeAndCoverage));
+    }
+  }, [
+    coverageValue,
+    dispatch,
+    durationInDays,
+    isValidSteep,
+    timeframeAndCoverage,
+    timeframeStart,
+  ]);
+
   return (
     <div>
-      <StepContainer stepNumber={2} title={StepTitle()} active>
+      <StepContainer
+        stepNumber={stepConfig?.number}
+        title={StepTitle()}
+        active={stepConfig?.isActive}
+      >
         <TimeframeAndCoverage
           policyholderLimit={policyholderLimit}
           coverageValue={coverageValue}

@@ -47,7 +47,11 @@ export function PolicyholderAndModalitySearch({
           placeholder="Pesquise o tomador pelo CNPJ ou Razão Social"
           onChange={onChangeSearchValue}
           value={searchValue}
-          options={OptionsMapper(policyholderOptions, 'companyName', 'federalId')}
+          options={OptionsMapper(
+            policyholderOptions,
+            'companyName',
+            'federalId',
+          )}
           onValueSelected={option =>
             SelectionHandler(option, policyholderOptions, onSelectPolicyholder)
           }
@@ -71,7 +75,9 @@ export function PolicyholderAndModalitySearch({
           options={OptionsMapper(modalityOptions, 'description')}
           isSearchable={false}
           isDisabled={!hasValidPolicyholder}
-          onInputChange={option => SelectionHandler(option, modalityOptions, onChangeModalityValue)}
+          onInputChange={option =>
+            SelectionHandler(option, modalityOptions, onChangeModalityValue)
+          }
         />
       </div>
 
@@ -85,7 +91,11 @@ export function PolicyholderAndModalitySearch({
             options={OptionsMapper(subsidiaryOptions, 'label')}
             isSearchable={false}
             onInputChange={option =>
-              SelectionHandler(option, subsidiaryOptions, onChangeSubsidiaryValue)
+              SelectionHandler(
+                option,
+                subsidiaryOptions,
+                onChangeSubsidiaryValue,
+              )
             }
           />
         </div>

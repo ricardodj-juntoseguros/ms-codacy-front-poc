@@ -5,6 +5,23 @@
   flex: 1;
   flex-direction: row;
   margin-bottom: spacing('xxl');
+
+  opacity: 0.5;
+  touch-action: none;
+  pointer-events: none;
+  user-select: none;
+
+  &--active {
+    opacity: 1;
+    touch-action: auto;
+    pointer-events: auto;
+    user-select: auto;
+  }
+
+  &--active .step-container__step-number {
+    color: color('grey-600');
+    border: 2px solid color('brand-primary');
+  }
 }
 
 .step-container__step-number {
@@ -20,11 +37,6 @@
   border: 2px solid color('grey-200');
   border-radius: 30px;
   transition: all 0.3s ease 0s;
-
-  &--active {
-    color: color('grey-600');
-    border: 2px solid color('brand-primary');
-  }
 }
 
 .step-container__step-content {

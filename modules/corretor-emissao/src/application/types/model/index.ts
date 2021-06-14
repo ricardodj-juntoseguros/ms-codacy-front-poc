@@ -11,3 +11,5 @@ export * from './SearchInsuredModel';
 export * from './InstallmentModel';
 export * from './ContractDataModel';
 export * from './PricingModel';
+export * from './FlowModel';
+export * from './StepModel';

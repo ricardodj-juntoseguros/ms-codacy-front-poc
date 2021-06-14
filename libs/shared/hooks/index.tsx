@@ -1,1 +1,1 @@
-export * from './OptionsMapper'
+export * from './OptionsMapper';

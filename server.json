@@ -527,5 +527,48 @@
       "labelSpecialClause": null,
       "isSubstitute": true
     }
+  ],
+  "generate-quote": [
+    {
+      "finalPrize": 12994.31,
+      "commissionValue": 2130.43,
+      "commissionFee": 21,
+      "feeStandard": 1.55,
+      "maxRate": 11.99,
+      "quoteFileRequestURL": "URL",
+      "installments": [
+        {
+          "number": 1,
+          "dueDate": "2021-06-14T03:00:00.000Z",
+          "mainValue": 190.0,
+          "iof": 0,
+          "policyCost": 19.9,
+          "installmentValue": 190.0,
+          "fractionationValue": 0
+        }
+      ]
+    }
+  ],
+  "insured": [
+    {
+      "id": 1,
+      "externalId": 1,
+      "federalId": 1,
+      "addressId": 1,
+      "name": "BANCO VOLKSWAGEN",
+      "addresses": [
+        {
+          "addressExternalId": 1,
+          "addressId": 1,
+          "externalId": 1,
+          "city": "São Paulo",
+          "state": "São Paulo",
+          "street": "Av. Dr. Luís Rocha Miranda, 341 - Jabaquara"
+        }
+      ],
+      "insuredType": 1,
+      "insuredTypeDescription": "Privado",
+      "hasFederalId": true
+    }
   ]
 }

@@ -10,8 +10,9 @@ export interface QuoteModel {
   policyholder: PolicyholderModel | null;
   modality: ModalityModel | null;
   subsidiary: SubsidiaryModel | null;
-  timeframeAndCoverage?: TimeframeAndCoverageModel | null;
+  timeframeAndCoverage: TimeframeAndCoverageModel;
   contractData: ContractDataModel;
   pricing: PricingModel;
   installments: InstallmentModel[];
+  loading: boolean;
 }

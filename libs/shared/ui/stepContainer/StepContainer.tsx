@@ -4,25 +4,26 @@ import className from 'classnames';
 import styles from './StepContainer.module.scss';
 
 export interface StepContainerProps {
-  stepNumber: number;
+  stepNumber?: number;
   active?: boolean;
   title: ReactNode;
   children: ReactNode;
 }
 
 export function StepContainer({
-  stepNumber,
+  stepNumber = 1,
   active,
   title,
   children,
 }: StepContainerProps) {
   return (
-    <div className={styles['step-container']} data-testid="step-container">
-      <span
-        className={className(styles['step-container__step-number'], {
-          [styles['step-container__step-number--active']]: active,
-        })}
-      >
+    <div
+      className={className(styles['step-container'], {
+        [styles['step-container--active']]: active,
+      })}
+      data-testid="step-container"
+    >
+      <span className={styles['step-container__step-number']}>
         {stepNumber}
       </span>
       <div className={className(styles['step-container__step-content'])}>

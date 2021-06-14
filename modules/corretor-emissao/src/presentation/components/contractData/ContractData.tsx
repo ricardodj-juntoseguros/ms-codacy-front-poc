@@ -12,6 +12,7 @@ import {
   OptionProps,
 } from '@libs/shared/junto-design-system';
 import { ObjectPreview, ObjectPreviewProps } from '@libs/shared/ui';
+import { currencyFormatter } from '../../../helpers';
 import {
   AddressModel,
   InsuredModel,
@@ -85,7 +86,9 @@ export function ContractData({
   const mapInstallmentOptions: DropdownOption[] = useMemo(() => {
     return installmentOptions.map(installment => ({
       ...installment,
-      label: `${installment.number} - ${installment.installmentValue}`,
+      label: `${installment.number} - À vista em ${currencyFormatter(
+        installment.installmentValue,
+      )} `,
       value: installment.number,
     }));
   }, [installmentOptions]);

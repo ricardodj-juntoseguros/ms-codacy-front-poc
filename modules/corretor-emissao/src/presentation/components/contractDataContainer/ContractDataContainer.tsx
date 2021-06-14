@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StepContainer } from '@libs/shared/ui';
+import { searchInsured } from '../../../application/features/searchInsured/thunks/SearchInsuredThunk';
+import {
+  selectFlow,
+  setStepStatus,
+} from '../../../application/features/flow/FlowSlice';
 import { ContractData } from '../contractData/ContractData';
 import { selectSearchInsured } from '../../../application/features/searchInsured/SearchInsuredSlice';
 import {
@@ -37,6 +42,38 @@ export function ContractDataContainer() {
   const { addresses = [], insuredTypeDescription } = { ...insured };
 
   const { searchInsuredOptions } = useSelector(selectSearchInsured);
+
+  const { steps } = useSelector(selectFlow);
+  const stepConfig = steps.find(step => step.name === 'contractDataContainer');
+
+  useEffect(() => {
+    if (insuredValue !== '' && insuredValue.length > 3) {
+      dispatch(searchInsured(insuredValue));
+    }
+  }, [dispatch, insuredValue]);
+
+  useEffect(() => {
+    if (
+      insured &&
+      addresses &&
+      contractNumber &&
+      attachmentNotice &&
+      firstInstallment &&
+      policyInProgress
+    ) {
+      dispatch(
+        setStepStatus({ name: 'contractDataContainer', isCompleted: true }),
+      );
+    }
+  }, [
+    addresses,
+    attachmentNotice,
+    contractNumber,
+    dispatch,
+    firstInstallment,
+    insured,
+    policyInProgress,
+  ]);
 
   function handleSetInstallment(selectedInstallment: InstallmentModel) {
     dispatch(setContractInstallment(selectedInstallment));
@@ -84,7 +121,11 @@ export function ContractDataContainer() {
 
   return (
     <div>
-      <StepContainer stepNumber={4} title={StepTitle()}>
+      <StepContainer
+        stepNumber={stepConfig?.number}
+        title={StepTitle()}
+        active={stepConfig?.isActive}
+      >
         <ContractData
           insuredValue={insuredValue}
           searchInsuredOptions={searchInsuredOptions}

@@ -1,4 +1,7 @@
 import { LinkButton, NumberInput, Tag } from '@junto-design-system';
+import { useMemo } from 'react';
+
+import { currencyFormatter } from '../../../helpers';
 
 import styles from './RateCalculation.module.scss';
 
@@ -21,6 +24,20 @@ export function RateCalculation({
   handleChangeStandardRate,
   handleDownloadQuote,
 }: RateCalculationProps) {
+  const formattedFinalPrize = useMemo(() => {
+    if (finalPrize) {
+      return currencyFormatter(finalPrize);
+    }
+    return currencyFormatter(0);
+  }, [finalPrize]);
+
+  const formattedFinalCommission = useMemo(() => {
+    if (finalCommission) {
+      return currencyFormatter(finalCommission);
+    }
+    return currencyFormatter(0);
+  }, [finalCommission]);
+
   return (
     <div className={styles['rate-calculation']} data-testid="rate-calculation">
       <div className={styles['rate-calculation__rate-input-wrapper']}>
@@ -43,12 +60,12 @@ export function RateCalculation({
       >
         <article>
           <h3>Prêmio final</h3>
-          <p>R$ {finalPrize}</p>
+          <p>{formattedFinalPrize}</p>
         </article>
         <article>
           <h3>Comissão final</h3>
           <span>
-            <p>R$ {finalCommission}</p>
+            <p>{formattedFinalCommission}</p>
             <Tag variant="neutral">{comissionPercent}%</Tag>
           </span>
         </article>

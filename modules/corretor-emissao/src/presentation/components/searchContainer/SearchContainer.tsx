@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StepContainer } from '@libs/shared/ui';
+import {
+  selectFlow,
+  setStepStatus,
+} from '../../../application/features/flow/FlowSlice';
 import { searchPolicyHolder } from '../../../application/features/policyholderAndModalitySearch/thunks/SearchPolicyholderThunk';
 import { getModalityByPolicyHolder } from '../../../application/features/policyholderAndModalitySearch/thunks/GetModalityByPolicyholderThunk';
 import { getSubsidiaryByPolicyHolder } from '../../../application/features/policyholderAndModalitySearch/thunks/GetSubsidiaryByPolicyholderThunk';
@@ -30,15 +34,24 @@ export function SearchContainer() {
     loadingGetModalities,
     subsidiaryOptions,
   } = useSelector(selectPolicyholderAndModalitySearch);
-  const { policyholder } = useSelector(selectQuote);
+  const { policyholder, modality } = useSelector(selectQuote);
 
   const [searchValue, setSearchValue] = useState('');
+
+  const { steps } = useSelector(selectFlow);
+  const stepConfig = steps.find(step => step.name === 'searchContainer');
 
   useEffect(() => {
     if (searchValue !== '' && searchValue.length > 3) {
       dispatch(searchPolicyHolder(searchValue));
     }
   }, [dispatch, searchValue]);
+
+  useEffect(() => {
+    if (policyholder && modality) {
+      dispatch(setStepStatus({ name: 'searchContainer', isCompleted: true }));
+    }
+  }, [dispatch, modality, policyholder]);
 
   function StepTitle() {
     return (
@@ -67,7 +80,11 @@ export function SearchContainer() {
 
   return (
     <div>
-      <StepContainer stepNumber={1} title={StepTitle()} active>
+      <StepContainer
+        stepNumber={stepConfig?.number}
+        title={StepTitle()}
+        active={stepConfig?.isActive}
+      >
         <PolicyholderAndModalitySearch
           searchValue={searchValue}
           onChangeSearchValue={setSearchValue}

@@ -12,6 +12,12 @@ import {
   ContractDataModel,
   PricingModel,
 } from '../../types/model';
+import {
+  generateQuote,
+  generateQuoteFulFilled,
+  generateQuotePending,
+  generateQuoteRejected,
+} from './thunks/generateQuote';
 
 const initialState: QuoteModel = {
   policyholder: null,
@@ -25,6 +31,7 @@ const initialState: QuoteModel = {
     maxRate: 11.99,
   } as PricingModel,
   installments: [],
+  loading: false,
 };
 
 export const quoteSlice = createSlice({
@@ -45,7 +52,7 @@ export const quoteSlice = createSlice({
     },
     setTimeframeAndCoverageData: (
       state,
-      action: PayloadAction<TimeframeAndCoverageModel | null>,
+      action: PayloadAction<TimeframeAndCoverageModel>,
     ) => {
       state.timeframeAndCoverage = action.payload;
     },
@@ -82,6 +89,12 @@ export const quoteSlice = createSlice({
     setContractComments: (state, action: PayloadAction<string>) => {
       state.contractData.comments = action.payload;
     },
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(generateQuote.pending, generateQuotePending)
+      .addCase(generateQuote.fulfilled, generateQuoteFulFilled)
+      .addCase(generateQuote.rejected, generateQuoteRejected);
   },
 });
 

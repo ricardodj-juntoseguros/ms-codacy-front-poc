@@ -1,3 +1,9 @@
 export interface QuoteResultDTO {
-  id: number;
+  finalPrize: number;
+  commissionFee: number;
+  commissionValue: number;
+  feeStandard: number;
+  maxRate: number;
+  installments: [];
+  quoteFileRequestURL: string;
 }

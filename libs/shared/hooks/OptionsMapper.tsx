@@ -1,8 +1,13 @@
-export function OptionsMapper(OptionsToMap: Array<any>, LabelName: string, SecondaryLabel = "") {
-
+export function OptionsMapper(
+  OptionsToMap: Array<any>,
+  LabelName: string,
+  SecondaryLabel = '',
+) {
   const mappedOptions = OptionsToMap.map(option => ({
     ...option,
-    label: !SecondaryLabel ? option[LabelName] : `${option[LabelName]} - ${option[SecondaryLabel]}`,
+    label: !SecondaryLabel
+      ? option[LabelName]
+      : `${option[LabelName]} - ${option[SecondaryLabel]}`,
     value: option.id,
   }));
   return mappedOptions;
