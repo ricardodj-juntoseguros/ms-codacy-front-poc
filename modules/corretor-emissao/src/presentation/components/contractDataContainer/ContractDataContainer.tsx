@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StepContainer } from '@libs/shared/ui';
+import { StepContainer } from '@shared/ui';
 import { searchInsured } from '../../../application/features/searchInsured/thunks/SearchInsuredThunk';
 import {
   selectFlow,
@@ -25,6 +25,7 @@ import {
   InstallmentModel,
   InsuredModel,
 } from '../../../application/types/model';
+import { getStepByName } from '../../../helpers';
 
 export function ContractDataContainer() {
   const dispatch = useDispatch();
@@ -44,7 +45,9 @@ export function ContractDataContainer() {
   const { searchInsuredOptions } = useSelector(selectSearchInsured);
 
   const { steps } = useSelector(selectFlow);
-  const stepConfig = steps.find(step => step.name === 'contractDataContainer');
+  const stepStatus = useMemo(() => {
+    return getStepByName('ContractDataContainer', steps);
+  }, [steps]);
 
   useEffect(() => {
     if (insuredValue !== '' && insuredValue.length > 3) {
@@ -122,9 +125,9 @@ export function ContractDataContainer() {
   return (
     <div>
       <StepContainer
-        stepNumber={stepConfig?.number}
+        stepNumber={stepStatus?.number}
         title={StepTitle()}
-        active={stepConfig?.isActive}
+        active={stepStatus?.isActive}
       >
         <ContractData
           insuredValue={insuredValue}

@@ -13,3 +13,5 @@ export * from './ContractDataModel';
 export * from './PricingModel';
 export * from './FlowModel';
 export * from './StepModel';
+export * from './ModalityTypeEnum';
+export * from './Modalities';

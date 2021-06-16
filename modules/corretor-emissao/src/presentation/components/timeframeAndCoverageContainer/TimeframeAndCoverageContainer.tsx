@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { StepContainer } from '@libs/shared/ui';
+import { StepContainer } from '@shared/ui';
 import { useDispatch, useSelector } from 'react-redux';
 import { isAfter, startOfDay } from 'date-fns';
 import { TimeframeAndCoverageModel } from 'modules/corretor-emissao/src/application/types/model';
-import { generateQuote } from '../../../application/features/quote/thunks/generateQuote';
+import { generateQuote } from '../../../application/features/quote/thunks/GenerateQuoteThunk';
 import {
   selectFlow,
   setStepStatus,
@@ -13,16 +13,11 @@ import {
   selectQuote,
   setTimeframeAndCoverageData,
 } from '../../../application/features/quote/QuoteSlice';
+import { getStepByName } from '../../../helpers';
 
-export interface TimeframeAndCoverageContainerProps {
-  policyholderLimit: number;
-  maxCoverageDays: number;
-}
-
-export function TimeframeAndCoverageContainer({
-  policyholderLimit,
-  maxCoverageDays,
-}: TimeframeAndCoverageContainerProps) {
+export function TimeframeAndCoverageContainer() {
+  const maxCoverageDays = 120;
+  const policyholderLimit = 50000;
   const [timeframeStart, setTimeframeStart] = useState<Date | null>(
     startOfDay(new Date()),
   );
@@ -39,9 +34,10 @@ export function TimeframeAndCoverageContainer({
   const { timeframeAndCoverage } = useSelector(selectQuote);
 
   const { steps } = useSelector(selectFlow);
-  const stepConfig = steps.find(
-    step => step.name === 'timeframeAndCoverageContainer',
-  );
+
+  const stepStatus = useMemo(() => {
+    return getStepByName('TimeframeAndCoverageContainer', steps);
+  }, [steps]);
 
   function StepTitle() {
     return (
@@ -185,9 +181,9 @@ export function TimeframeAndCoverageContainer({
   return (
     <div>
       <StepContainer
-        stepNumber={stepConfig?.number}
+        stepNumber={stepStatus?.number}
         title={StepTitle()}
-        active={stepConfig?.isActive}
+        active={stepStatus?.isActive}
       >
         <TimeframeAndCoverage
           policyholderLimit={policyholderLimit}

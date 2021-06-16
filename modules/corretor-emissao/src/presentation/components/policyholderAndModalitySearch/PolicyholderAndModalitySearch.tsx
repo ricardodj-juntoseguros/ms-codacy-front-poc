@@ -1,8 +1,5 @@
 import { SearchInput, LinkButton, Dropdown } from '@junto-design-system';
-import {
-  OptionsMapper,
-  SelectionHandler,
-} from '../../../../../../libs/shared/hooks';
+import { useOptionsMapper } from '@shared/hooks';
 import styles from './PolicyholderAndModalitySearch.module.scss';
 import {
   PolicyholderModel,
@@ -35,6 +32,37 @@ export function PolicyholderAndModalitySearch({
   subsidiaryOptions,
   onChangeSubsidiaryValue,
 }: PolicyholderAndModalitySearchProps) {
+  const {
+    mappedOptions: mappedPolicyholders,
+    selectOption: setPolicyholderOption,
+  } = useOptionsMapper(
+    policyholderOptions,
+    'companyName',
+    'federalId',
+    'id',
+    onSelectPolicyholder,
+  );
+
+  const { mappedOptions: mappedModalities, selectOption: setModalityOption } =
+    useOptionsMapper(
+      modalityOptions,
+      'description',
+      '',
+      'id',
+      onChangeModalityValue,
+    );
+
+  const {
+    mappedOptions: mappedSubsidiaries,
+    selectOption: setSubsidiaryOption,
+  } = useOptionsMapper(
+    subsidiaryOptions,
+    'label',
+    '',
+    'id',
+    onChangeSubsidiaryValue,
+  );
+
   return (
     <main
       className={styles['policyholder-search']}
@@ -47,14 +75,8 @@ export function PolicyholderAndModalitySearch({
           placeholder="Pesquise o tomador pelo CNPJ ou Razão Social"
           onChange={onChangeSearchValue}
           value={searchValue}
-          options={OptionsMapper(
-            policyholderOptions,
-            'companyName',
-            'federalId',
-          )}
-          onValueSelected={option =>
-            SelectionHandler(option, policyholderOptions, onSelectPolicyholder)
-          }
+          options={mappedPolicyholders}
+          onValueSelected={option => setPolicyholderOption(option)}
         />
       </div>
 
@@ -72,12 +94,10 @@ export function PolicyholderAndModalitySearch({
       >
         <Dropdown
           placeholder="Selecione a modalidade"
-          options={OptionsMapper(modalityOptions, 'description')}
+          options={mappedModalities}
           isSearchable={false}
           isDisabled={!hasValidPolicyholder}
-          onInputChange={option =>
-            SelectionHandler(option, modalityOptions, onChangeModalityValue)
-          }
+          onChange={option => setModalityOption(option)}
         />
       </div>
 
@@ -88,15 +108,9 @@ export function PolicyholderAndModalitySearch({
         >
           <Dropdown
             placeholder="Selecione a filial"
-            options={OptionsMapper(subsidiaryOptions, 'label')}
+            options={mappedSubsidiaries}
             isSearchable={false}
-            onInputChange={option =>
-              SelectionHandler(
-                option,
-                subsidiaryOptions,
-                onChangeSubsidiaryValue,
-              )
-            }
+            onChange={option => setSubsidiaryOption(option)}
           />
         </div>
       )}

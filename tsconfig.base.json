@@ -17,15 +17,13 @@
     "strict": true,
     "strictNullChecks": true,
     "paths": {
-      "@libs/*": ["libs/*"],
       "@junto-design-system": ["libs/shared/junto-design-system"],
-      "@platform-web/corretor-emissao": [
-        "modules/corretor-emissao/src/index.ts"
-      ],
-      "@platform-web/infrastructure/http-client": [
+      "@modules/corretor-emissao": ["modules/corretor-emissao/src/index.ts"],
+      "@infrastructure/http-client": [
         "libs/infrastructure/http-client/src/index.ts"
       ],
-      "@hooks": ["libs/shared/hooks"]
+      "@shared/hooks": ["libs/shared/hooks/src/index.tsx"],
+      "@shared/ui": ["libs/shared/ui/src/index.tsx"]
     }
   },
   "include": ["**/*.d.ts"],

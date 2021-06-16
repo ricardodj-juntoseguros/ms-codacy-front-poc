@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import classNames from 'classnames';
 import {
   Dropdown,
@@ -7,11 +6,10 @@ import {
   Toggle,
   TextArea,
   TagInput,
-  DropdownOption,
   InputBase,
-  OptionProps,
-} from '@libs/shared/junto-design-system';
-import { ObjectPreview, ObjectPreviewProps } from '@libs/shared/ui';
+} from '@junto-design-system';
+import { ObjectPreview, ObjectPreviewProps } from '@shared/ui';
+import { useOptionsMapper } from '@shared/hooks';
 import { currencyFormatter } from '../../../helpers';
 import {
   AddressModel,
@@ -67,58 +65,44 @@ export function ContractData({
   onChangePolicyInProgress,
   onChangeComments,
 }: ContractDataProps) {
-  const mapInsuredOptions = useMemo(() => {
-    return searchInsuredOptions.map(insured => ({
-      ...insured,
-      label: insured.name,
-      id: insured.externalId,
-    }));
-  }, [searchInsuredOptions]);
+  const {
+    mappedOptions: mappedInsuredOptions,
+    selectOption: setInsuredOption,
+  } = useOptionsMapper(
+    searchInsuredOptions,
+    'name',
+    'federalId',
+    'externalId',
+    onSelectInsured,
+  );
 
-  const mapAdressOptions: DropdownOption[] = useMemo(() => {
-    return addressOptions.map(address => ({
-      ...address,
-      label: address.street,
-      value: address.externalId,
-    }));
-  }, [addressOptions]);
+  const {
+    mappedOptions: mappedAddressOptions,
+    selectOption: setAddressOption,
+  } = useOptionsMapper(
+    addressOptions,
+    'street',
+    '',
+    'externalId',
+    onSelectAddress,
+  );
 
-  const mapInstallmentOptions: DropdownOption[] = useMemo(() => {
-    return installmentOptions.map(installment => ({
-      ...installment,
-      label: `${installment.number} - À vista em ${currencyFormatter(
-        installment.installmentValue,
-      )} `,
-      value: installment.number,
-    }));
-  }, [installmentOptions]);
+  const {
+    mappedOptions: mappedInstallmentOptions,
+    selectOption: setInstallmentOption,
+  } = useOptionsMapper(
+    installmentOptions,
+    '',
+    '',
+    'number',
+    onSelectInstallment,
+    formatInstallment,
+  );
 
-  function onChangeInsuredSearch(option: OptionProps) {
-    const selectedInsured = searchInsuredOptions.find(
-      insured => insured.externalId === option.id,
-    );
-
-    if (selectedInsured) onSelectInsured(selectedInsured);
-  }
-
-  function onChangeAddressOptionDropdown(option: DropdownOption | null) {
-    if (option) {
-      const selectedAddress = addressOptions.find(
-        address => address.addressId === option.value,
-      );
-
-      if (selectedAddress) onSelectAddress(selectedAddress);
-    }
-  }
-
-  function onChangeInstallmentOptionDropdown(option: DropdownOption | null) {
-    if (option) {
-      const selectedInstallment = installmentOptions.find(
-        installment => installment.number === option.value,
-      );
-
-      if (selectedInstallment) onSelectInstallment(selectedInstallment);
-    }
+  function formatInstallment(installment: InstallmentModel) {
+    return `${installment.number} - À vista em ${currencyFormatter(
+      installment.installmentValue,
+    )} `;
   }
 
   return (
@@ -127,19 +111,19 @@ export function ContractData({
         <SearchInput
           label="CNPJ ou razão social do segurado"
           placeholder=" "
-          onValueSelected={onChangeInsuredSearch}
+          onValueSelected={option => setInsuredOption(option)}
           onChange={onChangeInsuredValue}
           value={insuredValue}
-          options={mapInsuredOptions}
+          options={mappedInsuredOptions}
         />
       </div>
 
       <div className={styles['contract-data__form-field']}>
         <Dropdown
           placeholder="Selecione o endereço do segurado"
-          options={mapAdressOptions}
+          options={mappedAddressOptions}
           isSearchable={false}
-          onChange={onChangeAddressOptionDropdown}
+          onChange={setAddressOption}
         />
       </div>
 
@@ -189,9 +173,9 @@ export function ContractData({
         <div className={styles['contract-data__form-field']}>
           <Dropdown
             placeholder="Parcelas"
-            options={mapInstallmentOptions}
+            options={mappedInstallmentOptions}
             isSearchable={false}
-            onChange={onChangeInstallmentOptionDropdown}
+            onChange={setInstallmentOption}
           />
         </div>
         <div className={styles['contract-data__form-field']}>

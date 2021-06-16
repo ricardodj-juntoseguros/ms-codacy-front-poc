@@ -1,0 +1,3 @@
+export enum ModalityTypeEnum {
+  EXECUTANTE_CONSTRUTOR = 'EXECUTANTE_CONSTRUTOR',
+}

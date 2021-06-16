@@ -1,4 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  Method,
+} from 'axios';
 import { IHttpClient } from '../IHttpClient';
 import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters';
 
@@ -50,10 +56,10 @@ export class AxiosHttpClient implements IHttpClient {
 
       this.instance
         .request(options)
-        .then((response: any) => {
-          resolve(response.data as T);
+        .then((response: AxiosResponse<T>) => {
+          resolve(response.data);
         })
-        .catch((response: any) => {
+        .catch((response: AxiosError<T>) => {
           reject(response);
         });
     });

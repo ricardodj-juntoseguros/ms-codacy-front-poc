@@ -15,5 +15,7 @@ yarn-error.log*
 *.json
 *.html
 *.png
+*.svg
+*.md
 **/jest.preset.js
 **/webpack.config.js

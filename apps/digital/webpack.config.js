@@ -10,7 +10,24 @@ module.exports = (config, context) => {
       extensions: [...config.resolve.extensions, '.scss'],
       alias: {
         ...config.resolve.alias,
-        '@libs': path.resolve(__dirname, '..', '..', 'libs'),
+        '@shared/ui': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'shared',
+          'ui',
+          'src',
+        ),
+        '@shared/hooks': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'shared',
+          'hooks',
+          'src',
+        ),
         '@junto-design-system': path.resolve(
           __dirname,
           '..',
@@ -33,6 +50,10 @@ module.exports = (config, context) => {
           },
         },
       ],
+    },
+    devServer: {
+      ...config.devServer,
+      compress: true,
     },
   };
 };

@@ -53,6 +53,11 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-underscore-dangle': 'off',
     'no-return-await': 'off',
+    'import/no-extraneous-dependencies': [
+      'error',
+      { devDependencies: ['**/*.spec.tsx'] },
+    ],
+    'no-shadow': 'off',
   },
   overrides: [
     {

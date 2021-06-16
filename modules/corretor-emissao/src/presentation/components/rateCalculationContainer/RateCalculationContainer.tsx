@@ -1,6 +1,7 @@
-import { StepContainer } from '@libs/shared/ui';
-import { useEffect } from 'react';
+import { StepContainer } from '@shared/ui';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getStepByName } from '../../../helpers';
 import {
   selectFlow,
   setStepStatus,
@@ -14,21 +15,21 @@ import { RateCalculation } from '../rateCalculation';
 export function RateCalculationContainer() {
   const dispatch = useDispatch();
   const { pricing } = useSelector(selectQuote);
+  const { steps } = useSelector(selectFlow);
 
   const { maxRate, finalPrize, commissionValue, commissionFee, feeStandard } =
     pricing;
 
-  const { steps } = useSelector(selectFlow);
-  const stepConfig = steps.find(
-    step => step.name === 'rateCalculationContainer',
-  );
+  const stepStatus = useMemo(() => {
+    return getStepByName('RateCalculationContainer', steps);
+  }, [steps]);
 
   function handleChangeStandardRate(value: number) {
     dispatch(setStandardRate(value));
-    if (stepConfig) {
+    if (stepStatus) {
       dispatch(
         setStepStatus({
-          ...stepConfig,
+          ...stepStatus,
           isCompleted: true,
         }),
       );
@@ -58,9 +59,9 @@ export function RateCalculationContainer() {
   return (
     <div>
       <StepContainer
-        stepNumber={stepConfig?.number}
+        stepNumber={stepStatus?.number}
         title={StepTitle()}
-        active={stepConfig?.isActive}
+        active={stepStatus?.isActive}
       >
         <RateCalculation
           maxRate={maxRate}

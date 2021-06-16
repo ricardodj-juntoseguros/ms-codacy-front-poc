@@ -17,7 +17,7 @@ import {
   generateQuoteFulFilled,
   generateQuotePending,
   generateQuoteRejected,
-} from './thunks/generateQuote';
+} from './thunks/GenerateQuoteThunk';
 
 const initialState: QuoteModel = {
   policyholder: null,

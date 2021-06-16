@@ -44,8 +44,8 @@ describe('Axios HTTP client', () => {
     };
 
     const response = await instance.get<UserResponseModel>(getParameters);
-    expect(response.age).toEqual(30);
-    expect(response.name).toEqual('Muhammad Nur Ali');
+    expect(response.age).toEqual(55);
+    expect(response.name).toEqual('yonatan');
   });
 
   it('should execute POST method without error', async () => {

@@ -1,21 +1,44 @@
 {
   "implicitDependencies": {
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
     ".eslintrc.json": "*"
   },
-  "affected": { "defaultBase": "master" },
+  "affected": {
+    "defaultBase": "master"
+  },
   "npmScope": "platform-web",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
     }
   },
-  "workspaceLayout": { "libsDir": "libs" },
+  "workspaceLayout": {
+    "libsDir": "libs"
+  },
   "projects": {
-    "plataforma": { "tags": [] },
-    "digital": { "tags": [] },
-    "corretor-emissao": { "tags": [] },
-    "infrastructure-http-client": { "tags": [] }
+    "plataforma": {
+      "tags": []
+    },
+    "digital": {
+      "tags": []
+    },
+    "corretor-emissao": {
+      "tags": []
+    },
+    "infrastructure-http-client": {
+      "tags": []
+    },
+    "shared-hooks": {
+      "tags": []
+    },
+    "shared-ui": {
+      "tags": []
+    }
   }
 }
