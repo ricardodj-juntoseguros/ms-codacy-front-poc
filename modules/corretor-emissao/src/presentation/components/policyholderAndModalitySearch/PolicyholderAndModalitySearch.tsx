@@ -1,4 +1,4 @@
-import { SearchInput, LinkButton, Dropdown } from '@junto-design-system';
+import { SearchInput, LinkButton, Dropdown } from 'junto-design-system';
 import { useOptionsMapper } from '@shared/hooks';
 import styles from './PolicyholderAndModalitySearch.module.scss';
 import {
@@ -93,11 +93,14 @@ export function PolicyholderAndModalitySearch({
         data-testid="policyholder-modality"
       >
         <Dropdown
+          label="Selecione a modalidade"
           placeholder="Selecione a modalidade"
           options={mappedModalities}
-          isSearchable={false}
-          isDisabled={!hasValidPolicyholder}
-          onChange={option => setModalityOption(option)}
+          searchable={false}
+          disabled={!hasValidPolicyholder}
+          onValueSelected={option => setModalityOption(option)}
+          onChange={value => console.log(value)}
+          value=""
         />
       </div>
 
@@ -108,9 +111,12 @@ export function PolicyholderAndModalitySearch({
         >
           <Dropdown
             placeholder="Selecione a filial"
+            label="Selecione a filial"
             options={mappedSubsidiaries}
-            isSearchable={false}
-            onChange={option => setSubsidiaryOption(option)}
+            searchable={false}
+            onValueSelected={setSubsidiaryOption}
+            onChange={value => console.log(value)}
+            value=""
           />
         </div>
       )}

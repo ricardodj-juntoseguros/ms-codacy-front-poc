@@ -1,4 +1,4 @@
-import { LinkButton, NumberInput, Tag } from '@junto-design-system';
+import { LinkButton, NumberInput, Tag } from 'junto-design-system';
 import { useMemo } from 'react';
 
 import { currencyFormatter } from '../../../helpers';
@@ -50,7 +50,7 @@ export function RateCalculation({
           minValue={1}
           suffix="%"
           allowNegative={false}
-          onChange={handleChangeStandardRate}
+          onChange={value => handleChangeStandardRate(Number(value))}
           value={standardRateValue}
         />
       </div>

@@ -17,7 +17,6 @@
     "strict": true,
     "strictNullChecks": true,
     "paths": {
-      "@junto-design-system": ["libs/shared/junto-design-system"],
       "@modules/corretor-emissao": ["modules/corretor-emissao/src/index.ts"],
       "@infrastructure/http-client": [
         "libs/infrastructure/http-client/src/index.ts"

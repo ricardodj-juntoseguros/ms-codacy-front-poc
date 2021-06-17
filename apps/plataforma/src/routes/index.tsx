@@ -1,5 +1,4 @@
 import { Route, BrowserRouter } from 'react-router-dom';
-
 import CorretorEmissao from '../../../../modules/corretor-emissao/src';
 
 export default function Routes() {

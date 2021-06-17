@@ -1,4 +1,4 @@
-import { DateInput, NumberInput, CurrencyInput } from '@junto-design-system';
+import { DateInput, NumberInput, CurrencyInput } from 'junto-design-system';
 import { differenceInCalendarDays, add } from 'date-fns';
 import { currencyFormatter } from '../../../helpers';
 import styles from './TimeframeAndCoverage.module.scss';
@@ -83,7 +83,7 @@ export function TimeframeAndCoverage({
             suffix="dias"
             allowNegative={false}
             value={durationInDays}
-            onChange={handleDurationChange}
+            onChange={value => handleDurationChange(Number(value))}
             maxValue={maxCoverageDays}
             maxLength={10}
             errorMessage={errorMessageCoverageDays}

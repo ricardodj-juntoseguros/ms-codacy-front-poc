@@ -7,7 +7,7 @@ import {
   TextArea,
   TagInput,
   InputBase,
-} from '@junto-design-system';
+} from 'junto-design-system';
 import { ObjectPreview, ObjectPreviewProps } from '@shared/ui';
 import { useOptionsMapper } from '@shared/hooks';
 import { currencyFormatter } from '../../../helpers';
@@ -120,10 +120,13 @@ export function ContractData({
 
       <div className={styles['contract-data__form-field']}>
         <Dropdown
+          label="Selecione o endereço do segurado"
           placeholder="Selecione o endereço do segurado"
           options={mappedAddressOptions}
-          isSearchable={false}
-          onChange={setAddressOption}
+          searchable={false}
+          onValueSelected={setAddressOption}
+          onChange={value => setInsuredOption(value)}
+          value=""
         />
       </div>
 
@@ -172,10 +175,13 @@ export function ContractData({
       <div className={styles['contract-data__form-row']}>
         <div className={styles['contract-data__form-field']}>
           <Dropdown
+            label="Parcelas"
             placeholder="Parcelas"
             options={mappedInstallmentOptions}
-            isSearchable={false}
-            onChange={setInstallmentOption}
+            searchable={false}
+            onValueSelected={setInstallmentOption}
+            onChange={value => console.log(value)}
+            value=""
           />
         </div>
         <div className={styles['contract-data__form-field']}>
