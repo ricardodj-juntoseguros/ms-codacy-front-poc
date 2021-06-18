@@ -1,0 +1,50 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.skeleton-step-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.skeleton-step-container__internal {
+  display: flex;
+  flex-direction: row;
+  max-width: 640px;
+  flex: 1;
+}
+
+.skeleton-step-container__number {
+  margin-right: spacing('m');
+}
+
+.skeleton-step-container__box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  > div {
+    &:first-child {
+      margin-bottom: spacing('l');
+    }
+  }
+}
+
+.skeleton-step-container__box-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.skeleton-step-container__info {
+  display: flex;
+  flex-direction: column;
+
+  > span {
+    margin-bottom: spacing('xs');
+
+    &:first-child {
+      display: flex;
+    }
+  }
+}

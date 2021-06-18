@@ -17,7 +17,7 @@
     "strict": true,
     "strictNullChecks": true,
     "paths": {
-      "@modules/corretor-emissao": ["modules/corretor-emissao/src/index.ts"],
+      "@modules/corretor-emissao": ["modules/corretor-emissao/src/index.tsx"],
       "@infrastructure/http-client": [
         "libs/infrastructure/http-client/src/index.ts"
       ],
