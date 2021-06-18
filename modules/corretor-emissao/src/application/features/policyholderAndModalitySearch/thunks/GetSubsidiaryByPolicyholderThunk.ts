@@ -11,7 +11,7 @@ export const getSubsidiaryByPolicyHolder = createAsyncThunk(
     const response =
       await PolicyholderAndModalitySearchApi.getSubsidiaryByPolicyHolder(id);
 
-    const data: SubsidiaryModel[] = response.data.map(item => ({
+    const data: SubsidiaryModel[] = response.map(item => ({
       id: item.id,
       label: item.name,
     }));

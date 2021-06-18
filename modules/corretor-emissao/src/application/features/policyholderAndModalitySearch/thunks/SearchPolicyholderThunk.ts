@@ -12,7 +12,7 @@ export const searchPolicyHolder = createAsyncThunk(
       policyHolderLabel,
     );
 
-    const data: PolicyholderModel[] = response.data.map(item => ({
+    const data: PolicyholderModel[] = response.map(item => ({
       id: item.id,
       federalId: item.federalId,
       companyName: item.name,

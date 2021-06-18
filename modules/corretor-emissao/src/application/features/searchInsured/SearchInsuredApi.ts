@@ -1,11 +1,22 @@
-import axios from 'axios';
+import {
+  AxiosHttpClient,
+  IHttpClient,
+  IHttpClientRequestParameters,
+} from '@infrastructure/http-client';
 import { InsuredDTO } from '../../types/dto/InsuredDTO';
 
 class SearchInsuredApi {
+  private readonly httpClient: IHttpClient;
+
+  public constructor() {
+    this.httpClient = new AxiosHttpClient('http://localhost:4300', 100000);
+  }
+
   async searchInsured(insuredLabel: string) {
-    return axios.get<InsuredDTO[]>('http://localhost:4300/insured', {
-      params: { insuredLabel },
-    });
+    const params: IHttpClientRequestParameters = {
+      url: `/insured?insuredLabel=${insuredLabel}`,
+    };
+    return this.httpClient.get<InsuredDTO[]>(params);
   }
 }
 

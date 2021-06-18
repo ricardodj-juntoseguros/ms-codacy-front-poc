@@ -9,11 +9,11 @@ export const getModalityByPolicyHolder = createAsyncThunk(
   'policyholderAndModalitySearch/getModalityByPolicyHolder',
   async (federalId: string) => {
     const response =
-      await PolicyholderAndModalitySearchApi.getModalityByPolicyHolder(
+      await PolicyholderAndModalitySearchApi.getModalitiesByPolicyholder(
         federalId,
       );
 
-    const data: ModalityModel[] = response.data.map(item => ({
+    const data: ModalityModel[] = response.map(item => ({
       id: item.id,
       description: item.externalDescription || item.externalDescription || '',
     }));

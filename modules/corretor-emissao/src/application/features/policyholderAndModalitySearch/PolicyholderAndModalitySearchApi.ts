@@ -1,47 +1,55 @@
-import axios, { AxiosResponse } from 'axios';
+import {
+  AxiosHttpClient,
+  IHttpClient,
+  IHttpClientRequestParameters,
+} from '@infrastructure/http-client';
 import { ModalityDTO, PolicyholderDTO, SubsidiaryDTO } from '../../types/dto';
 
 class PolicyholderAndModalitySearchApi {
-  async searchPolicyHolder(policyHolderLabel: string) {
-    return axios.get<PolicyholderDTO[]>('http://localhost:4300/policyholder', {
-      params: { policyHolderLabel },
-    });
+  private readonly httpClient: IHttpClient;
+
+  public constructor() {
+    this.httpClient = new AxiosHttpClient('http://localhost:4300', 100000);
   }
 
-  async getModalityByPolicyHolder(federalId: string) {
-    type policyholderModalitiesData = {
+  async searchPolicyHolder(policyHolderLabel: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/policyholder?policyholderLabel=${policyHolderLabel}`,
+    };
+    return this.httpClient.get<PolicyholderDTO[]>(params);
+  }
+
+  async getModalitiesByPolicyholder(federalId: string) {
+    type PolicyholderModalitiesData = {
       federalId: string;
       modalityId: number;
     };
 
-    const policyholderModalitiesData = await axios.get<
-      policyholderModalitiesData[]
-    >(`http://localhost:4300/policyholderModality`, {
-      params: { federalId },
-    });
+    const params: IHttpClientRequestParameters = {
+      url: `/policyholderModality?federalId=${federalId}`,
+    };
+    const policyholderModalitiesData = await this.httpClient.get<
+      PolicyholderModalitiesData[]
+    >(params);
 
     const policyholderModalities = await Promise.all(
-      policyholderModalitiesData.data.map(policy => {
-        return axios.get<ModalityDTO>(
-          `http://localhost:4300/modality/${policy.modalityId}`,
-        );
+      policyholderModalitiesData.map(policyholderModality => {
+        const { modalityId } = policyholderModality;
+        const params: IHttpClientRequestParameters = {
+          url: `/modality/${modalityId}`,
+        };
+        return this.httpClient.get<ModalityDTO>(params);
       }),
     );
-
-    const responseMock: AxiosResponse<ModalityDTO[]> = {
-      ...policyholderModalities[0],
-      data: policyholderModalities.map(item => ({ ...item.data })),
-    };
-
-    return responseMock;
+    return policyholderModalities;
   }
 
   async getSubsidiaryByPolicyHolder(id: number) {
-    return axios.get<SubsidiaryDTO[]>('http://localhost:4300/subsidiary', {
-      params: { headquartersId: id },
-    });
+    const params: IHttpClientRequestParameters = {
+      url: `/subsidiary?headquartersId=${id}`,
+    };
+    return this.httpClient.get<SubsidiaryDTO[]>(params);
   }
 }
 
-const policyholderAndModalitySearchApi = new PolicyholderAndModalitySearchApi();
-export default policyholderAndModalitySearchApi;
+export default new PolicyholderAndModalitySearchApi();

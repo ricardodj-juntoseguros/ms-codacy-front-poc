@@ -8,7 +8,7 @@ export const searchInsured = createAsyncThunk(
   async (insuredLabel: string) => {
     const response = await SearchInsuredApi.searchInsured(insuredLabel);
 
-    const data: InsuredModel[] = response.data.map(item => {
+    const data: InsuredModel[] = response.map(item => {
       return {
         id: item.id,
         externalId: item.externalId,
