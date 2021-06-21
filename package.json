@@ -24,7 +24,7 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "server": "json-server --watch server.json --port 4300"
+    "server": "json-server --watch server.json --port 4300 -d 3000"
   },
   "private": true,
   "dependencies": {

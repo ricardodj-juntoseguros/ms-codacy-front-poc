@@ -8,7 +8,7 @@ export interface ContractDataModel {
   attachmentNotice: string;
   installment: InstallmentModel;
   address: AddressModel;
-  firstInstallment: Date | null;
+  firstInstallment: string | null;
   policyInProgress: boolean;
   comments: string;
   contacts: string[];

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StepContainer } from '@shared/ui';
 import { useDispatch, useSelector } from 'react-redux';
-import { isAfter, startOfDay } from 'date-fns';
+import { isAfter, startOfDay, formatISO } from 'date-fns';
 import { TimeframeAndCoverageModel } from 'modules/corretor-emissao/src/application/types/model';
 import { generateQuote } from '../../../application/features/quote/thunks/GenerateQuoteThunk';
 import {
   selectFlow,
+  advanceStep,
   setStepStatus,
 } from '../../../application/features/flow/FlowSlice';
 import { TimeframeAndCoverage } from '../timeframeAndCoverage';
@@ -14,6 +15,8 @@ import {
   setTimeframeAndCoverageData,
 } from '../../../application/features/quote/QuoteSlice';
 import { getStepByName } from '../../../helpers';
+
+export const stepName = 'TimeframeAndCoverageContainer';
 
 export function TimeframeAndCoverageContainer() {
   const maxCoverageDays = 120;
@@ -36,7 +39,7 @@ export function TimeframeAndCoverageContainer() {
   const { steps } = useSelector(selectFlow);
 
   const stepStatus = useMemo(() => {
-    return getStepByName('TimeframeAndCoverageContainer', steps);
+    return getStepByName(stepName, steps);
   }, [steps]);
 
   function StepTitle() {
@@ -117,7 +120,7 @@ export function TimeframeAndCoverageContainer() {
     return true;
   }, [coverageValue, policyholderLimit]);
 
-  const isValidSteep = useMemo(() => {
+  const isValidStep = useMemo(() => {
     if (
       timeframeStart &&
       timeframeEnd &&
@@ -138,10 +141,10 @@ export function TimeframeAndCoverageContainer() {
   ]);
 
   useEffect(() => {
-    if (isValidSteep && coverageValue && timeframeStart && durationInDays) {
+    if (isValidStep && coverageValue && timeframeStart && durationInDays) {
       dispatch(
         setTimeframeAndCoverageData({
-          timeframeStart,
+          timeframeStart: formatISO(timeframeStart),
           durationInDays,
           coverageValue,
         }),
@@ -149,41 +152,31 @@ export function TimeframeAndCoverageContainer() {
     } else {
       dispatch(setTimeframeAndCoverageData({} as TimeframeAndCoverageModel));
     }
-  }, [
-    coverageValue,
-    dispatch,
-    durationInDays,
-    isValidSteep,
-    policyholderLimit,
-    timeframeEnd,
-    timeframeStart,
-  ]);
+  }, [coverageValue, dispatch, durationInDays, isValidStep, timeframeStart]);
 
   useEffect(() => {
-    if (isValidSteep && coverageValue && timeframeStart && durationInDays) {
+    if (isValidStep && stepStatus) {
+      dispatch(generateQuote(timeframeAndCoverage));
+      dispatch(advanceStep({ name: stepName }));
       dispatch(
         setStepStatus({
-          name: 'timeframeAndCoverageContainer',
-          isCompleted: true,
+          name: stepStatus.nextStep,
+          isEnabled: true,
+          isLoading: true,
+          isVisible: true,
         }),
       );
-      dispatch(generateQuote(timeframeAndCoverage));
     }
-  }, [
-    coverageValue,
-    dispatch,
-    durationInDays,
-    isValidSteep,
-    timeframeAndCoverage,
-    timeframeStart,
-  ]);
+  }, [dispatch, isValidStep, stepStatus, timeframeAndCoverage]);
 
   return (
     <div>
       <StepContainer
         stepNumber={stepStatus?.number}
+        isVisible={stepStatus?.isVisible}
+        isEnabled={stepStatus?.isEnabled}
+        isLoading={stepStatus?.isLoading}
         title={StepTitle()}
-        active={stepStatus?.isActive}
       >
         <TimeframeAndCoverage
           policyholderLimit={policyholderLimit}

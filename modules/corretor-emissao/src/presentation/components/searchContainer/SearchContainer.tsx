@@ -18,6 +18,7 @@ import {
 } from '../../../application/features/quote/QuoteSlice';
 import {
   selectFlow,
+  advanceStep,
   setStepStatus,
 } from '../../../application/features/flow/FlowSlice';
 import {
@@ -25,6 +26,8 @@ import {
   ModalityModel,
   SubsidiaryModel,
 } from '../../../application/types/model';
+
+export const stepName = 'SearchContainer';
 
 export function SearchContainer() {
   const dispatch = useDispatch();
@@ -38,23 +41,33 @@ export function SearchContainer() {
   const { policyholder, modality } = useSelector(selectQuote);
   const { steps } = useSelector(selectFlow);
 
-  const [searchValue, setSearchValue] = useState('');
+  const [policyholderInput, setPolicyholderInput] = useState('');
+  const [modalityInput, setModalityInput] = useState('');
+  const [subsidiaryInput, setSubsidiaryInput] = useState('');
 
   const stepStatus = useMemo(() => {
-    return getStepByName('SearchContainer', steps);
+    return getStepByName(stepName, steps);
   }, [steps]);
 
   useEffect(() => {
-    if (searchValue !== '' && searchValue.length > 3) {
-      dispatch(searchPolicyHolder(searchValue));
+    if (policyholderInput !== '' && policyholderInput.length > 3) {
+      dispatch(searchPolicyHolder(policyholderInput));
     }
-  }, [dispatch, searchValue]);
+  }, [dispatch, policyholderInput]);
 
   useEffect(() => {
-    if (policyholder && modality) {
-      dispatch(setStepStatus({ name: 'searchContainer', isCompleted: true }));
+    if (policyholder && modality && stepStatus) {
+      dispatch(advanceStep({ name: stepName }));
+      dispatch(
+        setStepStatus({
+          name: stepStatus.nextStep,
+          isEnabled: true,
+          isLoading: false,
+          isVisible: true,
+        }),
+      );
     }
-  }, [dispatch, modality, policyholder]);
+  }, [dispatch, modality, policyholder, stepStatus]);
 
   function StepTitle() {
     return (
@@ -86,11 +99,11 @@ export function SearchContainer() {
       <StepContainer
         stepNumber={stepStatus?.number}
         title={StepTitle()}
-        active={stepStatus?.isActive}
+        isEnabled
       >
         <PolicyholderAndModalitySearch
-          searchValue={searchValue}
-          onChangeSearchValue={setSearchValue}
+          policyholderInput={policyholderInput}
+          onChangePolicyholderInput={setPolicyholderInput}
           onSelectPolicyholder={handlePolicyholderSelection}
           policyholderOptions={policyholderOptions}
           hasValidPolicyholder={
@@ -102,9 +115,13 @@ export function SearchContainer() {
             console.log('handlePolicyholderDetails')
           }
           modalityOptions={modalityOptions}
-          onChangeModalityValue={handleModalitySelection}
+          onSelectModality={handleModalitySelection}
+          modalityInput={modalityInput}
+          onChangeModalityInput={setModalityInput}
           subsidiaryOptions={subsidiaryOptions}
-          onChangeSubsidiaryValue={handleSubsidiarySelection}
+          onSelectSubsidiary={handleSubsidiarySelection}
+          subsidiaryInput={subsidiaryInput}
+          onChangeSubsidiaryInput={setSubsidiaryInput}
         />
       </StepContainer>
     </div>

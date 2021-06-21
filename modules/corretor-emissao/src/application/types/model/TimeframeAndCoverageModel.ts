@@ -1,5 +1,5 @@
 export interface TimeframeAndCoverageModel {
-  timeframeStart: Date | null;
+  timeframeStart: string | null;
   durationInDays: number;
   coverageValue: number;
 }

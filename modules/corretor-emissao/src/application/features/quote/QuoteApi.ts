@@ -14,7 +14,6 @@ class QuoteApi {
   }
 
   async generateQuote(rateData: TimeframeAndCoverageModel) {
-    console.log(rateData);
     const params: IHttpClientRequestParameters = {
       url: '/generate-quote',
     };

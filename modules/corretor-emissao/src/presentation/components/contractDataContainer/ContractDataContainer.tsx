@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StepContainer } from '@shared/ui';
+import { formatISO } from 'date-fns';
 import { searchInsured } from '../../../application/features/searchInsured/thunks/SearchInsuredThunk';
-import {
-  selectFlow,
-  setStepStatus,
-} from '../../../application/features/flow/FlowSlice';
+import { selectFlow } from '../../../application/features/flow/FlowSlice';
 import { ContractData } from '../contractData/ContractData';
 import { selectSearchInsured } from '../../../application/features/searchInsured/SearchInsuredSlice';
 import {
@@ -30,6 +28,8 @@ import { getStepByName } from '../../../helpers';
 export function ContractDataContainer() {
   const dispatch = useDispatch();
   const [insuredValue, setInsuredValue] = useState('');
+  const [addressValue, setAddressValue] = useState('');
+  const [installmentValue, setInstallmentValue] = useState('');
 
   const { contractData, installments } = useSelector(selectQuote);
   const {
@@ -64,9 +64,9 @@ export function ContractDataContainer() {
       firstInstallment &&
       policyInProgress
     ) {
-      dispatch(
-        setStepStatus({ name: 'contractDataContainer', isCompleted: true }),
-      );
+      // dispatch(
+      //   setStepStatus({ name: 'contractDataContainer', isCompleted: true }),
+      // );
     }
   }, [
     addresses,
@@ -99,7 +99,7 @@ export function ContractDataContainer() {
   }
 
   function handleChangeFirstInstallment(installmentDate: Date) {
-    dispatch(setContractFirstInstallment(installmentDate));
+    dispatch(setContractFirstInstallment(formatISO(installmentDate)));
   }
 
   function handleTogglePolicyInProgress() {
@@ -126,13 +126,17 @@ export function ContractDataContainer() {
     <div>
       <StepContainer
         stepNumber={stepStatus?.number}
+        isVisible={stepStatus?.isVisible}
+        isEnabled={stepStatus?.isEnabled}
+        isLoading={stepStatus?.isLoading}
         title={StepTitle()}
-        active={stepStatus?.isActive}
       >
         <ContractData
           insuredValue={insuredValue}
           searchInsuredOptions={searchInsuredOptions}
           addressOptions={addresses}
+          addressValue={addressValue}
+          setAddressValue={setAddressValue}
           insuredType={insuredTypeDescription}
           contractNumber={contractNumber}
           attachmentNotice={attachmentNotice}
@@ -142,6 +146,8 @@ export function ContractDataContainer() {
               'Esta apólice, de riscos declarados, garante indenização, até o valor fixado na apólice, dos prejuízos causados pelo Tomador ao Segurado, em razão de inadimplemento na prestação dos serviços descritos no objeto do Contrato',
           }}
           installmentOptions={installments}
+          installmentValue={installmentValue}
+          setInstallmentValue={setInstallmentValue}
           firstInstallment={firstInstallment}
           policyInProgress={policyInProgress}
           comments={comments}

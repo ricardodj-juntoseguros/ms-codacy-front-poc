@@ -8,29 +8,37 @@ import {
 } from '../../../application/types/model';
 
 export interface PolicyholderAndModalitySearchProps {
-  searchValue: string;
-  onChangeSearchValue: (value: string) => void;
+  onChangePolicyholderInput: (value: string) => void;
+  policyholderInput: string;
   onSelectPolicyholder: (value: PolicyholderModel) => void;
   policyholderOptions: PolicyholderModel[];
   hasValidPolicyholder: boolean;
   handlePolicyholderDetails: () => void;
   modalityOptions: ModalityModel[];
-  onChangeModalityValue: (option: ModalityModel) => void;
+  onSelectModality: (option: ModalityModel) => void;
+  modalityInput: string;
+  onChangeModalityInput: (value: string) => void;
   subsidiaryOptions: SubsidiaryModel[];
-  onChangeSubsidiaryValue: (option: SubsidiaryModel) => void;
+  onSelectSubsidiary: (option: SubsidiaryModel) => void;
+  subsidiaryInput: string;
+  onChangeSubsidiaryInput: (value: string) => void;
 }
 
 export function PolicyholderAndModalitySearch({
-  searchValue,
-  onChangeSearchValue,
+  onChangePolicyholderInput,
+  policyholderInput,
   onSelectPolicyholder,
   policyholderOptions,
   hasValidPolicyholder,
   handlePolicyholderDetails,
   modalityOptions,
-  onChangeModalityValue,
+  onSelectModality,
+  modalityInput,
+  onChangeModalityInput,
   subsidiaryOptions,
-  onChangeSubsidiaryValue,
+  onSelectSubsidiary,
+  subsidiaryInput,
+  onChangeSubsidiaryInput,
 }: PolicyholderAndModalitySearchProps) {
   const {
     mappedOptions: mappedPolicyholders,
@@ -49,7 +57,7 @@ export function PolicyholderAndModalitySearch({
       'description',
       '',
       'id',
-      onChangeModalityValue,
+      onSelectModality,
     );
 
   const {
@@ -60,7 +68,7 @@ export function PolicyholderAndModalitySearch({
     'label',
     '',
     'id',
-    onChangeSubsidiaryValue,
+    onSelectSubsidiary,
   );
 
   return (
@@ -73,35 +81,19 @@ export function PolicyholderAndModalitySearch({
           data-testid="policyholder-input-search"
           label="CNPJ ou Razão Social"
           placeholder="Pesquise o tomador pelo CNPJ ou Razão Social"
-          onChange={onChangeSearchValue}
-          value={searchValue}
+          onChange={onChangePolicyholderInput}
+          value={policyholderInput}
           options={mappedPolicyholders}
           onValueSelected={option => setPolicyholderOption(option)}
         />
-      </div>
 
-      {hasValidPolicyholder && (
-        <LinkButton
-          label="Ver detalhes deste tomador"
-          size="small"
-          onClick={handlePolicyholderDetails}
-        />
-      )}
-
-      <div
-        className={styles['policyholder-search__modality-wrapper']}
-        data-testid="policyholder-modality"
-      >
-        <Dropdown
-          label="Selecione a modalidade"
-          placeholder="Selecione a modalidade"
-          options={mappedModalities}
-          searchable={false}
-          disabled={!hasValidPolicyholder}
-          onValueSelected={option => setModalityOption(option)}
-          onChange={value => console.log(value)}
-          value=""
-        />
+        {hasValidPolicyholder && (
+          <LinkButton
+            label="Ver detalhes deste tomador"
+            size="small"
+            onClick={handlePolicyholderDetails}
+          />
+        )}
       </div>
 
       {subsidiaryOptions.length !== 0 && (
@@ -113,13 +105,27 @@ export function PolicyholderAndModalitySearch({
             placeholder="Selecione a filial"
             label="Selecione a filial"
             options={mappedSubsidiaries}
-            searchable={false}
             onValueSelected={setSubsidiaryOption}
-            onChange={value => console.log(value)}
-            value=""
+            onChange={onChangeSubsidiaryInput}
+            value={subsidiaryInput}
           />
         </div>
       )}
+
+      <div
+        className={styles['policyholder-search__modality-wrapper']}
+        data-testid="policyholder-modality"
+      >
+        <Dropdown
+          label="Selecione a modalidade"
+          placeholder="Selecione a modalidade"
+          options={mappedModalities}
+          disabled={!hasValidPolicyholder}
+          onValueSelected={setModalityOption}
+          onChange={onChangeModalityInput}
+          value={modalityInput}
+        />
+      </div>
     </main>
   );
 }

@@ -7,6 +7,7 @@ import { defaultStep, modalities } from '../../../constants';
 import {
   ModalityModel,
   ModalityTypeEnum,
+  StepModel,
 } from '../../../application/types/model';
 import { getModalityType } from '../../../helpers';
 
@@ -19,10 +20,13 @@ export function FlowContainer() {
 
   const createFlow = useCallback((modality: ModalityModel | null) => {
     const mountFlow = (type: ModalityTypeEnum) => {
-      const nextSteps = modalities[type].steps.map(item => ({
+      const nextSteps: StepModel[] = modalities[type].steps.map(item => ({
         name: item.name,
         number: item.number,
         isActive: item.isActive,
+        isVisible: item.isVisible,
+        isEnabled: item.isEnabled,
+        isLoading: item.isLoading,
         isCompleted: item.isCompleted,
         nextStep: item.nextStep,
       }));

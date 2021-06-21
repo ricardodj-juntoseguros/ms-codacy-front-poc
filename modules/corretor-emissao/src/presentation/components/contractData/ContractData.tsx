@@ -22,12 +22,16 @@ export interface ContractDataProps {
   searchInsuredOptions: InsuredModel[];
   insuredValue: string;
   addressOptions: AddressModel[];
+  addressValue: string;
+  setAddressValue: (value: string) => void;
   insuredType: string | undefined;
   contractNumber: string;
   attachmentNotice: string;
   policyPreview: ObjectPreviewProps;
   installmentOptions: InstallmentModel[];
-  firstInstallment: Date | null;
+  installmentValue: string;
+  setInstallmentValue: (value: string) => void;
+  firstInstallment: string | null;
   policyInProgress: boolean;
   comments: string;
   onChangeInsuredValue(option: string): void;
@@ -46,11 +50,15 @@ export function ContractData({
   insuredValue,
   searchInsuredOptions,
   addressOptions,
+  addressValue,
+  setAddressValue,
   insuredType,
   contractNumber,
   attachmentNotice,
   policyPreview,
   installmentOptions,
+  installmentValue,
+  setInstallmentValue,
   firstInstallment,
   policyInProgress,
   comments,
@@ -125,8 +133,8 @@ export function ContractData({
           options={mappedAddressOptions}
           searchable={false}
           onValueSelected={setAddressOption}
-          onChange={value => setInsuredOption(value)}
-          value=""
+          onChange={setAddressValue}
+          value={addressValue}
         />
       </div>
 
@@ -180,8 +188,8 @@ export function ContractData({
             options={mappedInstallmentOptions}
             searchable={false}
             onValueSelected={setInstallmentOption}
-            onChange={value => console.log(value)}
-            value=""
+            onChange={setInstallmentValue}
+            value={installmentValue}
           />
         </div>
         <div className={styles['contract-data__form-field']}>

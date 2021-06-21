@@ -26,6 +26,7 @@ const initialState: QuoteModel = {
   timeframeAndCoverage: {} as TimeframeAndCoverageModel,
   contractData: {
     policyInProgress: false,
+    attachmentNotice: '',
   } as ContractDataModel,
   pricing: {
     maxRate: 11.99,
@@ -77,7 +78,7 @@ export const quoteSlice = createSlice({
     setContractAttachmentNotice: (state, action: PayloadAction<string>) => {
       state.contractData.attachmentNotice = action.payload;
     },
-    setContractFirstInstallment: (state, action: PayloadAction<Date>) => {
+    setContractFirstInstallment: (state, action: PayloadAction<string>) => {
       state.contractData.firstInstallment = action.payload;
     },
     setContractPolicyInProgress: (state, action: PayloadAction<boolean>) => {

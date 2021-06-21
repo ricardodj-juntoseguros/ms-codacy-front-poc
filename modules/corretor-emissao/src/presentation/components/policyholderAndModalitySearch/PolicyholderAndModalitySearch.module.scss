@@ -1,9 +1,13 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
 .policyholder-search__search-wrapper {
-  @include margin('none', 'none', 's', 'none');
+  @include margin('none', 'none', 'm', 'none');
+
+  button {
+    @include margin('s', 'none', 'none', 'none');
+  }
 }
 
-.policyholder-search__modality-wrapper {
-  @include margin('l', 'none', 'l', 'none');
+.policyholder-search__subsidiary-wrapper {
+  @include margin('none', 'none', 'm', 'none');
 }
