@@ -60,6 +60,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 5
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 6
     }
   ],
   "modality": [
@@ -87,6 +91,11 @@
       "id": 5,
       "description": "Parcelamento Administrativo Fiscal",
       "externalId": 79
+    },
+    {
+      "id": 6,
+      "description": "Retenção de Pagamento",
+      "externalId": 74
     }
   ],
   "generate-quote": [

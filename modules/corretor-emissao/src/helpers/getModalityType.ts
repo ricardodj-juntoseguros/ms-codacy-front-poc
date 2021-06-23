@@ -12,6 +12,8 @@ export function getModalityType(modalityId: number) {
       return ModalityTypeEnum.REGISTRO_ANELL;
     case 5:
       return ModalityTypeEnum.PARCELAMENTO_ADMINISTRATIVO_FISCAL;
+    case 6:
+      return ModalityTypeEnum.RETENCAO_DE_PAGAMENTO;
     default:
       return ModalityTypeEnum.DEFAULT;
   }

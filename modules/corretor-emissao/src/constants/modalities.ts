@@ -26,6 +26,7 @@ export const groupModalities: ModalitiesGroup = {
   ADUANEIRO_TRANSITO: ModalitiesGroupEnum.TRADITIONAL,
   REGISTRO_ANELL: ModalitiesGroupEnum.TRADITIONAL,
   PARCELAMENTO_ADMINISTRATIVO_FISCAL: ModalitiesGroupEnum.TRADITIONAL,
+  RETENCAO_DE_PAGAMENTO: ModalitiesGroupEnum.TRADITIONAL,
 };
 
 export const modalities: Modalities = {
