@@ -52,6 +52,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 3
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 4
     }
   ],
   "modality": [
@@ -69,6 +73,11 @@
       "id": 3,
       "description": "Aduaneiro Trânsito",
       "externalId": 103
+    },
+    {
+      "id": 4,
+      "description": "Registro ANELL",
+      "externalId": 82
     }
   ],
   "generate-quote": [
