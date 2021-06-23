@@ -1,4 +1,9 @@
-import { StepModel, Modalities } from '../application/types/model';
+import {
+  StepModel,
+  Modalities,
+  ModalitiesGroup,
+  ModalitiesGroupEnum,
+} from '../application/types/model';
 import { ContractDataContainer } from '../presentation/components/contractDataContainer';
 import { RateCalculationContainer } from '../presentation/components/rateCalculationContainer';
 import { TimeframeAndCoverageContainer } from '../presentation/components/timeframeAndCoverageContainer';
@@ -14,8 +19,51 @@ export const defaultStep: StepModel = {
   nextStep: '',
 };
 
+export const groupModalities: ModalitiesGroup = {
+  DEFAULT: ModalitiesGroupEnum.DEFAULT,
+  EXECUTANTE_CONSTRUTOR: ModalitiesGroupEnum.TRADITIONAL,
+  ANTECIPACAO_DE_RECEBIVEIS_CONTRATUAIS: ModalitiesGroupEnum.TRADITIONAL,
+};
+
 export const modalities: Modalities = {
-  EXECUTANTE_CONSTRUTOR: {
+  DEFAULT: {
+    steps: [
+      {
+        name: 'TimeframeAndCoverageContainer',
+        number: 2,
+        isActive: false,
+        isVisible: true,
+        isEnabled: false,
+        isLoading: false,
+        isCompleted: false,
+        Component: TimeframeAndCoverageContainer,
+        nextStep: 'RateCalculationContainer',
+      },
+      {
+        name: 'RateCalculationContainer',
+        number: 3,
+        isActive: false,
+        isVisible: true,
+        isEnabled: false,
+        isLoading: false,
+        isCompleted: false,
+        Component: RateCalculationContainer,
+        nextStep: 'ContractDataContainer',
+      },
+      {
+        name: 'ContractDataContainer',
+        number: 4,
+        isActive: false,
+        isVisible: true,
+        isEnabled: false,
+        isLoading: false,
+        isCompleted: false,
+        Component: ContractDataContainer,
+        nextStep: '',
+      },
+    ],
+  },
+  TRADITIONAL: {
     steps: [
       {
         name: 'TimeframeAndCoverageContainer',

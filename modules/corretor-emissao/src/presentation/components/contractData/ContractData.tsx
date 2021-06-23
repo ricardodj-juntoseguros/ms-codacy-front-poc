@@ -131,7 +131,6 @@ export function ContractData({
           label="Selecione o endereço do segurado"
           placeholder="Selecione o endereço do segurado"
           options={mappedAddressOptions}
-          searchable={false}
           onValueSelected={setAddressOption}
           onChange={setAddressValue}
           value={addressValue}
@@ -186,7 +185,6 @@ export function ContractData({
             label="Parcelas"
             placeholder="Parcelas"
             options={mappedInstallmentOptions}
-            searchable={false}
             onValueSelected={setInstallmentOption}
             onChange={setInstallmentValue}
             value={installmentValue}

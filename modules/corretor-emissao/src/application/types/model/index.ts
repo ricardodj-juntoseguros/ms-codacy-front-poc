@@ -15,3 +15,5 @@ export * from './FlowModel';
 export * from './StepModel';
 export * from './ModalityTypeEnum';
 export * from './Modalities';
+export * from './ModalitiesGroupEnum';
+export * from './ModalitiesGroup';

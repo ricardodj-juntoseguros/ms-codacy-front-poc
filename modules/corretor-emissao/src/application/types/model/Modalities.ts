@@ -5,7 +5,7 @@ interface ModalityStepModel extends StepModel {
 }
 
 export interface Modalities {
-  EXECUTANTE_CONSTRUTOR: {
+  [x: string]: {
     steps: ModalityStepModel[];
   };
 }

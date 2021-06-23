@@ -6,20 +6,20 @@ import { SearchContainer } from '../searchContainer';
 import { defaultStep, modalities } from '../../../constants';
 import {
   ModalityModel,
-  ModalityTypeEnum,
   StepModel,
+  ModalitiesGroupEnum,
 } from '../../../application/types/model';
-import { getModalityType } from '../../../helpers';
+import { getModalityByGroup, getModalityType } from '../../../helpers';
 
 export function FlowContainer() {
-  const [currentModalityType, setCurrentModalityType] =
-    useState<ModalityTypeEnum | null>(null);
+  const [currentGroupModality, setCurrentGroupModality] =
+    useState<ModalitiesGroupEnum | null>(null);
 
   const { modality } = useSelector(selectQuote);
   const dispatch = useDispatch();
 
   const createFlow = useCallback((modality: ModalityModel | null) => {
-    const mountFlow = (type: ModalityTypeEnum) => {
+    const mountFlow = (type: ModalitiesGroupEnum) => {
       const nextSteps: StepModel[] = modalities[type].steps.map(item => ({
         name: item.name,
         number: item.number,
@@ -42,13 +42,14 @@ export function FlowContainer() {
 
     if (modality) {
       const modalityType = getModalityType(modality.id);
-      if (modalityType) {
-        setCurrentModalityType(modalityType);
-        return mountFlow(modalityType);
-      }
+      const groupModality = getModalityByGroup(modalityType);
+      setCurrentGroupModality(groupModality);
+
+      return mountFlow(groupModality);
     }
 
-    return [defaultStep];
+    setCurrentGroupModality(ModalitiesGroupEnum.DEFAULT);
+    return mountFlow(ModalitiesGroupEnum.DEFAULT);
   }, []);
 
   useEffect(() => {
@@ -58,9 +59,9 @@ export function FlowContainer() {
   return (
     <>
       <SearchContainer />
-      {modality && currentModalityType && (
+      {currentGroupModality && (
         <>
-          {modalities[currentModalityType].steps.map(
+          {modalities[currentGroupModality].steps.map(
             ({ Component, number }) => (
               <Component key={number} />
             ),
