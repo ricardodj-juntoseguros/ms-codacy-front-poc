@@ -10,6 +10,8 @@ export function getModalityType(modalityId: number) {
       return ModalityTypeEnum.ADUANEIRO_TRANSITO;
     case 4:
       return ModalityTypeEnum.REGISTRO_ANELL;
+    case 5:
+      return ModalityTypeEnum.PARCELAMENTO_ADMINISTRATIVO_FISCAL;
     default:
       return ModalityTypeEnum.DEFAULT;
   }

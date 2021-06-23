@@ -56,6 +56,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 4
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 5
     }
   ],
   "modality": [
@@ -78,6 +82,11 @@
       "id": 4,
       "description": "Registro ANELL",
       "externalId": 82
+    },
+    {
+      "id": 5,
+      "description": "Parcelamento Administrativo Fiscal",
+      "externalId": 79
     }
   ],
   "generate-quote": [

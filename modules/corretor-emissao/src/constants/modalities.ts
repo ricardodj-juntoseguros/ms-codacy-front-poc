@@ -25,6 +25,7 @@ export const groupModalities: ModalitiesGroup = {
   ANTECIPACAO_DE_RECEBIVEIS_CONTRATUAIS: ModalitiesGroupEnum.TRADITIONAL,
   ADUANEIRO_TRANSITO: ModalitiesGroupEnum.TRADITIONAL,
   REGISTRO_ANELL: ModalitiesGroupEnum.TRADITIONAL,
+  PARCELAMENTO_ADMINISTRATIVO_FISCAL: ModalitiesGroupEnum.TRADITIONAL,
 };
 
 export const modalities: Modalities = {
