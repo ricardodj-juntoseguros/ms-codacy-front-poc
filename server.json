@@ -48,6 +48,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 2
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 3
     }
   ],
   "modality": [
@@ -60,6 +64,11 @@
       "id": 2,
       "description": "Antecipação de Recebíveis Contratuais",
       "externalId": 85
+    },
+    {
+      "id": 3,
+      "description": "Aduaneiro Trânsito",
+      "externalId": 103
     }
   ],
   "generate-quote": [

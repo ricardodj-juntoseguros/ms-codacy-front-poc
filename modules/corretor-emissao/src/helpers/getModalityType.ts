@@ -6,6 +6,8 @@ export function getModalityType(modalityId: number) {
       return ModalityTypeEnum.EXECUTANTE_CONSTRUTOR;
     case 2:
       return ModalityTypeEnum.ANTECIPACAO_DE_RECEBIVEIS_CONTRATUAIS;
+    case 3:
+      return ModalityTypeEnum.ADUANEIRO_TRANSITO;
     default:
       return ModalityTypeEnum.DEFAULT;
   }

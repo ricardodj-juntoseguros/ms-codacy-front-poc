@@ -23,6 +23,7 @@ export const groupModalities: ModalitiesGroup = {
   DEFAULT: ModalitiesGroupEnum.DEFAULT,
   EXECUTANTE_CONSTRUTOR: ModalitiesGroupEnum.TRADITIONAL,
   ANTECIPACAO_DE_RECEBIVEIS_CONTRATUAIS: ModalitiesGroupEnum.TRADITIONAL,
+  ADUANEIRO_TRANSITO: ModalitiesGroupEnum.TRADITIONAL,
 };
 
 export const modalities: Modalities = {
