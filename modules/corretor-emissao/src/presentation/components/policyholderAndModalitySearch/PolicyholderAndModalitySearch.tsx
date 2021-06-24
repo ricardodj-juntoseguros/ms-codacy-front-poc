@@ -84,7 +84,7 @@ export function PolicyholderAndModalitySearch({
           onChange={onChangePolicyholderInput}
           value={policyholderInput}
           options={mappedPolicyholders}
-          onValueSelected={option => setPolicyholderOption(option)}
+          onValueSelected={setPolicyholderOption}
         />
 
         {hasValidPolicyholder && (

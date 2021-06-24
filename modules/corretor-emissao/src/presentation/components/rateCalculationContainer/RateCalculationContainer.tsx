@@ -13,7 +13,7 @@ import {
 } from '../../../application/features/quote/QuoteSlice';
 import { RateCalculation } from '../rateCalculation';
 
-export const stepName = 'RateCalculationContainer';
+const stepName = 'RateCalculationContainer';
 
 export function RateCalculationContainer() {
   const dispatch = useDispatch();
@@ -34,14 +34,27 @@ export function RateCalculationContainer() {
   }
 
   useEffect(() => {
-    if (feeStandard && stepStatus && stepStatus.isActive) {
-      dispatch(advanceStep({ name: stepName }));
-      dispatch(setStepStatus({ ...stepStatus, isLoading: false }));
+    if (stepStatus && stepStatus.isActive) {
+      if (feeStandard) {
+        dispatch(advanceStep({ name: stepName }));
+        dispatch(setStepStatus({ ...stepStatus, isLoading: false }));
+        dispatch(
+          setStepStatus({
+            name: stepStatus.nextStep,
+            isEnabled: true,
+            isLoading: false,
+            isVisible: true,
+          }),
+        );
+
+        return;
+      }
+
       dispatch(
         setStepStatus({
           name: stepStatus.nextStep,
-          isEnabled: true,
-          isLoading: false,
+          isEnabled: false,
+          isLoading: true,
           isVisible: true,
         }),
       );

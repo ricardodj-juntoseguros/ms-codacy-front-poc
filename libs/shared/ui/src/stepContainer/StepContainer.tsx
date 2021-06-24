@@ -22,7 +22,11 @@ export function StepContainer({
   children,
 }: StepContainerProps) {
   if (isLoading) {
-    return <SkeletonStepContainer />;
+    return (
+      <div className={className(styles['step-container__loading'])}>
+        <SkeletonStepContainer />
+      </div>
+    );
   }
 
   if (isVisible) {

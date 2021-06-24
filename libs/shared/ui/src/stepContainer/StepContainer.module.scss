@@ -4,7 +4,7 @@
   display: flex;
   flex: 1;
   flex-direction: row;
-  margin-bottom: spacing('xxl');
+  margin-bottom: spacing('xxl-4');
 
   opacity: 0.5;
   touch-action: none;
@@ -57,4 +57,8 @@
       display: block;
     }
   }
+}
+
+.step-container__loading {
+  margin-bottom: spacing('xxl-4');
 }

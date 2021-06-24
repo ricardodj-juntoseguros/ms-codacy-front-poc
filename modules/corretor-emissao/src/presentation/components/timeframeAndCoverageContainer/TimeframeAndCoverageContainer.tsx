@@ -16,7 +16,7 @@ import {
 } from '../../../application/features/quote/QuoteSlice';
 import { getStepByName } from '../../../helpers';
 
-export const stepName = 'TimeframeAndCoverageContainer';
+const stepName = 'TimeframeAndCoverageContainer';
 
 export function TimeframeAndCoverageContainer() {
   const maxCoverageDays = 120;

@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
 import { FlowModel, StepModel } from '../../types/model';
-import { defaultStep } from '../../../constants';
 
 const initialState: FlowModel = {
-  steps: [defaultStep],
+  steps: [],
 };
 
 export const flowSlice = createSlice({

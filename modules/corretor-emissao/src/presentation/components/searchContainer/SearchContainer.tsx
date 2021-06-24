@@ -27,7 +27,7 @@ import {
   SubsidiaryModel,
 } from '../../../application/types/model';
 
-export const stepName = 'SearchContainer';
+const stepName = 'SearchContainer';
 
 export function SearchContainer() {
   const dispatch = useDispatch();
