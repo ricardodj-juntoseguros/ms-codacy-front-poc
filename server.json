@@ -64,6 +64,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 6
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 7
     }
   ],
   "modality": [
@@ -74,26 +78,31 @@
     },
     {
       "id": 2,
+      "description": "Executante Construtor - Término de Obras",
+      "externalId": 80
+    },
+    {
+      "id": 3,
       "description": "Antecipação de Recebíveis Contratuais",
       "externalId": 85
     },
     {
-      "id": 3,
+      "id": 4,
       "description": "Aduaneiro Trânsito",
       "externalId": 103
     },
     {
-      "id": 4,
+      "id": 5,
       "description": "Registro ANELL",
       "externalId": 82
     },
     {
-      "id": 5,
+      "id": 6,
       "description": "Parcelamento Administrativo Fiscal",
       "externalId": 79
     },
     {
-      "id": 6,
+      "id": 7,
       "description": "Retenção de Pagamento",
       "externalId": 74
     }

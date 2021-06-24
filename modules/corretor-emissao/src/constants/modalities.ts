@@ -22,6 +22,7 @@ export const defaultStep: StepModel = {
 export const groupModalities: ModalitiesGroup = {
   DEFAULT: ModalitiesGroupEnum.DEFAULT,
   EXECUTANTE_CONSTRUTOR: ModalitiesGroupEnum.TRADITIONAL,
+  EXECUTANTE_CONSTRUTOR_TERMINO_DE_OBRAS: ModalitiesGroupEnum.TRADITIONAL,
   ANTECIPACAO_DE_RECEBIVEIS_CONTRATUAIS: ModalitiesGroupEnum.TRADITIONAL,
   ADUANEIRO_TRANSITO: ModalitiesGroupEnum.TRADITIONAL,
   REGISTRO_ANELL: ModalitiesGroupEnum.TRADITIONAL,
