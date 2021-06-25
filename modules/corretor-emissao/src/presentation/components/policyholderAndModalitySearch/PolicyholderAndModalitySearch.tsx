@@ -1,5 +1,6 @@
 import { SearchInput, LinkButton, Dropdown } from 'junto-design-system';
 import { useOptionsMapper } from '@shared/hooks';
+import { useMemo } from 'react';
 import styles from './PolicyholderAndModalitySearch.module.scss';
 import {
   PolicyholderModel,
@@ -16,12 +17,10 @@ export interface PolicyholderAndModalitySearchProps {
   handlePolicyholderDetails: () => void;
   modalityOptions: ModalityModel[];
   onSelectModality: (option: ModalityModel) => void;
-  modalityInput: string;
-  onChangeModalityInput: (value: string) => void;
+  modality: ModalityModel | null;
   subsidiaryOptions: SubsidiaryModel[];
   onSelectSubsidiary: (option: SubsidiaryModel) => void;
-  subsidiaryInput: string;
-  onChangeSubsidiaryInput: (value: string) => void;
+  subsidiary: SubsidiaryModel | null;
 }
 
 export function PolicyholderAndModalitySearch({
@@ -33,12 +32,10 @@ export function PolicyholderAndModalitySearch({
   handlePolicyholderDetails,
   modalityOptions,
   onSelectModality,
-  modalityInput,
-  onChangeModalityInput,
+  modality,
   subsidiaryOptions,
   onSelectSubsidiary,
-  subsidiaryInput,
-  onChangeSubsidiaryInput,
+  subsidiary,
 }: PolicyholderAndModalitySearchProps) {
   const {
     mappedOptions: mappedPolicyholders,
@@ -60,6 +57,10 @@ export function PolicyholderAndModalitySearch({
       onSelectModality,
     );
 
+  const currentModality = useMemo(() => {
+    return mappedModalities.find(item => item.id === modality?.id) || null;
+  }, [mappedModalities, modality]);
+
   const {
     mappedOptions: mappedSubsidiaries,
     selectOption: setSubsidiaryOption,
@@ -70,6 +71,10 @@ export function PolicyholderAndModalitySearch({
     'id',
     onSelectSubsidiary,
   );
+
+  const currentSubsidiary = useMemo(() => {
+    return mappedSubsidiaries.find(item => item.id === subsidiary?.id) || null;
+  }, [mappedSubsidiaries, subsidiary]);
 
   return (
     <main
@@ -106,8 +111,7 @@ export function PolicyholderAndModalitySearch({
             label="Selecione a filial"
             options={mappedSubsidiaries}
             onValueSelected={setSubsidiaryOption}
-            onChange={onChangeSubsidiaryInput}
-            value={subsidiaryInput}
+            value={currentSubsidiary}
           />
         </div>
       )}
@@ -122,8 +126,7 @@ export function PolicyholderAndModalitySearch({
           options={mappedModalities}
           disabled={!hasValidPolicyholder}
           onValueSelected={setModalityOption}
-          onChange={onChangeModalityInput}
-          value={modalityInput}
+          value={currentModality}
         />
       </div>
     </main>

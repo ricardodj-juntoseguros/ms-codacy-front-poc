@@ -1,4 +1,10 @@
 /* eslint-disable */
+export interface MappedOptions {
+  value: string;
+  label: string;
+  [x: string]: unknown;
+}
+
 export function useOptionsMapper(
   optionsToMap: any[],
   labelName: string,
@@ -7,7 +13,7 @@ export function useOptionsMapper(
   selectCallback: (selectedItem: any) => void,
   customLabel?: (item: any) => string,
 ) {
-  const mappedOptions = optionsToMap.map(item => {
+  const mappedOptions: MappedOptions[] = optionsToMap.map(item => {
     if (customLabel) {
       return {
         ...item,
@@ -25,7 +31,7 @@ export function useOptionsMapper(
     };
   });
 
-  const selectOption = (option: any) => {
+  const selectOption = (option: MappedOptions) => {
     const selectedOption = optionsToMap.find(opt => opt[id] === option.value);
     if (selectedOption) {
       selectCallback(selectedOption);

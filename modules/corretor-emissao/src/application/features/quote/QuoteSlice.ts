@@ -44,6 +44,8 @@ export const quoteSlice = createSlice({
       action: PayloadAction<PolicyholderModel | null>,
     ) => {
       state.policyholder = action.payload;
+      state.modality = null;
+      state.subsidiary = null;
     },
     setModality: (state, action: PayloadAction<ModalityModel | null>) => {
       state.modality = action.payload;

@@ -38,19 +38,17 @@ export function SearchContainer() {
     loadingGetModalities,
     subsidiaryOptions,
   } = useSelector(selectPolicyholderAndModalitySearch);
-  const { policyholder, modality } = useSelector(selectQuote);
+  const { policyholder, modality, subsidiary } = useSelector(selectQuote);
   const { steps } = useSelector(selectFlow);
 
   const [policyholderInput, setPolicyholderInput] = useState('');
-  const [modalityInput, setModalityInput] = useState('');
-  const [subsidiaryInput, setSubsidiaryInput] = useState('');
 
   const stepStatus = useMemo(() => {
     return getStepByName(stepName, steps);
   }, [steps]);
 
   useEffect(() => {
-    if (policyholderInput !== '' && policyholderInput.length > 3) {
+    if (policyholderInput !== '') {
       dispatch(searchPolicyHolder(policyholderInput));
     }
   }, [dispatch, policyholderInput]);
@@ -116,12 +114,10 @@ export function SearchContainer() {
           }
           modalityOptions={modalityOptions}
           onSelectModality={handleModalitySelection}
-          modalityInput={modalityInput}
-          onChangeModalityInput={setModalityInput}
+          modality={modality}
           subsidiaryOptions={subsidiaryOptions}
           onSelectSubsidiary={handleSubsidiarySelection}
-          subsidiaryInput={subsidiaryInput}
-          onChangeSubsidiaryInput={setSubsidiaryInput}
+          subsidiary={subsidiary}
         />
       </StepContainer>
     </div>

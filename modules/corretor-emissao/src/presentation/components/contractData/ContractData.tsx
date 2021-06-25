@@ -127,14 +127,14 @@ export function ContractData({
       </div>
 
       <div className={styles['contract-data__form-field']}>
-        <Dropdown
+        {/* <Dropdown
           label="Selecione o endereço do segurado"
           placeholder="Selecione o endereço do segurado"
           options={mappedAddressOptions}
           onValueSelected={setAddressOption}
           onChange={setAddressValue}
           value={addressValue}
-        />
+        /> */}
       </div>
 
       <div
@@ -181,14 +181,14 @@ export function ContractData({
 
       <div className={styles['contract-data__form-row']}>
         <div className={styles['contract-data__form-field']}>
-          <Dropdown
+          {/* <Dropdown
             label="Parcelas"
             placeholder="Parcelas"
             options={mappedInstallmentOptions}
             onValueSelected={setInstallmentOption}
             onChange={setInstallmentValue}
             value={installmentValue}
-          />
+          /> */}
         </div>
         <div className={styles['contract-data__form-field']}>
           <DateInput

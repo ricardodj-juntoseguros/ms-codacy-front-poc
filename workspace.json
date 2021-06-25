@@ -106,10 +106,7 @@
             "main": "apps/digital/src/main.tsx",
             "polyfills": "apps/digital/src/polyfills.ts",
             "tsConfig": "apps/digital/tsconfig.app.json",
-            "assets": [
-              "apps/digital/src/favicon.ico",
-              "apps/digital/src/assets"
-            ],
+            "assets": ["apps/digital/src/assets"],
             "styles": ["apps/digital/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "apps/digital/webpack.config.js"
