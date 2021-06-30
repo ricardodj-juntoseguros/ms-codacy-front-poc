@@ -68,6 +68,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 7
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 8
     }
   ],
   "modality": [
@@ -105,6 +109,11 @@
       "id": 7,
       "description": "Retenção de Pagamento",
       "externalId": 74
+    },
+    {
+      "id": 8,
+      "description": "Conta Reserva",
+      "externalId": 92
     }
   ],
   "generate-quote": [

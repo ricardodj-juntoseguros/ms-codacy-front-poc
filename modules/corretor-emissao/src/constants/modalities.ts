@@ -28,6 +28,7 @@ export const groupModalities: ModalitiesGroup = {
   REGISTRO_ANELL: ModalitiesGroupEnum.TRADITIONAL,
   PARCELAMENTO_ADMINISTRATIVO_FISCAL: ModalitiesGroupEnum.TRADITIONAL,
   RETENCAO_DE_PAGAMENTO: ModalitiesGroupEnum.TRADITIONAL,
+  CONTA_RESERVA: ModalitiesGroupEnum.TRADITIONAL,
 };
 
 export const modalities: Modalities = {
