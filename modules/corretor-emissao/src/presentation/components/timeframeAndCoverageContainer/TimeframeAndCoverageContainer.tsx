@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { StepContainer } from '@shared/ui';
 import { useDispatch, useSelector } from 'react-redux';
-import { isAfter, startOfDay, formatISO } from 'date-fns';
+import { isAfter, formatISO } from 'date-fns';
 import { TimeframeAndCoverageModel } from 'modules/corretor-emissao/src/application/types/model';
 import { generateQuote } from '../../../application/features/quote/thunks/GenerateQuoteThunk';
 import {
@@ -14,20 +14,23 @@ import {
   selectQuote,
   setTimeframeAndCoverageData,
 } from '../../../application/features/quote/QuoteSlice';
-import { getStepByName } from '../../../helpers';
+import {
+  getStepByName,
+  parseDateToString,
+  parseStringToDate,
+} from '../../../helpers';
 
 const stepName = 'TimeframeAndCoverageContainer';
 
 export function TimeframeAndCoverageContainer() {
   const maxCoverageDays = 120;
-  const policyholderLimit = 50000;
-  const [timeframeStart, setTimeframeStart] = useState<Date | null>(
-    startOfDay(new Date()),
+  const policyholderLimit = 3857329;
+  const [timeframeStart, setTimeframeStart] = useState(
+    parseDateToString(new Date()),
   );
-  const [timeframeEnd, setTimeframeEnd] = useState<Date | null>(null);
-  const [durationInDays, setDurationInDays] = useState<number>();
-  const [coverageValue, setCoverageValue] =
-    useState<number | undefined>(policyholderLimit);
+  const [timeframeEnd, setTimeframeEnd] = useState('');
+  const [durationInDays, setDurationInDays] = useState('');
+  const [coverageValue, setCoverageValue] = useState('');
   const [errorMessageDate, setErrorMessageDate] = useState('');
   const [errorMessageCoverageDays, setErrorMessageCoverageDays] = useState('');
   const [errorMessageCoverageAmount, setErrorMessageCoverageAmount] =
@@ -50,19 +53,19 @@ export function TimeframeAndCoverageContainer() {
     );
   }
 
-  function handleCoverageValueChange(value: number | undefined) {
+  function handleCoverageValueChange(value: string) {
     setCoverageValue(value);
   }
 
-  function handleDurationInDaysChange(value: number) {
+  function handleDurationInDaysChange(value: string) {
     setDurationInDays(value);
   }
 
-  function handleTimeframeStartChange(value: Date) {
+  function handleTimeframeStartChange(value: string) {
     setTimeframeStart(value);
   }
 
-  function handleTimeframeEndChange(value: Date) {
+  function handleTimeframeEndChange(value: string) {
     setTimeframeEnd(value);
   }
 
@@ -86,14 +89,16 @@ export function TimeframeAndCoverageContainer() {
       setErrorMessageCoverageDays(`Informe a duração da vigência!`);
       return false;
     }
-    if (durationInDays > maxCoverageDays) {
+
+    const durationInDaysParsed = Number(durationInDays);
+    if (durationInDaysParsed > maxCoverageDays) {
       setErrorMessageCoverageDays(
         `A duração da virgência não pode ser superior a ${maxCoverageDays} dias.`,
       );
       return false;
     }
 
-    if (durationInDays < 1) {
+    if (durationInDaysParsed < 1) {
       setErrorMessageCoverageDays(
         'A cobertura precisa ter pelo menos um dia de duração.',
       );
@@ -109,7 +114,7 @@ export function TimeframeAndCoverageContainer() {
       setErrorMessageCoverageAmount('Digite o valor da cobertura!');
       return false;
     }
-    if (coverageValue > policyholderLimit) {
+    if (Number(coverageValue) > policyholderLimit) {
       setErrorMessageCoverageAmount(
         'O valor de cobertura não pode ser maior que o limite.',
       );
@@ -121,10 +126,13 @@ export function TimeframeAndCoverageContainer() {
   }, [coverageValue, policyholderLimit]);
 
   const isValidStep = useMemo(() => {
+    const startDate = parseStringToDate(timeframeStart);
+    const endDate = parseStringToDate(timeframeEnd);
+
     if (
-      timeframeStart &&
-      timeframeEnd &&
-      validateDatesCoverage(timeframeStart, timeframeEnd) &&
+      startDate &&
+      endDate &&
+      validateDatesCoverage(startDate, endDate) &&
       validateMaxCoverageDays() &&
       validateCoverageAmount()
     ) {
@@ -140,22 +148,23 @@ export function TimeframeAndCoverageContainer() {
     validateMaxCoverageDays,
   ]);
 
-  useEffect(() => {
-    if (isValidStep && coverageValue && timeframeStart && durationInDays) {
+  function goNextStep() {
+    const timeframeStartParsed = parseStringToDate(timeframeStart);
+
+    if (
+      isValidStep &&
+      coverageValue &&
+      timeframeStartParsed &&
+      durationInDays &&
+      stepStatus
+    ) {
       dispatch(
         setTimeframeAndCoverageData({
-          timeframeStart: formatISO(timeframeStart),
-          durationInDays,
-          coverageValue,
+          timeframeStart: formatISO(timeframeStartParsed),
+          durationInDays: Number(durationInDays),
+          coverageValue: Number(coverageValue),
         }),
       );
-    } else {
-      dispatch(setTimeframeAndCoverageData({} as TimeframeAndCoverageModel));
-    }
-  }, [coverageValue, dispatch, durationInDays, isValidStep, timeframeStart]);
-
-  useEffect(() => {
-    if (isValidStep && stepStatus) {
       dispatch(generateQuote(timeframeAndCoverage));
       dispatch(advanceStep({ name: stepName }));
       dispatch(
@@ -166,8 +175,10 @@ export function TimeframeAndCoverageContainer() {
           isVisible: true,
         }),
       );
+    } else {
+      dispatch(setTimeframeAndCoverageData({} as TimeframeAndCoverageModel));
     }
-  }, [dispatch, isValidStep, stepStatus, timeframeAndCoverage]);
+  }
 
   return (
     <div>
@@ -193,6 +204,7 @@ export function TimeframeAndCoverageContainer() {
           handleTimeframeEndChange={handleTimeframeEndChange}
           handleTimeframeStartChange={handleTimeframeStartChange}
           validateDateRange={validateDatesCoverage}
+          handleEndEditing={goNextStep}
         />
       </StepContainer>
     </div>

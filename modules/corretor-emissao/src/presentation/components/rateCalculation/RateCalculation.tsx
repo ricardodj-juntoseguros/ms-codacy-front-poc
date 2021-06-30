@@ -41,7 +41,7 @@ export function RateCalculation({
   return (
     <div className={styles['rate-calculation']} data-testid="rate-calculation">
       <div className={styles['rate-calculation__rate-input-wrapper']}>
-        <NumberInput
+        {/* <NumberInput
           label="Taxa Padrão"
           helperMessage={`Taxa máxima ${maxRate}%`}
           placeholder=" "
@@ -52,7 +52,7 @@ export function RateCalculation({
           allowNegative={false}
           onChange={value => handleChangeStandardRate(Number(value))}
           value={standardRateValue}
-        />
+        /> */}
       </div>
       <div
         className={styles['rate-calculation__final-values-wrapper']}

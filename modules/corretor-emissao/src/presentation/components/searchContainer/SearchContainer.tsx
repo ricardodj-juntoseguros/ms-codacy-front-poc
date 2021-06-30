@@ -47,25 +47,12 @@ export function SearchContainer() {
     return getStepByName(stepName, steps);
   }, [steps]);
 
-  useEffect(() => {
-    if (policyholderInput !== '') {
-      dispatch(searchPolicyHolder(policyholderInput));
+  function handleChangePolicyholderInput(value: string) {
+    setPolicyholderInput(value);
+    if (value !== '') {
+      dispatch(searchPolicyHolder(value));
     }
-  }, [dispatch, policyholderInput]);
-
-  useEffect(() => {
-    if (policyholder && modality && stepStatus) {
-      dispatch(advanceStep({ name: stepName }));
-      dispatch(
-        setStepStatus({
-          name: stepStatus.nextStep,
-          isEnabled: true,
-          isLoading: false,
-          isVisible: true,
-        }),
-      );
-    }
-  }, [dispatch, modality, policyholder, stepStatus]);
+  }
 
   function StepTitle() {
     return (
@@ -92,6 +79,20 @@ export function SearchContainer() {
     dispatch(setSubsidiary(data));
   }
 
+  useEffect(() => {
+    if (policyholder && modality && stepStatus) {
+      dispatch(advanceStep({ name: stepName }));
+      dispatch(
+        setStepStatus({
+          name: stepStatus.nextStep,
+          isEnabled: true,
+          isLoading: false,
+          isVisible: true,
+        }),
+      );
+    }
+  }, [dispatch, modality, policyholder, stepStatus]);
+
   return (
     <div>
       <StepContainer
@@ -101,7 +102,7 @@ export function SearchContainer() {
       >
         <PolicyholderAndModalitySearch
           policyholderInput={policyholderInput}
-          onChangePolicyholderInput={setPolicyholderInput}
+          onChangePolicyholderInput={handleChangePolicyholderInput}
           onSelectPolicyholder={handlePolicyholderSelection}
           policyholderOptions={policyholderOptions}
           hasValidPolicyholder={

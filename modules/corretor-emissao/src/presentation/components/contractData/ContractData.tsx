@@ -191,11 +191,11 @@ export function ContractData({
           /> */}
         </div>
         <div className={styles['contract-data__form-field']}>
-          <DateInput
+          {/* <DateInput
             label="Primeira parcela"
             value={firstInstallment}
             onChange={onChangeFirstInstallment}
-          />
+          /> */}
         </div>
       </div>
 
