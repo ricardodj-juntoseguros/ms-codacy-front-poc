@@ -18,6 +18,8 @@ export function getModalityType(modalityId: number) {
       return ModalityTypeEnum.RETENCAO_DE_PAGAMENTO;
     case 8:
       return ModalityTypeEnum.CONTA_RESERVA;
+    case 9:
+      return ModalityTypeEnum.ADMINISTRATIVO_CREDITO_TRIBUTARIO;
     default:
       return ModalityTypeEnum.DEFAULT;
   }

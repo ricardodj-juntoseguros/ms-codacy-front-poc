@@ -72,6 +72,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 8
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 9
     }
   ],
   "modality": [
@@ -114,6 +118,11 @@
       "id": 8,
       "description": "Conta Reserva",
       "externalId": 92
+    },
+    {
+      "id": 9,
+      "description": "Administrativo Crédito Tributário",
+      "externalId": 83
     }
   ],
   "generate-quote": [
