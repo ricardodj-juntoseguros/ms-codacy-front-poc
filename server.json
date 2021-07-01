@@ -80,6 +80,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 10
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 11
     }
   ],
   "modality": [
@@ -132,6 +136,11 @@
       "id": 10,
       "description": "Executante Concessionário",
       "externalId": 72
+    },
+    {
+      "id": 11,
+      "description": "Adiantamento de Pagamento",
+      "externalId": 73
     }
   ],
   "generate-quote": [

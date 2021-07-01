@@ -31,6 +31,7 @@ export const groupModalities: ModalitiesGroup = {
   CONTA_RESERVA: ModalitiesGroupEnum.TRADITIONAL,
   ADMINISTRATIVO_CREDITO_TRIBUTARIO: ModalitiesGroupEnum.TRADITIONAL,
   EXECUTANTE_CONCESSIONARIO: ModalitiesGroupEnum.TRADITIONAL,
+  ADIANTAMENTO_DE_PAGAMENTO: ModalitiesGroupEnum.TRADITIONAL,
 };
 
 export const modalities: Modalities = {
