@@ -24,6 +24,8 @@ export function getModalityType(modalityId: number) {
       return ModalityTypeEnum.EXECUTANTE_CONCESSIONARIO;
     case 11:
       return ModalityTypeEnum.ADIANTAMENTO_DE_PAGAMENTO;
+    case 12:
+      return ModalityTypeEnum.PROCESSO_ADMINISTRATIVO;
     default:
       return ModalityTypeEnum.DEFAULT;
   }

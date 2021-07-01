@@ -84,6 +84,10 @@
     {
       "federalId": "59109165000149",
       "modalityId": 11
+    },
+    {
+      "federalId": "59109165000149",
+      "modalityId": 12
     }
   ],
   "modality": [
@@ -141,6 +145,11 @@
       "id": 11,
       "description": "Adiantamento de Pagamento",
       "externalId": 73
+    },
+    {
+      "id": 12,
+      "description": "Processo Administrativo",
+      "externalId": 121
     }
   ],
   "generate-quote": [
