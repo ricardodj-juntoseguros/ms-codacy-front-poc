@@ -12,12 +12,14 @@ import {
   setStandardRate,
 } from '../../../application/features/quote/QuoteSlice';
 import { RateCalculation } from '../rateCalculation';
+import { generateQuote } from '../../../application/features/quote/thunks/GenerateQuoteThunk';
 
 const stepName = 'RateCalculationContainer';
 
 export function RateCalculationContainer() {
   const dispatch = useDispatch();
-  const { pricing } = useSelector(selectQuote);
+  const { pricing, loadingQuote, timeframeAndCoverage } =
+    useSelector(selectQuote);
   const { steps } = useSelector(selectFlow);
 
   const { maxRate, finalPrize, commissionValue, commissionFee, feeStandard } =
@@ -27,44 +29,6 @@ export function RateCalculationContainer() {
     return getStepByName(stepName, steps);
   }, [steps]);
 
-  function handleChangeStandardRate(value: number) {
-    if (stepStatus) {
-      dispatch(setStandardRate(value));
-    }
-  }
-
-  useEffect(() => {
-    if (stepStatus && stepStatus.isActive) {
-      if (feeStandard) {
-        dispatch(advanceStep({ name: stepName }));
-        dispatch(setStepStatus({ ...stepStatus, isLoading: false }));
-        dispatch(
-          setStepStatus({
-            name: stepStatus.nextStep,
-            isEnabled: true,
-            isLoading: false,
-            isVisible: true,
-          }),
-        );
-
-        return;
-      }
-
-      dispatch(
-        setStepStatus({
-          name: stepStatus.nextStep,
-          isEnabled: false,
-          isLoading: true,
-          isVisible: true,
-        }),
-      );
-    }
-  }, [dispatch, feeStandard, stepStatus]);
-
-  function handleDownloadQuote() {
-    console.log('download');
-  }
-
   function StepTitle() {
     return (
       <title>
@@ -73,23 +37,43 @@ export function RateCalculationContainer() {
     );
   }
 
+  function handleChangeStandardRate(value: number) {
+    dispatch(setStandardRate(value));
+  }
+
+  useEffect(() => {
+    if (stepStatus && stepStatus.isActive && feeStandard) {
+      dispatch(advanceStep({ name: stepName }));
+      dispatch(setStepStatus({ ...stepStatus, isLoading: false }));
+    }
+  }, [dispatch, feeStandard, stepStatus]);
+
+  function handleDownloadQuote() {
+    console.log('download');
+  }
+
+  function goNextStep() {
+    dispatch(generateQuote(timeframeAndCoverage));
+  }
+
   return (
     <div>
       <StepContainer
         stepNumber={stepStatus?.number}
         isVisible={stepStatus?.isVisible}
         isEnabled={stepStatus?.isEnabled}
-        isLoading={stepStatus?.isLoading}
+        isLoading={stepStatus?.isLoading || loadingQuote}
         title={StepTitle()}
       >
         <RateCalculation
           maxRate={maxRate}
           finalPrize={finalPrize}
           finalCommission={commissionValue}
-          comissionPercent={commissionFee}
+          commissionPercent={commissionFee}
           standardRateValue={feeStandard}
-          handleChangeStandardRate={value => handleChangeStandardRate(value)}
-          handleDownloadQuote={() => handleDownloadQuote}
+          handleChangeStandardRate={handleChangeStandardRate}
+          handleDownloadQuote={handleDownloadQuote}
+          handleEndEditing={goNextStep}
         />
       </StepContainer>
     </div>

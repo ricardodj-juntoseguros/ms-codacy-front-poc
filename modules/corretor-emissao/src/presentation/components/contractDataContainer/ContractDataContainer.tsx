@@ -31,7 +31,7 @@ export function ContractDataContainer() {
   const [addressValue, setAddressValue] = useState('');
   const [installmentValue, setInstallmentValue] = useState('');
 
-  const { contractData, installments } = useSelector(selectQuote);
+  const { contractData, installments, loadingQuote } = useSelector(selectQuote);
   const {
     insured,
     contractNumber,
@@ -128,7 +128,7 @@ export function ContractDataContainer() {
         stepNumber={stepStatus?.number}
         isVisible={stepStatus?.isVisible}
         isEnabled={stepStatus?.isEnabled}
-        isLoading={stepStatus?.isLoading}
+        isLoading={stepStatus?.isLoading || loadingQuote}
         title={StepTitle()}
       >
         <ContractData

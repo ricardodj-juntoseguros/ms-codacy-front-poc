@@ -13,14 +13,14 @@ export const generateQuote = createAsyncThunk(
 );
 
 export function generateQuotePending(state: QuoteModel) {
-  state.loading = true;
+  state.loadingQuote = true;
 }
 
 export function generateQuoteFulFilled(
   state: QuoteModel,
   data: PayloadAction<QuoteResultDTO>,
 ) {
-  state.loading = false;
+  state.loadingQuote = false;
   state.pricing = {
     commissionFee: data.payload.commissionFee,
     commissionValue: data.payload.commissionValue,
@@ -33,5 +33,5 @@ export function generateQuoteFulFilled(
 }
 
 export function generateQuoteRejected(state: QuoteModel) {
-  state.loading = false;
+  state.loadingQuote = false;
 }

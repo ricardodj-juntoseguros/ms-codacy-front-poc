@@ -14,5 +14,5 @@ export interface QuoteModel {
   contractData: ContractDataModel;
   pricing: PricingModel;
   installments: InstallmentModel[];
-  loading: boolean;
+  loadingQuote: boolean;
 }

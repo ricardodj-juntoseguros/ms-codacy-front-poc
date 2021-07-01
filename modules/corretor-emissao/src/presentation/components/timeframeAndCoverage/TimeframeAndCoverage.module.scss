@@ -10,8 +10,10 @@
   flex: 1;
   flex-direction: column;
   flex-wrap: wrap;
-}
 
-.timeframe-coverage__form-field {
-  margin-bottom: spacing('m');
+  > div {
+    &:first-child {
+      margin-bottom: spacing('m');
+    }
+  }
 }

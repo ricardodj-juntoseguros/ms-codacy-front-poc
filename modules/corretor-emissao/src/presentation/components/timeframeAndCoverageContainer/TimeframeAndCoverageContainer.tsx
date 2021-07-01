@@ -29,8 +29,8 @@ export function TimeframeAndCoverageContainer() {
     parseDateToString(new Date()),
   );
   const [timeframeEnd, setTimeframeEnd] = useState('');
-  const [durationInDays, setDurationInDays] = useState('');
-  const [coverageValue, setCoverageValue] = useState('');
+  const [durationInDays, setDurationInDays] = useState(NaN);
+  const [coverageValue, setCoverageValue] = useState(NaN);
   const [errorMessageDate, setErrorMessageDate] = useState('');
   const [errorMessageCoverageDays, setErrorMessageCoverageDays] = useState('');
   const [errorMessageCoverageAmount, setErrorMessageCoverageAmount] =
@@ -53,11 +53,11 @@ export function TimeframeAndCoverageContainer() {
     );
   }
 
-  function handleCoverageValueChange(value: string) {
+  function handleCoverageValueChange(value: number) {
     setCoverageValue(value);
   }
 
-  function handleDurationInDaysChange(value: string) {
+  function handleDurationInDaysChange(value: number) {
     setDurationInDays(value);
   }
 
@@ -90,15 +90,14 @@ export function TimeframeAndCoverageContainer() {
       return false;
     }
 
-    const durationInDaysParsed = Number(durationInDays);
-    if (durationInDaysParsed > maxCoverageDays) {
+    if (durationInDays > maxCoverageDays) {
       setErrorMessageCoverageDays(
         `A duração da virgência não pode ser superior a ${maxCoverageDays} dias.`,
       );
       return false;
     }
 
-    if (durationInDaysParsed < 1) {
+    if (durationInDays < 1) {
       setErrorMessageCoverageDays(
         'A cobertura precisa ter pelo menos um dia de duração.',
       );
@@ -114,7 +113,8 @@ export function TimeframeAndCoverageContainer() {
       setErrorMessageCoverageAmount('Digite o valor da cobertura!');
       return false;
     }
-    if (Number(coverageValue) > policyholderLimit) {
+
+    if (coverageValue > policyholderLimit) {
       setErrorMessageCoverageAmount(
         'O valor de cobertura não pode ser maior que o limite.',
       );

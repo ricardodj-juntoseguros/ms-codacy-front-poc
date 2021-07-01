@@ -9,4 +9,5 @@ export interface PolicyholderAndModalitySearchModel {
   loadingGetModalities: boolean;
   subsidiaryOptions: SubsidiaryModel[];
   loadingDetails: boolean;
+  loadingGetSubsidiaries: boolean;
 }

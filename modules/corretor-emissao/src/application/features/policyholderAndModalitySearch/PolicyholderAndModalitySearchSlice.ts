@@ -15,7 +15,9 @@ import {
 } from './thunks/GetModalityByPolicyholderThunk';
 import {
   getSubsidiaryByPolicyHolder,
+  getSubsidiaryByPolicyHolderPending,
   getSubsidiaryByPolicyholderFulFilled,
+  getSubsidiaryByPolicyHolderRejected,
 } from './thunks/GetSubsidiaryByPolicyholderThunk';
 
 const initialState: PolicyholderAndModalitySearchModel = {
@@ -25,6 +27,7 @@ const initialState: PolicyholderAndModalitySearchModel = {
   loadingGetModalities: false,
   subsidiaryOptions: [],
   loadingDetails: false,
+  loadingGetSubsidiaries: false,
 };
 
 export const policyholderAndModalitySearchSlice = createSlice({
@@ -58,8 +61,16 @@ export const policyholderAndModalitySearchSlice = createSlice({
         getModalityByPolicyholderRejected,
       )
       .addCase(
+        getSubsidiaryByPolicyHolder.pending,
+        getSubsidiaryByPolicyHolderPending,
+      )
+      .addCase(
         getSubsidiaryByPolicyHolder.fulfilled,
         getSubsidiaryByPolicyholderFulFilled,
+      )
+      .addCase(
+        getSubsidiaryByPolicyHolder.rejected,
+        getSubsidiaryByPolicyHolderRejected,
       );
   },
 });

@@ -1,4 +1,4 @@
-import { LinkButton, NumberInput, Tag } from 'junto-design-system';
+import { LinkButton, CurrencyInput, Tag } from 'junto-design-system';
 import { useMemo } from 'react';
 
 import { currencyFormatter } from '../../../helpers';
@@ -9,20 +9,22 @@ export interface RateCalculationProps {
   maxRate: number;
   finalPrize: number;
   finalCommission: number;
-  comissionPercent: number;
+  commissionPercent: number;
   standardRateValue: number;
   handleChangeStandardRate(value: number): void;
   handleDownloadQuote(): void;
+  handleEndEditing: () => void;
 }
 
 export function RateCalculation({
   maxRate,
   finalPrize,
   finalCommission,
-  comissionPercent,
+  commissionPercent,
   standardRateValue,
   handleChangeStandardRate,
   handleDownloadQuote,
+  handleEndEditing,
 }: RateCalculationProps) {
   const formattedFinalPrize = useMemo(() => {
     if (finalPrize) {
@@ -38,21 +40,26 @@ export function RateCalculation({
     return currencyFormatter(0);
   }, [finalCommission]);
 
+  function onEndEditing() {
+    handleEndEditing();
+  }
+
   return (
     <div className={styles['rate-calculation']} data-testid="rate-calculation">
       <div className={styles['rate-calculation__rate-input-wrapper']}>
-        {/* <NumberInput
+        <CurrencyInput
           label="Taxa Padrão"
+          placeholder="Taxa Padrão"
           helperMessage={`Taxa máxima ${maxRate}%`}
-          placeholder=" "
-          decimalScale={2}
-          maxValue={100}
+          maxValue={maxRate}
           minValue={1}
-          suffix="%"
+          suffix=" %"
+          prefix=""
           allowNegative={false}
-          onChange={value => handleChangeStandardRate(Number(value))}
+          onChange={handleChangeStandardRate}
           value={standardRateValue}
-        /> */}
+          onBlur={onEndEditing}
+        />
       </div>
       <div
         className={styles['rate-calculation__final-values-wrapper']}
@@ -66,7 +73,7 @@ export function RateCalculation({
           <h3>Comissão final</h3>
           <span>
             <p>{formattedFinalCommission}</p>
-            <Tag variant="neutral">{comissionPercent}%</Tag>
+            <Tag variant="neutral">{commissionPercent}%</Tag>
           </span>
         </article>
       </div>

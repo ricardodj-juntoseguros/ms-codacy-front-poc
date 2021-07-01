@@ -30,9 +30,10 @@ const initialState: QuoteModel = {
   } as ContractDataModel,
   pricing: {
     maxRate: 11.99,
+    feeStandard: 11.99,
   } as PricingModel,
   installments: [],
-  loading: false,
+  loadingQuote: false,
 };
 
 export const quoteSlice = createSlice({

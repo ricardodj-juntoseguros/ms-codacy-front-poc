@@ -10,8 +10,8 @@ import styles from './TimeframeAndCoverage.module.scss';
 export interface TimeframeAndCoverageProps {
   timeframeStart: string;
   timeframeEnd: string;
-  durationInDays: string;
-  coverageValue: string;
+  durationInDays: number;
+  coverageValue: number;
   policyholderLimit: number;
   maxCoverageDays: number;
   errorMessageDate: string;
@@ -19,8 +19,8 @@ export interface TimeframeAndCoverageProps {
   errorMessageCoverageAmount: string;
   handleTimeframeStartChange: (startDate: string) => void;
   handleTimeframeEndChange: (endDate: string) => void;
-  handleDurationInDaysChange: (days: string) => void;
-  handleCoverageValueChange: (value: string) => void;
+  handleDurationInDaysChange: (days: number) => void;
+  handleCoverageValueChange: (value: number) => void;
   validateDateRange: (dateStart: Date, dateEnd: Date) => boolean;
   handleEndEditing: () => void;
 }
@@ -43,7 +43,7 @@ export function TimeframeAndCoverage({
   handleEndEditing,
 }: TimeframeAndCoverageProps) {
   function calculateDurationInDays(dateStart: Date, dateEnd: Date) {
-    return differenceInCalendarDays(dateStart, dateEnd).toString();
+    return differenceInCalendarDays(dateStart, dateEnd);
   }
 
   function onStartChange(value: string) {
@@ -72,7 +72,7 @@ export function TimeframeAndCoverage({
     }
   }
 
-  function onDurationChange(duration: string) {
+  function onDurationChange(duration: number) {
     handleDurationInDaysChange(duration);
 
     const dateStart = parseStringToDate(timeframeStart);
@@ -83,12 +83,8 @@ export function TimeframeAndCoverage({
     }
   }
 
-  function onCoverageValueChange(value?: number | string | null) {
-    if (value) {
-      handleCoverageValueChange(String(value));
-    } else {
-      handleCoverageValueChange('');
-    }
+  function onCoverageValueChange(value: number) {
+    handleCoverageValueChange(value);
   }
 
   function onEndEditing() {
@@ -98,7 +94,7 @@ export function TimeframeAndCoverage({
   return (
     <div className={styles['timeframe-coverage__wrapper']}>
       <div className={styles['timeframe-coverage__form-row']}>
-        <div className={styles['timeframe-coverage__form-field']}>
+        <div>
           <DateInput
             label="Selecione o início da vigência"
             value={timeframeStart}
@@ -107,7 +103,7 @@ export function TimeframeAndCoverage({
             onBlur={onEndEditing}
           />
         </div>
-        <div className={styles['timeframe-coverage__form-field']}>
+        <div>
           <NumberInput
             label="Total de dias"
             placeholder="Total de dias"
@@ -122,7 +118,7 @@ export function TimeframeAndCoverage({
         </div>
       </div>
       <div className={styles['timeframe-coverage__form-row']}>
-        <div className={styles['timeframe-coverage__form-field']}>
+        <div>
           <DateInput
             label="Selecione o fim da vigência"
             value={timeframeEnd}
@@ -131,7 +127,7 @@ export function TimeframeAndCoverage({
             onBlur={onEndEditing}
           />
         </div>
-        <div className={styles['timeframe-coverage__form-field']}>
+        <div>
           <CurrencyInput
             label="Valor da cobertura"
             helperMessage={`Limite disponível: ${currencyFormatter(

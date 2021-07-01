@@ -20,9 +20,22 @@ export const getSubsidiaryByPolicyHolder = createAsyncThunk(
   },
 );
 
+export function getSubsidiaryByPolicyHolderPending(
+  state: PolicyholderAndModalitySearchModel,
+) {
+  state.loadingGetSubsidiaries = true;
+}
+
 export function getSubsidiaryByPolicyholderFulFilled(
   state: PolicyholderAndModalitySearchModel,
   payload: PayloadAction<SubsidiaryModel[]>,
 ) {
   state.subsidiaryOptions = payload.payload;
+  state.loadingGetSubsidiaries = false;
+}
+
+export function getSubsidiaryByPolicyHolderRejected(
+  state: PolicyholderAndModalitySearchModel,
+) {
+  state.loadingGetSubsidiaries = false;
 }
