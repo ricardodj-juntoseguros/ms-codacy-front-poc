@@ -20,6 +20,8 @@ export function getModalityType(modalityId: number) {
       return ModalityTypeEnum.CONTA_RESERVA;
     case 9:
       return ModalityTypeEnum.ADMINISTRATIVO_CREDITO_TRIBUTARIO;
+    case 10:
+      return ModalityTypeEnum.EXECUTANTE_CONCESSIONARIO;
     default:
       return ModalityTypeEnum.DEFAULT;
   }
