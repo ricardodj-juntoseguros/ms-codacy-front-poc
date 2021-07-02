@@ -290,10 +290,8 @@ workflows:
             branches: { only: 'master' }
             tags: { ignore: '/.*/' }
           requires:
-            - approve-stg
-            - eslint
-            - audit
-            - code-climate
+            - approve-prd
+            - deploy-cf-stg
           post-steps:
             - jira/notify:
                 environment: prd
