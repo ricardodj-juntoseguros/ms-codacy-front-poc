@@ -9,12 +9,15 @@ class SearchInsuredApi {
   private readonly httpClient: IHttpClient;
 
   public constructor() {
-    this.httpClient = new AxiosHttpClient('http://localhost:4300', 100000);
+    this.httpClient = new AxiosHttpClient(
+      'https://ms-gateway-qas.juntoseguros.com/squad1/plataforma-preview-api/',
+      100000,
+    );
   }
 
   async searchInsured(insuredLabel: string) {
     const params: IHttpClientRequestParameters = {
-      url: `/insured?insuredLabel=${insuredLabel}`,
+      url: `/insured?insuredName=${insuredLabel}`,
     };
     return this.httpClient.get<InsuredDTO[]>(params);
   }

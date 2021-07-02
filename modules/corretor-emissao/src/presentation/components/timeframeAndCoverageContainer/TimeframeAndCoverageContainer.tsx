@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StepContainer } from '@shared/ui';
 import { useDispatch, useSelector } from 'react-redux';
 import { isAfter } from 'date-fns';
@@ -12,7 +12,11 @@ import {
   selectQuote,
   quoteSliceActions,
 } from '../../../application/features/quote/QuoteSlice';
-import { getStepByName, parseStringToDate } from '../../../helpers';
+import {
+  getStepByName,
+  parseDateToString,
+  parseStringToDate,
+} from '../../../helpers';
 
 const stepName = 'TimeframeAndCoverageContainer';
 
@@ -57,6 +61,10 @@ export function TimeframeAndCoverageContainer() {
   function handleTimeframeEndChange(value: string) {
     dispatch(quoteSliceActions.setTimeframeEnd(value));
   }
+
+  useEffect(() => {
+    handleTimeframeStartChange(parseDateToString(new Date()));
+  }, []);
 
   const validateDatesCoverage = useCallback(
     (dateStart: Date, dateEnd: Date) => {

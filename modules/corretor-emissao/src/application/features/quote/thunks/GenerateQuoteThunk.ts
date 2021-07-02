@@ -6,9 +6,7 @@ import QuoteApi from '../QuoteApi';
 export const generateQuote = createAsyncThunk(
   'quote/generateQuote',
   async (rateData: TimeframeAndCoverageModel) => {
-    const response = await QuoteApi.generateQuote(rateData);
-    const data: QuoteResultDTO = response[0];
-    return data;
+    return await QuoteApi.generateQuote(rateData);
   },
 );
 

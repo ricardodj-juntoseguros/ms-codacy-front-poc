@@ -23,8 +23,7 @@
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
-    "help": "nx help",
-    "server": "json-server --watch server.json --port 4300 -d 3000"
+    "help": "nx help"
   },
   "private": true,
   "dependencies": {
@@ -84,7 +83,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "26.2.2",
     "jest-css-modules": "^2.1.0",
-    "json-server": "^0.16.3",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "ts-jest": "^26.5.6",

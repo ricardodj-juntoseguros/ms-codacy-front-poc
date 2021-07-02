@@ -10,7 +10,10 @@ class QuoteApi {
   private readonly httpClient: IHttpClient;
 
   public constructor() {
-    this.httpClient = new AxiosHttpClient('http://localhost:4300', 100000);
+    this.httpClient = new AxiosHttpClient(
+      'https://ms-gateway-qas.juntoseguros.com/squad1/plataforma-preview-api/',
+      100000,
+    );
   }
 
   async generateQuote(rateData: TimeframeAndCoverageModel) {
@@ -18,7 +21,7 @@ class QuoteApi {
       url: '/generate-quote',
     };
 
-    return await this.httpClient.get<QuoteResultDTO[]>(params);
+    return await this.httpClient.post<QuoteResultDTO>(params);
   }
 }
 
