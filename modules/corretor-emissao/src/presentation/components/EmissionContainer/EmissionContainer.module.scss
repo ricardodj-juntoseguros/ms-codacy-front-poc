@@ -1,0 +1,24 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.j-emission-container {
+  margin-top: spacing('xl');
+}
+
+.j-emission-container_buttons-link {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px spacing('xxl-4');
+}
+
+.j-emission-container_button-download {
+  display: flex;
+  justify-content: center;
+  margin-top: spacing('xxl-5');
+}
+
+.j-emission-container_button-emission {
+  margin-top: spacing('xl');
+  button {
+    width: 100%;
+  }
+}
