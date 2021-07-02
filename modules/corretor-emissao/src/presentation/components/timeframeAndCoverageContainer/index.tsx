@@ -1,1 +1,1 @@
-export * from './TimeFrameAndCoverageContainer';
+export * from './TimeframeAndCoverageContainer';

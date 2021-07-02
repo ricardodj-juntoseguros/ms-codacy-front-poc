@@ -6,6 +6,10 @@ This project was generated using [Nx](https://nx.dev).
 
 🔎 **Powerful, Extensible Dev Tools**
 
+## Qualitys Gate
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/d27b34f14ad50da533ba/maintainability)](https://codeclimate.com/repos/60d5ff1714905d4c260012f8/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/d27b34f14ad50da533ba/test_coverage)](https://codeclimate.com/repos/60d5ff1714905d4c260012f8/test_coverage) [![CircleCI](https://circleci.com/gh/GitJMSeguradora/JuntoSeguros.Library.svg?style=svg&circle-token=acedae51865c9abfed87fa884cb8ec62b1ace486)](https://circleci.com/gh/GitJMSeguradora/platform-web)
+
 ## Adding capabilities to your workspace
 
 Nx supports many plugins which add capabilities for developing different types of applications and different tools.

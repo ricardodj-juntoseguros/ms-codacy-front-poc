@@ -1,0 +1,309 @@
+version: 2.1
+defaults: &defaults
+  working_directory: /tmp/persist_to_workspace
+  docker:
+    - image: juntoseguros/devops:base
+
+jobs:
+  checkout:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: pwd
+      - run: ls -lart
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}
+            - yarn-packages-v1
+      - run: yarn install --network-concurrency 1
+      - run:
+          name: Clone GitOps
+          command: |
+            rm -rf GitOps
+            mkdir -p ~/.ssh/
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git clone -b master git@github.com:GitJMSeguradora/GitOps.git
+      - save_cache:
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - persist_to_workspace:
+          root: /tmp/persist_to_workspace
+          paths:
+            - .
+
+  circleci-collector:
+    <<: *defaults
+    steps:
+      - run:
+          name: Circleci Collector
+          command: |
+            mkdir -p ~/.ssh/
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git clone -b master git@github.com:GitJMSeguradora/GitOps.git
+            cp GitOps/circleci/workflows/collector/collector.sh .
+            chmod +x collector.sh
+            ./collector.sh
+          no_output_timeout: 10m
+
+  eslint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/persist_to_workspace
+      - run:
+          name: EsLint
+          command: |
+            echo "Initialiazing App Lint"
+            yarn lint
+            echo "Done"
+          no_output_timeout: 5m
+
+  audit:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/persist_to_workspace
+      - run:
+          name: Audit Packages
+          command: |
+            echo "Initialiazing packages audit"
+            yarn audit
+            echo "Done"
+          no_output_timeout: 5m
+
+  code-climate:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/persist_to_workspace
+      - run:
+          name: Code Climate - Continuous Inspection and Build
+          command: |
+            cp GitOps/circleci/workflows/codeclimate/*.sh .
+            chmod +x ./*.sh
+            #########################################
+            #########################################
+            #########################################
+            #########################################
+            #########################################
+            #./codeclimate.sh node
+            echo "Done"
+          no_output_timeout: 5m
+
+  scan-app:
+    working_directory: /tmp/persist_to_workspace
+    machine:
+      image: ubuntu-2004:202101-01
+    environment:
+      TERM: xterm
+      LC_ALL: C.UTF-8
+      LANG: pt_BR.UTF-8
+    steps:
+      - attach_workspace:
+          at: /tmp/persist_to_workspace
+      - run:
+          name: Scanning App
+          command: |
+            cp -r GitOps/circleci/workflows/security/* .
+            chmod +x *.sh scan-app/*.sh
+            ./scan-app.sh node
+            echo "Done"
+          no_output_timeout: 5m
+      - store_artifacts:
+          path: /tmp/persist_to_workspace/scan-app/reports
+          destination: scan-app-reports
+
+  deploy-cf:
+    <<: *defaults
+    parameters:
+      environment:
+        description: Environment to Deploy to
+        type: string
+    steps:
+      - attach_workspace:
+          at: /tmp/persist_to_workspace
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}
+            - yarn-packages-v1
+      - run:
+          name: Building to << parameters.environment >> Environment
+          command: |
+            echo "Initialiazing build << parameters.environment >>"
+            ENV=<< parameters.environment >>
+
+            case "${ENV}" in
+            quality)
+              yarn affected:build --maxWorkers=1 --memoryLimit=1024
+            ;;
+            staging)
+              yarn affected:build --all --maxWorkers=1 --memoryLimit=1024
+            ;;
+            production)
+              yarn affected:build --all --maxWorkers=1 --memoryLimit=1024
+            ;;
+            *)
+              echo "Invalid Options. Try: quality, staging or production"
+            ;;
+            
+            esac
+            echo "Done"
+          no_output_timeout: 5m
+      - run:
+          name: AWS role assumption to deploy on << parameters.environment >>
+          command: |
+            echo "AWS role assumption"
+            cp .circleci/scripts/role_assumption.sh . 
+            chmod +x ./role_assumption.sh
+            ./role_assumption.sh << parameters.environment >>
+            echo "Done"
+      - deploy:
+          name: Cloudflare+S3 - Pushing to << parameters.environment >> Environment
+          command: |
+            echo "Initialiazing deploy CF+s3"
+            cp .circleci/scripts/deploy.sh . 
+            chmod +x ./deploy.sh
+            ./deploy.sh << parameters.environment >>
+            echo "Done"
+          no_output_timeout: 5m
+      - persist_to_workspace:
+          root: /tmp/persist_to_workspace
+          paths:
+            - .
+
+  create-release:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/persist_to_workspace
+      - run:
+          name: Create Release
+          command: |
+            echo "Done"
+          no_output_timeout: 5m
+
+orbs:
+  jira: circleci/jira@1.3.1
+
+workflows:
+  version: 2.1
+  workflow-project:
+    jobs:
+      - checkout:
+          context: GitJMSeguradora
+          filters:
+            tags: { ignore: '/.*/' }
+      - circleci-collector:
+          context: GitJMSeguradora
+          filters:
+            tags: { ignore: '/.*/' }
+
+      - eslint:
+          context: GitJMSeguradora
+          filters:
+            branches: { ignore: 'master' }
+            tags: { ignore: '/.*/' }
+          requires:
+            - checkout
+      - audit:
+          context: GitJMSeguradora
+          requires:
+            - checkout
+      - code-climate:
+          context: GitJMSeguradora
+          filters:
+            tags: { ignore: '/.*/' }
+          requires:
+            - checkout
+      - scan-app:
+          context: GitJMSeguradora
+          filters:
+            branches: { ignore: 'master' }
+            tags: { ignore: '/.*/' }
+          requires:
+            - checkout
+
+      - approve-qas:
+          type: approval
+          filters:
+            branches: { ignore: 'master' }
+            tags: { ignore: '/.*/' }
+      - deploy-cf:
+          name: deploy-cf-qas
+          context: GitJMSeguradora
+          environment: quality
+          filters:
+            branches: { ignore: 'master' }
+            tags: { ignore: '/.*/' }
+          requires:
+            - approve-qas
+            - eslint
+            - audit
+            - code-climate
+          post-steps:
+            - jira/notify:
+                environment: qas
+                environment_type: development
+                job_type: deployment
+
+      - approve-stg:
+          type: approval
+          filters:
+            branches: { only: 'master' }
+            tags: { ignore: '/.*/' }
+      - deploy-cf:
+          name: deploy-cf-stg
+          context: GitJMSeguradora
+          environment: staging
+          filters:
+            branches: { only: 'master' }
+            tags: { ignore: '/.*/' }
+          requires:
+            - approve-stg
+            - eslint
+            - audit
+            - code-climate
+          post-steps:
+            - jira/notify:
+                environment: stg
+                environment_type: testing
+                job_type: deployment
+
+      - approve-prd:
+          type: approval
+          filters:
+            branches: { only: 'master' }
+            tags: { ignore: '/.*/' }
+          requires:
+            - approve-stg
+      - deploy-cf:
+          name: deploy-cf-prd
+          context: GitJMSeguradora
+          environment: production
+          filters:
+            branches: { only: 'master' }
+            tags: { ignore: '/.*/' }
+          requires:
+            - approve-stg
+            - eslint
+            - audit
+            - code-climate
+          post-steps:
+            - jira/notify:
+                environment: prd
+                environment_type: production
+                job_type: deployment
+
+      - create-release:
+          context: GitJMSeguradora
+          requires:
+            - deploy-cf-prd
+          filters:
+            branches: { only: 'master' }
+            tags: { ignore: '/.*/' }
