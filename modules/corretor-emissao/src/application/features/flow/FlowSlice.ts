@@ -76,7 +76,6 @@ export const flowSlice = createSlice({
 
 export const selectFlow = (state: RootState) => state.flow;
 
-export const { setSteps, advanceStep, goBackStep, setStepStatus } =
-  flowSlice.actions;
+export const { actions: flowSliceActions } = flowSlice;
 
 export default flowSlice.reducer;

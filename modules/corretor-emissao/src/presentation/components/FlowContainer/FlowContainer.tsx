@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSteps } from '../../../application/features/flow/FlowSlice';
+import { flowSliceActions } from '../../../application/features/flow/FlowSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import { SearchContainer } from '../searchContainer';
 import { defaultStep, modalities } from '../../../constants';
@@ -53,7 +53,7 @@ export function FlowContainer() {
   }, []);
 
   useEffect(() => {
-    dispatch(setSteps(createFlow(modality)));
+    dispatch(flowSliceActions.setSteps(createFlow(modality)));
   }, [dispatch, createFlow, modality]);
 
   return (

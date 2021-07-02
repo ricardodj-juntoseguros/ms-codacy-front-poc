@@ -1,22 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StepContainer } from '@shared/ui';
-import { formatISO } from 'date-fns';
-import { searchInsured } from '../../../application/features/searchInsured/thunks/SearchInsuredThunk';
+import { searchInsuredSliceThunks } from '../../../application/features/searchInsured/thunks';
 import { selectFlow } from '../../../application/features/flow/FlowSlice';
 import { ContractData } from '../contractData/ContractData';
 import { selectSearchInsured } from '../../../application/features/searchInsured/SearchInsuredSlice';
 import {
   selectQuote,
-  setContractInsured,
-  setContractInsuredAddress,
-  setContractInstallment,
-  setContractNumber,
-  setContractAttachmentNotice,
-  setContractFirstInstallment,
-  setContractPolicyInProgress,
-  setContractContacts,
-  setContractComments,
+  quoteSliceActions,
 } from '../../../application/features/quote/QuoteSlice';
 import {
   AddressModel,
@@ -27,20 +18,23 @@ import { getStepByName } from '../../../helpers';
 
 export function ContractDataContainer() {
   const dispatch = useDispatch();
-  const [insuredValue, setInsuredValue] = useState('');
-  const [addressValue, setAddressValue] = useState('');
-  const [installmentValue, setInstallmentValue] = useState('');
+  const [insuredInput, setInsuredInput] = useState('');
 
   const { contractData, installments, loadingQuote } = useSelector(selectQuote);
   const {
     insured,
+    address,
     contractNumber,
     attachmentNotice,
+    installment,
     firstInstallment,
+    contacts,
     policyInProgress,
     comments,
   } = contractData;
-  const { addresses = [], insuredTypeDescription } = { ...insured };
+  const { addresses = [], insuredTypeDescription } = {
+    ...insured,
+  } as InsuredModel;
 
   const { searchInsuredOptions } = useSelector(selectSearchInsured);
 
@@ -49,70 +43,55 @@ export function ContractDataContainer() {
     return getStepByName('ContractDataContainer', steps);
   }, [steps]);
 
-  useEffect(() => {
-    if (insuredValue !== '' && insuredValue.length > 3) {
-      dispatch(searchInsured(insuredValue));
-    }
-  }, [dispatch, insuredValue]);
+  function handleChangeInsuredInput(value: string) {
+    setInsuredInput(value);
 
-  useEffect(() => {
-    if (
-      insured &&
-      addresses &&
-      contractNumber &&
-      attachmentNotice &&
-      firstInstallment &&
-      policyInProgress
-    ) {
-      // dispatch(
-      //   setStepStatus({ name: 'contractDataContainer', isCompleted: true }),
-      // );
+    if (value !== '') {
+      dispatch(searchInsuredSliceThunks.searchInsured(value));
     }
-  }, [
-    addresses,
-    attachmentNotice,
-    contractNumber,
-    dispatch,
-    firstInstallment,
-    insured,
-    policyInProgress,
-  ]);
-
-  function handleSetInstallment(selectedInstallment: InstallmentModel) {
-    dispatch(setContractInstallment(selectedInstallment));
   }
 
   function handleInsuredSelection(selectedInsured: InsuredModel) {
-    dispatch(setContractInsured(selectedInsured));
+    dispatch(quoteSliceActions.setContractInsured(selectedInsured));
   }
 
   function handleAddressSelection(selectedAddress: AddressModel) {
-    dispatch(setContractInsuredAddress(selectedAddress));
+    dispatch(quoteSliceActions.setContractInsuredAddress(selectedAddress));
   }
 
   function handleChangeContractNumber(value: string) {
-    dispatch(setContractNumber(value));
+    dispatch(quoteSliceActions.setContractNumber(value));
   }
 
   function handleChangeAttachmentNotice(value: string) {
-    dispatch(setContractAttachmentNotice(value));
+    dispatch(quoteSliceActions.setContractAttachmentNotice(value));
   }
 
-  function handleChangeFirstInstallment(installmentDate: Date) {
-    dispatch(setContractFirstInstallment(formatISO(installmentDate)));
+  function handleChangeContractInstallment(installment: InstallmentModel) {
+    dispatch(quoteSliceActions.setContractInstallment(installment));
   }
 
-  function handleTogglePolicyInProgress() {
-    dispatch(setContractPolicyInProgress(!policyInProgress));
+  function handleChangeFirstInstallment(installmentDate: string) {
+    dispatch(quoteSliceActions.setContractFirstInstallment(installmentDate));
   }
 
   function handleChangeContactEmails(emails: string[]) {
-    dispatch(setContractContacts(emails));
+    dispatch(quoteSliceActions.setContractContacts(emails));
+  }
+
+  function handleTogglePolicyInProgress() {
+    dispatch(quoteSliceActions.setContractPolicyInProgress(!policyInProgress));
   }
 
   function handleChangeComments(value: string) {
-    dispatch(setContractComments(value));
+    dispatch(quoteSliceActions.setContractComments(value));
   }
+
+  useEffect(() => {
+    if (insured) {
+      setInsuredInput(insured.name);
+    }
+  }, [insured]);
 
   function StepTitle() {
     return (
@@ -132,43 +111,34 @@ export function ContractDataContainer() {
         title={StepTitle()}
       >
         <ContractData
-          insuredValue={insuredValue}
-          searchInsuredOptions={searchInsuredOptions}
+          insuredInput={insuredInput}
+          insuredOptions={searchInsuredOptions}
+          address={address}
           addressOptions={addresses}
-          addressValue={addressValue}
-          setAddressValue={setAddressValue}
-          insuredType={insuredTypeDescription}
+          onChangeInsuredInput={handleChangeInsuredInput}
+          onSelectInsured={handleInsuredSelection}
+          onSelectAddress={handleAddressSelection}
+          insuredTypeDescription={insuredTypeDescription}
           contractNumber={contractNumber}
+          onChangeContractNumber={handleChangeContractNumber}
           attachmentNotice={attachmentNotice}
+          onChangeAttachmentNotice={handleChangeAttachmentNotice}
           policyPreview={{
             title: 'O objeto da sua apólice de seguro ficará assim:',
             description:
               'Esta apólice, de riscos declarados, garante indenização, até o valor fixado na apólice, dos prejuízos causados pelo Tomador ao Segurado, em razão de inadimplemento na prestação dos serviços descritos no objeto do Contrato',
           }}
+          installment={installment}
           installmentOptions={installments}
-          installmentValue={installmentValue}
-          setInstallmentValue={setInstallmentValue}
+          onSelectInstallment={handleChangeContractInstallment}
           firstInstallment={firstInstallment}
+          onChangeFirstInstallment={handleChangeFirstInstallment}
+          onChangeEmails={handleChangeContactEmails}
+          emails={contacts}
           policyInProgress={policyInProgress}
+          onChangePolicyInProgress={handleTogglePolicyInProgress}
           comments={comments}
-          onChangeInsuredValue={value => setInsuredValue(value)}
-          onChangeContractNumber={value => handleChangeContractNumber(value)}
-          onChangeAttachmentNotice={value =>
-            handleChangeAttachmentNotice(value)
-          }
-          onChangeEmails={mails => handleChangeContactEmails(mails)}
-          onChangeFirstInstallment={date => handleChangeFirstInstallment(date)}
-          onChangePolicyInProgress={() => handleTogglePolicyInProgress()}
-          onChangeComments={comment => handleChangeComments(comment)}
-          onSelectInsured={selectedInsured =>
-            handleInsuredSelection(selectedInsured)
-          }
-          onSelectAddress={selectedAddress =>
-            handleAddressSelection(selectedAddress)
-          }
-          onSelectInstallment={selectedInstallment =>
-            handleSetInstallment(selectedInstallment)
-          }
+          onChangeComments={handleChangeComments}
         />
       </StepContainer>
     </div>

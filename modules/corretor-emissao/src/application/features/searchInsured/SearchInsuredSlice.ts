@@ -33,6 +33,6 @@ export const searchInsuredSlice = createSlice({
 
 export const selectSearchInsured = (state: RootState) => state.searchInsured;
 
-export const { resetSearchInsured } = searchInsuredSlice.actions;
+export const { actions: searchInsuredSliceActions } = searchInsuredSlice;
 
 export default searchInsuredSlice.reducer;

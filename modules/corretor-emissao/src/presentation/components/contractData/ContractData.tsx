@@ -10,6 +10,7 @@ import {
 } from 'junto-design-system';
 import { ObjectPreview, ObjectPreviewProps } from '@shared/ui';
 import { useOptionsMapper } from '@shared/hooks';
+import { useMemo } from 'react';
 import { currencyFormatter } from '../../../helpers';
 import {
   AddressModel,
@@ -19,57 +20,55 @@ import {
 import styles from './ContractData.module.scss';
 
 export interface ContractDataProps {
-  searchInsuredOptions: InsuredModel[];
-  insuredValue: string;
+  insuredInput: string;
+  insuredOptions: InsuredModel[];
+  address: AddressModel | null;
   addressOptions: AddressModel[];
-  addressValue: string;
-  setAddressValue: (value: string) => void;
-  insuredType: string | undefined;
+  insuredTypeDescription: string;
   contractNumber: string;
   attachmentNotice: string;
   policyPreview: ObjectPreviewProps;
+  installment: InstallmentModel | null;
   installmentOptions: InstallmentModel[];
-  installmentValue: string;
-  setInstallmentValue: (value: string) => void;
-  firstInstallment: string | null;
+  firstInstallment: string;
+  emails: string[];
   policyInProgress: boolean;
   comments: string;
-  onChangeInsuredValue(option: string): void;
+  onChangeInsuredInput(option: string): void;
   onSelectInsured: (value: InsuredModel) => void;
   onSelectAddress(option: AddressModel): void;
   onChangeContractNumber(value: string): void;
   onChangeAttachmentNotice(value: string): void;
   onSelectInstallment(option: InstallmentModel): void;
-  onChangeFirstInstallment(value: Date): void;
+  onChangeFirstInstallment(value: string): void;
   onChangeEmails(emails: string[]): void;
   onChangePolicyInProgress(): void;
   onChangeComments(value: string): void;
 }
 
 export function ContractData({
-  insuredValue,
-  searchInsuredOptions,
+  insuredInput,
+  insuredOptions,
+  address,
   addressOptions,
-  addressValue,
-  setAddressValue,
-  insuredType,
+  insuredTypeDescription,
   contractNumber,
   attachmentNotice,
   policyPreview,
+  installment,
   installmentOptions,
-  installmentValue,
-  setInstallmentValue,
   firstInstallment,
+  emails,
   policyInProgress,
   comments,
-  onChangeInsuredValue,
+  onChangeInsuredInput,
   onSelectInsured,
   onSelectAddress,
   onChangeContractNumber,
   onChangeAttachmentNotice,
   onSelectInstallment,
-  onChangeEmails,
   onChangeFirstInstallment,
+  onChangeEmails,
   onChangePolicyInProgress,
   onChangeComments,
 }: ContractDataProps) {
@@ -77,7 +76,7 @@ export function ContractData({
     mappedOptions: mappedInsuredOptions,
     selectOption: setInsuredOption,
   } = useOptionsMapper(
-    searchInsuredOptions,
+    insuredOptions,
     'name',
     'federalId',
     'externalId',
@@ -95,6 +94,20 @@ export function ContractData({
     onSelectAddress,
   );
 
+  const currentAddress = useMemo(() => {
+    return (
+      mappedAddressOptions.find(
+        item => item.externalId === address?.externalId,
+      ) || null
+    );
+  }, [address, mappedAddressOptions]);
+
+  function formatInstallment(installment: InstallmentModel) {
+    return `${installment.number} - À vista em ${currencyFormatter(
+      installment.installmentValue,
+    )} `;
+  }
+
   const {
     mappedOptions: mappedInstallmentOptions,
     selectOption: setInstallmentOption,
@@ -107,34 +120,35 @@ export function ContractData({
     formatInstallment,
   );
 
-  function formatInstallment(installment: InstallmentModel) {
-    return `${installment.number} - À vista em ${currencyFormatter(
-      installment.installmentValue,
-    )} `;
-  }
+  const currentInstallment = useMemo(() => {
+    return (
+      mappedInstallmentOptions.find(
+        item => item.number === installment?.number,
+      ) || null
+    );
+  }, [installment, mappedInstallmentOptions]);
 
   return (
     <div className={styles['contract-data__wrapper']}>
       <div className={styles['contract-data__form-field']}>
         <SearchInput
           label="CNPJ ou razão social do segurado"
-          placeholder=" "
-          onValueSelected={option => setInsuredOption(option)}
-          onChange={onChangeInsuredValue}
-          value={insuredValue}
+          placeholder="CNPJ ou razão social do segurado"
+          onChange={onChangeInsuredInput}
+          value={insuredInput}
           options={mappedInsuredOptions}
+          onValueSelected={setInsuredOption}
         />
       </div>
 
       <div className={styles['contract-data__form-field']}>
-        {/* <Dropdown
+        <Dropdown
           label="Selecione o endereço do segurado"
           placeholder="Selecione o endereço do segurado"
           options={mappedAddressOptions}
           onValueSelected={setAddressOption}
-          onChange={setAddressValue}
-          value={addressValue}
-        /> */}
+          value={currentAddress}
+        />
       </div>
 
       <div
@@ -144,13 +158,12 @@ export function ContractData({
         )}
       >
         <p>Tipo de segurado</p>
-        <p>{insuredType}</p>
+        <p>{insuredTypeDescription}</p>
       </div>
 
       <div className={styles['contract-data__form-field']}>
         <TextArea
-          label=" "
-          labelInternal="N.º do contrato/edital"
+          label="N.º do contrato/edital"
           placeholder="N.º do contrato/edital"
           value={contractNumber}
           onChange={e => onChangeContractNumber(e.target.value)}
@@ -161,7 +174,7 @@ export function ContractData({
       <div className={styles['contract-data__form-field']}>
         <InputBase
           label="Anexo do edital"
-          placeholder=" "
+          placeholder="Anexo do edital"
           value={attachmentNotice}
           onChange={e => onChangeAttachmentNotice(e.target.value)}
         />
@@ -181,29 +194,30 @@ export function ContractData({
 
       <div className={styles['contract-data__form-row']}>
         <div className={styles['contract-data__form-field']}>
-          {/* <Dropdown
+          <Dropdown
             label="Parcelas"
             placeholder="Parcelas"
             options={mappedInstallmentOptions}
             onValueSelected={setInstallmentOption}
-            onChange={setInstallmentValue}
-            value={installmentValue}
-          /> */}
+            value={currentInstallment}
+          />
         </div>
         <div className={styles['contract-data__form-field']}>
-          {/* <DateInput
+          <DateInput
             label="Primeira parcela"
             value={firstInstallment}
-            onChange={onChangeFirstInstallment}
-          /> */}
+            onChange={event => onChangeFirstInstallment(event.target.value)}
+          />
         </div>
       </div>
 
       <div className={styles['contract-data__form-field']}>
         <TagInput
           label="Adicionar e-mails para recebimento da apólice"
-          placeholder=" "
+          placeholder="Adicionar e-mails para recebimento da apólice"
           onValueChange={onChangeEmails}
+          initialValue={emails}
+          helperMessage="Para mais de um destinatário, escreva os endereços de e-mail separados por ponto e vírgula (;)."
         />
       </div>
 
@@ -218,11 +232,10 @@ export function ContractData({
 
       <div className={styles['contract-data__form-field']}>
         <TextArea
-          label=" "
-          labelInternal="Observações"
+          label="Observações"
           placeholder="Observações"
           value={comments}
-          onChange={e => onChangeComments(e.target.value)}
+          onChange={event => onChangeComments(event.target.value)}
         />
       </div>
     </div>

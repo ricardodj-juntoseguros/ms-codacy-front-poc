@@ -78,6 +78,7 @@ export const policyholderAndModalitySearchSlice = createSlice({
 export const selectPolicyholderAndModalitySearch = (state: RootState) =>
   state.policyholderAndModalitySearch;
 
-export const { resetSearch } = policyholderAndModalitySearchSlice.actions;
+export const { actions: policyholderAndModalitySearchSliceActions } =
+  policyholderAndModalitySearchSlice;
 
 export default policyholderAndModalitySearchSlice.reducer;

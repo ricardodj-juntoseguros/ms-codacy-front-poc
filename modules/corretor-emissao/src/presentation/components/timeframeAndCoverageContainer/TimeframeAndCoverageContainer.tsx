@@ -1,36 +1,24 @@
 import { useCallback, useMemo, useState } from 'react';
 import { StepContainer } from '@shared/ui';
 import { useDispatch, useSelector } from 'react-redux';
-import { isAfter, formatISO } from 'date-fns';
-import { TimeframeAndCoverageModel } from 'modules/corretor-emissao/src/application/types/model';
-import { generateQuote } from '../../../application/features/quote/thunks/GenerateQuoteThunk';
+import { isAfter } from 'date-fns';
+import { quoteSliceThunks } from '../../../application/features/quote/thunks';
 import {
   selectFlow,
-  advanceStep,
-  setStepStatus,
+  flowSliceActions,
 } from '../../../application/features/flow/FlowSlice';
 import { TimeframeAndCoverage } from '../timeframeAndCoverage';
 import {
   selectQuote,
-  setTimeframeAndCoverageData,
+  quoteSliceActions,
 } from '../../../application/features/quote/QuoteSlice';
-import {
-  getStepByName,
-  parseDateToString,
-  parseStringToDate,
-} from '../../../helpers';
+import { getStepByName, parseStringToDate } from '../../../helpers';
 
 const stepName = 'TimeframeAndCoverageContainer';
 
 export function TimeframeAndCoverageContainer() {
   const maxCoverageDays = 120;
   const policyholderLimit = 3857329;
-  const [timeframeStart, setTimeframeStart] = useState(
-    parseDateToString(new Date()),
-  );
-  const [timeframeEnd, setTimeframeEnd] = useState('');
-  const [durationInDays, setDurationInDays] = useState(NaN);
-  const [coverageValue, setCoverageValue] = useState(NaN);
   const [errorMessageDate, setErrorMessageDate] = useState('');
   const [errorMessageCoverageDays, setErrorMessageCoverageDays] = useState('');
   const [errorMessageCoverageAmount, setErrorMessageCoverageAmount] =
@@ -38,7 +26,8 @@ export function TimeframeAndCoverageContainer() {
 
   const dispatch = useDispatch();
   const { timeframeAndCoverage } = useSelector(selectQuote);
-
+  const { timeframeStart, timeframeEnd, durationInDays, coverageValue } =
+    timeframeAndCoverage;
   const { steps } = useSelector(selectFlow);
 
   const stepStatus = useMemo(() => {
@@ -54,19 +43,19 @@ export function TimeframeAndCoverageContainer() {
   }
 
   function handleCoverageValueChange(value: number) {
-    setCoverageValue(value);
+    dispatch(quoteSliceActions.setCoverage(value));
   }
 
   function handleDurationInDaysChange(value: number) {
-    setDurationInDays(value);
+    dispatch(quoteSliceActions.setDurationInDays(value));
   }
 
   function handleTimeframeStartChange(value: string) {
-    setTimeframeStart(value);
+    dispatch(quoteSliceActions.setTimeframeStart(value));
   }
 
   function handleTimeframeEndChange(value: string) {
-    setTimeframeEnd(value);
+    dispatch(quoteSliceActions.setTimeframeEnd(value));
   }
 
   const validateDatesCoverage = useCallback(
@@ -149,34 +138,17 @@ export function TimeframeAndCoverageContainer() {
   ]);
 
   function goNextStep() {
-    const timeframeStartParsed = parseStringToDate(timeframeStart);
-
-    if (
-      isValidStep &&
-      coverageValue &&
-      timeframeStartParsed &&
-      durationInDays &&
-      stepStatus
-    ) {
+    if (isValidStep && coverageValue && durationInDays && stepStatus) {
+      dispatch(quoteSliceThunks.generateQuote(timeframeAndCoverage));
+      dispatch(flowSliceActions.advanceStep({ name: stepName }));
       dispatch(
-        setTimeframeAndCoverageData({
-          timeframeStart: formatISO(timeframeStartParsed),
-          durationInDays: Number(durationInDays),
-          coverageValue: Number(coverageValue),
-        }),
-      );
-      dispatch(generateQuote(timeframeAndCoverage));
-      dispatch(advanceStep({ name: stepName }));
-      dispatch(
-        setStepStatus({
+        flowSliceActions.setStepStatus({
           name: stepStatus.nextStep,
           isEnabled: true,
           isLoading: true,
           isVisible: true,
         }),
       );
-    } else {
-      dispatch(setTimeframeAndCoverageData({} as TimeframeAndCoverageModel));
     }
   }
 

@@ -7882,10 +7882,10 @@ jsprim@^1.2.2:
     array-includes "^3.1.2"
     object.assign "^4.1.2"
 
-junto-design-system@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/junto-design-system/-/junto-design-system-1.1.8.tgz#539a48680c7c3fe2e20bd517bddf7f667fcf6746"
-  integrity sha512-ARyxjaeV7/1f79YIiKTHCtsLve91ztxCyQTxRqSYorr8X+f5HrHIyXlYJkv6yvTLufTw+7yJFc9RRTeU7w0Kzg==
+junto-design-system@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/junto-design-system/-/junto-design-system-1.1.10.tgz#2f075255d9ea6b4f34db4fee88cd11d50612edeb"
+  integrity sha512-w/CkTqIq1SdUxhebFRwY/hVQOB6gJ1VhQ+w4/7PLxFmnzE4MtyFPpavLAmCpmXd9cWbr4NGm0LPk88e19P7wnw==
   dependencies:
     classnames "^2.3.1"
     react-loading-skeleton "^2.2.0"

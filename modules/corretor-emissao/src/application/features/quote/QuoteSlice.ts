@@ -5,12 +5,12 @@ import {
   ModalityModel,
   SubsidiaryModel,
   QuoteModel,
-  TimeframeAndCoverageModel,
   InsuredModel,
   AddressModel,
   InstallmentModel,
   ContractDataModel,
   PricingModel,
+  TimeframeAndCoverageModel,
 } from '../../types/model';
 import {
   generateQuote,
@@ -24,13 +24,10 @@ const initialState: QuoteModel = {
   modality: null,
   subsidiary: null,
   timeframeAndCoverage: {} as TimeframeAndCoverageModel,
-  contractData: {
-    policyInProgress: false,
-    attachmentNotice: '',
-  } as ContractDataModel,
+  contractData: {} as ContractDataModel,
   pricing: {
     maxRate: 11.99,
-    feeStandard: 11.99,
+    feeStandard: 11.85,
   } as PricingModel,
   installments: [],
   loadingQuote: false,
@@ -54,11 +51,17 @@ export const quoteSlice = createSlice({
     setSubsidiary: (state, action: PayloadAction<SubsidiaryModel | null>) => {
       state.subsidiary = action.payload;
     },
-    setTimeframeAndCoverageData: (
-      state,
-      action: PayloadAction<TimeframeAndCoverageModel>,
-    ) => {
-      state.timeframeAndCoverage = action.payload;
+    setTimeframeStart: (state, action: PayloadAction<string>) => {
+      state.timeframeAndCoverage.timeframeStart = action.payload;
+    },
+    setTimeframeEnd: (state, action: PayloadAction<string>) => {
+      state.timeframeAndCoverage.timeframeEnd = action.payload;
+    },
+    setDurationInDays: (state, action: PayloadAction<number>) => {
+      state.timeframeAndCoverage.durationInDays = action.payload;
+    },
+    setCoverage: (state, action: PayloadAction<number>) => {
+      state.timeframeAndCoverage.coverageValue = action.payload;
     },
     setStandardRate: (state, action: PayloadAction<number>) => {
       state.pricing.feeStandard = action.payload;
@@ -104,21 +107,6 @@ export const quoteSlice = createSlice({
 
 export const selectQuote = (state: RootState) => state.quote;
 
-export const {
-  setPolicyholder,
-  setModality,
-  setSubsidiary,
-  setTimeframeAndCoverageData,
-  setStandardRate,
-  setContractInsured,
-  setContractInsuredAddress,
-  setContractInstallment,
-  setContractNumber,
-  setContractAttachmentNotice,
-  setContractFirstInstallment,
-  setContractPolicyInProgress,
-  setContractContacts,
-  setContractComments,
-} = quoteSlice.actions;
+export const { actions: quoteSliceActions } = quoteSlice;
 
 export default quoteSlice.reducer;

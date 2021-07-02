@@ -2,24 +2,19 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StepContainer } from '@shared/ui';
 import { getStepByName } from '../../../helpers';
-import { searchPolicyHolder } from '../../../application/features/policyholderAndModalitySearch/thunks/SearchPolicyholderThunk';
-import { getModalityByPolicyHolder } from '../../../application/features/policyholderAndModalitySearch/thunks/GetModalityByPolicyholderThunk';
-import { getSubsidiaryByPolicyHolder } from '../../../application/features/policyholderAndModalitySearch/thunks/GetSubsidiaryByPolicyholderThunk';
+import { policyholderAndModalitySearchThunks } from '../../../application/features/policyholderAndModalitySearch/thunks';
 import { PolicyholderAndModalitySearch } from '../../components/policyholderAndModalitySearch';
 import {
   selectPolicyholderAndModalitySearch,
-  resetSearch,
+  policyholderAndModalitySearchSliceActions,
 } from '../../../application/features/policyholderAndModalitySearch/PolicyholderAndModalitySearchSlice';
 import {
-  setPolicyholder,
-  setModality,
-  setSubsidiary,
   selectQuote,
+  quoteSliceActions,
 } from '../../../application/features/quote/QuoteSlice';
 import {
   selectFlow,
-  advanceStep,
-  setStepStatus,
+  flowSliceActions,
 } from '../../../application/features/flow/FlowSlice';
 import {
   PolicyholderModel,
@@ -30,6 +25,8 @@ import {
 const stepName = 'SearchContainer';
 
 export function SearchContainer() {
+  const [policyholderInput, setPolicyholderInput] = useState('');
+
   const dispatch = useDispatch();
   const {
     policyholderOptions,
@@ -41,16 +38,15 @@ export function SearchContainer() {
   const { policyholder, modality, subsidiary } = useSelector(selectQuote);
   const { steps } = useSelector(selectFlow);
 
-  const [policyholderInput, setPolicyholderInput] = useState('');
-
   const stepStatus = useMemo(() => {
     return getStepByName(stepName, steps);
   }, [steps]);
 
   function handleChangePolicyholderInput(value: string) {
     setPolicyholderInput(value);
+
     if (value !== '') {
-      dispatch(searchPolicyHolder(value));
+      dispatch(policyholderAndModalitySearchThunks.searchPolicyHolder(value));
     }
   }
 
@@ -65,25 +61,29 @@ export function SearchContainer() {
 
   function handlePolicyholderSelection(data: PolicyholderModel) {
     const { federalId, id } = data;
-    dispatch(resetSearch());
-    dispatch(setPolicyholder(data));
-    dispatch(getModalityByPolicyHolder(federalId));
-    dispatch(getSubsidiaryByPolicyHolder(id));
+    dispatch(policyholderAndModalitySearchSliceActions.resetSearch());
+    dispatch(quoteSliceActions.setPolicyholder(data));
+    dispatch(
+      policyholderAndModalitySearchThunks.getModalityByPolicyHolder(federalId),
+    );
+    dispatch(
+      policyholderAndModalitySearchThunks.getSubsidiaryByPolicyHolder(id),
+    );
   }
 
   function handleModalitySelection(data: ModalityModel) {
-    dispatch(setModality(data));
+    dispatch(quoteSliceActions.setModality(data));
   }
 
   function handleSubsidiarySelection(data: SubsidiaryModel) {
-    dispatch(setSubsidiary(data));
+    dispatch(quoteSliceActions.setSubsidiary(data));
   }
 
   useEffect(() => {
     if (policyholder && modality && stepStatus) {
-      dispatch(advanceStep({ name: stepName }));
+      dispatch(flowSliceActions.advanceStep({ name: stepName }));
       dispatch(
-        setStepStatus({
+        flowSliceActions.setStepStatus({
           name: stepStatus.nextStep,
           isEnabled: true,
           isLoading: false,
@@ -92,6 +92,12 @@ export function SearchContainer() {
       );
     }
   }, [dispatch, modality, policyholder, stepStatus]);
+
+  useEffect(() => {
+    if (policyholder) {
+      setPolicyholderInput(policyholder.companyName);
+    }
+  }, [policyholder]);
 
   return (
     <div>

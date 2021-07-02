@@ -6,9 +6,9 @@ export interface ContractDataModel {
   insured: InsuredModel | null;
   contractNumber: string;
   attachmentNotice: string;
-  installment: InstallmentModel;
-  address: AddressModel;
-  firstInstallment: string | null;
+  address: AddressModel | null;
+  installment: InstallmentModel | null;
+  firstInstallment: string;
   policyInProgress: boolean;
   comments: string;
   contacts: string[];

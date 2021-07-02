@@ -1,22 +1,22 @@
 import { StepContainer } from '@shared/ui';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStepByName } from '../../../helpers';
 import {
   selectFlow,
-  advanceStep,
-  setStepStatus,
+  flowSliceActions,
 } from '../../../application/features/flow/FlowSlice';
 import {
   selectQuote,
-  setStandardRate,
+  quoteSliceActions,
 } from '../../../application/features/quote/QuoteSlice';
 import { RateCalculation } from '../rateCalculation';
-import { generateQuote } from '../../../application/features/quote/thunks/GenerateQuoteThunk';
+import { quoteSliceThunks } from '../../../application/features/quote/thunks';
 
 const stepName = 'RateCalculationContainer';
 
 export function RateCalculationContainer() {
+  const [feeError, setFeeError] = useState('');
   const dispatch = useDispatch();
   const { pricing, loadingQuote, timeframeAndCoverage } =
     useSelector(selectQuote);
@@ -38,13 +38,24 @@ export function RateCalculationContainer() {
   }
 
   function handleChangeStandardRate(value: number) {
-    dispatch(setStandardRate(value));
+    dispatch(quoteSliceActions.setStandardRate(value));
+    setFeeError(Number.isNaN(value) ? 'É necessário informar uma taxa.' : '');
   }
 
   useEffect(() => {
     if (stepStatus && stepStatus.isActive && feeStandard) {
-      dispatch(advanceStep({ name: stepName }));
-      dispatch(setStepStatus({ ...stepStatus, isLoading: false }));
+      dispatch(flowSliceActions.advanceStep({ name: stepName }));
+      dispatch(
+        flowSliceActions.setStepStatus({ ...stepStatus, isLoading: false }),
+      );
+      dispatch(
+        flowSliceActions.setStepStatus({
+          name: stepStatus.nextStep,
+          isEnabled: true,
+          isLoading: false,
+          isVisible: true,
+        }),
+      );
     }
   }, [dispatch, feeStandard, stepStatus]);
 
@@ -53,7 +64,8 @@ export function RateCalculationContainer() {
   }
 
   function goNextStep() {
-    dispatch(generateQuote(timeframeAndCoverage));
+    if (feeError) return;
+    dispatch(quoteSliceThunks.generateQuote(timeframeAndCoverage));
   }
 
   return (
@@ -74,6 +86,7 @@ export function RateCalculationContainer() {
           handleChangeStandardRate={handleChangeStandardRate}
           handleDownloadQuote={handleDownloadQuote}
           handleEndEditing={goNextStep}
+          errorMessage={feeError}
         />
       </StepContainer>
     </div>
