@@ -1,5 +1,5 @@
 import styles from './QuoteContainer.module.scss';
-import { FlowContainer } from '../../components/FlowContainer';
+import { FlowContainer } from '../../components/flowContainer';
 
 export function QuoteContainer() {
   return (

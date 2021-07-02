@@ -151,7 +151,7 @@ jobs:
             *)
               echo "Invalid Options. Try: quality, staging or production"
             ;;
-            
+
             esac
             echo "Done"
           no_output_timeout: 5m

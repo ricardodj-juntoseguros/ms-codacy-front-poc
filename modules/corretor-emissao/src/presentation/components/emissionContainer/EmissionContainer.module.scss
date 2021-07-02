@@ -4,19 +4,19 @@
   margin-top: spacing('xl');
 }
 
-.j-emission-container_buttons-link {
+.j-emission-container__buttons--link {
   display: flex;
   justify-content: space-between;
   padding: 0px spacing('xxl-4');
 }
 
-.j-emission-container_button-download {
+.j-emission-container__button--download {
   display: flex;
   justify-content: center;
   margin-top: spacing('xxl-5');
 }
 
-.j-emission-container_button-emission {
+.j-emission-container__button--emission {
   margin-top: spacing('xl');
   button {
     width: 100%;

@@ -15,7 +15,7 @@ import {
   InsuredModel,
 } from '../../../application/types/model';
 import { getStepByName } from '../../../helpers';
-import { EmissionContainer } from '../EmissionContainer';
+import { EmissionContainer } from '../emissionContainer';
 
 export function ContractDataContainer() {
   const dispatch = useDispatch();
