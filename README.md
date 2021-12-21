@@ -1,94 +1,125 @@
-# PlatformWeb
+# platform-web
 
-This project was generated using [Nx](https://nx.dev).
+Repositório em formato monorepo para as aplicações React front-end seguindo o novo padrão de arquitetura de micro-frontendo, tendo como referência o [Guideline FrontEnd](https://github.com/GitJMSeguradora/guidelines/tree/master/frontend)
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
-
-🔎 **Powerful, Extensible Dev Tools**
+Esse projeto foi criado utilizando Nx. Para saber mais sobre a biblioteca, clique no link a seguir.(https://nx.dev)
 
 ## Qualitys Gate
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/d27b34f14ad50da533ba/maintainability)](https://codeclimate.com/repos/60d5ff1714905d4c260012f8/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/d27b34f14ad50da533ba/test_coverage)](https://codeclimate.com/repos/60d5ff1714905d4c260012f8/test_coverage) [![CircleCI](https://circleci.com/gh/GitJMSeguradora/JuntoSeguros.Library.svg?style=svg&circle-token=acedae51865c9abfed87fa884cb8ec62b1ace486)](https://circleci.com/gh/GitJMSeguradora/platform-web)
 
-## Adding capabilities to your workspace
+## Monorepo Nx - divisões
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+Este repositório é dividido em 3 principais partes:
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+- Apps
+  - São as pastas das aplicações / plataformas que compõem o repositório. São compostas de uma aplicação react, podendo manter store do redux propria e de várias rotas, cada uma apontando para um module (micro-frontend) distinto.
+- Modules (micro-frontends)
+  - São pequenas aplicações react com escopo próprio e fechado, focando em uma ou poucas features. Os modules devem ser como uma "caixa preta", importados apenas dentro dos apps, não podendo haver interdependência entre os modules ou dependência de apps dentro de um module.
+  - Os micro-frontends possuem 3 camadas de código (presentational, application e config)
+    - Presentational: componentes react embutidos e componentes containers (páginas).
+    - Config: Arquivos de configuração do micro-frontend, como redux store, rotas, etc.
+    - Application: armazena a lógica interna do module, possui arquivos de chamadas de API, Redux Thunks e Redux Slices, tipos de dados (dtos e models).
+- Libs
+  - As libs são pequenos pacotes de código de responsabilidade única, com o intuito de serem reutilizáveis em todos os modules e apps. Ex: hooks, http client, componentes ui compartilhados.
 
-Below are our core plugins:
+## Instalação
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+Após baixar o projeto, instale as dependências com:
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
+`yarn install`
 
-## Generate an application
+Para facilitar o desenvolvimento, geração de código e manutenção com o Nx, é recomendado instalar a extensão do VSCode
+[Nx Console](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console)
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+Essa extensão abstrai os comandos de geração, execução, teste e build do Nx CLI para uma interface gráfica, além de exibir um resumo da sua workspace.
 
-> You can use any of the plugins above to generate applications as well.
+## Para rodar um app localmente
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+Para iniciar uma das aplicações na máquina localmente, basta executar o comando
 
-## Generate a library
+`yarn nx serve {{nome do app}}`
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+Este comando compilará todo o código necessário importado no app escolhido (modules e libs), e servirá o app na rede local. A porta padrão do Nx é 4200,
+mas se desejar rodar em outra, utilizar o comando como:
 
-> You can also use any of the plugins above to generate libraries as well.
+`yarn nx serve {{nome do app}} --port XXXX`
 
-Libraries are shareable across libraries and applications. They can be imported from `@platform-web/mylib`.
+Obs: A extensão Nx Console possui uma interface visual para a montagem desse comando.
 
-## Development server
+## Gerando um app
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Para gerar uma aplicação no repositório, execute o comando `yarn nx g @nrwl/react:app {{nome do app}}`.
 
-## Code scaffolding
+Ao rodar esse comando, poderá haver algumas etapas seguintes em que o console irá perguntar especificações do projeto. As seguintes opções deverão ser selecionadas:
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+- React Router - yes
+- Style: sass/scss
+
+No final, serão criadas 2 pastas, a pasta do app e a pasta do app-e2e, onde estarão localizados os testes end-to-end da aplicação.
+
+**Importante**: Ao criar um app, será necessário criar um arquivo de configuração do webpack (webpack.config.js) para o mesmo. Para isso, utilizar como referência um arquivo já pronto de outro app, alterando as nomenclaturas necessárias.
+
+Obs: A extensão Nx Console possui uma interface visual para a montagem desse comando.
+
+## Gerando uma lib
+
+Para gerar uma lib no repositório, execute o comando `yarn nx g @nrwl/react:lib {{nome da lib}}`.
+
+A lib será gerada por padrão no diretório raiz de `/libs`, caso seja necessário, o diretório da lib pode ser especificado com a opção --directory=MEU_DIRETORIO
+
+Obs: A extensão Nx Console possui uma interface visual para a montagem desse comando.
+
+## Gerando um module / micro-frontend
+
+Para gerar um micro-frontend no repositório, foi criado um gerador customizado do Nx, portanto, execute o comando
+
+`yarn nx workspace-generator micro-frontend-generator --name={{nome do micro-frontend}}`
+
+O micro-frontend será gerado por padrão no diretório `/modules`.
+
+Obs: A extensão Nx Console possui uma interface visual para a montagem desse comando.
+
+## O comando dep-graph
+
+Um comando interessante ao ser utilizado no desenvolvimento com Nx é o dep-graph. Esse comando executa uma aplicação web que disponibiliza uma visualização interativa em grafo das dependências dentro da workspace.
+
+## O comando affected
+
+Uma modificação nos comandos muito útil no gerenciamento da workspace Nx são os comandos utilizando **affected**.
+
+O prefixo `affected:` pode ser colocado em qualquer comando (com exceção do serve) para executá-lo em todos os projetos (libs, apps e modules) que foram afetados por alterações, ou seja, se foi realizado uma alteração na lib B e esta lib é utilizada apenas no app A, se o desenvolvedor executar `yarn nx affected:build`, apenas o app A e a lib B sofrerão com a build, ao inves de toda a workspace, facilitando o controle e a performance de alterações.
+
+## Rodando testes unitários
+
+Para rodar os testes de um projeto via [Jest](https://jestjs.io), executar o comando `yarn nx test {{nome do app/lib/module}}`.
+
+Os testes unitários podem ser executados em qualquer um dos escopos do projeto (lib, module, app), basta apenas colocar o nome da pasta e o Nx saberá o que rodar.
+
+**Importante**: Ao rodar os testes de um app, o teste poderá incluir as libs e módulos nas quais o app possui dependências com a opção `--with-deps`
+
+Outro comando útil é o `yarn nx affected:test` que executa todos os testes de projetos que foram afetados por alguma alteração na workspace, por exemplo, mudança de código em uma lib ou módule
+
+## Rodando testes end-to-end
+
+Para rodar os testes end-to-end de algum projeto, primeiro certifique-se de que o projeto em questão tenha um projeto de testes e2e associado. Execute o comando `nx run {{nome do app de testes e2e}}:e2e` para rodar os testes.
+
+## Rodando o Lint
+
+Para rodar o linter de algum projeto execute o comando `yarn nx lint {{nome do app/lib/module}}`.
+
+A execução do linter pode ter realizada em qualquer um dos escopos do projeto (lib, module, app), basta apenas colocar o nome da pasta e o Nx saberá o que rodar.
+
+Esse comando também pode ser executado com affected: `yarn nx affected:lint`.
 
 ## Build
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+A geração de builds pode acontecer de três formas:
 
-## Running unit tests
+- Build de toda a workspace: `yarn nx build`
+- Build de um app específico: `yarn nx build {{nome do app}}`
+- Build de todos os apps afetados por alterações: `yarn nx affected:build`
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+Quando o processo de build for buildar um app, o Nx irá por meio do grafo de dependências, realizar também a build de todos os modules e libs utilizados neste app, portanto não é possível realizar a build de modules e libs.
 
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-## ☁ Nx Cloud
-
-### Computation Memoization in the Cloud
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+Depois da finalização do processo, os artefatos da build estarão disponíveis na pasta `dist/`, separados por app.
