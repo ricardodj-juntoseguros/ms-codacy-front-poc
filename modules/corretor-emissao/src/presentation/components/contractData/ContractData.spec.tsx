@@ -5,7 +5,13 @@ import { ContractData, ContractDataProps } from './ContractData';
 
 describe('ContractData', () => {
   let contractDataMock: ContractDataProps = {} as ContractDataProps;
-  const onChangeInsuredValue = jest.fn();
+
+  it('should render successfully', () => {
+    const { baseElement } = render(<ContractData {...contractDataMock} />);
+    expect(baseElement).toBeTruthy();
+  });
+
+  const onChangeInsuredInput = jest.fn();
   const onSelectInsured = jest.fn();
   const onSelectAddress = jest.fn();
   const onChangeContractNumber = jest.fn();
@@ -18,8 +24,8 @@ describe('ContractData', () => {
 
   beforeEach(() => {
     contractDataMock = {
-      insuredValue: 'Insured 01',
-      searchInsuredOptions: [
+      insuredInput: 'Insured 01',
+      insuredOptions: [
         {
           id: 1,
           externalId: 1,
@@ -50,7 +56,7 @@ describe('ContractData', () => {
           state: 'state',
         },
       ],
-      insuredType: 'Insured Type',
+      insuredTypeDescription: 'Insured Type',
       contractNumber: 'Number',
       policyPreview: {
         title: 'Policy preview title',
@@ -68,10 +74,10 @@ describe('ContractData', () => {
           fractionationValue: 0,
         },
       ],
-      firstInstallment: new Date(),
+      firstInstallment: '2022-01-01',
       policyInProgress: false,
       comments: 'Initial',
-      onChangeInsuredValue,
+      onChangeInsuredInput,
       onSelectInsured,
       onSelectAddress,
       onChangeContractNumber,
@@ -81,6 +87,9 @@ describe('ContractData', () => {
       onChangeEmails,
       onChangePolicyInProgress,
       onChangeComments,
+      address: null,
+      installment: null,
+      emails: [],
     };
   });
 
@@ -100,7 +109,8 @@ describe('ContractData', () => {
   it('should call onChangeEmails with the value entered in the field', () => {
     const { getAllByRole } = render(<ContractData {...contractDataMock} />);
     const inputs = getAllByRole('textbox');
-    fireEvent.change(inputs[5], { target: { value: 'email@example.com' } });
+    fireEvent.change(inputs[6], { target: { value: 'email@example.com' } });
+    fireEvent.keyDown(inputs[6], { key: 'Enter', code: 'Enter', charCode: 13 });
 
     expect(onChangeEmails).toHaveBeenCalled();
   });

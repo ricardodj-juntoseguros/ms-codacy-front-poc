@@ -2,11 +2,11 @@
 
 **Data:** 13/12/2021
 
-# Status 
+# Status
 
-**Proposta** em 13/12/2021 
+**Proposta** em 13/12/2021
 
-# Contexto 
+# Contexto
 
 - Para o projeto fidelize será necessário ter interface para os corretores visualizarem e solicitarem oportunidades de negócio.
 
@@ -20,9 +20,7 @@
 
 - A estrutura do projeto feita no terceiro TRI de 2021 não contemplou a esteira de pipeline de publicação do projeto bem como os testes
 - Vamos demandar de esforço do time de DevOps para implementar e disponibilizar a esteira do pipeline deste projeto nos ambientes QAS/STG/PRD
-- Será possível utilizar o login da plataforma dos corretores hoje, uma vez que o cookie de acesso fica no domínio e é acessível a qualquer subdominio (*.juntoseguros.com)
+- Será possível utilizar o login da plataforma dos corretores hoje, uma vez que o cookie de acesso fica no domínio e é acessível a qualquer subdominio (\*.juntoseguros.com)
 - Necessidade de planejamento e estudo de como vai ficar a estrutura E2E na estrutura do monorepo/microfrontends
 - Será utilizado o novo design-system da empresa como padronização do layout
 - Alguns componentes não foram migrados para o novo design-system, dependendo de qual será usado terá que ser investido tempo para a migração
-
-

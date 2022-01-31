@@ -1,13 +1,13 @@
 import { AxiosHttpClient } from './AxiosHttpClient';
 import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters';
 
-interface LoginResponseModel {
-  user?: any;
-  token: string;
-}
 interface UserResponseModel {
   age: number;
   name: string;
+}
+interface LoginResponseModel {
+  user?: UserResponseModel;
+  token: string;
 }
 interface TaskCreateResponseModel {
   success: boolean;
@@ -33,6 +33,7 @@ describe('Axios HTTP client', () => {
 
     if (!token) await authenticate();
   });
+
   it('should execute GET method without error', async () => {
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -45,7 +46,7 @@ describe('Axios HTTP client', () => {
 
     const response = await instance.get<UserResponseModel>(getParameters);
     expect(response.age).toEqual(55);
-    expect(response.name).toEqual('yonatan');
+    expect(response.name).toEqual('Platform Web Test');
   });
 
   it('should execute POST method without error', async () => {
@@ -118,7 +119,7 @@ describe('Axios HTTP client', () => {
 
   async function authenticate() {
     const data = {
-      email: 'muh.nurali43@gmail.com',
+      email: 'jpwtest@email.com',
       password: '12345678',
     };
 

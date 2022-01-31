@@ -1,0 +1,18 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  font-family: 'Metropolis';
+  color: color('brand-primary');
+  min-width: 300px;
+  max-width: 600px;
+  margin: spacing('xxl-4') auto;
+}
+
+.app__header {
+  width: 100%;
+  text-align: center;
+}

@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/libs/infrastructure/http-client',
     '<rootDir>/libs/shared/hooks',
     '<rootDir>/libs/shared/ui',
+    '<rootDir>/apps/fidelize',
   ],
 };

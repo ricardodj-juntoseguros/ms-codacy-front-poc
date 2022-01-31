@@ -19,26 +19,30 @@
     }
   },
   "workspaceLayout": {
-    "libsDir": "libs"
+    "libsDir": "libs",
+    "appsDir": "apps"
   },
-  "projects": {
-    "plataforma": {
-      "tags": []
-    },
-    "digital": {
-      "tags": []
-    },
-    "corretor-emissao": {
-      "tags": []
-    },
-    "infrastructure-http-client": {
-      "tags": []
-    },
-    "shared-hooks": {
-      "tags": []
-    },
-    "shared-ui": {
-      "tags": []
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "strict": true,
+        "routing": true,
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint",
+        "strict": true
+      }
     }
-  }
+  },
+  "defaultProject": "plataforma"
 }

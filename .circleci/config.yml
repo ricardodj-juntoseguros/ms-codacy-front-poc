@@ -2,21 +2,17 @@ version: 2.1
 defaults: &defaults
   working_directory: /tmp/persist_to_workspace
   docker:
-    - image: juntoseguros/devops:base
+    #  - image: juntoseguros/devops:base
+    - image: cypress/base:12
+      environment:
+        ## this enables colors in the output
+        TERM: xterm
 
 jobs:
   checkout:
     <<: *defaults
     steps:
       - checkout
-      - run: pwd
-      - run: ls -lart
-      - restore_cache:
-          keys:
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}
-            - yarn-packages-v1
-      - run: yarn install --network-concurrency 1
       - run:
           name: Clone GitOps
           command: |
@@ -24,9 +20,21 @@ jobs:
             mkdir -p ~/.ssh/
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git clone -b master git@github.com:GitJMSeguradora/GitOps.git
+      - run: pwd
+      - run: ls -lart
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}
+            - yarn-packages-v1
+      - run: yarn install --ignore-engines --network-concurrency 1
       - save_cache:
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+            - /root/.cache/
             - ~/.cache/yarn
       - persist_to_workspace:
           root: /tmp/persist_to_workspace
@@ -56,7 +64,7 @@ jobs:
           name: EsLint
           command: |
             echo "Initialiazing App Lint"
-            yarn lint
+            yarn nx run-many --all --target=lint
             echo "Done"
           no_output_timeout: 5m
 
@@ -75,22 +83,24 @@ jobs:
 
   code-climate:
     <<: *defaults
+    environment:
+      - CC_TEST_REPORTER_ID: 09ffabd673ed0a99b001af14d576757b3666aaf85d0927c711d00c2da91acbb4
     steps:
       - attach_workspace:
           at: /tmp/persist_to_workspace
       - run:
           name: Code Climate - Continuous Inspection and Build
           command: |
-            cp GitOps/circleci/workflows/codeclimate/*.sh .
-            chmod +x ./*.sh
-            #########################################
-            #########################################
-            #########################################
-            #########################################
-            #########################################
-            #./codeclimate.sh node
-            echo "Done"
-          no_output_timeout: 5m
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            yarn nx run-many --all --target=test --codeCoverage=true --coverageReporters=lcov
+            cat $(find ./coverage/* -type f -name lcov.info) > lcov-total.info
+            ./cc-test-reporter format-coverage -t lcov -o codeclimate.total.json lcov-total.info
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ./cc-test-reporter upload-coverage -i ./codeclimate.total.json
+          no_output_timeout: 5
 
   scan-app:
     working_directory: /tmp/persist_to_workspace
@@ -114,6 +124,25 @@ jobs:
       - store_artifacts:
           path: /tmp/persist_to_workspace/scan-app/reports
           destination: scan-app-reports
+
+  e2e_tests:
+    <<: *defaults
+    parallelism: 4
+    steps:
+      - attach_workspace:
+          at: /tmp/persist_to_workspace
+      - run:
+          name: E2E Tests
+          command: |
+            ./node_modules/cypress/bin/cypress install
+            npm rebuild node-sass
+            yarn start &
+            yarn nx affected:e2e -c=dev --base=$CIRCLE_BRANCH
+          no_output_timeout: 5m
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
 
   deploy-cf:
     <<: *defaults
@@ -140,7 +169,7 @@ jobs:
 
             case "${ENV}" in
             quality)
-              yarn affected:build --maxWorkers=1 --memoryLimit=1024
+              yarn affected:build --base=${CIRCLE_BRANCH}~1 --head=$CIRCLE_BRANCH --maxWorkers=1 --memoryLimit=1024
             ;;
             staging)
               yarn affected:build --all --maxWorkers=1 --memoryLimit=1024
@@ -155,19 +184,22 @@ jobs:
             esac
             echo "Done"
           no_output_timeout: 5m
-      - run:
-          name: AWS role assumption to deploy on << parameters.environment >>
-          command: |
-            echo "AWS role assumption"
-            cp .circleci/scripts/role_assumption.sh . 
-            chmod +x ./role_assumption.sh
-            ./role_assumption.sh << parameters.environment >>
-            echo "Done"
+      # - run:
+      #     name: AWS role assumption to deploy on << parameters.environment >>
+      #     command: |
+      #       apt update
+      #       apt install -y build-essential python3-pip software-properties-common apt-transport-https jq
+      #       pip3 install --upgrade awscli
+      #       echo "AWS role assumption"
+      #       cp .circleci/scripts/role_assumption.sh .
+      #       chmod +x ./role_assumption.sh
+      #       ./role_assumption.sh << parameters.environment >>
+      #       echo "Done"
       - deploy:
-          name: Cloudflare+S3 - Pushing to << parameters.environment >> Environment
+          name: Cloudfront+S3 - Pushing to << parameters.environment >> Environment
           command: |
             echo "Initialiazing deploy CF+s3"
-            cp .circleci/scripts/deploy.sh . 
+            cp .circleci/scripts/deploy.sh .
             chmod +x ./deploy.sh
             ./deploy.sh << parameters.environment >>
             echo "Done"
@@ -226,6 +258,10 @@ workflows:
           filters:
             branches: { ignore: 'master' }
             tags: { ignore: '/.*/' }
+          requires:
+            - checkout
+      - e2e_tests:
+          context: GitJMSeguradora
           requires:
             - checkout
 

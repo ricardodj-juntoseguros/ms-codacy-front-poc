@@ -6,18 +6,26 @@ import { RateCalculation, RateCalculationProps } from './RateCalculation';
 describe('RateCalculation', () => {
   const handleDownloadQuote = jest.fn();
   const handleChangeStandardRate = jest.fn();
-
+  const handleEndEditing = jest.fn();
   let mockProps = {} as RateCalculationProps;
+
+  it('Renders without crashing', () => {
+    const { baseElement } = render(<RateCalculation {...mockProps} />);
+
+    expect(baseElement).toBeTruthy();
+  });
 
   beforeEach(() => {
     mockProps = {
       maxRate: 12,
       finalPrize: 200.0,
       finalCommission: 20.0,
-      comissionPercent: 10,
+      commissionPercent: 10,
       standardRateValue: 0,
       handleChangeStandardRate,
       handleDownloadQuote,
+      errorMessage: '',
+      handleEndEditing,
     };
   });
 

@@ -63,6 +63,7 @@ async function setWorkspaceConfiguration(host: Tree, libSrc: string) {
     workspaceLayout: {
       ...workspaceConfigurations.workspaceLayout,
       libsDir: libSrc,
+      appsDir: 'apps',
     },
   });
 }

@@ -102,7 +102,13 @@ Outro comando útil é o `yarn nx affected:test` que executa todos os testes de 
 
 ## Rodando testes end-to-end
 
-Para rodar os testes end-to-end de algum projeto, primeiro certifique-se de que o projeto em questão tenha um projeto de testes e2e associado. Execute o comando `nx run {{nome do app de testes e2e}}:e2e` para rodar os testes.
+### Fidelize
+
+Os testes end-to-end são executados via Cypress, uma biblioteca de desenvolvimento de testes E2E em Node. A biblioteca utiliza por padrão o Chrome para a execução dos testes, e os drivers do mesmo será instalado juntamente com o pacote do Cypress, sem necessidade de configuração externa.
+
+A execução dos testes end-to-end do projeto Fidelize é feita através do comando `yarn nx run fidelize-e2e:test:dev`. Os testes executarão em ambiente de desenvolvimento, e o próprio comando irá subir a aplicação.
+
+O comando aceita a flag `--headless`, que modificará a execução dos testes para que seja feita sem a interface gráfica do Cypress.
 
 ## Rodando o Lint
 

@@ -62,10 +62,6 @@ export function TimeframeAndCoverageContainer() {
     dispatch(quoteSliceActions.setTimeframeEnd(value));
   }
 
-  useEffect(() => {
-    handleTimeframeStartChange(parseDateToString(new Date()));
-  }, []);
-
   const validateDatesCoverage = useCallback(
     (dateStart: Date, dateEnd: Date) => {
       if (isAfter(dateStart, dateEnd)) {

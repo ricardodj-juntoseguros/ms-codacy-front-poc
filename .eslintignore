@@ -19,3 +19,5 @@ yarn-error.log*
 *.md
 **/jest.preset.js
 **/webpack.config.js
+**/.gitkeep
+**/.browserslistrc
