@@ -83,8 +83,8 @@ jobs:
 
   code-climate:
     <<: *defaults
-    environment:
-      - CC_TEST_REPORTER_ID: 09ffabd673ed0a99b001af14d576757b3666aaf85d0927c711d00c2da91acbb4
+    #environment:
+     # - CC_TEST_REPORTER_ID: 09ffabd673ed0a99b001af14d576757b3666aaf85d0927c711d00c2da91acbb4
     steps:
       - attach_workspace:
           at: /tmp/persist_to_workspace
@@ -100,7 +100,7 @@ jobs:
           name: Upload coverage results to Code Climate
           command: |
             ./cc-test-reporter upload-coverage -i ./codeclimate.total.json
-          no_output_timeout: 5
+          no_output_timeout: 5m
 
   scan-app:
     working_directory: /tmp/persist_to_workspace
@@ -120,7 +120,7 @@ jobs:
             chmod +x *.sh scan-app/*.sh
             ./scan-app.sh node
             echo "Done"
-          no_output_timeout: 5m
+          no_output_timeout: 10m
       - store_artifacts:
           path: /tmp/persist_to_workspace/scan-app/reports
           destination: scan-app-reports
@@ -164,6 +164,12 @@ jobs:
       - run:
           name: Building to << parameters.environment >> Environment
           command: |
+            echo "Initialiazing pre-build << parameters.environment >>"
+            cp .circleci/scripts/pre-build.sh .
+            chmod +x ./pre-build.sh
+            ./pre-build.sh << parameters.environment >>
+            echo "Done" 
+
             echo "Initialiazing build << parameters.environment >>"
             ENV=<< parameters.environment >>
 
@@ -184,17 +190,7 @@ jobs:
             esac
             echo "Done"
           no_output_timeout: 5m
-      # - run:
-      #     name: AWS role assumption to deploy on << parameters.environment >>
-      #     command: |
-      #       apt update
-      #       apt install -y build-essential python3-pip software-properties-common apt-transport-https jq
-      #       pip3 install --upgrade awscli
-      #       echo "AWS role assumption"
-      #       cp .circleci/scripts/role_assumption.sh .
-      #       chmod +x ./role_assumption.sh
-      #       ./role_assumption.sh << parameters.environment >>
-      #       echo "Done"
+
       - deploy:
           name: Cloudfront+S3 - Pushing to << parameters.environment >> Environment
           command: |

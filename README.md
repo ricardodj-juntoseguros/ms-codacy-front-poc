@@ -34,9 +34,17 @@ Para facilitar o desenvolvimento, geração de código e manutenção com o Nx, 
 
 Essa extensão abstrai os comandos de geração, execução, teste e build do Nx CLI para uma interface gráfica, além de exibir um resumo da sua workspace.
 
+## Preparando os arquivos de ambiente
+
+Para as aplicações funcionarem normalmente, é necessário que os arquivos de ambiente (_`.env`_) estejam propriamente configurados.
+
+Os arquivos de ambiente que o Nx irá usar deverão estar localizados na raiz do projeto e na raiz do app que irá ser executado (./{{nome do app}}/.env).
+
+A criação desses arquivos pode ser manual, realizando a cópia do arquivo do ambiente desejado que estão nas pastas `environments`, mas também há scripts criados para cada app para automatizar esse processo. Vide `package.json`
+
 ## Para rodar um app localmente
 
-Para iniciar uma das aplicações na máquina localmente, basta executar o comando
+Para iniciar uma das aplicações na máquina localmente
 
 `yarn nx serve {{nome do app}}`
 

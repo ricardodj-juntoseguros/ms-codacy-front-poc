@@ -1,4 +1,5 @@
 import styles from './app.module.scss';
+import Routes from './routes';
 
 export function App() {
   return (
@@ -6,6 +7,7 @@ export function App() {
       <header className={styles.app__header}>
         <h1>Bem-Vindo ao fidelize!</h1>
       </header>
+      <Routes />
     </div>
   );
 }

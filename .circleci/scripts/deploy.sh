@@ -45,8 +45,8 @@ function deploy_cf () {
     CI="false"
     if [ $(echo $CIRCLE_BRANCH | grep -i "squad2") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_2"
-    CF_ID=E2ZUKESZIDZ18X
-    AWS_S3_QAS=platform-web-qas
+    CF_ID=$AWS_CF_QAS_2
+    AWS_S3_QAS=$AWS_S3_QAS_2
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad5") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_5"
     AWS_CF_QAS=$AWS_CF_QAS_5

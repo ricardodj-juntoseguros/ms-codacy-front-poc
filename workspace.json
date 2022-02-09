@@ -111,7 +111,7 @@
             "main": "apps/fidelize/src/main.tsx",
             "polyfills": "apps/fidelize/src/polyfills.ts",
             "tsConfig": "apps/fidelize/tsconfig.app.json",
-            "assets": [],
+            "assets": ["apps/fidelize/src/favicon.ico"],
             "styles": ["apps/fidelize/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "apps/fidelize/webpack.config.js"
