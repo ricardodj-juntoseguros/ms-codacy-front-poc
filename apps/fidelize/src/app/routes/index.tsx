@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 
-const Hello = () => <h1>Dashboard</h1>;
+const Hello = () => <h1>Hello Dashboard</h1>;
 
 export default function Routes() {
   return (

@@ -28,42 +28,33 @@ else
   exit 1
 fi
 
-function deploy_cf () {
+function deploy_cf_qas () {
   DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $1}')
   #CF_ID=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $2}')
   S3_PATH=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $3}' | cut -d'.' -f1)
-
-  # if [ -z "${DNS_NAME}" ] || [ -z "${CF_ID}" ] || [ -z "${S3_PATH}" ]; then
-  #   echo "Don't identify CF or S3 to deploy and app dont deployed!"
-  #   echo "Please check your configurations to app ${APP}..."
-  #   LIST_FAILED="${APP} ${LIST_FAILED}"
-  # else
-  # echo "Identided CF and S3!"
-  # echo "Initing deploy on app: ${APP}..."
-  # LIST_DEPLOYED="${APP} ${LIST_DEPLOYED}"
 
     CI="false"
     if [ $(echo $CIRCLE_BRANCH | grep -i "squad2") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_2"
     CF_ID=$AWS_CF_QAS_2
-    AWS_S3_QAS=$AWS_S3_QAS_2
+    AWS_S3=$AWS_S3_QAS_2
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad5") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_5"
-    AWS_CF_QAS=$AWS_CF_QAS_5
+    CF_ID=$AWS_CF_QAS_5
     AWS_S3_QAS=$AWS_S3_QAS_5
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad6") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_6"
-    AWS_CF_QAS=$AWS_CF_QAS_6
+    CF_ID=$AWS_CF_QAS_6
     AWS_S3_QAS=$AWS_S3_QAS_6
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad7") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_7"
-    AWS_CF_QAS=$AWS_CF_QAS_7
+    CF_ID=$AWS_CF_QAS_7
     AWS_S3_QAS=$AWS_S3_QAS_7
     fi
 
 
     cd ${PATH_APPS}/${i}
-    aws s3 sync . s3://$AWS_S3_QAS/$APP --delete
+    aws s3 sync . s3://$AWS_S3/$APP --delete
     
     echo "Creating invalidations in CloudFront"
     aws configure set preview.cloudfront true
@@ -88,6 +79,85 @@ function deploy_cf () {
         done <<< "${AWS_LIST_INVALIDATIONS}"
       fi
 }
+
+function deploy_cf_stg () {
+  DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $1}')
+  #CF_ID=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $2}')
+  S3_PATH=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $3}' | cut -d'.' -f1)
+
+    CI="false"
+    if [ $(echo $CIRCLE_BRANCH | grep -i "master") ]; then
+    echo "Setting env AWS_CF and AWS_S3 to STG"
+    CF_ID=$AWS_CF_STG
+    AWS_S3=$AWS_S3_STG
+    fi
+
+    cd ${PATH_APPS}/${i}
+    aws s3 sync . s3://$AWS_S3/$APP --delete
+    
+    echo "Creating invalidations in CloudFront"
+    aws configure set preview.cloudfront true
+    aws cloudfront create-invalidation --distribution-id ${CF_ID} --paths "/*"
+    echo "Done"
+    AWS_LIST_INVALIDATIONS=$(aws cloudfront list-invalidations --distribution-id ${CF_ID} | jq '.InvalidationList | .Items | .[] | select(.Status != "Completed") | .Id' | cut -d \" -f2)
+    if [ -z "${AWS_LIST_INVALIDATIONS}" ]; then
+      echo No CloudFront Invalidations In Progress.
+      exit 0
+    else
+      while IFS= read -r INVALIDATION_ID
+      do
+        echo Invalidation ID: ${INVALIDATION_ID}
+        INVALIDATION_STATUS=$(aws cloudfront get-invalidation --distribution-id ${CF_ID} --id ${INVALIDATION_ID} 2>&1 | jq '.Invalidation | .Status' | cut -d \" -f2)
+        while [ ${INVALIDATION_STATUS} = "InProgress" ]; do
+          echo "Invalidation Status:" ${INVALIDATION_STATUS}
+          echo "Waiting for invalidation to complete..."
+          sleep 15
+          INVALIDATION_STATUS=$(aws cloudfront get-invalidation --distribution-id ${CF_ID} --id ${INVALIDATION_ID} 2>&1 | jq '.Invalidation | .Status' | cut -d \" -f2)
+        done
+        echo "CloudFront Invalidation ${INVALIDATION_ID} ${INVALIDATION_STATUS}"
+        done <<< "${AWS_LIST_INVALIDATIONS}"
+      fi
+}
+
+function deploy_cf_prd () {
+  DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $1}')
+  #CF_ID=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $2}')
+  S3_PATH=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $3}' | cut -d'.' -f1)
+
+    CI="false"
+    if [ $(echo $CIRCLE_BRANCH | grep -i "master") ]; then
+    echo "Setting env AWS_CF and AWS_S3 to PRD"
+    CF_ID=$AWS_CF_PRD
+    AWS_S3=$AWS_S3_PRD
+    fi
+
+    cd ${PATH_APPS}/${i}
+    aws s3 sync . s3://$AWS_S3/$APP --delete
+    
+    echo "Creating invalidations in CloudFront"
+    aws configure set preview.cloudfront true
+    aws cloudfront create-invalidation --distribution-id ${CF_ID} --paths "/*"
+    echo "Done"
+    AWS_LIST_INVALIDATIONS=$(aws cloudfront list-invalidations --distribution-id ${CF_ID} | jq '.InvalidationList | .Items | .[] | select(.Status != "Completed") | .Id' | cut -d \" -f2)
+    if [ -z "${AWS_LIST_INVALIDATIONS}" ]; then
+      echo No CloudFront Invalidations In Progress.
+      exit 0
+    else
+      while IFS= read -r INVALIDATION_ID
+      do
+        echo Invalidation ID: ${INVALIDATION_ID}
+        INVALIDATION_STATUS=$(aws cloudfront get-invalidation --distribution-id ${CF_ID} --id ${INVALIDATION_ID} 2>&1 | jq '.Invalidation | .Status' | cut -d \" -f2)
+        while [ ${INVALIDATION_STATUS} = "InProgress" ]; do
+          echo "Invalidation Status:" ${INVALIDATION_STATUS}
+          echo "Waiting for invalidation to complete..."
+          sleep 15
+          INVALIDATION_STATUS=$(aws cloudfront get-invalidation --distribution-id ${CF_ID} --id ${INVALIDATION_ID} 2>&1 | jq '.Invalidation | .Status' | cut -d \" -f2)
+        done
+        echo "CloudFront Invalidation ${INVALIDATION_ID} ${INVALIDATION_STATUS}"
+        done <<< "${AWS_LIST_INVALIDATIONS}"
+      fi
+}
+
 
 function check_deploy () {
   if [ -n "${LIST_DEPLOYED}" ]; then
@@ -118,7 +188,7 @@ quality)
           echo "On envorinment squad${SQUAD}..."
         fi
         APP_DEPLOY="${APP}2-qas-2.juntoseguros.com"
-        deploy_cf
+        deploy_cf_qas
     done
   else
     echo "Nothing changes identify to deploy!"
@@ -130,7 +200,7 @@ quality)
 ;;
 
 staging)
-  echo "Initing deploy on quality!"
+  echo "Initing deploy on staging!"
   if [ ! -z "${LIST_APPS}" ]; then
     for i in ${LIST_APPS}
     do
@@ -139,7 +209,7 @@ staging)
         APP="${i}"
         echo "Initing deploy app ${APP}..."
         APP_DEPLOY="${APP}2-stg.juntoseguros.com"
-        deploy_cf
+        deploy_cf_stg
     done
   else
     echo "Nothing changes identify to deploy!"
@@ -160,7 +230,7 @@ production)
         APP="${i}"
         echo "Initing deploy app ${APP}..."
         APP_DEPLOY="${APP}2.juntoseguros.com"
-        deploy_cf
+        deploy_cf_prd
     done
   else
     echo "Nothing changes identify to deploy!"
