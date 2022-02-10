@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { addMilliseconds, isBefore } from 'date-fns';
 import jwtDecode from 'jwt-decode';
-import UserAccessToken from './types/UserAccessToken';
+import UserAccessToken from '../types/UserAccessToken';
 
 class AuthService {
   private readonly USER_ACCESS_COOKIE = 'uac';

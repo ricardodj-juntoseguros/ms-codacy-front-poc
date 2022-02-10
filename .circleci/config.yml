@@ -178,7 +178,7 @@ jobs:
               yarn affected:build --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024
             ;;
             production)
-              yarn affected:build --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024
+              yarn affected:build --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
             ;;
             *)
               echo "Invalid Options. Try: quality, staging or production"

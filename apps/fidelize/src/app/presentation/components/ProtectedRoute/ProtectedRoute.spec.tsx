@@ -1,14 +1,16 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import AuthService from '../services/AuthService';
+import { MemoryRouter, RouteComponentProps } from 'react-router-dom';
+import AuthService from '../../../services/AuthService';
 import ProtectedRoute from './ProtectedRoute';
 
 process.env.NX_GLOBAL_BROKER_PLATFORM_URL = '/test_broker_login';
 process.env.NX_GLOBAL_BROKER_PROCESSES_URL = '/test_broker_processes';
 process.env.NX_FID_APP_URL = 'fidelize_url';
 
-const renderComponent = (componentToRender: React.ComponentType) => {
+const renderComponent = (
+  componentToRender: React.ComponentType<RouteComponentProps>,
+) => {
   return render(
     <MemoryRouter initialEntries={['/test']}>
       <ProtectedRoute path="/test" component={componentToRender} />

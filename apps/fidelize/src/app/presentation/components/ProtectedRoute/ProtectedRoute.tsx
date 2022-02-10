@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route, RouteProps } from 'react-router';
-import AuthService from '../services/AuthService';
+import { Route, RouteProps, RouteComponentProps } from 'react-router';
+import AuthService from '../../../services/AuthService';
 
 interface ProtectedRouteProps extends RouteProps {
-  component: React.ComponentType;
+  component: React.ComponentType<RouteComponentProps>;
 }
 
 const ProtectedRoute = (props: ProtectedRouteProps) => {

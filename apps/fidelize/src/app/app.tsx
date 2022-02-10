@@ -1,5 +1,5 @@
 import styles from './app.module.scss';
-import Routes from './routes';
+import Routes from './config/routes';
 
 export function App() {
   return (
