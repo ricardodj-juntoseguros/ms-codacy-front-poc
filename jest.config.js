@@ -7,5 +7,7 @@ module.exports = {
     '<rootDir>/libs/shared/hooks',
     '<rootDir>/libs/shared/ui',
     '<rootDir>/apps/fidelize',
+    '<rootDir>/modules/fidelize-dashboard',
+    '<rootDir>/libs/shared/utils',
   ],
 };

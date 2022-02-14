@@ -1,0 +1,22 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.dashboard-header__title {
+  @include font('xl-emphasys');
+  margin-bottom: spacing('l');
+  color: color('dark');
+  margin-top: 0px;
+}
+
+.dashboard-header__subtitle {
+  @include font('l');
+  color: color('grey-600');
+  margin-bottom: spacing('xxl-4');
+  margin-top: 0px;
+}
+
+@media screen and (max-width: 420px) {
+  .dashboard-header__subtitle {
+    @include font('base');
+    margin-bottom: spacing('xxl-2');
+  }
+}

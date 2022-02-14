@@ -21,8 +21,12 @@
         "libs/infrastructure/http-client/src/index.ts"
       ],
       "@modules/corretor-emissao": ["modules/corretor-emissao/src/index.tsx"],
+      "@modules/fidelize-dashboard": [
+        "modules/fidelize-dashboard/src/index.tsx"
+      ],
       "@shared/hooks": ["libs/shared/hooks/src/index.tsx"],
-      "@shared/ui": ["libs/shared/ui/src/index.tsx"]
+      "@shared/ui": ["libs/shared/ui/src/index.tsx"],
+      "@shared/utils": ["libs/shared/utils/src/index.ts"]
     }
   },
   "include": ["**/*.d.ts"],

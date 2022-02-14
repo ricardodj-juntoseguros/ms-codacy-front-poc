@@ -1,8 +1,7 @@
 import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
+import FidelizeDashboard from '@modules/fidelize-dashboard';
 import ProtectedRoute from '../presentation/components/ProtectedRoute';
 import NotFoundContainer from '../presentation/pages/NotFoundContainer';
-
-const Hello = () => <h1>Hello Dashboard</h1>;
 
 export default function Routes() {
   return (
@@ -13,7 +12,7 @@ export default function Routes() {
           path="/"
           component={() => <Redirect to="/dashboard" />}
         />
-        <ProtectedRoute exact path="/dashboard" component={Hello} />
+        <ProtectedRoute exact path="/dashboard" component={FidelizeDashboard} />
         <ProtectedRoute
           exact
           path="/pagina-nao-encontrada"

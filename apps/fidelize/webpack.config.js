@@ -10,6 +10,23 @@ module.exports = (config, context) => {
       extensions: [...config.resolve.extensions, '.scss'],
       alias: {
         ...config.resolve.alias,
+        '@modules/fidelize-dashboard': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'modules',
+          'fidelize-dashboard',
+          'src',
+        ),
+        '@shared/utils': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'shared',
+          'utils',
+          'src',
+        ),
       },
     },
     module: {

@@ -216,7 +216,7 @@ export function ContractData({
           label="Adicionar e-mails para recebimento da apólice"
           placeholder="Adicionar e-mails para recebimento da apólice"
           onValueChange={onChangeEmails}
-          initialValue={emails}
+          value={emails}
           helperMessage="Para mais de um destinatário, escreva os endereços de e-mail separados por ponto e vírgula (;)."
         />
       </div>

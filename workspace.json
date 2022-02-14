@@ -171,6 +171,31 @@
       },
       "tags": []
     },
+    "fidelize-dashboard": {
+      "root": "modules/fidelize-dashboard",
+      "sourceRoot": "modules/fidelize-dashboard/src",
+      "projectType": "library",
+      "tags": [],
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "modules/fidelize-dashboard/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/modules/fidelize-dashboard"],
+          "options": {
+            "jestConfig": "modules/fidelize-dashboard/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "fidelize-e2e": {
       "root": "apps/fidelize-e2e",
       "sourceRoot": "apps/fidelize-e2e/src",
@@ -184,11 +209,15 @@
           },
           "configurations": {
             "dev": {
-              "env": { "target": "dev" },
+              "env": {
+                "target": "dev"
+              },
               "devServerTarget": "fidelize:serve"
             },
             "qas": {
-              "env": { "target": "qas" },
+              "env": {
+                "target": "qas"
+              },
               "baseUrl": "https://fidelize-qas.juntoseguros.com/"
             }
           }
@@ -335,6 +364,29 @@
           "outputs": ["coverage/libs/shared/ui"],
           "options": {
             "jestConfig": "libs/shared/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "shared-utils": {
+      "root": "libs/shared/utils",
+      "sourceRoot": "libs/shared/utils/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/shared/utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/utils"],
+          "options": {
+            "jestConfig": "libs/shared/utils/jest.config.js",
             "passWithNoTests": true
           }
         }

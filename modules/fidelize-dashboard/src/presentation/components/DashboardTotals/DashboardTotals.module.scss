@@ -1,0 +1,21 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.dashboard-totals__wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: spacing('xxl-4');
+}
+
+@media screen and (max-width: 1008px) {
+  .dashboard-totals__wrapper {
+    justify-content: space-evenly;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-totals__wrapper {
+    margin-top: spacing('xxl-2');
+  }
+}
