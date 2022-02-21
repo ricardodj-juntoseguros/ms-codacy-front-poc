@@ -4,7 +4,8 @@ import jwtDecode from 'jwt-decode';
 import UserAccessToken from '../types/UserAccessToken';
 
 class AuthService {
-  private readonly USER_ACCESS_COOKIE = 'uac';
+  private readonly USER_ACCESS_COOKIE =
+    process.env.NX_FID_USER_ACCESS_COOKIE || 'uac';
 
   isAuthenticated(): boolean {
     const userCookie = Cookies.get(this.USER_ACCESS_COOKIE) || '';

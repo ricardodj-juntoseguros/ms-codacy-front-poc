@@ -27,6 +27,15 @@ module.exports = (config, context) => {
           'utils',
           'src',
         ),
+        '@infrastructure/http-client': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'infrastructure',
+          'http-client',
+          'src',
+        ),
       },
     },
     module: {

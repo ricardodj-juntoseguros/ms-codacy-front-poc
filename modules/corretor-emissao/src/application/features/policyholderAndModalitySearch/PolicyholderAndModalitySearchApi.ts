@@ -11,6 +11,7 @@ class PolicyholderAndModalitySearchApi {
   public constructor() {
     this.httpClient = new AxiosHttpClient(
       'https://ms-gateway-qas.juntoseguros.com/squad1/plataforma-preview-api/',
+      {},
       100000,
     );
   }

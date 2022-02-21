@@ -40,6 +40,13 @@
   margin: 0px;
 }
 
+.dashboard-total-card__error {
+  color: color('error');
+  @include font('l');
+  margin: 0px;
+  text-align: center;
+}
+
 .dashboard-total-card__changed-value {
   color: color('grey-500');
   @include font('xs');

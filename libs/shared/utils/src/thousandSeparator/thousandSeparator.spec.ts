@@ -10,4 +10,9 @@ describe('Thousand Separator Lib', () => {
     const result = thousandSeparator(120100255, '@');
     expect(result).toBe('120@100@255');
   });
+
+  it('Should return null if provided value is null', () => {
+    const result = thousandSeparator(null);
+    expect(result).toBe(null);
+  });
 });

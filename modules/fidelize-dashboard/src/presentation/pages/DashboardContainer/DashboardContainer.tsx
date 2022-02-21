@@ -1,14 +1,14 @@
 import { Divider } from 'junto-design-system';
 import styles from './DashboardContainer.module.scss';
 import DashboardHeader from '../../components/DashboardHeader';
-import DashboardTotals from '../../components/DashboardTotals';
+import DashboardSummary from '../../components/DashboardSummary';
 
 function DashboardContainer() {
   return (
     <div className={styles['dashboard-container__wrapper']}>
       <DashboardHeader />
       <Divider />
-      <DashboardTotals />
+      <DashboardSummary />
     </div>
   );
 }

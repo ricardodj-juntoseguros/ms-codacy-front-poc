@@ -7,5 +7,14 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/fidelize',
+  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
+  coveragePathIgnorePatterns: [
+    '/src/app/config/',
+    '/src/app/services/types',
+    'index.ts',
+    'index.tsx',
+    'polyfills.ts',
+    'main.tsx',
+  ],
   transformIgnorePatterns: ['node_modules/(?!junto-design-system/.*)'],
 };

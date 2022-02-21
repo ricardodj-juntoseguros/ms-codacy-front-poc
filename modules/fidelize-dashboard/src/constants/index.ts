@@ -1,1 +1,1 @@
-export * from './dashboardTotals';
+export * from './summaryCards';

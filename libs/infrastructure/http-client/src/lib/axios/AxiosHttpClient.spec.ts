@@ -28,6 +28,7 @@ describe('Axios HTTP client', () => {
     if (!instance)
       instance = new AxiosHttpClient(
         'https://api-nodejs-todolist.herokuapp.com',
+        {},
         10000,
       );
 

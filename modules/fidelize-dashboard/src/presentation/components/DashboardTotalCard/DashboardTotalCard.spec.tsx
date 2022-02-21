@@ -9,6 +9,8 @@ describe('DashboardTotalCard', () => {
         totalLabel="Teste 123"
         totalValue="Teste ABC"
         changedValue={10}
+        error={false}
+        loading={false}
       />,
     );
     expect(component.getByText('Teste 123')).toBeTruthy();

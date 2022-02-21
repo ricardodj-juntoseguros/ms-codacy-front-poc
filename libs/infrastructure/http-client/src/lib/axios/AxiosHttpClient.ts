@@ -11,10 +11,11 @@ import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters'
 export class AxiosHttpClient implements IHttpClient {
   protected readonly instance: AxiosInstance;
 
-  public constructor(baseURL: string, timeout?: number) {
+  public constructor(baseURL: string, headers?: any, timeout?: number) {
     this.instance = axios.create({
       baseURL,
       timeout,
+      headers,
     });
 
     // this._initializeResponseInterceptor();
