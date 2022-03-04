@@ -1,5 +1,7 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
+import { ModalitySummaryDTO } from '../../types/dto/ModalitySummaryDTO';
 import { SummaryPolicyholdersDTO } from '../../types/dto/SummaryPolicyholdersDTO';
+import { ModalityEnum } from '../../types/model';
 import SummaryApi from './SummaryApi';
 
 describe('SummaryApi', () => {
@@ -16,8 +18,30 @@ describe('SummaryApi', () => {
     const result = await SummaryApi.getPolicyholdersTotal();
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/opportunities/summary/policyholders',
+      url: '/v1/opportunities/summary/policyholders',
     });
     expect(result.totalPolicyholders).toBe(100);
+  });
+
+  it('getModalitiesSummary should call bff service correctly', async () => {
+    const mockGet = jest
+      .spyOn(AxiosHttpClient.prototype, 'get')
+      .mockImplementation(async () => {
+        return [
+          {
+            modality: 'fiscal',
+            totalOpportunities: 100,
+            totalInsuredAmount: 1000000,
+          },
+        ] as ModalitySummaryDTO[];
+      });
+    const result = await SummaryApi.getModalitiesSummary();
+
+    expect(mockGet).toHaveBeenCalledWith({
+      url: '/v1/opportunities/summary/modalities',
+    });
+    expect(result[0].modality).toBe(ModalityEnum.FISCAL);
+    expect(result[0].totalOpportunities).toBe(100);
+    expect(result[0].totalInsuredAmount).toBe(1000000);
   });
 });

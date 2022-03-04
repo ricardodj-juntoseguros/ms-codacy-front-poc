@@ -1,5 +1,5 @@
 export enum ModalityEnum {
   FISCAL = 'fiscal',
-  CIVEL = 'civel',
+  CIVIL = 'civil',
   TRABALHISTA = 'labor',
 }

@@ -21,7 +21,7 @@ describe('Modality Summary', () => {
   it('Should render civel accordingly to props', () => {
     const { getByText } = render(
       <ModalitySummary
-        modality={ModalityEnum.CIVEL}
+        modality={ModalityEnum.CIVIL}
         totalInsuredValue={6500000}
         totalOpportunities={237580}
       />,

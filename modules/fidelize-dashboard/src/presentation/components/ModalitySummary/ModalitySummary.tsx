@@ -16,7 +16,7 @@ const ModalitySummary: React.FC<ModalitySummaryProps> = ({
   const getLabelByModality = () => {
     const base = 'Op. ';
     if (modality === ModalityEnum.FISCAL) return `${base} fiscais`;
-    if (modality === ModalityEnum.CIVEL) return `${base} cíveis`;
+    if (modality === ModalityEnum.CIVIL) return `${base} cíveis`;
     return `${base} trabalhistas`;
   };
 
