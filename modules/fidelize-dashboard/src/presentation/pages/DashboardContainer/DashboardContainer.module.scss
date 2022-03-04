@@ -7,11 +7,25 @@
   margin-right: auto;
 }
 
+.dashboard-container__modalities-title {
+  @include font('l-emphasys');
+  margin-bottom: 0px;
+  margin-top: spacing('xxl-5');
+}
+
+.dashboard-container__tabs-wrapper {
+  margin-top: spacing('xl');
+}
+
 @media screen and (max-width: 1008px) {
   .dashboard-container__wrapper {
     max-width: 100%;
     padding-left: spacing('l');
     padding-right: spacing('l');
     box-sizing: border-box;
+  }
+
+  .dashboard-container__modalities-title {
+    margin-top: spacing('xxl-3');
   }
 }

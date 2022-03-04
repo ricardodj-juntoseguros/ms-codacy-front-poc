@@ -131,6 +131,23 @@ jobs:
       - run:
           name: E2E Tests
           command: |
+            echo 'deb http://deb.debian.org/debian/ jessie main
+            deb http://security.debian.org/ jessie/updates main' > /etc/apt/sources.list
+            echo 'Acquire::Check-Valid-Until false;' >> /etc/apt/apt.conf
+            apt-get update && apt-get install jq -y
+            CIRCLECI_IP=$(curl http://checkip.amazonaws.com)
+            # Buscando lista de IPs
+            KONG_LIST_IP=$(curl -s -X GET https://ms-gateway-qas.juntoseguros.com/api-plugin/b624cf8e-90a3-44c0-9028-0f1bf4d8973e \
+            -H "consumer_api: $KONG_KEY_API" \
+            | jq '.config .whitelist[]' \
+            | sed '/^/ s/./\--data config.whitelist\=/' \
+            | sed 's/"//g')
+            # Liberando IP do CircleCI no Kong
+            curl -s -X PATCH https://ms-gateway-qas.juntoseguros.com/api-plugin/b624cf8e-90a3-44c0-9028-0f1bf4d8973e \
+            -H "consumer_api: $KONG_KEY_API" \
+            $KONG_LIST_IP \
+            --data config.whitelist=$CIRCLECI_IP/32
+            # Executando Testes
             ./node_modules/cypress/bin/cypress install
             npm rebuild node-sass
             yarn start &
