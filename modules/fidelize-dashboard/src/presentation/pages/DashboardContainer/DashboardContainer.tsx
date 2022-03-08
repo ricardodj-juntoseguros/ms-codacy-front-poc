@@ -5,6 +5,7 @@ import DashboardHeader from '../../components/DashboardHeader';
 import DashboardSummary from '../../components/DashboardSummary';
 import ModalitySummary from '../../components/ModalitySummary';
 import ModalityTabsSkeleton from '../../components/ModalityTabsSkeleton';
+import ModalityUnderConstruction from '../../components/ModalityUnderConstruction';
 import {
   selectModality,
   modalitySelectionSliceActions,
@@ -78,7 +79,9 @@ function DashboardContainer() {
               value={ModalityEnum.TRABALHISTA}
               label="Trabalhista"
               totalizer={0}
-            />
+            >
+              <ModalityUnderConstruction />
+            </Tab>
             <Tab
               value={ModalityEnum.FISCAL}
               label="Fiscal"
@@ -91,7 +94,9 @@ function DashboardContainer() {
                 hasError={errorModalitySummary}
               />
             </Tab>
-            <Tab value={ModalityEnum.CIVIL} label="Cível" totalizer={0} />
+            <Tab value={ModalityEnum.CIVIL} label="Cível" totalizer={0}>
+              <ModalityUnderConstruction />
+            </Tab>
           </Tabs>
         )}
       </div>
