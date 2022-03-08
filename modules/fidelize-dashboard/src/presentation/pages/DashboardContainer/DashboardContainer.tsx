@@ -18,6 +18,7 @@ function DashboardContainer() {
   const dispatch = useDispatch();
   const { selectedModality } = useSelector(selectModality);
   const [loadingModalities, setLoadingModalities] = useState(true);
+  const [errorModalitySummary, setErrorModalitySummary] = useState(false);
   const [modalitiesSummaryData, setModalitiesSummaryData] = useState<
     ModalitySummaryDTO[]
   >([]);
@@ -28,12 +29,8 @@ function DashboardContainer() {
 
   const fetchModalitiesSummary = () => {
     SummaryApi.getModalitiesSummary()
-      .then(response => {
-        setModalitiesSummaryData(response);
-      })
-      .catch(() => {
-        setModalitiesSummaryData([]);
-      })
+      .then(response => setModalitiesSummaryData(response))
+      .catch(() => setErrorModalitySummary(true))
       .finally(() => setLoadingModalities(false));
   };
 
@@ -91,6 +88,7 @@ function DashboardContainer() {
                 modality={ModalityEnum.FISCAL}
                 totalOpportunities={fiscalOpportunities}
                 totalInsuredValue={fiscalIS}
+                hasError={errorModalitySummary}
               />
             </Tab>
             <Tab value={ModalityEnum.CIVIL} label="Cível" totalizer={0} />

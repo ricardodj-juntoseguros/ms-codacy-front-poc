@@ -1,23 +1,27 @@
 import { thousandSeparator, thousandTextFormatter } from '@shared/utils';
 import { ModalityEnum } from '../../../application/types/model';
+import { ReactComponent as NoOpportunitiesIllustration } from './assets/no-opportunities.svg';
 import styles from './ModalitySummary.module.scss';
 
 interface ModalitySummaryProps {
   modality: ModalityEnum;
   totalOpportunities: number;
   totalInsuredValue: number;
+  hasError: boolean;
 }
 
 const ModalitySummary: React.FC<ModalitySummaryProps> = ({
   modality,
   totalInsuredValue,
   totalOpportunities,
+  hasError,
 }) => {
-  const getLabelByModality = () => {
-    const base = 'Op. ';
-    if (modality === ModalityEnum.FISCAL) return `${base} fiscais`;
-    if (modality === ModalityEnum.CIVIL) return `${base} cíveis`;
-    return `${base} trabalhistas`;
+  const getLabelByModality = (preffix = '', plural = false) => {
+    if (modality === ModalityEnum.FISCAL)
+      return `${preffix} ${plural ? 'fiscais' : 'fiscal'}`;
+    if (modality === ModalityEnum.CIVIL)
+      return `${preffix} ${plural ? 'cíveis' : 'cível'}`;
+    return `${preffix} ${plural ? 'trabalhistas' : 'trabalhista'}`;
   };
 
   const renderItems = () => {
@@ -25,7 +29,7 @@ const ModalitySummary: React.FC<ModalitySummaryProps> = ({
       {
         key: 'opportunities',
         icon: 'file',
-        label: getLabelByModality(),
+        label: getLabelByModality('Op.', true),
         value: thousandSeparator(totalOpportunities, '.'),
       },
       {
@@ -56,8 +60,41 @@ const ModalitySummary: React.FC<ModalitySummaryProps> = ({
     ));
   };
 
+  const renderNoOpportunitiesFound = () => {
+    return (
+      <div className={styles['modality-summary__no-ops-wrapper']}>
+        <NoOpportunitiesIllustration
+          className={styles['modality-summary__no-ops-illustration']}
+        />
+        <h2 className={styles['modality-summary__no-ops-title']}>
+          Não há oportunidades {getLabelByModality('', true)}
+        </h2>
+        <p className={styles['modality-summary__no-ops-text']}>
+          Até o momento não foram encontradas oportunidades no âmbito{' '}
+          {getLabelByModality()} para o(s) tomador(es) selecionado(s).
+        </p>
+        <p className={styles['modality-summary__no-ops-text']}>
+          Caso você tenha solicitado o mapeamento recentemente, o retorno pode
+          demorar aproximadamente 15 dias. Se não, você pode solicitar um novo
+          mapeamento, por meio do seu comercial responsável.
+        </p>
+      </div>
+    );
+  };
+
   return (
-    <div className={styles['modality-summary__wrapper']}>{renderItems()}</div>
+    <div className={styles['modality-summary__wrapper']}>
+      {hasError && (
+        <h2 className={styles['modality-summary__error']}>
+          Opa! Ocorreu um erro inesperado ao carregar esta seção. Por favor,
+          tente novamente.
+        </h2>
+      )}
+      {!hasError &&
+        (totalOpportunities === 0
+          ? renderNoOpportunitiesFound()
+          : renderItems())}
+    </div>
   );
 };
 

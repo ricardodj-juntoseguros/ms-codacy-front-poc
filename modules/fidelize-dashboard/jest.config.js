@@ -17,5 +17,6 @@ module.exports = {
   ],
   moduleNameMapper: {
     '\\.(scss|css)$': 'identity-obj-proxy',
+    '.+\\.(svg)$': '<rootDir>../../__mocks__/svgMock.ts',
   },
 };
