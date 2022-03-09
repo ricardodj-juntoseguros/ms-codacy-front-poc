@@ -5,9 +5,9 @@ const DashboardHeader = () => {
     <div>
       <h1 className={styles['dashboard-header__title']}>Fidelize Dashboard</h1>
       <h2 className={styles['dashboard-header__subtitle']}>
-        Visualize as oportunidades Judiciais que o Projeto Fidelize já mapeou
-        para alguns Tomadores da sua carteira. Além disso, você poderá solicitar
-        novos mapeamentos para Tomadores vinculados a sua Corretora.
+        Visualize as oportunidades judiciais que o Projeto Fidelize já mapeou
+        para alguns tomadores da sua carteira. Além disso, você poderá solicitar
+        novos mapeamentos para tomadores vinculados a sua Corretora.
       </h2>
     </div>
   );
