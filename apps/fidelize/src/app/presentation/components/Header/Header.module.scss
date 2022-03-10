@@ -27,6 +27,15 @@
   align-self: center;
 }
 
+.header__user-menu-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  -webkit-justify-content: flex-end;
+  align-items: flex-end;
+  -webkit-align-items: flex-end;
+  align-self: center;
+}
+
 @media screen and (max-width: 768px) {
   .header__wrapper {
     padding: spacing('m') spacing('l');

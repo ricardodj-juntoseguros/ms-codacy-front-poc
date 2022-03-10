@@ -1,4 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
+import { BrokerPlatformAuthService } from '@services';
 import Header from './Header';
 
 describe('Header', () => {
@@ -11,6 +12,9 @@ describe('Header', () => {
   });
 
   it('Should go back to broker processes page on back button click', () => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'isAuthenticated')
+      .mockImplementationOnce(() => true);
     const { getByTestId } = render(<Header />);
     const btn = getByTestId('header-back-btn');
     fireEvent.click(btn);

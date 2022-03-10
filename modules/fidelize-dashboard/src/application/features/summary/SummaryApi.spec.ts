@@ -6,7 +6,7 @@ import SummaryApi from './SummaryApi';
 
 describe('SummaryApi', () => {
   beforeAll(() => {
-    process.env.NX_FID_BFF_URL = 'any_url';
+    process.env.NX_GLOBAL_FIDELIZE_BFF_URL = 'any_url';
   });
 
   it('getPolicyholdersTotal should call bff service correctly', async () => {

@@ -24,6 +24,7 @@
       "@modules/fidelize-dashboard": [
         "modules/fidelize-dashboard/src/index.tsx"
       ],
+      "@services": ["libs/services/src/index.ts"],
       "@shared/hooks": ["libs/shared/hooks/src/index.tsx"],
       "@shared/ui": ["libs/shared/ui/src/index.tsx"],
       "@shared/utils": ["libs/shared/utils/src/index.ts"]

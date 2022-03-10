@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter, RouteComponentProps } from 'react-router-dom';
-import AuthService from '../../../services/AuthService';
+import { BrokerPlatformAuthService } from '@services';
 import ProtectedRoute from './ProtectedRoute';
 
 process.env.NX_GLOBAL_BROKER_PLATFORM_URL = '/test_broker_login';
@@ -27,8 +27,12 @@ describe('ProtectedRoute', () => {
   });
 
   it('Should redirect to broker platform if user is not authenticated', () => {
-    jest.spyOn(AuthService, 'isAuthenticated').mockImplementation(() => false);
-    jest.spyOn(AuthService, 'isBroker').mockImplementation(() => false);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'isAuthenticated')
+      .mockImplementation(() => false);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'isBroker')
+      .mockImplementation(() => false);
     const componentToRender = () => <h1>Teste 123</h1>;
 
     renderComponent(componentToRender);
@@ -39,8 +43,12 @@ describe('ProtectedRoute', () => {
   });
 
   it('Should redirect to broker processes if user is authenticated but is not a broker', () => {
-    jest.spyOn(AuthService, 'isAuthenticated').mockImplementation(() => true);
-    jest.spyOn(AuthService, 'isBroker').mockImplementation(() => false);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'isAuthenticated')
+      .mockImplementation(() => true);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'isBroker')
+      .mockImplementation(() => false);
     const componentToRender = () => <h1>Teste 123</h1>;
 
     renderComponent(componentToRender);
@@ -51,8 +59,12 @@ describe('ProtectedRoute', () => {
   });
 
   it('Should render the component if user is authenticated and is broker', () => {
-    jest.spyOn(AuthService, 'isAuthenticated').mockImplementation(() => true);
-    jest.spyOn(AuthService, 'isBroker').mockImplementation(() => true);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'isAuthenticated')
+      .mockImplementation(() => true);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'isBroker')
+      .mockImplementation(() => true);
     const componentToRender = () => <h1>Teste 123</h1>;
 
     const component = renderComponent(componentToRender);

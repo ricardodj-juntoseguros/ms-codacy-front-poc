@@ -59,6 +59,7 @@ module.exports = {
       { devDependencies: ['**/*.spec.tsx'] },
     ],
     'no-shadow': 'off',
+    'dot-notation': 'off',
   },
   overrides: [
     {

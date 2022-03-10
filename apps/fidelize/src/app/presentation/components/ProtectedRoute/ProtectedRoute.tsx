@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, RouteProps, RouteComponentProps } from 'react-router';
-import AuthService from '../../../services/AuthService';
+import { BrokerPlatformAuthService } from '@services';
 
 interface ProtectedRouteProps extends RouteProps {
   component: React.ComponentType<RouteComponentProps>;
@@ -16,8 +16,8 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
     <Route
       {...rest}
       render={renderProps => {
-        const isAuthenticated = AuthService.isAuthenticated();
-        const isBroker = AuthService.isBroker();
+        const isAuthenticated = BrokerPlatformAuthService.isAuthenticated();
+        const isBroker = BrokerPlatformAuthService.isBroker();
         if (!isAuthenticated) {
           window.location.assign(`${brokerLoginUrl}?redirectUrl=${appUrl}`);
           return null;

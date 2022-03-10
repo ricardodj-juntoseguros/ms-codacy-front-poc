@@ -1,0 +1,117 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.user-menu__trigger-button {
+  border: none;
+  background: none;
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.user-menu__avatar {
+  font-family: 'Metropolis';
+  margin: 0;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  border-radius: 22px;
+  flex-shrink: 1;
+  background-color: color('brand-secondary');
+  text-align: center;
+  text-transform: uppercase;
+  color: color('brand-primary');
+  font-size: 19px;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.user-menu__nav {
+  background-color: color('white');
+  position: absolute;
+  right: spacing('l');
+  margin-top: spacing('s');
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15);
+  width: 295px;
+  box-sizing: border-box;
+  padding: 0 spacing('l');
+  opacity: 0;
+  transform: translateY(-20%);
+  transition: all 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  pointer-events: none;
+
+  &--open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+}
+
+.user-menu__nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-menu__nav-list-item {
+  padding: spacing('l') 0;
+  border-bottom: 1px solid color('grey-200');
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:empty {
+    display: none;
+  }
+}
+
+.user-menu__profile {
+  display: flex;
+  align-items: center;
+}
+
+.user-menu__profile-data {
+  flex-grow: 1;
+  min-width: 1px;
+  margin-right: spacing('s');
+  align-self: center;
+}
+
+.user-menu__profile-name {
+  @include font('sm-emphasys');
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0 spacing('xs');
+  color: color('dark');
+
+  &:empty {
+    display: none;
+  }
+}
+
+.user-menu__nav-button {
+  @include font('sm');
+  display: block;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  margin: 0 0 spacing('xs');
+  font-family: inherit;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    outline: none;
+    font-weight: 600;
+    color: color('brand-primary');
+  }
+}

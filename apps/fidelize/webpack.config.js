@@ -36,6 +36,14 @@ module.exports = (config, context) => {
           'http-client',
           'src',
         ),
+        '@services': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'services',
+          'src',
+        ),
       },
     },
     module: {

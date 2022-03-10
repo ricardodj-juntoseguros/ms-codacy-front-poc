@@ -2,10 +2,10 @@ import Cookies from 'js-cookie';
 import { AxiosHttpClient } from '@infrastructure/http-client';
 
 class FidelizeDashboardBaseApi {
-  private readonly BASE_URL = `${process.env.NX_FID_BFF_URL}/api`;
+  private readonly BASE_URL = `${process.env.NX_GLOBAL_FIDELIZE_BFF_URL}/api`;
 
   private readonly USER_ACCESS_COOKIE =
-    process.env.NX_FID_USER_ACCESS_COOKIE || 'uac';
+    process.env.NX_GLOBAL_BROKER_USER_ACCESS_COOKIE || 'uac';
 
   private headers = {};
 

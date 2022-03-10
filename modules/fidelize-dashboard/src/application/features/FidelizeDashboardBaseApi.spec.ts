@@ -5,7 +5,7 @@ import FidelizeDashboardBaseApi from './FidelizeDashboardBaseApi';
 describe('FidelizeDashboardBaseApi', () => {
   const mockCookie = `{"token": "any_token" }`;
   beforeAll(() => {
-    process.env.NX_FID_BFF_URL = 'any_url';
+    process.env.NX_GLOBAL_FIDELIZE_BFF_URL = 'any_url';
   });
 
   it('getInstance should return an configured instance of AxiosHttpClient', async () => {
