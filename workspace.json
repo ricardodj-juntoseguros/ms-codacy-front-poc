@@ -218,7 +218,7 @@
               "env": {
                 "target": "qas"
               },
-              "baseUrl": "https://fidelize-qas.juntoseguros.com/"
+              "baseUrl": "https://fidelize2-qas-2.juntoseguros.com/"
             }
           }
         },
