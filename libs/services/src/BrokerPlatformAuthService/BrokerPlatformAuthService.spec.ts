@@ -14,6 +14,10 @@ describe('Broker Platform Auth Service', () => {
     });
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('isAuthenticated should read user cookie and validate token lifespan', () => {
     jest.spyOn(Cookies, 'get').mockReturnValue(mockCookie as any);
 
@@ -89,6 +93,21 @@ describe('Broker Platform Auth Service', () => {
     expect(axiosMock).toHaveBeenCalledWith({
       url: '/auth/logout',
       payload: 'refreshToken=refresh_token',
+    });
+  });
+
+  it('doRefreshToken should call platform bff correctly', async () => {
+    const axiosMock = jest
+      .spyOn(AxiosHttpClient.prototype, 'post')
+      .mockImplementation(async () => {
+        return { refresh_token: 'refresh_token' };
+      });
+    jest.spyOn(Cookies, 'get').mockReturnValue(mockCookie as any);
+
+    await BrokerPlatformAuthService.doRefreshToken();
+    expect(axiosMock).toHaveBeenCalledWith({
+      url: '/auth/api/account/v1/token/refresh',
+      payload: 'refresh_token=refresh-token&username=test-user',
     });
   });
 });

@@ -21,13 +21,20 @@ export class BrokerPlatformAuthService {
   private readonly PLATAFORMA_BFF_URL =
     process.env['NX_GLOBAL_BROKER_PLATFORM_BFF_URL'] || '';
 
-  private getUserAccessCookie() {
+  getUserAccessCookie() {
     const userCookie = Cookies.get(this.USER_ACCESS_COOKIE) || '';
     if (!userCookie) return null;
     return JSON.parse(userCookie);
   }
 
-  private clearAuthData() {
+  setUserAccessCookie(content: any, expirationDate: Date) {
+    Cookies.set(this.USER_ACCESS_COOKIE, JSON.stringify(content), {
+      expires: expirationDate,
+      domain: this.COOKIE_DOMAIN,
+    });
+  }
+
+  clearAuthData() {
     const userTheme = localStorage.getItem('userTheme');
     localStorage.clear();
     userTheme && localStorage.setItem('userTheme', userTheme);
@@ -53,6 +60,19 @@ export class BrokerPlatformAuthService {
     return axiosInstance.post({
       url: '/auth/logout',
       payload: `refreshToken=${refreshToken}`,
+    });
+  }
+
+  doRefreshToken() {
+    const { refreshToken, username } = this.getUserAccessCookie();
+    const axiosInstance = new AxiosHttpClient(
+      this.PLATAFORMA_BFF_URL,
+      { 'Content-Type': 'application/x-www-form-urlencoded' },
+      100000,
+    );
+    return axiosInstance.post({
+      url: '/auth/api/account/v1/token/refresh',
+      payload: `refresh_token=${refreshToken}&username=${username}`,
     });
   }
 

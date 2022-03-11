@@ -100,6 +100,54 @@ describe('Axios HTTP client', () => {
     expect(response.success).toEqual(true);
   });
 
+  it('Should add request interceptors to instance without errors', async () => {
+    const mockFn = jest.fn();
+    instance.setRequestInterceptors(
+      config => {
+        mockFn(`${config.baseURL}${config.url}`);
+        return config;
+      },
+      error => mockFn(error),
+    );
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    const getParameters: IHttpClientRequestParameters = {
+      url: '/user/me',
+      headers,
+    };
+
+    await instance.get<UserResponseModel>(getParameters);
+    expect(mockFn).toHaveBeenCalledWith(
+      'https://api-nodejs-todolist.herokuapp.com/user/me',
+    );
+  });
+
+  it('Should add response interceptors to instance without errors', async () => {
+    const mockFn = jest.fn();
+    instance.setResponseInterceptors<UserResponseModel>(
+      value => {
+        mockFn(`The name is: ${value.data.name}`);
+        return value;
+      },
+      error => mockFn(error),
+    );
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    const getParameters: IHttpClientRequestParameters = {
+      url: '/user/me',
+      headers,
+    };
+
+    await instance.get<UserResponseModel>(getParameters);
+    expect(mockFn).toHaveBeenCalledWith('The name is: Platform Web Test');
+  });
+
   async function createTask(description: string) {
     const headers = {
       Authorization: `Bearer ${token}`,

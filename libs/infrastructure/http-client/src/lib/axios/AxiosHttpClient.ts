@@ -17,8 +17,6 @@ export class AxiosHttpClient implements IHttpClient {
       timeout,
       headers,
     });
-
-    // this._initializeResponseInterceptor();
   }
 
   public delete<T>(parameters: IHttpClientRequestParameters): Promise<T> {
@@ -39,6 +37,22 @@ export class AxiosHttpClient implements IHttpClient {
 
   public put<T>(parameters: IHttpClientRequestParameters): Promise<T> {
     return this.doRequest(parameters, 'PUT');
+  }
+
+  public setResponseInterceptors<T>(
+    successHandler?: (
+      value: AxiosResponse<T>,
+    ) => Promise<AxiosResponse<T>> | AxiosResponse<T>,
+    errorHandler?: (error: any) => Promise<any>,
+  ) {
+    this.instance.interceptors.response.use(successHandler, errorHandler);
+  }
+
+  public setRequestInterceptors(
+    successHandler?: (config: AxiosRequestConfig) => AxiosRequestConfig,
+    errorHandler?: (error: any) => Promise<any>,
+  ) {
+    this.instance.interceptors.request.use(successHandler, errorHandler);
   }
 
   private doRequest<T>(
@@ -65,15 +79,4 @@ export class AxiosHttpClient implements IHttpClient {
         });
     });
   }
-
-  // private _initializeResponseInterceptor = () => {
-  //   this.instance.interceptors.response.use(
-  //     this._handleResponse,
-  //     this._handleError,
-  //   );
-  // };
-
-  // private _handleResponse = ({ data }: AxiosResponse) => data;
-
-  // protected _handleError = (error: any) => Promise.reject(error);
 }
