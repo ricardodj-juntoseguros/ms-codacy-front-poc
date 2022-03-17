@@ -15,16 +15,6 @@ const ModalityTabsSkeleton = () => {
         <Skeleton width={80} height={8} />
       </div>
       <Divider />
-      <div className={styles['modality-tabs-skeleton__summary-row']}>
-        <div className={styles['modality-tabs-skeleton__summary-item']}>
-          <Skeleton width={147} height={8} style={{ marginBottom: 12 }} />
-          <Skeleton width={112} height={8} />
-        </div>
-        <div className={styles['modality-tabs-skeleton__summary-item']}>
-          <Skeleton width={147} height={8} style={{ marginBottom: 12 }} />
-          <Skeleton width={112} height={8} />
-        </div>
-      </div>
     </div>
   );
 };

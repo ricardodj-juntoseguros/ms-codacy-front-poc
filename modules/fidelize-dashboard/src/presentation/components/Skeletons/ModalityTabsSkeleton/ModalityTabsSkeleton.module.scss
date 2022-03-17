@@ -10,18 +10,6 @@
   display: none;
 }
 
-.modality-tabs-skeleton__summary-row {
-  display: flex;
-  flex-flow: row wrap;
-  margin-top: spacing('xxl-3');
-}
-
-.modality-tabs-skeleton__summary-item {
-  display: flex;
-  flex-flow: column;
-  min-width: 192px;
-}
-
 @media screen and (max-width: 500px) {
   .modality-tabs-skeleton__tabs-desktop-row {
     display: none;
@@ -31,14 +19,5 @@
     display: flex;
     flex-flow: row;
     padding: spacing('m');
-  }
-
-  .modality-tabs-skeleton__summary-row {
-    margin-top: spacing('xxl');
-  }
-
-  .modality-tabs-skeleton__summary-item {
-    min-width: 100%;
-    margin-bottom: spacing('xl');
   }
 }

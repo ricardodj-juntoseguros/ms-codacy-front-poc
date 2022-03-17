@@ -2,7 +2,7 @@ version: 2.1
 defaults: &defaults
   working_directory: /tmp/persist_to_workspace
   docker:
-    - image: cypress/base:12
+    - image: cypress/base:14.19.0
       environment:
         ## this enables colors in the output
         TERM: xterm

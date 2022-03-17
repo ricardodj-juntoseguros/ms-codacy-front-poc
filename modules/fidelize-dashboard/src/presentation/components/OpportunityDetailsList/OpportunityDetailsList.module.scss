@@ -1,0 +1,29 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.opportunity-details-list__wrapper {
+  margin-top: spacing('m');
+  margin-bottom: spacing('xxl');
+}
+
+.opportunity-details-list__title {
+  @include font('base-emphasys');
+  margin: 0px;
+}
+
+.opportunity-details-list__box {
+  width: 100%;
+  margin-top: spacing('xl');
+  border: 1px solid color('grey-200');
+  border-radius: spacing('xs');
+}
+
+.opportunity-details-list__total-label {
+  @include font('xs');
+  color: color('grey-500');
+  margin: spacing('m') spacing('l');
+}
+
+.opportunity-details-list__list-container {
+  overflow-x: auto;
+  width: 100%;
+}

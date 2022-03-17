@@ -1,0 +1,60 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.opportunity-details-listitem__wrapper {
+  padding: spacing('l');
+  display: grid;
+  grid-template-columns: 190px 120px 240px 120px;
+  column-gap: spacing('xl');
+  border-bottom: 1px solid color('grey-200');
+
+  &:hover {
+    background-color: rgba(241, 245, 247, 0.7);
+    transition: 200ms linear;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &--expired {
+    & span,
+    p {
+      color: color('grey-500');
+    }
+  }
+}
+
+.opportunity-details-listitem__column {
+  align-self: center;
+  display: flex;
+  flex-flow: column;
+}
+
+.opportunity-details-listitem__label {
+  @include font('sm');
+  color: color('dark');
+  margin: 0px;
+}
+
+.opportunity-details-listitem__label-helper {
+  @include font('xs');
+  color: color('grey-500');
+}
+
+.opportunity-details-listitem__label-emphasys {
+  @include font('sm-emphasys');
+  color: color('dark');
+  margin: 0px;
+}
+
+@media screen and (max-width: 1008px) {
+  .opportunity-details-listitem__wrapper {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .opportunity-details-listitem__wrapper {
+    width: fit-content;
+  }
+}

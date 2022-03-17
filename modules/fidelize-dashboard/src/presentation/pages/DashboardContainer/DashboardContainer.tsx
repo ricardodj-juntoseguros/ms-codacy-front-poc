@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import DashboardHeader from '../../components/DashboardHeader';
 import DashboardSummary from '../../components/DashboardSummary';
 import ModalitySummary from '../../components/ModalitySummary';
-import ModalityTabsSkeleton from '../../components/ModalityTabsSkeleton';
+import { ModalitySummarySkeleton } from '../../components/Skeletons';
 import ModalityUnderConstruction from '../../components/ModalityUnderConstruction';
+import OpportunityDetailsList from '../../components/OpportunityDetailsList';
 import {
   selectModality,
   modalitySelectionSliceActions,
@@ -18,7 +19,7 @@ import styles from './DashboardContainer.module.scss';
 function DashboardContainer() {
   const dispatch = useDispatch();
   const { selectedModality } = useSelector(selectModality);
-  const [loadingModalities, setLoadingModalities] = useState(true);
+  const [loadingModalitySummary, setLoadingModalitySummary] = useState(true);
   const [errorModalitySummary, setErrorModalitySummary] = useState(false);
   const [modalitiesSummaryData, setModalitiesSummaryData] = useState<
     ModalitySummaryDTO[]
@@ -32,7 +33,7 @@ function DashboardContainer() {
     SummaryApi.getModalitiesSummary()
       .then(response => setModalitiesSummaryData(response))
       .catch(() => setErrorModalitySummary(true))
-      .finally(() => setLoadingModalities(false));
+      .finally(() => setLoadingModalitySummary(false));
   };
 
   const handleModalityTabSelection = (selectedTab: string) => {
@@ -67,38 +68,46 @@ function DashboardContainer() {
         Oportunidades por modalidade
       </h2>
       <div className={styles['dashboard-container__tabs-wrapper']}>
-        {loadingModalities ? (
-          <ModalityTabsSkeleton />
-        ) : (
-          <Tabs
-            activeTab={selectedModality || 'fiscal'}
-            onSelectTab={value => handleModalityTabSelection(value)}
-            withDivider
+        <Tabs
+          activeTab={selectedModality || 'fiscal'}
+          onSelectTab={value => handleModalityTabSelection(value)}
+          withDivider
+        >
+          <Tab
+            value={ModalityEnum.TRABALHISTA}
+            label="Trabalhista"
+            totalizer={loadingModalitySummary ? null : 0}
+            disabled={loadingModalitySummary}
           >
-            <Tab
-              value={ModalityEnum.TRABALHISTA}
-              label="Trabalhista"
-              totalizer={0}
-            >
-              <ModalityUnderConstruction />
-            </Tab>
-            <Tab
-              value={ModalityEnum.FISCAL}
-              label="Fiscal"
-              totalizer={fiscalOpportunities}
-            >
+            <ModalityUnderConstruction />
+          </Tab>
+          <Tab
+            value={ModalityEnum.FISCAL}
+            label="Fiscal"
+            totalizer={loadingModalitySummary ? null : fiscalOpportunities}
+            disabled={loadingModalitySummary}
+          >
+            {loadingModalitySummary ? (
+              <ModalitySummarySkeleton />
+            ) : (
               <ModalitySummary
                 modality={ModalityEnum.FISCAL}
                 totalOpportunities={fiscalOpportunities}
                 totalInsuredValue={fiscalIS}
                 hasError={errorModalitySummary}
               />
-            </Tab>
-            <Tab value={ModalityEnum.CIVIL} label="Cível" totalizer={0}>
-              <ModalityUnderConstruction />
-            </Tab>
-          </Tabs>
-        )}
+            )}
+            <OpportunityDetailsList modality={ModalityEnum.FISCAL} />
+          </Tab>
+          <Tab
+            value={ModalityEnum.CIVIL}
+            label="Cível"
+            totalizer={loadingModalitySummary ? null : 0}
+            disabled={loadingModalitySummary}
+          >
+            <ModalityUnderConstruction />
+          </Tab>
+        </Tabs>
       </div>
     </div>
   );

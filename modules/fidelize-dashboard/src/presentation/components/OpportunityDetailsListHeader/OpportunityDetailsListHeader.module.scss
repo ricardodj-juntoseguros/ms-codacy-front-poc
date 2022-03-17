@@ -1,0 +1,27 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.opportunity-details-header__wrapper {
+  padding: spacing('l');
+  display: grid;
+  grid-template-columns: 190px 120px 240px 120px;
+  column-gap: spacing('xl');
+  border-bottom: 1px solid color('grey-200');
+}
+
+.opportunity-details-header__column-title {
+  @include font('xs-emphasys');
+  color: color('grey-500');
+  margin: 0px;
+}
+
+@media screen and (max-width: 1008px) {
+  .opportunity-details-header__wrapper {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .opportunity-details-header__wrapper {
+    width: fit-content;
+  }
+}

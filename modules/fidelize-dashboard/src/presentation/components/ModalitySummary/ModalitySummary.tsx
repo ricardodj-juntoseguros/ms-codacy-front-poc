@@ -1,5 +1,6 @@
 import { thousandSeparator, thousandTextFormatter } from '@shared/utils';
 import { ModalityEnum } from '../../../application/types/model';
+import { getLabelByModality } from '../../../helpers';
 import { ReactComponent as NoOpportunitiesIllustration } from './assets/no-opportunities.svg';
 import styles from './ModalitySummary.module.scss';
 
@@ -16,20 +17,12 @@ const ModalitySummary: React.FC<ModalitySummaryProps> = ({
   totalOpportunities,
   hasError,
 }) => {
-  const getLabelByModality = (preffix = '', plural = false) => {
-    if (modality === ModalityEnum.FISCAL)
-      return `${preffix} ${plural ? 'fiscais' : 'fiscal'}`;
-    if (modality === ModalityEnum.CIVIL)
-      return `${preffix} ${plural ? 'cíveis' : 'cível'}`;
-    return `${preffix} ${plural ? 'trabalhistas' : 'trabalhista'}`;
-  };
-
   const renderItems = () => {
     const data = [
       {
         key: 'opportunities',
         icon: 'file',
-        label: getLabelByModality('Op.', true),
+        label: getLabelByModality(modality, 'Op.', true),
         value: thousandSeparator(totalOpportunities, '.'),
       },
       {
@@ -67,11 +60,11 @@ const ModalitySummary: React.FC<ModalitySummaryProps> = ({
           className={styles['modality-summary__no-ops-illustration']}
         />
         <h2 className={styles['modality-summary__no-ops-title']}>
-          Não há oportunidades {getLabelByModality('', true)}
+          Não há oportunidades {getLabelByModality(modality, '', true)}
         </h2>
         <p className={styles['modality-summary__no-ops-text']}>
           Até o momento não foram encontradas oportunidades no âmbito{' '}
-          {getLabelByModality()} para o(s) tomador(es) selecionado(s).
+          {getLabelByModality(modality)} para o(s) tomador(es) selecionado(s).
         </p>
         <p className={styles['modality-summary__no-ops-text']}>
           Caso você tenha solicitado o mapeamento recentemente, o retorno pode
