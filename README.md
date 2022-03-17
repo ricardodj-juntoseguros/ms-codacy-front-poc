@@ -1,12 +1,20 @@
 # platform-web
 
-Repositório em formato monorepo para as aplicações React front-end seguindo o novo padrão de arquitetura de micro-frontendo, tendo como referência o [Guideline FrontEnd](https://github.com/GitJMSeguradora/guidelines/tree/master/frontend)
-
-Esse projeto foi criado utilizando Nx. Para saber mais sobre a biblioteca, clique no link a seguir.(https://nx.dev)
-
 ## Qualitys Gate
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/d27b34f14ad50da533ba/maintainability)](https://codeclimate.com/repos/60d5ff1714905d4c260012f8/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/d27b34f14ad50da533ba/test_coverage)](https://codeclimate.com/repos/60d5ff1714905d4c260012f8/test_coverage) [![CircleCI](https://circleci.com/gh/GitJMSeguradora/JuntoSeguros.Library.svg?style=svg&circle-token=acedae51865c9abfed87fa884cb8ec62b1ace486)](https://circleci.com/gh/GitJMSeguradora/platform-web)
+
+## Descrição
+Repositório em formato monorepo para as aplicações React front-end seguindo o novo padrão de arquitetura de micro-frontends, tendo como referência o [Guideline FrontEnd](https://github.com/GitJMSeguradora/guidelines/tree/master/frontend)
+
+O repositório conta atualmente com 3 aplicações: 
+- Fidelize 
+- Plataforma (corretor)
+- Digital
+
+Obs: Apenas o app Fidelize possui a esteira de pipeline completa até o momento dessa atualização (16 de março de 2022).
+
+Esse projeto foi criado utilizando Nx. Para saber mais sobre a biblioteca, clique no link a seguir.(https://nx.dev)
 
 ## Monorepo Nx - divisões
 
@@ -22,6 +30,60 @@ Este repositório é dividido em 3 principais partes:
     - Application: armazena a lógica interna do module, possui arquivos de chamadas de API, Redux Thunks e Redux Slices, tipos de dados (dtos e models).
 - Libs
   - As libs são pequenos pacotes de código de responsabilidade única, com o intuito de serem reutilizáveis em todos os modules e apps. Ex: hooks, http client, componentes ui compartilhados.
+
+---
+
+## Tecnologias usadas no Projeto
+
+- TypeScript
+
+- React JS
+
+- Sass (SCSS)
+
+- Redux e Redux-Toolkit
+
+- Nx
+
+- Webpack
+
+- Jest (testes unitários)
+
+- Cypress (e2e)
+
+---
+
+## Ambientes
+
+- App Fidelize 
+
+URL QAS: https://fidelize2-qas-2.juntoseguros.com/
+
+URL STG: https://fidelize2-stg.juntoseguros.com/
+
+URL PRD: https://fidelize2.juntoseguros.com/
+
+---
+
+### Projeto exposto fora da rede da Junto?
+
+Sim
+
+---
+
+## Acesso a banco de Dados?
+
+Não
+
+---
+
+## Serviços externos usado neste projeto
+
+- [fidelize-bff](https://app.circleci.com/pipelines/github/GitJMSeguradora/fidelize-bff)
+
+- [ms-plataforma-bff](https://app.circleci.com/pipelines/github/GitJMSeguradora/ms-plataforma-bff)
+
+---
 
 ## Instalação
 
@@ -98,6 +160,8 @@ Uma modificação nos comandos muito útil no gerenciamento da workspace Nx são
 
 O prefixo `affected:` pode ser colocado em qualquer comando (com exceção do serve) para executá-lo em todos os projetos (libs, apps e modules) que foram afetados por alterações, ou seja, se foi realizado uma alteração na lib B e esta lib é utilizada apenas no app A, se o desenvolvedor executar `yarn nx affected:build`, apenas o app A e a lib B sofrerão com a build, ao inves de toda a workspace, facilitando o controle e a performance de alterações.
 
+---
+
 ## Rodando testes unitários
 
 Para rodar os testes de um projeto via [Jest](https://jestjs.io), executar o comando `yarn nx test {{nome do app/lib/module}}`.
@@ -107,6 +171,8 @@ Os testes unitários podem ser executados em qualquer um dos escopos do projeto 
 **Importante**: Ao rodar os testes de um app, o teste poderá incluir as libs e módulos nas quais o app possui dependências com a opção `--with-deps`
 
 Outro comando útil é o `yarn nx affected:test` que executa todos os testes de projetos que foram afetados por alguma alteração na workspace, por exemplo, mudança de código em uma lib ou módule
+
+---
 
 ## Rodando testes end-to-end
 
@@ -118,6 +184,8 @@ A execução dos testes end-to-end do projeto Fidelize é feita através do coma
 
 O comando aceita a flag `--headless`, que modificará a execução dos testes para que seja feita sem a interface gráfica do Cypress.
 
+---
+
 ## Rodando o Lint
 
 Para rodar o linter de algum projeto execute o comando `yarn nx lint {{nome do app/lib/module}}`.
@@ -125,6 +193,8 @@ Para rodar o linter de algum projeto execute o comando `yarn nx lint {{nome do a
 A execução do linter pode ter realizada em qualquer um dos escopos do projeto (lib, module, app), basta apenas colocar o nome da pasta e o Nx saberá o que rodar.
 
 Esse comando também pode ser executado com affected: `yarn nx affected:lint`.
+
+---
 
 ## Build
 
