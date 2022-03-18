@@ -25,7 +25,7 @@ if [ -d "${PATH_APPS}" ]; then
 else
   echo "Nothing changes identify to deploy!"
   echo "Please check your changes or check if exist app(s) on path ${PATH_APPS}!"
-  exit 1
+  exit 0
 fi
 
 function deploy_cf_qas () {
