@@ -1,4 +1,5 @@
-import { loadData } from '../utils/loadData';
+import { loadData } from '../utils';
+import { selectors } from '../support/selectors';
 
 const data = loadData();
 
@@ -10,18 +11,18 @@ describe('Logout', () => {
 
     cy.login(data.user.username, data.user.password);
 
-    cy.get('div[class^="DashboardTotalCard"]')
+    cy.get(selectors.dashboardSummary.totalCard)
       .should('be.visible');
 
-    cy.getCookie('uac')
+    cy.getCookie(data.cookies.userAccess)
       .should('exist');
 
     cy.logout();
 
-    cy.get('form input[name="user"]')
+    cy.get(selectors.login.userInput)
       .should('exist');
 
-    cy.getCookie('uac')
+    cy.getCookie(data.cookies.userAccess)
       .should('not.exist');
   });
 });

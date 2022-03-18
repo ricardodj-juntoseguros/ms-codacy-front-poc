@@ -2,5 +2,8 @@
   "user": {
     "username": "testecorretor_cor",
     "password": "Lider2018!"
+  },
+  "cookies": {
+    "userAccess": "uac"
   }
 }
