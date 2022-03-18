@@ -59,9 +59,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
           className={styles['opportunity-details-listitem__label-emphasys']}
           title={policyholder}
         >
-          {policyholder.length > 30
-            ? `${policyholder.substring(0, 30)}...`
-            : policyholder}
+          {policyholder}
         </p>
       </div>
       <div className={styles['opportunity-details-listitem__column']}>

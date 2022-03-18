@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { ModalitySummaryDTO } from 'modules/fidelize-dashboard/src/application/types/dto/ModalitySummaryDTO';
+import { ModalitySummaryDTO } from 'modules/fidelize-dashboard/src/application/types/dto';
 import { store } from '../../../config/store';
 import SummaryApi from '../../../application/features/summary/SummaryApi';
+import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import DashboardContainer from './DashboardContainer';
 
 describe('DashboardContainer', () => {
@@ -12,6 +13,14 @@ describe('DashboardContainer', () => {
       .mockImplementation(async () => {
         return {
           totalPolicyholders: 123,
+        };
+      });
+    jest
+      .spyOn(OpportunitiesDetailsApi, 'getOpportunitiesDetailsByModality')
+      .mockImplementation(async () => {
+        return {
+          totalCount: 123,
+          data: [],
         };
       });
   });

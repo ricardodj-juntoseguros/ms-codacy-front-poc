@@ -27,3 +27,35 @@
   overflow-x: auto;
   width: 100%;
 }
+
+.opportunity-details-list__paging-container {
+  margin-top: spacing('l');
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+
+  & > div:last-child {
+    display: flex;
+    justify-self: flex-end;
+  }
+}
+
+.opportunity-details-list__error {
+  @include font('l');
+  width: 100%;
+  padding: spacing('l');
+  color: color('error');
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .opportunity-details-list__paging-container {
+    margin-top: spacing('l');
+    display: flex;
+    flex-flow: column;
+
+    & > div:last-child {
+      display: flex;
+      align-self: center;
+    }
+  }
+}

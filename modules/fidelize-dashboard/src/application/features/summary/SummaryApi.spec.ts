@@ -1,6 +1,5 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
-import { ModalitySummaryDTO } from '../../types/dto/ModalitySummaryDTO';
-import { SummaryPolicyholdersDTO } from '../../types/dto/SummaryPolicyholdersDTO';
+import { ModalitySummaryDTO, SummaryPolicyholdersDTO } from '../../types/dto';
 import { ModalityEnum } from '../../types/model';
 import SummaryApi from './SummaryApi';
 

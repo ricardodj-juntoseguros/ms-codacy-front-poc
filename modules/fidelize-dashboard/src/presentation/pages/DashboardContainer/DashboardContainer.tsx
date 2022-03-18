@@ -13,7 +13,7 @@ import {
 } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
 import SummaryApi from '../../../application/features/summary/SummaryApi';
 import { ModalityEnum } from '../../../application/types/model';
-import { ModalitySummaryDTO } from '../../../application/types/dto/ModalitySummaryDTO';
+import { ModalitySummaryDTO } from '../../../application/types/dto';
 import styles from './DashboardContainer.module.scss';
 
 function DashboardContainer() {

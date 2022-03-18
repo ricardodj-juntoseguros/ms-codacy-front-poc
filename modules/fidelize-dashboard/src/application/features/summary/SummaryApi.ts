@@ -2,8 +2,7 @@ import {
   AxiosHttpClient,
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
-import { ModalitySummaryDTO } from '../../types/dto/ModalitySummaryDTO';
-import { SummaryPolicyholdersDTO } from '../../types/dto/SummaryPolicyholdersDTO';
+import { SummaryPolicyholdersDTO, ModalitySummaryDTO } from '../../types/dto';
 import FidelizeDashboardBaseApi from '../FidelizeDashboardBaseApi';
 
 class SummaryApi {
