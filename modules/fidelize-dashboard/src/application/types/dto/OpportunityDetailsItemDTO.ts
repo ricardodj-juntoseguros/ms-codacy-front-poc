@@ -1,4 +1,7 @@
+import { OpportunityRelevanceEnum } from '../model';
+
 export interface OpportunityDetailsItemDTO {
+  relevance: OpportunityRelevanceEnum;
   type: string;
   category: string;
   securityAmount: number;

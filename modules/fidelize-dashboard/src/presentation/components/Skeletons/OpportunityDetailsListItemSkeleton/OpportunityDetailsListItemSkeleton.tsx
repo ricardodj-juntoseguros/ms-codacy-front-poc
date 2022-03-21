@@ -5,6 +5,9 @@ const OpportunityDetailsListItemSkeleton: React.FC = () => {
   return (
     <div className={styles['opportunity-details-listitem__wrapper']}>
       <div className={styles['opportunity-details-listitem__column']}>
+        <Skeleton width={46} height={8} />
+      </div>
+      <div className={styles['opportunity-details-listitem__column']}>
         <Skeleton width={95} height={8} />
         <Skeleton width={144} height={8} />
       </div>

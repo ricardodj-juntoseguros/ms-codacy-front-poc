@@ -5,6 +5,11 @@ const OpportunityDetailsListHeader: React.FC = () => {
     <div className={styles['opportunity-details-header__wrapper']}>
       <div>
         <p className={styles['opportunity-details-header__column-title']}>
+          RELEVÂNCIA
+        </p>
+      </div>
+      <div>
+        <p className={styles['opportunity-details-header__column-title']}>
           TIPO/OBS.
         </p>
       </div>

@@ -5,6 +5,7 @@ describe('Opportunity Details List Header', () => {
   it('Should render successfully', () => {
     const { getByText } = render(<OpportunityDetailsListHeader />);
     expect(getByText('TIPO/OBS.')).toBeTruthy();
+    expect(getByText('RELEVÂNCIA')).toBeTruthy();
     expect(getByText('VALOR IS')).toBeTruthy();
     expect(getByText('TOMADOR')).toBeTruthy();
     expect(getByText('DT MAPEAMENTO')).toBeTruthy();

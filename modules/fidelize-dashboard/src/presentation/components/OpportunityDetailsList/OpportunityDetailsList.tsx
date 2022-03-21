@@ -64,6 +64,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     }
     return data.map(opportunity => {
       const {
+        relevance,
         category,
         expiration,
         mappingDate,
@@ -73,6 +74,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
       return (
         <OpportunityDetailsListItem
           key={`opportunity-details-listitem-${nanoid(5)}`}
+          relevance={relevance}
           type={category}
           expiration={expiration}
           securityAmount={securityAmount}

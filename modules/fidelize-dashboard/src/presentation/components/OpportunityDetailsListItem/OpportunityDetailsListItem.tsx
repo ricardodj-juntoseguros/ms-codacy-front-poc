@@ -3,8 +3,10 @@ import brLocale from 'date-fns/locale/pt-BR';
 import { thousandSeparator } from '@shared/utils';
 import classNames from 'classnames';
 import styles from './OpportunityDetailsListItem.module.scss';
+import { OpportunityRelevanceEnum } from '../../../application/types/model';
 
 interface OpportunityDetailsListItemProps {
+  relevance: OpportunityRelevanceEnum;
   type: string;
   expiration: string | null;
   securityAmount: number;
@@ -13,6 +15,7 @@ interface OpportunityDetailsListItemProps {
 }
 
 const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
+  relevance,
   type,
   expiration,
   securityAmount,
@@ -30,6 +33,21 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       : `Com vencimento em ${expirationFormatted}`;
   };
 
+  const getRelevanceTagClassName = (relevance: OpportunityRelevanceEnum) => {
+    if (isExpiredOpportunity)
+      return styles['opportunity-details-listitem__relevance-tag--expired'];
+    switch (relevance) {
+      case OpportunityRelevanceEnum.HIGH:
+        return styles['opportunity-details-listitem__relevance-tag--high'];
+      case OpportunityRelevanceEnum.MEDIUM:
+        return styles['opportunity-details-listitem__relevance-tag--medium'];
+      case OpportunityRelevanceEnum.LOW:
+        return styles['opportunity-details-listitem__relevance-tag--low'];
+      default:
+        return null;
+    }
+  };
+
   const formatDate = (dateStr: string) => {
     return format(new Date(dateStr), 'dd/MMM/yy', {
       locale: brLocale,
@@ -43,6 +61,16 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
           isExpiredOpportunity,
       })}
     >
+      <div className={styles['opportunity-details-listitem__column']}>
+        <span
+          className={classNames(
+            styles['opportunity-details-listitem__relevance-tag'],
+            getRelevanceTagClassName(relevance),
+          )}
+        >
+          {isExpiredOpportunity ? 'Expirada' : relevance}
+        </span>
+      </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <p className={styles['opportunity-details-listitem__label']}>{type}</p>
         <span className={styles['opportunity-details-listitem__label-helper']}>

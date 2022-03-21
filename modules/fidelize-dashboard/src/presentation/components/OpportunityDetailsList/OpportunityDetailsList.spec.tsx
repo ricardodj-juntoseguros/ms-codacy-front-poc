@@ -3,7 +3,10 @@ import { Provider } from 'react-redux';
 import { act } from 'react-dom/test-utils';
 import { store } from '../../../config/store';
 import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
-import { ModalityEnum } from '../../../application/types/model';
+import {
+  ModalityEnum,
+  OpportunityRelevanceEnum,
+} from '../../../application/types/model';
 import OpportunityDetailsList from './OpportunityDetailsList';
 
 describe('OpportunityDetailsList', () => {
@@ -20,6 +23,7 @@ describe('OpportunityDetailsList', () => {
           data: [
             {
               type: 'Fiscal',
+              relevance: OpportunityRelevanceEnum.HIGH,
               category: 'Renovação',
               securityAmount: 120000,
               expiration: '2025-03-19T03:00:00.000Z',
@@ -51,6 +55,7 @@ describe('OpportunityDetailsList', () => {
           data: [
             {
               type: 'Fiscal',
+              relevance: OpportunityRelevanceEnum.HIGH,
               category: 'Renovação',
               securityAmount: 120000,
               expiration: '2025-03-19T03:00:00.000Z',
