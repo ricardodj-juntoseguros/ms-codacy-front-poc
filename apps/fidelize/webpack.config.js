@@ -27,6 +27,15 @@ module.exports = (config, context) => {
           'utils',
           'src',
         ),
+        '@shared/ui': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'shared',
+          'ui',
+          'src',
+        ),
         '@infrastructure/http-client': path.resolve(
           __dirname,
           '..',

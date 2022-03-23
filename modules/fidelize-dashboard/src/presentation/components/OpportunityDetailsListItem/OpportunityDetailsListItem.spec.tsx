@@ -1,11 +1,15 @@
 import { render } from '@testing-library/react';
-import { OpportunityRelevanceEnum } from '../../../application/types/model';
+import {
+  ModalityEnum,
+  OpportunityRelevanceEnum,
+} from '../../../application/types/model';
 import OpportunityDetailsListItem from '.';
 
 describe('Opportunity Details List Item', () => {
   it('Should render accordingly to props', () => {
     const { getByText } = render(
       <OpportunityDetailsListItem
+        modality={ModalityEnum.FISCAL}
         type="Renovação"
         relevance={OpportunityRelevanceEnum.HIGH}
         expiration="2026-01-01T10:00:00.000Z"
@@ -25,6 +29,7 @@ describe('Opportunity Details List Item', () => {
   it('Should render "Prazo indeterminado" label if expiration is null', () => {
     const { getByText } = render(
       <OpportunityDetailsListItem
+        modality={ModalityEnum.FISCAL}
         type="Renovação"
         expiration={null}
         relevance={OpportunityRelevanceEnum.MEDIUM}
@@ -39,6 +44,7 @@ describe('Opportunity Details List Item', () => {
   it('Should render expired message if expiration is before today', () => {
     const { getByText } = render(
       <OpportunityDetailsListItem
+        modality={ModalityEnum.FISCAL}
         type="Renovação"
         relevance={OpportunityRelevanceEnum.LOW}
         expiration="2022-02-01T10:00:00.000Z"

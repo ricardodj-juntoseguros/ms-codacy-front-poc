@@ -1,11 +1,16 @@
 import { format, isAfter } from 'date-fns';
 import brLocale from 'date-fns/locale/pt-BR';
-import { thousandSeparator } from '@shared/utils';
 import classNames from 'classnames';
+import { thousandSeparator } from '@shared/utils';
 import styles from './OpportunityDetailsListItem.module.scss';
-import { OpportunityRelevanceEnum } from '../../../application/types/model';
+import {
+  ModalityEnum,
+  OpportunityRelevanceEnum,
+} from '../../../application/types/model';
+import MoreOpportunityDetailsModal from '../MoreOpportunityDetailsModal';
 
 interface OpportunityDetailsListItemProps {
+  modality: ModalityEnum;
   relevance: OpportunityRelevanceEnum;
   type: string;
   expiration: string | null;
@@ -15,6 +20,7 @@ interface OpportunityDetailsListItemProps {
 }
 
 const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
+  modality,
   relevance,
   type,
   expiration,
@@ -94,6 +100,19 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
         <p className={styles['opportunity-details-listitem__label']}>
           {formatDate(mappingDate)}
         </p>
+      </div>
+      <div className={styles['opportunity-details-listitem__column']}>
+        <MoreOpportunityDetailsModal
+          {...{
+            modality,
+            policyholder,
+            relevance,
+            securityAmount,
+            type,
+          }}
+          mappingDate={formatDate(mappingDate)}
+          expiration={getExpirationLabel()}
+        />
       </div>
     </div>
   );

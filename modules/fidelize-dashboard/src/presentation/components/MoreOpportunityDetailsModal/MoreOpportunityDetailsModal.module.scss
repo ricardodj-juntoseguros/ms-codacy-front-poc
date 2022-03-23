@@ -1,0 +1,61 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.more-opportunity-details-modal__trigger {
+  border: none;
+  width: spacing('xl');
+  height: spacing('xl');
+  background-color: transparent;
+  display: inline-flex;
+  text-align: center;
+  cursor: pointer;
+
+  & i {
+    color: color('brand-primary');
+    align-self: center;
+  }
+}
+
+.more-opportunity-details-modal__content-title {
+  @include font('base-emphasys');
+  color: color('dark');
+  margin-bottom: spacing('m');
+  margin-top: 0px;
+}
+
+.more-opportunity-details-modal__opportunity-data {
+  padding: spacing('l');
+  border-radius: spacing('xs');
+  background-color: color('grey-100');
+  border: 1px solid color('grey-100');
+  box-sizing: border-box;
+  margin-bottom: spacing('l');
+
+  & div {
+    margin-bottom: spacing('xs');
+  }
+}
+
+.more-opportunity-details-modal__field-value {
+  @include font('sm');
+  color: color('dark');
+  display: inline;
+}
+
+.more-opportunity-details-modal__field-label {
+  @include font('sm');
+  color: color('grey-500');
+  display: inline;
+  margin-right: spacing('xs');
+}
+
+.more-opportunity-details-modal__submit-wrapper {
+  & > button {
+    width: 274px;
+  }
+
+  @media screen and (max-width: 768px) {
+    & > button {
+      width: 100%;
+    }
+  }
+}

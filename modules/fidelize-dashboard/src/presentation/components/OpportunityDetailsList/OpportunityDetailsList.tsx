@@ -74,6 +74,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
       return (
         <OpportunityDetailsListItem
           key={`opportunity-details-listitem-${nanoid(5)}`}
+          modality={modality}
           relevance={relevance}
           type={category}
           expiration={expiration}
