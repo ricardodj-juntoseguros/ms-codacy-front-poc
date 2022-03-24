@@ -77,4 +77,38 @@ describe('OpportunityDetailsList', () => {
     });
     expect(apiMock).toHaveBeenCalledTimes(2);
   });
+
+  it('should fetch opportunity details on page size select', async () => {
+    const apiMock = jest
+      .spyOn(OpportunitiesDetailsApi, 'getOpportunitiesDetailsByModality')
+      .mockImplementation(async () => {
+        return {
+          totalCount: 100,
+          data: [
+            {
+              type: 'Fiscal',
+              relevance: OpportunityRelevanceEnum.HIGH,
+              category: 'Renovação',
+              securityAmount: 120000,
+              expiration: '2025-03-19T03:00:00.000Z',
+              mappingDate: '2022-03-18T03:00:00.000Z',
+              policyholder: 'Tomador',
+            },
+          ],
+        };
+      });
+
+    const { findByTestId } = render(
+      <Provider store={store}>
+        <OpportunityDetailsList modality={ModalityEnum.FISCAL} />
+      </Provider>,
+    );
+    const optionToSelect = await (
+      await findByTestId('dropdown-input-list')
+    ).children[1];
+    await act(async () => {
+      fireEvent.click(optionToSelect);
+    });
+    expect(apiMock).toHaveBeenCalledTimes(2);
+  });
 });

@@ -3,7 +3,7 @@ import { RootState } from '../../../config/store';
 import { ModalityEnum, OpportunitiesDetailsModel } from '../../types/model';
 
 const initialState: OpportunitiesDetailsModel = {
-  settings: [{ modality: ModalityEnum.FISCAL, activePage: 1 }],
+  settings: [{ modality: ModalityEnum.FISCAL, activePage: 1, pageSize: 10 }],
 };
 
 export const opportunitiesDetailsSlice = createSlice({
@@ -18,6 +18,17 @@ export const opportunitiesDetailsSlice = createSlice({
       state.settings.forEach(setting => {
         if (setting.modality === modality) {
           setting.activePage = page;
+        }
+      });
+    },
+    setPageSize: (
+      state,
+      action: PayloadAction<{ modality: ModalityEnum; pageSize: number }>,
+    ) => {
+      const { modality, pageSize } = action.payload;
+      state.settings.forEach(setting => {
+        if (setting.modality === modality) {
+          setting.pageSize = pageSize;
         }
       });
     },

@@ -16,10 +16,11 @@ class OpportunitiesDetailsApi {
   async getOpportunitiesDetailsByModality(
     modality: ModalityEnum,
     page: number,
+    pageSize: number,
   ): Promise<OpportunityDetailsDTO> {
     const params: IHttpClientRequestParameters = {
       url: `/v1/opportunities/${modality}`,
-      params: { page },
+      params: { page, pageSize },
     };
 
     return await this.instance.get<OpportunityDetailsDTO>(params);

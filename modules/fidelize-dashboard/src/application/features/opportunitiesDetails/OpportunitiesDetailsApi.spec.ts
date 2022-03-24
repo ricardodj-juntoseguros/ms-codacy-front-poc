@@ -30,11 +30,12 @@ describe('OpportunitiesDetailsApi', () => {
       await OpportunitiesDetailsApi.getOpportunitiesDetailsByModality(
         ModalityEnum.FISCAL,
         1,
+        10,
       );
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/v1/opportunities/fiscal',
-      params: { page: 1 },
+      params: { page: 1, pageSize: 10 },
     });
     expect(result.data[0].category).toBe('Renovação');
     expect(result.data[0].type).toBe('Fiscal');

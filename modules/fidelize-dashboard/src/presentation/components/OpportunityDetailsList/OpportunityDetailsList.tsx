@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Divider, Pagination, Skeleton } from 'junto-design-system';
+import { Divider, Pagination, Skeleton, Dropdown } from 'junto-design-system';
 import { nanoid } from 'nanoid';
 import { thousandSeparator } from '@shared/utils';
 import OpportunityDetailsListHeader from '../OpportunityDetailsListHeader';
@@ -24,8 +24,11 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
   modality,
 }) => {
   const dispatch = useDispatch();
-  const settings = useSelector(selectSettingsByModality(modality)) || {
+  const { activePage, pageSize } = useSelector(
+    selectSettingsByModality(modality),
+  ) || {
     activePage: 1,
+    pageSize: 10,
     modality,
   };
 
@@ -39,7 +42,8 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
       setLoadingItems(true);
       OpportunitiesDetailsApi.getOpportunitiesDetailsByModality(
         modality,
-        settings.activePage,
+        activePage,
+        pageSize,
       )
         .then(response => {
           setTotalCount(response.totalCount);
@@ -50,15 +54,21 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     };
 
     fetchOpportunityDetails();
-  }, [settings.activePage, modality]);
+  }, [activePage, pageSize, modality]);
 
   const handlePaging = (page: number) => {
     dispatch(opportunitiesDetailsActions.setActivePage({ page, modality }));
   };
 
+  const handleSelectPageSize = (value: any) => {
+    const pageSize = Number(value);
+    dispatch(opportunitiesDetailsActions.setActivePage({ page: 1, modality }));
+    dispatch(opportunitiesDetailsActions.setPageSize({ pageSize, modality }));
+  };
+
   const renderListItems = () => {
     if (loadingItems || !data) {
-      return Array.from({ length: 10 }, () => (
+      return Array.from({ length: pageSize }, () => (
         <OpportunityDetailsListItemSkeleton key={nanoid(5)} />
       ));
     }
@@ -117,11 +127,29 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
       </div>
       {totalCount !== undefined && totalCount > 10 && (
         <div className={styles['opportunity-details-list__paging-container']}>
-          <div />
+          <div
+            className={styles['opportunity-details-list__pagesize-selector']}
+          >
+            <p>Mostrando</p>
+            <Dropdown
+              label=""
+              placeholder=""
+              value={{
+                label: pageSize.toString(),
+                value: pageSize.toString(),
+              }}
+              options={[
+                { label: '10', value: '10' },
+                { label: '25', value: '25' },
+                { label: '50', value: '50' },
+              ]}
+              onValueSelected={item => handleSelectPageSize(item.value)}
+            />
+          </div>
           <div>
             <Pagination
-              activePage={settings.activePage}
-              itemsPerPage={10}
+              activePage={activePage}
+              itemsPerPage={pageSize}
               totalItemsCount={totalCount || 0}
               onChange={handlePaging}
             />

@@ -74,19 +74,19 @@ describe('PolicyholderAndModalitySearch', () => {
 
   it('should show the policyHolderDetails button when the hasValidPolicyholder property is true', () => {
     propsMock.hasValidPolicyholder = true;
-    const { getByRole } = render(
+    const { getByText } = render(
       <PolicyholderAndModalitySearch {...propsMock} />,
     );
-    expect(getByRole('button')).toBeInTheDocument();
+    expect(getByText('Ver detalhes deste tomador')).toBeInTheDocument();
   });
 
   it('should call policyholderDetails when the button is clicked', () => {
     propsMock.hasValidPolicyholder = true;
-    const { getByRole } = render(
+    const { getByText } = render(
       <PolicyholderAndModalitySearch {...propsMock} />,
     );
 
-    const button = getByRole('button');
+    const button = getByText('Ver detalhes deste tomador');
     fireEvent.click(button);
 
     expect(handlePolicyholderDetails).toHaveBeenCalledTimes(1);
