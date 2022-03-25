@@ -22,6 +22,7 @@ describe('OpportunityDetailsList', () => {
           totalCount: 100,
           data: [
             {
+              id: 'id',
               type: 'Fiscal',
               relevance: OpportunityRelevanceEnum.HIGH,
               category: 'Renovação',
@@ -54,6 +55,7 @@ describe('OpportunityDetailsList', () => {
           totalCount: 100,
           data: [
             {
+              id: 'id',
               type: 'Fiscal',
               relevance: OpportunityRelevanceEnum.HIGH,
               category: 'Renovação',
@@ -86,6 +88,7 @@ describe('OpportunityDetailsList', () => {
           totalCount: 100,
           data: [
             {
+              id: 'id',
               type: 'Fiscal',
               relevance: OpportunityRelevanceEnum.HIGH,
               category: 'Renovação',

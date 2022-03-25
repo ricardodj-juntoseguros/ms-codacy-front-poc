@@ -25,6 +25,15 @@ class OpportunitiesDetailsApi {
 
     return await this.instance.get<OpportunityDetailsDTO>(params);
   }
+
+  async sendMoreOpportunityDetailsMail(opportunityId: string): Promise<any> {
+    const params: IHttpClientRequestParameters = {
+      url: '/v1/opportunities/mail/mapping-details',
+      payload: { opportunityId },
+    };
+
+    return await this.instance.post(params);
+  }
 }
 
 export default new OpportunitiesDetailsApi();

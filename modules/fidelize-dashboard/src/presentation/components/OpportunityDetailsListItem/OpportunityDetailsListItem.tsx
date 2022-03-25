@@ -7,27 +7,26 @@ import {
   ModalityEnum,
   OpportunityRelevanceEnum,
 } from '../../../application/types/model';
+import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import MoreOpportunityDetailsModal from '../MoreOpportunityDetailsModal';
 
 interface OpportunityDetailsListItemProps {
   modality: ModalityEnum;
-  relevance: OpportunityRelevanceEnum;
-  type: string;
-  expiration: string | null;
-  securityAmount: number;
-  policyholder: string;
-  mappingDate: string;
+  opportunity: OpportunityDetailsItemDTO;
 }
 
 const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
   modality,
-  relevance,
-  type,
-  expiration,
-  securityAmount,
-  policyholder,
-  mappingDate,
+  opportunity,
 }) => {
+  const {
+    relevance,
+    category,
+    expiration,
+    securityAmount,
+    policyholder,
+    mappingDate,
+  } = opportunity;
   const isExpiredOpportunity =
     expiration !== null ? isAfter(new Date(), new Date(expiration)) : false;
 
@@ -78,7 +77,9 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
         </span>
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
-        <p className={styles['opportunity-details-listitem__label']}>{type}</p>
+        <p className={styles['opportunity-details-listitem__label']}>
+          {category}
+        </p>
         <span className={styles['opportunity-details-listitem__label-helper']}>
           {getExpirationLabel()}
         </span>
@@ -103,15 +104,12 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <MoreOpportunityDetailsModal
-          {...{
-            modality,
-            policyholder,
-            relevance,
-            securityAmount,
-            type,
+          modality={modality}
+          opportunity={{
+            ...opportunity,
+            mappingDate: formatDate(mappingDate),
+            expiration: getExpirationLabel(),
           }}
-          mappingDate={formatDate(mappingDate)}
-          expiration={getExpirationLabel()}
         />
       </div>
     </div>

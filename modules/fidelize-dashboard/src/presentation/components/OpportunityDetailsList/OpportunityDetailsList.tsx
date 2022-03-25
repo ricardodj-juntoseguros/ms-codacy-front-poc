@@ -73,24 +73,11 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
       ));
     }
     return data.map(opportunity => {
-      const {
-        relevance,
-        category,
-        expiration,
-        mappingDate,
-        policyholder,
-        securityAmount,
-      } = opportunity;
       return (
         <OpportunityDetailsListItem
           key={`opportunity-details-listitem-${nanoid(5)}`}
           modality={modality}
-          relevance={relevance}
-          type={category}
-          expiration={expiration}
-          securityAmount={securityAmount}
-          policyholder={policyholder}
-          mappingDate={mappingDate}
+          opportunity={opportunity}
         />
       );
     });

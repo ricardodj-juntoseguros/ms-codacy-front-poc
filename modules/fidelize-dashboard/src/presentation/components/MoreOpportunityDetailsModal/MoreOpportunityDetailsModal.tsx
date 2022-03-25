@@ -3,41 +3,38 @@ import { Button, Modal } from 'junto-design-system';
 import { nanoid } from 'nanoid';
 import { thousandSeparator } from '@shared/utils';
 import { SuccessIllustration } from '@shared/ui';
-import {
-  ModalityEnum,
-  OpportunityRelevanceEnum,
-} from '../../../application/types/model';
-import styles from './MoreOpportunityDetailsModal.module.scss';
 import { getLabelByModality } from '../../../helpers';
+import { ModalityEnum } from '../../../application/types/model';
+import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
+import OpportunityDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
+import styles from './MoreOpportunityDetailsModal.module.scss';
 
 interface MoreOpportunityDetailsModalProps {
   modality: ModalityEnum;
-  relevance: OpportunityRelevanceEnum;
-  type: string;
-  expiration: string | null;
-  securityAmount: number;
-  policyholder: string;
-  mappingDate: string;
+  opportunity: OpportunityDetailsItemDTO;
 }
 
 const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
-  ({
-    modality,
-    relevance,
-    type,
-    expiration,
-    securityAmount,
-    policyholder,
-    mappingDate,
-  }) => {
+  ({ modality, opportunity }) => {
     const btnRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState(false);
+    const {
+      id,
+      category,
+      policyholder,
+      securityAmount,
+      expiration,
+      mappingDate,
+      relevance,
+    } = opportunity;
 
     const renderOpportunityData = () => {
       const data = [
         { label: 'Tomador', value: policyholder },
-        { label: 'Tipo/Obs', value: `${type} - ${expiration}` },
+        { label: 'Tipo/Obs', value: `${category} - ${expiration}` },
         {
           label: 'Importância segurada',
           value: `R$ ${thousandSeparator(securityAmount, '.', 2)}`,
@@ -90,18 +87,27 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
     };
 
     const handleSubmit = () => {
-      setHasSubmitted(true);
+      setIsSubmitting(true);
+      OpportunityDetailsApi.sendMoreOpportunityDetailsMail(id)
+        .then(() => setHasSubmitted(true))
+        .catch(() => setSubmitError(true))
+        .finally(() => {
+          setIsSubmitting(false);
+        });
     };
 
     const handleModalClose = () => {
       setModalOpen(false);
       setHasSubmitted(false);
+      setIsSubmitting(false);
+      setSubmitError(false);
     };
 
     return (
       <>
         <button
           ref={btnRef}
+          data-testid="modal-trigger"
           type="button"
           className={styles['more-opportunity-details-modal__trigger']}
           onClick={() => setModalOpen(true)}
@@ -136,8 +142,21 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
                   styles['more-opportunity-details-modal__submit-wrapper']
                 }
               >
-                <Button onClick={() => handleSubmit()}>
-                  Solicitar detalhes
+                {submitError && (
+                  <div
+                    className={styles['more-opportunity-details-modal__error']}
+                  >
+                    Ocorreu um erro inesperado ao realizar a sua solicitação.
+                    Por favor, tente novamente.
+                  </div>
+                )}
+                <Button
+                  data-testid="submit-more-details"
+                  onClick={() => handleSubmit()}
+                >
+                  {isSubmitting
+                    ? ((<i className="icon icon-loading" />) as any)
+                    : 'Solicitar detalhes'}
                 </Button>
               </div>
             </>

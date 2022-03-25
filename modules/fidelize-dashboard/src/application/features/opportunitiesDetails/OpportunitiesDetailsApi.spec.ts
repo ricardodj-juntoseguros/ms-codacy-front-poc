@@ -44,4 +44,23 @@ describe('OpportunitiesDetailsApi', () => {
     expect(result.data[0].mappingDate).toBe('2022-03-18T03:00:00.000Z');
     expect(result.data[0].securityAmount).toBe(120000);
   });
+
+  it('sendMoreOpportunityDetailsMail should call bff service correctly', async () => {
+    const mockGet = jest
+      .spyOn(AxiosHttpClient.prototype, 'post')
+      .mockImplementation(async () => {
+        return {
+          success: true,
+        };
+      });
+    const result = await OpportunitiesDetailsApi.sendMoreOpportunityDetailsMail(
+      'sample-opportunity-id',
+    );
+
+    expect(mockGet).toHaveBeenCalledWith({
+      url: '/v1/opportunities/mail/mapping-details',
+      payload: { opportunityId: 'sample-opportunity-id' },
+    });
+    expect(result.success).toBe(true);
+  });
 });

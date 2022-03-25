@@ -1,5 +1,16 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+  }
+}
+
 .more-opportunity-details-modal__trigger {
   border: none;
   width: spacing('xl');
@@ -51,6 +62,13 @@
 .more-opportunity-details-modal__submit-wrapper {
   & > button {
     width: 274px;
+    text-align: center;
+  }
+
+  & i::before {
+    animation: rotating 1s linear infinite;
+    -webkit-animation: rotating 1s linear infinite;
+    display: inline-block;
   }
 
   @media screen and (max-width: 768px) {
@@ -58,4 +76,14 @@
       width: 100%;
     }
   }
+}
+
+.more-opportunity-details-modal__error {
+  @include font('xs-emphasys');
+  max-width: 100%;
+  text-align: center;
+  padding: spacing('m');
+  margin-bottom: spacing('l');
+  background-color: #ffecec;
+  color: color('error');
 }
