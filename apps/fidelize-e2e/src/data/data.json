@@ -5,5 +5,8 @@
   },
   "cookies": {
     "userAccess": "uac"
+  },
+  "messages": {
+    "moreDetailsSuccess": "Agora é só aguardar"
   }
 }

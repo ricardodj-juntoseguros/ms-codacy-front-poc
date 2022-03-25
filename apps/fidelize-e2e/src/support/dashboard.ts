@@ -13,3 +13,16 @@ Cypress.Commands.add('goToOpportunityDetailsListTab', (tab) => {
       .click()
   );
 });
+
+Cypress.Commands.add('clickOnFirstMoreDetailsButton', () => {
+  return (
+    cy.get(selectors.opportunityDetailsList.listBox)
+      .within(() => {
+        cy.get(selectors.opportunityDetailsList.listItemWrapper)
+          .should('not.be.empty')
+          .get(selectors.opportunityDetailsList.moreDetailsButton)
+          .first()
+          .click();
+    })
+  )
+});

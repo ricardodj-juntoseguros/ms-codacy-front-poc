@@ -1,7 +1,7 @@
 import { loadData } from '../utils';
 import { selectors } from '../support/selectors';
 
-const data = loadData();
+const { user, cookies } = loadData();
 
 describe('Logout', () => {
   it('Should log in and log out', () => {
@@ -9,12 +9,12 @@ describe('Logout', () => {
 
     cy.wait(1000);
 
-    cy.login(data.user.username, data.user.password);
+    cy.login(user.username, user.password);
 
     cy.get(selectors.dashboardSummary.totalCard)
       .should('be.visible');
 
-    cy.getCookie(data.cookies.userAccess)
+    cy.getCookie(cookies.userAccess)
       .should('exist');
 
     cy.logout();
@@ -22,7 +22,7 @@ describe('Logout', () => {
     cy.get(selectors.login.userInput)
       .should('exist');
 
-    cy.getCookie(data.cookies.userAccess)
+    cy.getCookie(cookies.userAccess)
       .should('not.exist');
   });
 });

@@ -1,25 +1,17 @@
 import { loadData } from '../utils/loadData';
+import { selectors } from '../support/selectors';
 
-const data = loadData();
+const { user } = loadData();
 
 describe('Dashboard', () => {
-  it('Should log in', () => {
+  it('Should go to the dashboard', () => {
     cy.visit('/');
 
-    cy.get('form input[name="user"]')
-      .should('be.visible')
-      .type(data.user.username);
+    cy.wait(1000);
 
-    cy.get('form input[name="password"]')
-      .should('be.visible')
-      .type(data.user.password);
+    cy.login(user.username, user.password);
 
-    cy.get('form button[type="submit"]')
-      .should('be.visible')
-      .and('not.be.disabled')
-      .click();
-
-    cy.get('div[class^="DashboardTotalCard"]')
+    cy.get(selectors.dashboardSummary.totalCard)
       .should('be.visible');
   });
 });

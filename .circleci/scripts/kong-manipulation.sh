@@ -162,29 +162,31 @@ prepare_env(){
 
 open_kong(){
     echo "Opening CircleCI IP Address on Whitelist..."
-        if [[ "$SERVICE_1" == "ms-plataforma-bff"  ]]; then
+        if [[ "$SERVICE_1" = "ms-plataforma-bff"  ]]; then
         
             PLUGIN=$(kubectl get kongplugin -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" 2>&1 || EXIT_CODE=$?)
 
             echo "Adding CircleCI IP Address to Whitelist on Kong"
             kubectl patch kongplugin -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" --type=json -p '[{"op": "add", "path": "/config/allow/-", "value": "'${CIRCLECI_IP}'"}]'
+            kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "add", "path": "/config/allow/-", "value": "'${CIRCLECI_IP}'"}]'
             echo "Adding Cloudflare IPs Address to Whitelist on Kong"
             for SCLOUDFLARE_POINT in ${CLOUDFLARE_IPS}
             do
                 kubectl patch kongplugin -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" --type=json -p '[{"op": "add", "path": "/config/allow/-", "value": "'${SCLOUDFLARE_POINT}'"}]'
+                kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "add", "path": "/config/allow/-", "value": "'${SCLOUDFLARE_POINT}'"}]'
             done
 
-        # elif [[ "$SERVICE_2" == "fidelize-bff"  ]]; then
+        elif [[ "$SERVICE_2" = "fidelize-bff"  ]]; then
 
-        #     PLUGIN=$(kubectl get kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" 2>&1 || EXIT_CODE=$?)
+            PLUGIN=$(kubectl get kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" 2>&1 || EXIT_CODE=$?)
 
-        #     echo "Adding CircleCI IP Address to Whitelist on Kong"
-        #     kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "add", "path": "/config/allow/-", "value": "'${CIRCLECI_IP}'"}]'
-        #     echo "Adding Cloudflare IPs Address to Whitelist on Kong"
-        #     for SCLOUDFLARE_POINT in ${CLOUDFLARE_IPS}
-        #     do
-        #         kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "add", "path": "/config/allow/-", "value": "'${SCLOUDFLARE_POINT}'"}]'
-        #     done
+            echo "Adding CircleCI IP Address to Whitelist on Kong"
+            kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "add", "path": "/config/allow/-", "value": "'${CIRCLECI_IP}'"}]'
+            echo "Adding Cloudflare IPs Address to Whitelist on Kong"
+            for SCLOUDFLARE_POINT in ${CLOUDFLARE_IPS}
+            do
+                kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "add", "path": "/config/allow/-", "value": "'${SCLOUDFLARE_POINT}'"}]'
+            done
         else
             echo "Adding CircleCI IP Address to Whitelist on k8s"
             # WHITE_LIST="${INGRESS_CIDR_BLOCKS},${CICLECI_IP_ADDRESS}"
@@ -198,37 +200,41 @@ close_kong(){
     echo "Closing CircleCI IP Address on Whitelist..."
 
         echo "Recovering default whitelist on kong"
-        if [[ "$SERVICE_1" == "ms-plataforma-bff"  ]]; then
+        if [[ "$SERVICE_1" = "ms-plataforma-bff"  ]]; then
             PLUGIN=$(kubectl get kongplugin -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" 2>&1 || EXIT_CODE=$?)
 
             echo "Recovering default whitelist on kong"
             WHITE_LIST=$(kubectl get kongplugin -o json -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" | jq .config.allow | jq 'del(.[] | select(. == "'${CIRCLECI_IP}'"))' | jq -c )
+            WHITE_LIST2=$(kubectl get kongplugin -o json -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" | jq .config.allow | jq 'del(.[] | select(. == "'${CIRCLECI_IP}'"))' | jq -c )
             kubectl patch kongplugin -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" --type=json -p '[{"op": "replace", "path": "/config/allow", "value":'${WHITE_LIST}'}]'
+            kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "replace", "path": "/config/allow", "value":'${WHITE_LIST2}'}]'
 
             # kubectl patch kongplugin -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" --type=json -p '[{"op": "remove", "path": "/config/allow/-", "value": "'${CIRCLECI_IP}'"}]'
 
             for SCLOUDFLARE_POINT in ${CLOUDFLARE_IPS}
             do
                 WHITE_LIST=$(kubectl get kongplugin -o json -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" | jq .config.allow | jq 'del(.[] | select(. == "'${SCLOUDFLARE_POINT}'"))' | jq -c )
+                WHITE_LIST2=$(kubectl get kongplugin -o json -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" | jq .config.allow | jq 'del(.[] | select(. == "'${SCLOUDFLARE_POINT}'"))' | jq -c )
                 kubectl patch kongplugin -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" --type=json -p '[{"op": "replace", "path": "/config/allow", "value":'${WHITE_LIST}'}]'
+                kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "replace", "path": "/config/allow", "value":'${WHITE_LIST2}'}]'
 
                 # kubectl patch kongplugin -n "${NAMESPACE_1}" "kong-ip-restriction-${SERVICE_1}" --type=json -p '[{"op": "remove", "path": "/config/allow/-", "value": "'${SCLOUDFLARE_POINT}'"}]'
 
             done
 
-        # elif [[ "$SERVICE_2" == "fidelize-bff"  ]]; then
+        elif [[ "$SERVICE_2" = "fidelize-bff"  ]]; then
 
-        #     PLUGIN=$(kubectl get kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" 2>&1 || EXIT_CODE=$?)
+            PLUGIN=$(kubectl get kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" 2>&1 || EXIT_CODE=$?)
 
-        #     echo "Recovering default whitelist on kong"
-        #     WHITE_LIST=$(kubectl get kongplugin -o json -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" | jq .config.allow | jq 'del(.[] | select(. == "'${CIRCLECI_IP}'"))' | jq -c )
-        #     kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "replace", "path": "/config/allow", "value":'${WHITE_LIST}'}]'
+            echo "Recovering default whitelist on kong"
+            WHITE_LIST=$(kubectl get kongplugin -o json -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" | jq .config.allow | jq 'del(.[] | select(. == "'${CIRCLECI_IP}'"))' | jq -c )
+            kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "replace", "path": "/config/allow", "value":'${WHITE_LIST}'}]'
 
-        #     for SCLOUDFLARE_POINT in ${CLOUDFLARE_IPS}
-        #     do
-        #         WHITE_LIST=$(kubectl get kongplugin -o json -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" | jq .config.allow | jq 'del(.[] | select(. == "'${SCLOUDFLARE_POINT}'"))' | jq -c )
-        #         kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "replace", "path": "/config/allow", "value":'${WHITE_LIST}'}]'
-        #     done
+            for SCLOUDFLARE_POINT in ${CLOUDFLARE_IPS}
+            do
+                WHITE_LIST=$(kubectl get kongplugin -o json -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" | jq .config.allow | jq 'del(.[] | select(. == "'${SCLOUDFLARE_POINT}'"))' | jq -c )
+                kubectl patch kongplugin -n "${NAMESPACE}" "kong-ip-restriction-${SERVICE_2}" --type=json -p '[{"op": "replace", "path": "/config/allow", "value":'${WHITE_LIST}'}]'
+            done
 
         else
             echo "Recovering default whitelist on k8s"

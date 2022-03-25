@@ -16,6 +16,13 @@ export const selectors = {
     fiscalTab: '[data-testid="tab-fiscal"]',
     civilTab: '[data-testid="tab-civil"]',
     listBox: '[class^="OpportunityDetailsList"][class*="box"]',
-    listItemWrapper: '[class*="listitem__wrapper"]'
+    listItemWrapper: '[class*="listitem__wrapper"]',
+    moreDetailsButton: '[class*="listitem__wrapper"] button'
+  },
+  modal: {
+    wrapper: 'div[class*="modal__wrapper"]',
+    title: 'h1[class*="modal__title"]',
+    primaryButton: 'button[class*="primary"]',
+    icon: 'div[class*="modal__icon"]'
   }
 }

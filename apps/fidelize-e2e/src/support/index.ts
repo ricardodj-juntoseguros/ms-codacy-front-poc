@@ -11,12 +11,12 @@ declare global {
       // Authentication
       
       login(user: string, password: string): Chainable<Element>;
-      loginRequest(user: string, password: string): Chainable<Element>;
       logout(): Chainable<Element>;
 
       // Dashboard
 
       goToOpportunityDetailsListTab(tab: 'labor' | 'fiscal' | 'civil'): Chainable<Element>;
+      clickOnFirstMoreDetailsButton(): Chainable<Element>;
     }
   }
 }
