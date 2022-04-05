@@ -159,6 +159,16 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
                     : 'Solicitar detalhes'}
                 </Button>
               </div>
+              <div
+                className={styles['more-opportunity-details-modal__disclaimer']}
+              >
+                <p>
+                  Consulte as condições do produto. A aceitação do seguro estará
+                  sempre condicionada à análise do risco, e exigirá por parte do
+                  Tomador a comprovação de capacidade técnica e financeira, e o
+                  cumprimento de eventuais exigências cadastral e de subscrição.
+                </p>
+              </div>
             </>
           )}
         </Modal>

@@ -87,3 +87,14 @@
   background-color: #ffecec;
   color: color('error');
 }
+
+.more-opportunity-details-modal__disclaimer {
+  margin-top: spacing('xl');
+  width: 100%;
+
+  & > p {
+    margin: 0px;
+    @include font('xs');
+    color: color('grey-500');
+  }
+}
