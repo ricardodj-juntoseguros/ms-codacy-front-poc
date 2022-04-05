@@ -9,7 +9,7 @@ import { IHttpClient } from '../IHttpClient';
 import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters';
 
 export class AxiosHttpClient implements IHttpClient {
-  protected readonly instance: AxiosInstance;
+  readonly instance: AxiosInstance;
 
   public constructor(baseURL: string, headers?: any, timeout?: number) {
     this.instance = axios.create({

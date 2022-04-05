@@ -1,183 +1,152 @@
 import { AxiosHttpClient } from './AxiosHttpClient';
 import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters';
 
-interface UserResponseModel {
-  age: number;
-  name: string;
-}
-interface LoginResponseModel {
-  user?: UserResponseModel;
-  token: string;
-}
-interface TaskCreateResponseModel {
-  success: boolean;
-  data: {
-    _id: string;
-    description: string;
-  };
-}
-
-// upgrade defautl timeout
-jest.setTimeout(10000);
-
 describe('Axios HTTP client', () => {
-  let token: string;
-  let instance: AxiosHttpClient;
+  const client: AxiosHttpClient = new AxiosHttpClient(
+    'https://test-url.com',
+    {},
+    10000,
+  );
 
-  beforeEach(async () => {
-    if (!instance)
-      instance = new AxiosHttpClient(
-        'https://api-nodejs-todolist.herokuapp.com',
-        {},
-        10000,
-      );
-
-    if (!token) await authenticate();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(client.instance, 'request').mockImplementation(async () => {
+      return {
+        data: {
+          success: true,
+        },
+      };
+    });
+    jest.spyOn(client.instance.interceptors.request, 'use');
+    jest.spyOn(client.instance.interceptors.response, 'use');
   });
 
-  it('should execute GET method without error', async () => {
+  it('should execute GET method accordingly', async () => {
     const headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer any_token`,
     };
 
     const getParameters: IHttpClientRequestParameters = {
-      url: '/user/me',
+      url: '/get-resource',
       headers,
+      params: { id: 123 },
     };
 
-    const response = await instance.get<UserResponseModel>(getParameters);
-    expect(response.age).toEqual(55);
-    expect(response.name).toEqual('Platform Web Test');
+    await client.get<any>(getParameters);
+    expect(client.instance.request).toHaveBeenCalledWith({
+      url: '/get-resource',
+      headers,
+      method: 'GET',
+      params: { id: 123 },
+      data: undefined,
+    });
   });
 
-  it('should execute POST method without error', async () => {
-    const taskDescription = 'create task';
-    const response = await createTask('create task');
-    expect(response.data.description).toEqual(taskDescription);
-  });
-
-  it('should execute PUT method without error', async () => {
-    const id = await (await createTask('create task')).data._id;
-
+  it('should execute POST method accordingly', async () => {
     const headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer any_token`,
     };
 
-    const payload = {
-      completed: true,
-    };
-
-    const getParameters: IHttpClientRequestParameters = {
-      url: `/task/${id}`,
+    const postParameters: IHttpClientRequestParameters = {
+      url: '/post-resource',
       headers,
-      payload,
+      payload: { id: 123, name: 'John Doe' },
     };
 
-    const response = await instance.put<TaskCreateResponseModel>(getParameters);
-    expect(response.success).toEqual(true);
+    await client.post<any>(postParameters);
+    expect(client.instance.request).toHaveBeenCalledWith({
+      url: '/post-resource',
+      headers,
+      method: 'POST',
+      params: undefined,
+      data: { id: 123, name: 'John Doe' },
+    });
   });
 
-  it('should execute DELETE method without error', async () => {
-    const id = await (await createTask('create task')).data._id;
-
+  it('should execute PUT method accordingly', async () => {
     const headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer any_token`,
     };
 
-    const payload = {
-      completed: true,
-    };
-
-    const getParameters: IHttpClientRequestParameters = {
-      url: `/task/${id}`,
+    const putParameters: IHttpClientRequestParameters = {
+      url: '/put-resource',
       headers,
-      payload,
+      payload: { id: 123, name: 'Jane Doe' },
     };
 
-    const response = await instance.delete<TaskCreateResponseModel>(
-      getParameters,
-    );
-    expect(response.success).toEqual(true);
+    await client.put<any>(putParameters);
+    expect(client.instance.request).toHaveBeenCalledWith({
+      url: '/put-resource',
+      headers,
+      method: 'PUT',
+      params: undefined,
+      data: { id: 123, name: 'Jane Doe' },
+    });
+  });
+
+  it('should execute DELETE method accordingly', async () => {
+    const headers = {
+      Authorization: `Bearer any_token`,
+    };
+
+    const deleteParameters: IHttpClientRequestParameters = {
+      url: '/delete-resource',
+      headers,
+      payload: { id: 123 },
+    };
+
+    await client.delete<any>(deleteParameters);
+    expect(client.instance.request).toHaveBeenCalledWith({
+      url: '/delete-resource',
+      headers,
+      method: 'DELETE',
+      params: undefined,
+      data: { id: 123 },
+    });
+  });
+
+  it('should execute PATCH method accordingly', async () => {
+    const headers = {
+      Authorization: `Bearer any_token`,
+    };
+
+    const patchParameters: IHttpClientRequestParameters = {
+      url: '/patch-resource',
+      headers,
+      payload: { id: 123, name: 'Mary Anne' },
+    };
+
+    await client.patch<any>(patchParameters);
+    expect(client.instance.request).toHaveBeenCalledWith({
+      url: '/patch-resource',
+      headers,
+      method: 'PATCH',
+      params: undefined,
+      data: { id: 123, name: 'Mary Anne' },
+    });
   });
 
   it('Should add request interceptors to instance without errors', async () => {
     const mockFn = jest.fn();
-    instance.setRequestInterceptors(
+    client.setRequestInterceptors(
       config => {
         mockFn(`${config.baseURL}${config.url}`);
         return config;
       },
       error => mockFn(error),
     );
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    const getParameters: IHttpClientRequestParameters = {
-      url: '/user/me',
-      headers,
-    };
-
-    await instance.get<UserResponseModel>(getParameters);
-    expect(mockFn).toHaveBeenCalledWith(
-      'https://api-nodejs-todolist.herokuapp.com/user/me',
-    );
+    expect(client.instance.interceptors.request.use).toHaveBeenCalledTimes(1);
   });
 
   it('Should add response interceptors to instance without errors', async () => {
     const mockFn = jest.fn();
-    instance.setResponseInterceptors<UserResponseModel>(
+    client.setResponseInterceptors<any>(
       value => {
         mockFn(`The name is: ${value.data.name}`);
         return value;
       },
       error => mockFn(error),
     );
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    const getParameters: IHttpClientRequestParameters = {
-      url: '/user/me',
-      headers,
-    };
-
-    await instance.get<UserResponseModel>(getParameters);
-    expect(mockFn).toHaveBeenCalledWith('The name is: Platform Web Test');
+    expect(client.instance.interceptors.response.use).toHaveBeenCalledTimes(1);
   });
-
-  async function createTask(description: string) {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    const payload = {
-      description,
-    };
-
-    const getParameters: IHttpClientRequestParameters = {
-      url: '/task',
-      headers,
-      payload,
-    };
-
-    return await instance.post<TaskCreateResponseModel>(getParameters);
-  }
-
-  async function authenticate() {
-    const data = {
-      email: 'jpwtest@email.com',
-      password: '12345678',
-    };
-
-    const getParameters: IHttpClientRequestParameters = {
-      url: '/user/login',
-      payload: data,
-    };
-
-    const response = await instance.post<LoginResponseModel>(getParameters);
-    token = response.token;
-  }
 });

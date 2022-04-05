@@ -5,17 +5,11 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: spacing('xxl-4');
+  margin-top: spacing('xxl');
 }
 
 @media screen and (max-width: 1008px) {
   .dashboard-summary__wrapper {
     justify-content: space-evenly;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .dashboard-summary__wrapper {
-    margin-top: spacing('xxl-2');
   }
 }

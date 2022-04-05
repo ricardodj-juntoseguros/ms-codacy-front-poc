@@ -7,6 +7,7 @@ import ModalitySummary from '../../components/ModalitySummary';
 import { ModalitySummarySkeleton } from '../../components/Skeletons';
 import ModalityUnderConstruction from '../../components/ModalityUnderConstruction';
 import OpportunityDetailsList from '../../components/OpportunityDetailsList';
+import PolicyholderFilterSelector from '../../components/PolicyholderFilterSelector';
 import {
   selectModality,
   modalitySelectionSliceActions,
@@ -63,6 +64,7 @@ function DashboardContainer() {
     <div className={styles['dashboard-container__wrapper']}>
       <DashboardHeader />
       <Divider />
+      <PolicyholderFilterSelector />
       <DashboardSummary />
       <h2 className={styles['dashboard-container__modalities-title']}>
         Oportunidades por modalidade
