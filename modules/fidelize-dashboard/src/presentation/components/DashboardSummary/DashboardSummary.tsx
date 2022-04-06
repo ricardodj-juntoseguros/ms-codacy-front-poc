@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { summaryCards } from '../../../constants';
 import { DashboardTotalCard } from '../DashboardTotalCard';
 import styles from './DashboardSummary.module.scss';
 import SummaryApi from '../../../application/features/summary/SummaryApi';
+import { selectPolicyholderSelection } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 
 interface DashboardSummaryData {
   value: number | null;
@@ -11,6 +13,7 @@ interface DashboardSummaryData {
 }
 
 const DashboardSummary: React.FC = () => {
+  const filteredFederalIds = useSelector(selectPolicyholderSelection);
   const [policyholders, setPolicyholders] = useState<DashboardSummaryData>({
     value: null,
     loading: true,
@@ -18,11 +21,16 @@ const DashboardSummary: React.FC = () => {
   });
 
   useEffect(() => {
-    fetchSummaryData();
-  }, []);
+    setPolicyholders({
+      value: null,
+      loading: true,
+      error: false,
+    });
+    fetchSummaryData(filteredFederalIds);
+  }, [filteredFederalIds]);
 
-  const fetchSummaryData = () => {
-    SummaryApi.getPolicyholdersTotal()
+  const fetchSummaryData = (federalIds: string[]) => {
+    SummaryApi.getPolicyholdersTotal(federalIds)
       .then(response => {
         setPolicyholders({
           value: response.totalPolicyholders,

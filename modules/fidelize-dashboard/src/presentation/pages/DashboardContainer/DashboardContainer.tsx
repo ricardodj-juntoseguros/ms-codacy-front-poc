@@ -12,6 +12,7 @@ import {
   selectModality,
   modalitySelectionSliceActions,
 } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
+import { selectPolicyholderSelection } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 import SummaryApi from '../../../application/features/summary/SummaryApi';
 import { ModalityEnum } from '../../../application/types/model';
 import { ModalitySummaryDTO } from '../../../application/types/dto';
@@ -20,6 +21,7 @@ import styles from './DashboardContainer.module.scss';
 function DashboardContainer() {
   const dispatch = useDispatch();
   const { selectedModality } = useSelector(selectModality);
+  const filteredPolicyholders = useSelector(selectPolicyholderSelection);
   const [loadingModalitySummary, setLoadingModalitySummary] = useState(true);
   const [errorModalitySummary, setErrorModalitySummary] = useState(false);
   const [modalitiesSummaryData, setModalitiesSummaryData] = useState<
@@ -27,11 +29,12 @@ function DashboardContainer() {
   >([]);
 
   useEffect(() => {
-    fetchModalitiesSummary();
-  }, []);
+    setLoadingModalitySummary(true);
+    fetchModalitiesSummary(filteredPolicyholders);
+  }, [filteredPolicyholders]);
 
-  const fetchModalitiesSummary = () => {
-    SummaryApi.getModalitiesSummary()
+  const fetchModalitiesSummary = (federalIds: string[]) => {
+    SummaryApi.getModalitiesSummary(federalIds)
       .then(response => setModalitiesSummaryData(response))
       .catch(() => setErrorModalitySummary(true))
       .finally(() => setLoadingModalitySummary(false));

@@ -17,10 +17,18 @@ class OpportunitiesDetailsApi {
     modality: ModalityEnum,
     page: number,
     pageSize: number,
+    federalids: string[],
   ): Promise<OpportunityDetailsDTO> {
+    const query: any = {
+      page,
+      pageSize,
+    };
+    if (federalids.length > 0) {
+      query.federalids = federalids.join(',');
+    }
     const params: IHttpClientRequestParameters = {
       url: `/v1/opportunities/${modality}`,
-      params: { page, pageSize },
+      params: query,
     };
 
     return await this.instance.get<OpportunityDetailsDTO>(params);

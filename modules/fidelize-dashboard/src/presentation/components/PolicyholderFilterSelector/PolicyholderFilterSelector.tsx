@@ -10,6 +10,7 @@ import {
   selectPolicyholderSelection,
   policyholderFilterActions,
 } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
+import { opportunitiesDetailsActions } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import styles from './PolicyholderFilterSelector.module.scss';
 
 const PolicyholderFilterSelector: React.FC = () => {
@@ -24,8 +25,9 @@ const PolicyholderFilterSelector: React.FC = () => {
   const [selectedPolicyholders, setSelectedPolicyholders] = useState<
     PolicyholderDTO[]
   >([]);
-  const [fetchError, setFetchError] = useState<boolean>(false);
-  const [hasChanges, setHasChanges] = useState<boolean>(false);
+  const [fetchError, setFetchError] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [showMaxAlert, setShowMaxAlert] = useState(false);
 
   useEffect(() => {
     PolicyholderFilterApi.getMappedPolicyholderList()
@@ -109,9 +111,14 @@ const PolicyholderFilterSelector: React.FC = () => {
       policyholder => policyholder.federalId === value,
     );
 
+    if (selectedPolicyholders.length === 10) {
+      setShowMaxAlert(true);
+      setTimeout(() => setShowMaxAlert(false), 5000);
+      return;
+    }
+
     if (
       !selectedPolicyholder ||
-      selectedPolicyholders.length === 10 ||
       selectedPolicyholders.find(p => p.federalId === value)
     )
       return;
@@ -133,6 +140,7 @@ const PolicyholderFilterSelector: React.FC = () => {
 
   const handleClearAll = () => {
     setSelectedPolicyholders([]);
+    dispatch(opportunitiesDetailsActions.resetSettings());
     dispatch(
       policyholderFilterActions.setPolicyholderSelection({
         selection: [],
@@ -141,6 +149,7 @@ const PolicyholderFilterSelector: React.FC = () => {
   };
 
   const handleApplyFilter = () => {
+    dispatch(opportunitiesDetailsActions.resetSettings());
     dispatch(
       policyholderFilterActions.setPolicyholderSelection({
         selection: selectedPolicyholders.map(selected => selected.federalId),
@@ -176,6 +185,7 @@ const PolicyholderFilterSelector: React.FC = () => {
             selectedPolicyholders={selectedPolicyholders}
             onClear={() => handleClearAll()}
             onRemove={handleRemoveTag}
+            showMaxAlert={showMaxAlert}
           />
         </div>
         <div>

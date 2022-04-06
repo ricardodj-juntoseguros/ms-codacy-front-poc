@@ -13,6 +13,7 @@ import {
   opportunitiesDetailsActions,
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
+import { selectPolicyholderSelection } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 import { getLabelByModality } from '../../../helpers';
 import styles from './OpportunityDetailsList.module.scss';
 
@@ -31,6 +32,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     pageSize: 10,
     modality,
   };
+  const filteredPolicyholders = useSelector(selectPolicyholderSelection);
 
   const [loadingItems, setLoadingItems] = useState(true);
   const [data, setData] = useState<OpportunityDetailsItemDTO[]>();
@@ -44,6 +46,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
         modality,
         activePage,
         pageSize,
+        filteredPolicyholders,
       )
         .then(response => {
           setTotalCount(response.totalCount);
@@ -54,7 +57,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     };
 
     fetchOpportunityDetails();
-  }, [activePage, pageSize, modality]);
+  }, [activePage, pageSize, modality, filteredPolicyholders]);
 
   const handlePaging = (page: number) => {
     dispatch(opportunitiesDetailsActions.setActivePage({ page, modality }));

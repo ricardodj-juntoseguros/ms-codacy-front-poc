@@ -7,10 +7,11 @@ interface PolicyholderFilterSelectorTagsProps {
   selectedPolicyholders: PolicyholderDTO[];
   onRemove: (policyholder: PolicyholderDTO) => void;
   onClear: () => void;
+  showMaxAlert: boolean;
 }
 
 const PolicyholderFilterSelectorTags: React.FC<PolicyholderFilterSelectorTagsProps> =
-  ({ selectedPolicyholders, onRemove, onClear }) => {
+  ({ selectedPolicyholders, onRemove, onClear, showMaxAlert }) => {
     const renderTags = () => {
       return selectedPolicyholders.map(policyholder => {
         return (
@@ -50,7 +51,7 @@ const PolicyholderFilterSelectorTags: React.FC<PolicyholderFilterSelectorTagsPro
             />
           </div>
         </div>
-        {selectedPolicyholders.length === 10 && (
+        {showMaxAlert && (
           <div className={styles['policyholder-filter-selector-tags__alert']}>
             <Alert
               text="Você pode selecionar no máximo 10 tomadores."

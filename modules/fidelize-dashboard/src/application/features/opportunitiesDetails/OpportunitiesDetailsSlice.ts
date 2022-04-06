@@ -32,6 +32,12 @@ export const opportunitiesDetailsSlice = createSlice({
         }
       });
     },
+    resetSettings: state => {
+      state.settings.forEach(setting => {
+        setting.pageSize = 10;
+        setting.activePage = 1;
+      });
+    },
   },
 });
 

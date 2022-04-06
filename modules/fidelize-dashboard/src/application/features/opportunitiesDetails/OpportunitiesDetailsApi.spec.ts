@@ -31,11 +31,16 @@ describe('OpportunitiesDetailsApi', () => {
         ModalityEnum.FISCAL,
         1,
         10,
+        ['11223344556677', '12345671234567'],
       );
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/v1/opportunities/fiscal',
-      params: { page: 1, pageSize: 10 },
+      params: {
+        page: 1,
+        pageSize: 10,
+        federalids: '11223344556677,12345671234567',
+      },
     });
     expect(result.data[0].category).toBe('Renovação');
     expect(result.data[0].type).toBe('Fiscal');

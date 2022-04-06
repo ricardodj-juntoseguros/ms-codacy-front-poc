@@ -1,4 +1,4 @@
-import { fireEvent, getByTestId, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom';

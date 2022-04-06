@@ -25,6 +25,7 @@ describe('PolicyholderFilterSelectorTags', () => {
         selectedPolicyholders={selectedPolicyholdersMock}
         onClear={clearMock}
         onRemove={removeMock}
+        showMaxAlert={false}
       />,
     );
 
@@ -38,9 +39,6 @@ describe('PolicyholderFilterSelectorTags', () => {
     expect(getByText('Teste Tomador 8')).toBeInTheDocument();
     expect(getByText('Teste Tomador 9')).toBeInTheDocument();
     expect(getByText('Teste Tomador 10')).toBeInTheDocument();
-    expect(
-      getByText('Você pode selecionar no máximo 10 tomadores.'),
-    ).toBeInTheDocument();
   });
 
   it('Should call onRemove callback when tag X button click', () => {
@@ -49,12 +47,12 @@ describe('PolicyholderFilterSelectorTags', () => {
         selectedPolicyholders={selectedPolicyholdersMock}
         onClear={clearMock}
         onRemove={removeMock}
+        showMaxAlert={false}
       />,
     );
 
     const closeBtn = getByText('Teste Tomador 1').querySelectorAll('button')[0];
     fireEvent.click(closeBtn);
-
     expect(removeMock).toHaveBeenCalledWith(selectedPolicyholdersMock[0]);
   });
 
@@ -64,12 +62,27 @@ describe('PolicyholderFilterSelectorTags', () => {
         selectedPolicyholders={selectedPolicyholdersMock}
         onClear={clearMock}
         onRemove={removeMock}
+        showMaxAlert={false}
       />,
     );
 
     const clearBtn = getByTestId('btn-clear-policyholders');
     fireEvent.click(clearBtn);
-
     expect(clearMock).toHaveBeenCalled();
+  });
+
+  it('Should show alert message if showMaxAlert prop is true', () => {
+    const { getByText } = render(
+      <PolicyholderFilterSelectorTags
+        selectedPolicyholders={selectedPolicyholdersMock}
+        onClear={clearMock}
+        onRemove={removeMock}
+        showMaxAlert
+      />,
+    );
+
+    expect(
+      getByText('Você pode selecionar no máximo 10 tomadores.'),
+    ).toBeInTheDocument();
   });
 });

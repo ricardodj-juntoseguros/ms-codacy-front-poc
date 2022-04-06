@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { Provider } from 'react-redux';
+import { store } from '../../../config/store';
 import SummaryApi from '../../../application/features/summary/SummaryApi';
 import DashboardSummary from '.';
 
@@ -15,7 +16,11 @@ describe('DashboardSummary', () => {
         return { totalPolicyholders: 150 };
       });
 
-    const { findByText } = render(<DashboardSummary />);
+    const { findByText } = render(
+      <Provider store={store}>
+        <DashboardSummary />
+      </Provider>,
+    );
 
     expect(await findByText('150')).toBeTruthy();
     expect(await findByText('Tomadores')).toBeTruthy();
@@ -29,7 +34,11 @@ describe('DashboardSummary', () => {
         throw new Error();
       });
 
-    const { findByText } = render(<DashboardSummary />);
+    const { findByText } = render(
+      <Provider store={store}>
+        <DashboardSummary />
+      </Provider>,
+    );
 
     expect(
       await findByText(
