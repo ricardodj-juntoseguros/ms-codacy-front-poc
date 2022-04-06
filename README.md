@@ -57,9 +57,9 @@ Este repositório é dividido em 3 principais partes:
 
 - App Fidelize 
 
-URL QAS: https://fidelize2-qas-2.juntoseguros.com/
+URL QAS: https://fidelize-qas-2.juntoseguros.com/
 
-URL STG: https://fidelize2-stg.juntoseguros.com/
+URL STG: https://fidelize-stg.juntoseguros.com/
 
 URL PRD: https://fidelize2.juntoseguros.com/
 

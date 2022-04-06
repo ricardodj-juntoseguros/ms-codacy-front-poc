@@ -8,5 +8,5 @@
   "screenshotsFolder": "../../dist/cypress/apps/fidelize-e2e/screenshots",
   "chromeWebSecurity": false,
   "video": false,
-  "defaultCommandTimeout": 20000
+  "defaultCommandTimeout": 35000
 }
