@@ -1,7 +1,6 @@
 import { selectors } from './selectors';
 
 Cypress.Commands.add('login', (user, password) => {
-  cy.visit('/');
 
   cy.get(selectors.login.userInput)
     .should('be.visible')

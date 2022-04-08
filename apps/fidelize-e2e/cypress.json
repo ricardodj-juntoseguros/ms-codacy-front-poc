@@ -8,5 +8,10 @@
   "screenshotsFolder": "../../dist/cypress/apps/fidelize-e2e/screenshots",
   "chromeWebSecurity": false,
   "video": false,
-  "defaultCommandTimeout": 35000
+  "defaultCommandTimeout": 35000,
+  "env": {
+    "tsConfig": "tsconfig.json"
+  },  
+  "viewportWidth": 1280,
+  "viewportHeight": 720
 }

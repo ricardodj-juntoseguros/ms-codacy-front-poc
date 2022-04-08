@@ -124,7 +124,6 @@ jobs:
 
   e2e_tests:
     <<: *defaults
-    parallelism: 4
     steps:
       - attach_workspace:
           at: /tmp/persist_to_workspace
@@ -141,7 +140,7 @@ jobs:
             chmod +x kong-manipulation.sh
             ./kong-manipulation.sh quality open ./e2e/qas.json
       - run:
-          name: E2E Tests      
+          name: E2E Tests
           command: |
             # Executando Testes
             ./node_modules/cypress/bin/cypress install
@@ -155,7 +154,7 @@ jobs:
   e2e_close_kong:
     working_directory: /tmp/persist_to_workspace
     docker:
-      - image: juntoseguros/devops:base      
+      - image: juntoseguros/devops:base
     steps:
       - attach_workspace:
           at: /tmp/persist_to_workspace
@@ -307,7 +306,7 @@ workflows:
           requires:
             - checkout
             - deploy-cf-qas
-      
+
       - e2e_close_kong:
           context: GitJMSeguradora
           requires:

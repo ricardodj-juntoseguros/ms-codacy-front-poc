@@ -5,9 +5,7 @@ const { user, cookies } = loadData();
 
 describe('Logout', () => {
   it('Should log in and log out', () => {
-    cy.visit('/');
-
-    cy.wait(1000);
+    cy.visit('https://fidelize-qas-2.juntoseguros.com/');
 
     cy.login(user.username, user.password);
 

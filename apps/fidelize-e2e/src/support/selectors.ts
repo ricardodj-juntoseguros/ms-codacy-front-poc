@@ -9,7 +9,11 @@ export const selectors = {
     logoutButton: '[data-testid="user-menu-logout-button"]'
   },
   dashboardSummary: {
-    totalCard: 'div[class^="DashboardTotalCard"]'
+    totalCard: 'div[class^="DashboardTotalCard"]',
+    searchText: '.InputBase_j-input__field__hIwAu',
+    searchInput: 'button[class*="SearchInput_j-search-input__list__item"]',
+    searchSelect: '.Tag_j-tag__wrapper__2h1qe',
+    searchButton: '[data-testid="btn-apply-filter"]'
   },
   opportunityDetailsList: {
     laborTab: '[data-testid="tab-labor"]',
@@ -17,12 +21,13 @@ export const selectors = {
     civilTab: '[data-testid="tab-civil"]',
     listBox: '[class^="OpportunityDetailsList"][class*="box"]',
     listItemWrapper: '[class*="listitem__wrapper"]',
-    moreDetailsButton: '[class*="listitem__wrapper"] button'
+    moreDetailsButton: '[data-testid="modal-trigger"]'
   },
   modal: {
     wrapper: 'div[class*="modal__wrapper"]',
     title: 'h1[class*="modal__title"]',
-    primaryButton: 'button[class*="primary"]',
-    icon: 'div[class*="modal__icon"]'
+    primaryButton: '[data-testid=submit-more-details]',
+    icon: 'div[class*="modal__icon"]',
+    disclaimer: 'div[class*="more-opportunity-details-modal__disclaimer"]'
   }
 }

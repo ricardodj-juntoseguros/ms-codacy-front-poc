@@ -218,7 +218,8 @@
               "env": {
                 "target": "qas"
               },
-              "baseUrl": "https://fidelize-qas-2.juntoseguros.com/"
+              "baseUrl": "https://fidelize-qas-2.juntoseguros.com/",
+              "headed": false
             }
           }
         },
