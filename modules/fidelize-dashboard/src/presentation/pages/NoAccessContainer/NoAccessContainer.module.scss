@@ -1,5 +1,14 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .no-access-container__wrapper {
   margin-top: spacing('xxl-5');
   max-width: 1115px;
@@ -8,6 +17,7 @@
   flex-flow: row wrap;
   margin-left: auto;
   margin-right: auto;
+  animation: fade-in 200ms linear;
 
   @media screen and (max-width: 1115px) {
     max-width: 100%;
