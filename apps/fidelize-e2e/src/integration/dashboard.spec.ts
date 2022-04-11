@@ -23,12 +23,12 @@ describe('Dashboard', () => {
   it('Deve validar pesquisa pelo nome do tomador', () => {
     cy.intercept('/squad2/fidelize-bff/api/v1/opportunities/summary/policyholders').as('getPolicyHolders');
     cy.wait('@getPolicyHolders', {requestTimeout: 30000, responseTimeout: 30000});
-    cy.get(selectors.dashboardSummary.searchText)
-      .type('Banco');
 
+    cy.get(selectors.dashboardSummary.searchText)
+      .type('Junto');
     cy.get(selectors.dashboardSummary.searchInput)
       .should('be.visible')
-      .should('have.text', 'BANCO JUNTO SEGUROS - TESTE - 97.955.858/0001-41')
+      .should('have.text', 'CONSTRUTORA JUNTO SEGUROS - TESTE (HOMOLOGACAO) - 65.182.718/0001-91')
       .click();
 
     cy.get(selectors.dashboardSummary.searchSelect)
@@ -42,11 +42,11 @@ describe('Dashboard', () => {
     cy.intercept('/squad2/fidelize-bff/api/v1/opportunities/summary/policyholders').as('getPolicyHolders');
     cy.wait('@getPolicyHolders', {requestTimeout: 30000, responseTimeout: 30000});
     cy.get(selectors.dashboardSummary.searchText)
-      .type('97955858000141');
+      .type('65182718000191');
 
     cy.get(selectors.dashboardSummary.searchInput)
       .should('be.visible')
-      .should('have.text', 'BANCO JUNTO SEGUROS - TESTE - 97.955.858/0001-41')
+      .should('have.text', 'CONSTRUTORA JUNTO SEGUROS - TESTE (HOMOLOGACAO) - 65.182.718/0001-91')
       .click();
 
     cy.get(selectors.dashboardSummary.searchSelect)

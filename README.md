@@ -61,7 +61,7 @@ URL QAS: https://fidelize-qas-2.juntoseguros.com/
 
 URL STG: https://fidelize-stg.juntoseguros.com/
 
-URL PRD: https://fidelize2.juntoseguros.com/
+URL PRD: https://fidelize.juntoseguros.com/
 
 ---
 
