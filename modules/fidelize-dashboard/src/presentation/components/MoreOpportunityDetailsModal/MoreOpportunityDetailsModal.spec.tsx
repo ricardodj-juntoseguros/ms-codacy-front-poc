@@ -3,6 +3,7 @@ import { act } from 'react-dom/test-utils';
 import '@testing-library/jest-dom';
 import {
   ModalityEnum,
+  OpportunityDetailsTypeEnum,
   OpportunityRelevanceEnum,
 } from '../../../application/types/model';
 import OpportunityDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
@@ -13,7 +14,7 @@ describe('MoreOpportunityDetailsModal', () => {
   it('Should render sucessfully with given props', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: 'Renovação',
-      type: 'Fiscal',
+      type: OpportunityDetailsTypeEnum.FISCAL,
       id: 'id',
       policyholder: 'Teste tomador',
       relevance: OpportunityRelevanceEnum.HIGH,
@@ -23,6 +24,7 @@ describe('MoreOpportunityDetailsModal', () => {
     };
     const { container } = render(
       <MoreOpportunityDetailsModal
+        isExpiredOpportunity={false}
         modality={ModalityEnum.FISCAL}
         opportunity={opportunityMock}
       />,
@@ -38,7 +40,7 @@ describe('MoreOpportunityDetailsModal', () => {
       });
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: 'Renovação',
-      type: 'Fiscal',
+      type: OpportunityDetailsTypeEnum.FISCAL,
       id: 'id',
       policyholder: 'Teste tomador',
       relevance: OpportunityRelevanceEnum.HIGH,
@@ -48,6 +50,7 @@ describe('MoreOpportunityDetailsModal', () => {
     };
     const { getByTestId, getByText, queryByText } = render(
       <MoreOpportunityDetailsModal
+        isExpiredOpportunity={false}
         modality={ModalityEnum.FISCAL}
         opportunity={opportunityMock}
       />,

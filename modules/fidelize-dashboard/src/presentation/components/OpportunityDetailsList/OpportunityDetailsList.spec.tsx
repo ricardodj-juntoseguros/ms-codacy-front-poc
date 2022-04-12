@@ -5,6 +5,7 @@ import { store } from '../../../config/store';
 import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import {
   ModalityEnum,
+  OpportunityDetailsTypeEnum,
   OpportunityRelevanceEnum,
 } from '../../../application/types/model';
 import OpportunityDetailsList from './OpportunityDetailsList';
@@ -23,7 +24,7 @@ describe('OpportunityDetailsList', () => {
           data: [
             {
               id: 'id',
-              type: 'Fiscal',
+              type: OpportunityDetailsTypeEnum.FISCAL,
               relevance: OpportunityRelevanceEnum.HIGH,
               category: 'Renovação',
               securityAmount: 120000,
@@ -56,7 +57,7 @@ describe('OpportunityDetailsList', () => {
           data: [
             {
               id: 'id',
-              type: 'Fiscal',
+              type: OpportunityDetailsTypeEnum.FISCAL,
               relevance: OpportunityRelevanceEnum.HIGH,
               category: 'Renovação',
               securityAmount: 120000,
@@ -89,7 +90,7 @@ describe('OpportunityDetailsList', () => {
           data: [
             {
               id: 'id',
-              type: 'Fiscal',
+              type: OpportunityDetailsTypeEnum.FISCAL,
               relevance: OpportunityRelevanceEnum.HIGH,
               category: 'Renovação',
               securityAmount: 120000,

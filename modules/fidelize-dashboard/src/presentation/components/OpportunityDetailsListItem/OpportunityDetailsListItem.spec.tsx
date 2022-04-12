@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import {
   ModalityEnum,
+  OpportunityDetailsTypeEnum,
   OpportunityRelevanceEnum,
 } from '../../../application/types/model';
 import OpportunityDetailsListItem from '.';
@@ -10,7 +11,7 @@ describe('Opportunity Details List Item', () => {
   it('Should render accordingly to props', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: 'Renovação',
-      type: 'Fiscal',
+      type: OpportunityDetailsTypeEnum.FISCAL,
       id: 'id',
       policyholder: 'Teste tomador',
       relevance: OpportunityRelevanceEnum.HIGH,
@@ -35,7 +36,7 @@ describe('Opportunity Details List Item', () => {
   it('Should render "Prazo indeterminado" label if expiration is null', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: 'Renovação',
-      type: 'Fiscal',
+      type: OpportunityDetailsTypeEnum.FISCAL,
       id: 'id',
       policyholder: 'Teste tomador',
       relevance: OpportunityRelevanceEnum.MEDIUM,
@@ -55,7 +56,7 @@ describe('Opportunity Details List Item', () => {
   it('Should render expired message if expiration is before today', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: 'Renovação',
-      type: 'Fiscal',
+      type: OpportunityDetailsTypeEnum.FISCAL,
       id: 'id',
       policyholder: 'Teste tomador',
       relevance: OpportunityRelevanceEnum.LOW,

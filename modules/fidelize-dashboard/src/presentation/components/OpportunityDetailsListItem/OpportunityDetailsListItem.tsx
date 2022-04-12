@@ -2,6 +2,7 @@ import { format, isAfter } from 'date-fns';
 import brLocale from 'date-fns/locale/pt-BR';
 import classNames from 'classnames';
 import { thousandSeparator } from '@shared/utils';
+import { shouldRenderExpirationLabel } from '../../../helpers';
 import styles from './OpportunityDetailsListItem.module.scss';
 import {
   ModalityEnum,
@@ -28,9 +29,12 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
     mappingDate,
   } = opportunity;
   const isExpiredOpportunity =
-    expiration !== null ? isAfter(new Date(), new Date(expiration)) : false;
+    expiration !== null && shouldRenderExpirationLabel(opportunity)
+      ? isAfter(new Date(), new Date(expiration))
+      : false;
 
   const getExpirationLabel = () => {
+    if (!shouldRenderExpirationLabel(opportunity)) return '';
     if (!expiration) return 'Prazo indeterminado';
     const expirationFormatted = formatDate(expiration);
     return isExpiredOpportunity
@@ -104,6 +108,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <MoreOpportunityDetailsModal
+          isExpiredOpportunity={isExpiredOpportunity}
           modality={modality}
           opportunity={{
             ...opportunity,

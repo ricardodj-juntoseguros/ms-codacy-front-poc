@@ -10,12 +10,13 @@ import OpportunityDetailsApi from '../../../application/features/opportunitiesDe
 import styles from './MoreOpportunityDetailsModal.module.scss';
 
 interface MoreOpportunityDetailsModalProps {
+  isExpiredOpportunity: boolean;
   modality: ModalityEnum;
   opportunity: OpportunityDetailsItemDTO;
 }
 
 const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
-  ({ modality, opportunity }) => {
+  ({ isExpiredOpportunity, modality, opportunity }) => {
     const btnRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -40,7 +41,10 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
           value: `R$ ${thousandSeparator(securityAmount, '.', 2)}`,
         },
         { label: 'Data do mapeamento', value: mappingDate },
-        { label: 'Relevância', value: relevance },
+        {
+          label: 'Relevância',
+          value: isExpiredOpportunity ? 'Expirada' : relevance,
+        },
       ];
       return data.map(item => {
         return (
