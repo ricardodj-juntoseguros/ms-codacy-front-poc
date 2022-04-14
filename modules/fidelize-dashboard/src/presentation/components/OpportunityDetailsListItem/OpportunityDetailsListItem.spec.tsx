@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import {
   ModalityEnum,
@@ -18,6 +19,7 @@ describe('Opportunity Details List Item', () => {
       expiration: '2026-01-01T10:00:00.000Z',
       mappingDate: '2022-01-01T10:00:00.000Z',
       securityAmount: 2550650.5,
+      expired: false,
     };
     const { getByText } = render(
       <OpportunityDetailsListItem
@@ -43,6 +45,7 @@ describe('Opportunity Details List Item', () => {
       expiration: null,
       mappingDate: '2022-01-01T10:00:00.000Z',
       securityAmount: 2550650.5,
+      expired: false,
     };
     const { getByText } = render(
       <OpportunityDetailsListItem
@@ -53,7 +56,29 @@ describe('Opportunity Details List Item', () => {
     expect(getByText('Prazo indeterminado')).toBeTruthy();
   });
 
-  it('Should render expired message if expiration is before today', () => {
+  it('Should not render expiration if type equals Fiscal and category doesnt allows', () => {
+    const opportunityMock: OpportunityDetailsItemDTO = {
+      category: 'Penhora',
+      type: OpportunityDetailsTypeEnum.FISCAL,
+      id: 'id',
+      policyholder: 'Teste tomador',
+      relevance: OpportunityRelevanceEnum.LOW,
+      expiration: '2022-02-01T10:00:00.000Z',
+      mappingDate: '2022-01-01T10:00:00.000Z',
+      securityAmount: 2550650.5,
+      expired: false,
+    };
+    const { queryByText } = render(
+      <OpportunityDetailsListItem
+        modality={ModalityEnum.FISCAL}
+        opportunity={opportunityMock}
+      />,
+    );
+    expect(queryByText('Prazo indeterminado')).not.toBeInTheDocument();
+    expect(queryByText('Expirada em 01/fev/2022')).not.toBeInTheDocument();
+  });
+
+  it('Should render expired message if opportunity is expired', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: 'Renovação',
       type: OpportunityDetailsTypeEnum.FISCAL,
@@ -63,6 +88,7 @@ describe('Opportunity Details List Item', () => {
       expiration: '2022-02-01T10:00:00.000Z',
       mappingDate: '2022-01-01T10:00:00.000Z',
       securityAmount: 2550650.5,
+      expired: true,
     };
     const { getByText } = render(
       <OpportunityDetailsListItem

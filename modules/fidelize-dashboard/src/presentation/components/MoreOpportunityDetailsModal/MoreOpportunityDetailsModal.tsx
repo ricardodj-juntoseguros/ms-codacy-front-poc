@@ -3,20 +3,22 @@ import { Button, Modal } from 'junto-design-system';
 import { nanoid } from 'nanoid';
 import { thousandSeparator } from '@shared/utils';
 import { SuccessIllustration } from '@shared/ui';
-import { getLabelByModality } from '../../../helpers';
+import {
+  getLabelByModality,
+  shouldRenderExpirationLabel,
+} from '../../../helpers';
 import { ModalityEnum } from '../../../application/types/model';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import OpportunityDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import styles from './MoreOpportunityDetailsModal.module.scss';
 
 interface MoreOpportunityDetailsModalProps {
-  isExpiredOpportunity: boolean;
   modality: ModalityEnum;
   opportunity: OpportunityDetailsItemDTO;
 }
 
 const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
-  ({ isExpiredOpportunity, modality, opportunity }) => {
+  ({ modality, opportunity }) => {
     const btnRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -30,12 +32,18 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
       expiration,
       mappingDate,
       relevance,
+      expired,
     } = opportunity;
 
     const renderOpportunityData = () => {
       const data = [
         { label: 'Tomador', value: policyholder },
-        { label: 'Tipo/Obs', value: `${category} - ${expiration}` },
+        {
+          label: 'Tipo/Obs',
+          value: `${category} ${
+            shouldRenderExpirationLabel(opportunity) ? `- ${expiration}` : ''
+          }`,
+        },
         {
           label: 'Importância segurada',
           value: `R$ ${thousandSeparator(securityAmount, '.', 2)}`,
@@ -43,7 +51,7 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
         { label: 'Data do mapeamento', value: mappingDate },
         {
           label: 'Relevância',
-          value: isExpiredOpportunity ? 'Expirada' : relevance,
+          value: expired ? 'Expirada' : relevance,
         },
       ];
       return data.map(item => {

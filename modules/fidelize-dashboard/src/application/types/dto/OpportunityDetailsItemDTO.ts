@@ -9,4 +9,5 @@ export interface OpportunityDetailsItemDTO {
   policyholder: string;
   expiration: string | null;
   mappingDate: string;
+  expired: boolean;
 }

@@ -31,6 +31,7 @@ describe('OpportunityDetailsList', () => {
               expiration: '2025-03-19T03:00:00.000Z',
               mappingDate: '2022-03-18T03:00:00.000Z',
               policyholder: 'Tomador',
+              expired: false,
             },
           ],
         };
@@ -64,6 +65,7 @@ describe('OpportunityDetailsList', () => {
               expiration: '2025-03-19T03:00:00.000Z',
               mappingDate: '2022-03-18T03:00:00.000Z',
               policyholder: 'Tomador',
+              expired: false,
             },
           ],
         };
@@ -97,6 +99,7 @@ describe('OpportunityDetailsList', () => {
               expiration: '2025-03-19T03:00:00.000Z',
               mappingDate: '2022-03-18T03:00:00.000Z',
               policyholder: 'Tomador',
+              expired: false,
             },
           ],
         };

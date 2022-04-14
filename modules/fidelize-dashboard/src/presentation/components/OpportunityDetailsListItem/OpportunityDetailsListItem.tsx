@@ -1,4 +1,4 @@
-import { format, isAfter } from 'date-fns';
+import { format } from 'date-fns';
 import brLocale from 'date-fns/locale/pt-BR';
 import classNames from 'classnames';
 import { thousandSeparator } from '@shared/utils';
@@ -27,23 +27,20 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
     securityAmount,
     policyholder,
     mappingDate,
+    expired,
   } = opportunity;
-  const isExpiredOpportunity =
-    expiration !== null && shouldRenderExpirationLabel(opportunity)
-      ? isAfter(new Date(), new Date(expiration))
-      : false;
 
   const getExpirationLabel = () => {
     if (!shouldRenderExpirationLabel(opportunity)) return '';
     if (!expiration) return 'Prazo indeterminado';
     const expirationFormatted = formatDate(expiration);
-    return isExpiredOpportunity
+    return expired
       ? `Expirada em ${expirationFormatted}`
       : `Com vencimento em ${expirationFormatted}`;
   };
 
   const getRelevanceTagClassName = (relevance: OpportunityRelevanceEnum) => {
-    if (isExpiredOpportunity)
+    if (expired)
       return styles['opportunity-details-listitem__relevance-tag--expired'];
     switch (relevance) {
       case OpportunityRelevanceEnum.HIGH:
@@ -66,8 +63,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
   return (
     <div
       className={classNames(styles['opportunity-details-listitem__wrapper'], {
-        [styles['opportunity-details-listitem__wrapper--expired']]:
-          isExpiredOpportunity,
+        [styles['opportunity-details-listitem__wrapper--expired']]: expired,
       })}
     >
       <div className={styles['opportunity-details-listitem__column']}>
@@ -77,7 +73,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
             getRelevanceTagClassName(relevance),
           )}
         >
-          {isExpiredOpportunity ? 'Expirada' : relevance}
+          {expired ? 'Expirada' : relevance}
         </span>
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
@@ -108,7 +104,6 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <MoreOpportunityDetailsModal
-          isExpiredOpportunity={isExpiredOpportunity}
           modality={modality}
           opportunity={{
             ...opportunity,

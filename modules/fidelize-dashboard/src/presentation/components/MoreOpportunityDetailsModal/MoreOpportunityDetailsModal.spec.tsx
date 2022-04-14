@@ -21,10 +21,10 @@ describe('MoreOpportunityDetailsModal', () => {
       expiration: 'Com vencimento em 22/fev/2024',
       mappingDate: '01/jan/2021',
       securityAmount: 2550650.5,
+      expired: false,
     };
     const { container } = render(
       <MoreOpportunityDetailsModal
-        isExpiredOpportunity={false}
         modality={ModalityEnum.FISCAL}
         opportunity={opportunityMock}
       />,
@@ -47,10 +47,10 @@ describe('MoreOpportunityDetailsModal', () => {
       expiration: 'Com vencimento em 22/fev/2024',
       mappingDate: '01/jan/2021',
       securityAmount: 2550650.5,
+      expired: false,
     };
     const { getByTestId, getByText, queryByText } = render(
       <MoreOpportunityDetailsModal
-        isExpiredOpportunity={false}
         modality={ModalityEnum.FISCAL}
         opportunity={opportunityMock}
       />,

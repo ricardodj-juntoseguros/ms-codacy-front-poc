@@ -16,6 +16,7 @@ describe('ShouldRenderExpirationLabel Helper', () => {
       securityAmount: 10000,
       type: OpportunityDetailsTypeEnum.FISCAL,
       category: 'Fiança',
+      expired: false,
     };
     const result = shouldRenderExpirationLabel(mockOpportunity);
     expect(result).toBeTruthy();
@@ -31,6 +32,7 @@ describe('ShouldRenderExpirationLabel Helper', () => {
       securityAmount: 10000,
       type: OpportunityDetailsTypeEnum.FISCAL,
       category: 'Renovação',
+      expired: false,
     };
     const result = shouldRenderExpirationLabel(mockOpportunity);
     expect(result).toBeTruthy();
