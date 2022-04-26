@@ -1,9 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
-import { ModalityEnum, OpportunitiesDetailsModel } from '../../types/model';
+import {
+  ModalityEnum,
+  OpportunitiesDetailsModel,
+  OpportunityDetailsOrderEnum,
+} from '../../types/model';
 
 const initialState: OpportunitiesDetailsModel = {
-  settings: [{ modality: ModalityEnum.FISCAL, activePage: 1, pageSize: 10 }],
+  settings: [
+    {
+      modality: ModalityEnum.FISCAL,
+      activePage: 1,
+      pageSize: 10,
+      orderBy: OpportunityDetailsOrderEnum.RELEVANCE,
+      direction: 'desc',
+    },
+  ],
 };
 
 export const opportunitiesDetailsSlice = createSlice({
@@ -29,6 +41,23 @@ export const opportunitiesDetailsSlice = createSlice({
       state.settings.forEach(setting => {
         if (setting.modality === modality) {
           setting.pageSize = pageSize;
+        }
+      });
+    },
+    setOrderAndDirection: (
+      state,
+      action: PayloadAction<{
+        modality: ModalityEnum;
+        orderBy: OpportunityDetailsOrderEnum;
+        direction: 'asc' | 'desc';
+      }>,
+    ) => {
+      const { modality, orderBy, direction } = action.payload;
+      state.settings.forEach(setting => {
+        if (setting.modality === modality) {
+          setting.orderBy = orderBy;
+          setting.direction = direction;
+          setting.activePage = 1;
         }
       });
     },

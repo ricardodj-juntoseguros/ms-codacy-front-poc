@@ -25,7 +25,9 @@ describe('Dashboard', () => {
       responseTimeout: 30000,
     });
 
-    cy.get(selectors.dashboardSummary.searchText).type('Construtora junto');
+    cy.get(selectors.dashboardSummary.searchText).type('Construtora junto', {
+      delay: 200,
+    });
     cy.get(selectors.dashboardSummary.searchInput)
       .should('be.visible')
       .should(
@@ -47,7 +49,9 @@ describe('Dashboard', () => {
       requestTimeout: 30000,
       responseTimeout: 30000,
     });
-    cy.get(selectors.dashboardSummary.searchText).type('65182718000191');
+    cy.get(selectors.dashboardSummary.searchText).type('65182718000191', {
+      delay: 200,
+    });
 
     cy.get(selectors.dashboardSummary.searchInput)
       .should('be.visible')

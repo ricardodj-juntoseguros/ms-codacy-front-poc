@@ -6,7 +6,10 @@ import { thousandSeparator } from '@shared/utils';
 import OpportunityDetailsListHeader from '../OpportunityDetailsListHeader';
 import OpportunityDetailsListItem from '../OpportunityDetailsListItem';
 import { OpportunityDetailsListItemSkeleton } from '../Skeletons';
-import { ModalityEnum } from '../../../application/types/model';
+import {
+  ModalityEnum,
+  OpportunityDetailsOrderEnum,
+} from '../../../application/types/model';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import {
   selectSettingsByModality,
@@ -25,12 +28,14 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
   modality,
 }) => {
   const dispatch = useDispatch();
-  const { activePage, pageSize } = useSelector(
+  const { activePage, pageSize, orderBy, direction } = useSelector(
     selectSettingsByModality(modality),
   ) || {
     activePage: 1,
     pageSize: 10,
     modality,
+    orderBy: OpportunityDetailsOrderEnum.RELEVANCE,
+    direction: 'desc',
   };
   const filteredPolicyholders = useSelector(selectPolicyholderSelection);
 
@@ -46,6 +51,8 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
         modality,
         activePage,
         pageSize,
+        orderBy,
+        direction,
         filteredPolicyholders,
       )
         .then(response => {
@@ -57,7 +64,14 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     };
 
     fetchOpportunityDetails();
-  }, [activePage, pageSize, modality, filteredPolicyholders]);
+  }, [
+    activePage,
+    pageSize,
+    modality,
+    orderBy,
+    direction,
+    filteredPolicyholders,
+  ]);
 
   const handlePaging = (page: number) => {
     dispatch(opportunitiesDetailsActions.setActivePage({ page, modality }));
@@ -109,7 +123,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
             </p>
             <Divider />
             <div className={styles['opportunity-details-list__list-container']}>
-              <OpportunityDetailsListHeader />
+              <OpportunityDetailsListHeader modality={modality} />
               {renderListItems()}
             </div>
           </>

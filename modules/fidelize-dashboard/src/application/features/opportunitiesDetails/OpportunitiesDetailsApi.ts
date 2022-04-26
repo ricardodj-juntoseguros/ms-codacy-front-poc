@@ -3,7 +3,7 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import { OpportunityDetailsDTO } from '../../types/dto';
-import { ModalityEnum } from '../../types/model';
+import { ModalityEnum, OpportunityDetailsOrderEnum } from '../../types/model';
 import FidelizeDashboardBaseApi from '../FidelizeDashboardBaseApi';
 
 class OpportunitiesDetailsApi {
@@ -17,11 +17,15 @@ class OpportunitiesDetailsApi {
     modality: ModalityEnum,
     page: number,
     pageSize: number,
+    orderBy: OpportunityDetailsOrderEnum,
+    direction: string,
     federalids: string[],
   ): Promise<OpportunityDetailsDTO> {
     const query: any = {
       page,
       pageSize,
+      orderBy,
+      direction,
     };
     if (federalids.length > 0) {
       query.federalids = federalids.join(',');

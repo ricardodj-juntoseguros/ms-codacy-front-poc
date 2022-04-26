@@ -3,24 +3,52 @@
 .opportunity-details-header__wrapper {
   padding: spacing('l');
   display: grid;
-  grid-template-columns: 100px 190px 120px 240px 120px 32px;
-  column-gap: spacing('xl');
+  grid-template-columns: 100px 190px 120px 240px 136px 32px;
+  column-gap: spacing('l') + spacing('xs');
   border-bottom: 1px solid color('grey-200');
+}
+
+.opportunity-details-header__column {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+
+  & > p:first-child {
+    margin-right: spacing('s');
+  }
+
+  & > div:last-child {
+    display: flex;
+    flex-flow: column;
+  }
 }
 
 .opportunity-details-header__column-title {
   @include font('xs-emphasys');
   color: color('grey-500');
   margin: 0px;
+  margin-top: spacing('xs');
 }
 
-@media screen and (max-width: 1008px) {
-  .opportunity-details-header__wrapper {
-    width: 100%;
+.opportunity-details-header__order-btn {
+  border: 0px;
+  background-color: transparent;
+  padding: 0px;
+  color: color('grey-400');
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+
+  &--active {
+    color: color('brand-primary');
+  }
+
+  &:hover {
+    color: color('brand-primary');
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1008px) {
   .opportunity-details-header__wrapper {
     width: fit-content;
   }

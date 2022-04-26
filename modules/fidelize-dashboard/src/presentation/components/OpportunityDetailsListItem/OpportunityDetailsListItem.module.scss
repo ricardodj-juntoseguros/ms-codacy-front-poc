@@ -3,8 +3,8 @@
 .opportunity-details-listitem__wrapper {
   padding: spacing('l');
   display: grid;
-  grid-template-columns: 100px 190px 120px 240px 120px 32px;
-  column-gap: spacing('xl');
+  grid-template-columns: 100px 190px 120px 240px 136px 32px;
+  column-gap: spacing('l') + spacing('xs');
   border-bottom: 1px solid color('grey-200');
 
   &:hover {
@@ -81,12 +81,6 @@
 
 @media screen and (max-width: 1008px) {
   .opportunity-details-listitem__wrapper {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .opportunity-details-listitem__wrapper {
-    width: fit-content;
+    width: fit-content
   }
 }

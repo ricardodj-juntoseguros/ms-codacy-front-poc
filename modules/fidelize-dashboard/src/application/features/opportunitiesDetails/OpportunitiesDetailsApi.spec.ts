@@ -1,6 +1,6 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import { OpportunityDetailsDTO } from '../../types/dto';
-import { ModalityEnum } from '../../types/model';
+import { ModalityEnum, OpportunityDetailsOrderEnum } from '../../types/model';
 import OpportunitiesDetailsApi from './OpportunitiesDetailsApi';
 
 describe('OpportunitiesDetailsApi', () => {
@@ -31,6 +31,8 @@ describe('OpportunitiesDetailsApi', () => {
         ModalityEnum.FISCAL,
         1,
         10,
+        OpportunityDetailsOrderEnum.RELEVANCE,
+        'desc',
         ['11223344556677', '12345671234567'],
       );
 
@@ -39,6 +41,8 @@ describe('OpportunitiesDetailsApi', () => {
       params: {
         page: 1,
         pageSize: 10,
+        orderBy: 'Relevance',
+        direction: 'desc',
         federalids: '11223344556677,12345671234567',
       },
     });
