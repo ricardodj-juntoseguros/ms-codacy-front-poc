@@ -165,6 +165,7 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
                 <Button
                   data-testid="submit-more-details"
                   onClick={() => handleSubmit()}
+                  mobileFullWidth
                 >
                   {isSubmitting
                     ? ((<i className="icon icon-loading" />) as any)

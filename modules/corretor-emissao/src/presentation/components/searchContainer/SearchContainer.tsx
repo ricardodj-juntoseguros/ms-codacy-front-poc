@@ -45,9 +45,9 @@ export function SearchContainer() {
   function handleChangePolicyholderInput(value: string) {
     setPolicyholderInput(value);
 
-    if (value !== '') {
-      dispatch(policyholderAndModalitySearchThunks.searchPolicyHolder(value));
-    }
+    // if (value !== '') {
+    //   // dispatch(policyholderAndModalitySearchThunks.searchPolicyHolder(value));
+    // }
   }
 
   function StepTitle() {
