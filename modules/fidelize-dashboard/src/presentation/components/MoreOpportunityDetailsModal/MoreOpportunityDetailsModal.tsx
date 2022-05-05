@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Button, Modal } from 'junto-design-system';
 import { nanoid } from 'nanoid';
+import TagManager from 'react-gtm-module';
 import { thousandSeparator } from '@shared/utils';
 import { SuccessIllustration } from '@shared/ui';
 import {
@@ -108,6 +109,16 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
         });
     };
 
+    const handleTriggerClick = () => {
+      setModalOpen(true);
+      TagManager.dataLayer({
+        dataLayer: {
+          event: 'ClickMoreOpportunityDetailsButton',
+          opportunityId: id,
+        },
+      });
+    };
+
     const handleModalClose = () => {
       setModalOpen(false);
       setHasSubmitted(false);
@@ -122,7 +133,7 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
           data-testid="modal-trigger"
           type="button"
           className={styles['more-opportunity-details-modal__trigger']}
-          onClick={() => setModalOpen(true)}
+          onClick={() => handleTriggerClick()}
         >
           <i className="icon icon-plus-circle" />
         </button>
