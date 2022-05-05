@@ -101,6 +101,12 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
 
     const handleSubmit = () => {
       setIsSubmitting(true);
+      TagManager.dataLayer({
+        dataLayer: {
+          event: 'ClickMoreOpportunityDetailsSubmit',
+          opportunityId: id,
+        },
+      });
       OpportunityDetailsApi.sendMoreOpportunityDetailsMail(id)
         .then(() => setHasSubmitted(true))
         .catch(() => setSubmitError(true))
