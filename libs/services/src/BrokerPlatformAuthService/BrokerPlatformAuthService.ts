@@ -21,6 +21,9 @@ export class BrokerPlatformAuthService {
   private readonly PLATAFORMA_BFF_URL =
     process.env['NX_GLOBAL_BROKER_PLATFORM_BFF_URL'] || '';
 
+  private readonly FIDELIZE_WHITELIST_ACCESS_COOKIE =
+    process.env['NX_GLOBAL_FIDELIZE_WHITELIST_ACCESS_COOKIE'] || 'fwac';
+
   getUserAccessCookie() {
     const userCookie = Cookies.get(this.USER_ACCESS_COOKIE) || '';
     if (!userCookie) return null;
@@ -32,6 +35,14 @@ export class BrokerPlatformAuthService {
       expires: expirationDate,
       domain: this.COOKIE_DOMAIN,
     });
+    Cookies.set(
+      this.FIDELIZE_WHITELIST_ACCESS_COOKIE,
+      Cookies.get(this.FIDELIZE_WHITELIST_ACCESS_COOKIE) || 'false',
+      {
+        expires: expirationDate,
+        domain: this.COOKIE_DOMAIN,
+      },
+    );
   }
 
   clearAuthData() {
@@ -41,6 +52,9 @@ export class BrokerPlatformAuthService {
     Cookies.remove(this.USER_ACCESS_COOKIE, { domain: this.COOKIE_DOMAIN });
     Cookies.remove(this.USER_CHAT_COOKIE, { domain: this.COOKIE_DOMAIN });
     Cookies.remove(this.USER_SESSION_COOKIE, { domain: this.COOKIE_DOMAIN });
+    Cookies.remove(this.FIDELIZE_WHITELIST_ACCESS_COOKIE, {
+      domain: this.COOKIE_DOMAIN,
+    });
     window.location.assign(
       `${process.env['NX_GLOBAL_BROKER_PLATFORM_URL']}${
         userTheme ? `/${userTheme}` : ''

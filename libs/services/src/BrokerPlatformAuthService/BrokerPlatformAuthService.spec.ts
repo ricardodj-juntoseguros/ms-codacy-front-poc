@@ -74,7 +74,7 @@ describe('Broker Platform Auth Service', () => {
       mockToken,
       'refresh-token',
     );
-    expect(cookiesMock).toHaveBeenCalledTimes(3);
+    expect(cookiesMock).toHaveBeenCalledTimes(4);
     expect(storageMock).toHaveBeenCalledTimes(1);
   });
 
