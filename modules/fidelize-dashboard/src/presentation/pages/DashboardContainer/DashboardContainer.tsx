@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Divider, Tabs, Tab } from 'junto-design-system';
 import { useSelector, useDispatch } from 'react-redux';
+import TagManager from 'react-gtm-module';
 import DashboardHeader from '../../components/DashboardHeader';
 import DashboardSummary from '../../components/DashboardSummary';
 import ModalitySummary from '../../components/ModalitySummary';
@@ -16,6 +17,7 @@ import { selectPolicyholderSelection } from '../../../application/features/polic
 import SummaryApi from '../../../application/features/summary/SummaryApi';
 import { ModalityEnum } from '../../../application/types/model';
 import { ModalitySummaryDTO } from '../../../application/types/dto';
+import { MODALITIES_IDS } from '../../../constants';
 import styles from './DashboardContainer.module.scss';
 
 function DashboardContainer() {
@@ -41,11 +43,18 @@ function DashboardContainer() {
   };
 
   const handleModalityTabSelection = (selectedTab: string) => {
+    const selectedEnum = selectedTab as ModalityEnum;
     dispatch(
       modalitySelectionSliceActions.setSelectedModality(
-        selectedTab as ModalityEnum,
+        selectedEnum
       ),
     );
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'SelectDashboardModalityTab',
+        modalityId: MODALITIES_IDS[selectedEnum],
+      }
+    });
   };
 
   const getDataToRender = (modality: ModalityEnum) => {

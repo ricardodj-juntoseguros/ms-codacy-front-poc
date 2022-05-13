@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { summaryCards } from '../../../constants';
+import { SUMMARY_CARDS } from '../../../constants';
 import { DashboardTotalCard } from '../DashboardTotalCard';
 import styles from './DashboardSummary.module.scss';
 import SummaryApi from '../../../application/features/summary/SummaryApi';
@@ -48,7 +48,7 @@ const DashboardSummary: React.FC = () => {
       { key: 'policyholders', stateToUse: policyholders },
     ];
 
-    return summaryCards.map(item => {
+    return SUMMARY_CARDS.map(item => {
       const { icon, key, label, useChangeValue, valueFormatter } = item;
       const dataToRender = mapConstantsToState.find(each => each.key === key);
 

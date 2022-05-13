@@ -1,6 +1,6 @@
 import { thousandSeparator } from '@shared/utils';
 
-export const summaryCards = [
+export const SUMMARY_CARDS = [
   {
     key: 'policyholders',
     icon: 'briefcase',
