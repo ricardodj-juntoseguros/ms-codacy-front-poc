@@ -29,15 +29,19 @@ else
 fi
 
 function deploy_cf_qas () {
-  DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $1}')
-  #CF_ID=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $2}')
-  S3_PATH=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $3}' | cut -d'.' -f1)
+  DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP}-qas-${SQUAD}.juntoseguros.com\`]" | awk '{print $1}')
+  AWS_CF_ID_QAS=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP}-qas-${SQUAD}.juntoseguros.com\`]" | awk '{print $2}')
+  S3_PATH=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP}-qas-${SQUAD}.juntoseguros.com\`]" | awk '{print $3}' | cut -d'.' -f1)
 
     CI="false"
     if [ $(echo $CIRCLE_BRANCH | grep -i "squad2") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_2"
     CF_ID=$AWS_CF_QAS_2
     AWS_S3=$AWS_S3_QAS_2
+    elif [ $(echo $CIRCLE_BRANCH | grep -i "squad1") ]; then
+    echo "Setting env AWS_CF and AWS_S3 to QAS_1"
+    CF_ID=$AWS_CF_QAS_1
+    AWS_S3_QAS=$AWS_S3_QAS_1
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad5") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_5"
     CF_ID=$AWS_CF_QAS_5
@@ -81,9 +85,9 @@ function deploy_cf_qas () {
 }
 
 function deploy_cf_stg () {
-  DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $1}')
-  #CF_ID=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $2}')
-  S3_PATH=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $3}' | cut -d'.' -f1)
+  DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP}-stg.juntoseguros.com\`]" | awk '{print $1}')
+  AWS_CF_STG=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]} | [?Aliases!=\`null\`] | [?Aliases==\`${APP}-stg.juntoseguros.com\`]" | awk '{print $2}')
+  AWS_S3_STG=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP}-stg.juntoseguros.com\`]" | awk '{print $3}' | cut -d'.' -f1)
 
     CI="false"
     if [ $(echo $CIRCLE_BRANCH | grep -i "master") ]; then
@@ -120,9 +124,9 @@ function deploy_cf_stg () {
 }
 
 function deploy_cf_prd () {
-  DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $1}')
-  #CF_ID=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $2}')
-  S3_PATH=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]}|[?Aliases!=\`null\`]|[?Aliases==\`${APP_DEPLOY}\`]" | awk '{print $3}' | cut -d'.' -f1)
+  DNS_NAME=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]} | [?Aliases!=\`null\`] | [?Aliases==\`${APP}.juntoseguros.com\`]" | awk '{print $1}')
+  AWS_CF_PRD=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]} | [?Aliases!=\`null\`] | [?Aliases==\`${APP}.juntoseguros.com\`]" | awk '{print $2}')
+  AWS_S3_PRD=$(aws cloudfront list-distributions --output text --query "DistributionList.Items[].{Origins: Origins.Items[0].DomainName, Id: Id, Aliases: Aliases.Items[0]} | [?Aliases!=\`null\`] | [?Aliases==\`${APP}.juntoseguros.com\`]" | awk '{print $3}' | cut -d'.' -f1)
 
     CI="false"
     if [ $(echo $CIRCLE_BRANCH | grep -i "master") ]; then
@@ -181,13 +185,13 @@ quality)
   if [ ! -z "${LIST_APPS}" ]; then
     for i in ${LIST_APPS}
     do
-        #APP="${i}-preview"
+
         APP="${i}"
         echo "Initing deploy app ${APP}..."
         if [ -n "${SQUAD}" ]; then
           echo "On envorinment squad${SQUAD}..."
         fi
-        APP_DEPLOY="${APP}2-qas-2.juntoseguros.com"
+        APP_DEPLOY="${APP}-qas-${SQUAD}.juntoseguros.com"
         deploy_cf_qas
     done
   else
@@ -205,10 +209,9 @@ staging)
     for i in ${LIST_APPS}
     do
         echo "Add preview"
-        #APP="${i}-preview"
         APP="${i}"
         echo "Initing deploy app ${APP}..."
-        APP_DEPLOY="${APP}2-stg.juntoseguros.com"
+        APP_DEPLOY="${APP}-stg.juntoseguros.com"
         deploy_cf_stg
     done
   else
@@ -226,10 +229,9 @@ production)
     for i in ${LIST_APPS}
     do
         echo "Add preview"
-        #APP="${i}-preview"
         APP="${i}"
         echo "Initing deploy app ${APP}..."
-        APP_DEPLOY="${APP}2.juntoseguros.com"
+        APP_DEPLOY="${APP}.juntoseguros.com"
         deploy_cf_prd
     done
   else

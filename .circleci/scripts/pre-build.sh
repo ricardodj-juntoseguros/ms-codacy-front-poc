@@ -21,7 +21,14 @@ if [ "$ENV_SQUAD" == "squad2" ]; then
     cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.qa.$ENV_SQUAD ${DIR_APPS}/${DIR##*/}/.env
 	done
 
- 
+elif [ "$ENV_SQUAD" == "squad1" ]; then
+	for DIR in $APPS 
+    do 
+    cp ./environments/.env.qa.$ENV_SQUAD .env 
+    cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.qa.$ENV_SQUAD ${DIR_APPS}/${DIR##*/}/.env
+	done 
+
+
 elif [ "$ENV_SQUAD" == "squad5" ]; then
 	for DIR in $APPS 
     do 
