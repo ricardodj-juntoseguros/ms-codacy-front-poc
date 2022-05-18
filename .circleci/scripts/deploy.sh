@@ -209,7 +209,12 @@ staging)
     for i in ${LIST_APPS}
     do
         echo "Add preview"
+        #APP="${i}"
+        if [ "$i" == "plataforma" ]; then
+        APP="corretor"
+        else
         APP="${i}"
+        fi      
         echo "Initing deploy app ${APP}..."
         APP_DEPLOY="${APP}-stg.juntoseguros.com"
         deploy_cf_stg
@@ -229,7 +234,12 @@ production)
     for i in ${LIST_APPS}
     do
         echo "Add preview"
+        #APP="${i}"
+        if [ "$i" == "plataforma" ]; then
+        APP="corretor"
+        else
         APP="${i}"
+        fi
         echo "Initing deploy app ${APP}..."
         APP_DEPLOY="${APP}.juntoseguros.com"
         deploy_cf_prd
