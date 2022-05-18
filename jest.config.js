@@ -1,7 +1,6 @@
 module.exports = {
   projects: [
     '<rootDir>/apps/plataforma',
-    '<rootDir>/apps/digital',
     '<rootDir>/apps/fidelize',
     '<rootDir>/modules/corretor-emissao',
     '<rootDir>/modules/fidelize-dashboard',

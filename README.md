@@ -5,12 +5,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/d27b34f14ad50da533ba/maintainability)](https://codeclimate.com/repos/60d5ff1714905d4c260012f8/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/d27b34f14ad50da533ba/test_coverage)](https://codeclimate.com/repos/60d5ff1714905d4c260012f8/test_coverage) [![CircleCI](https://circleci.com/gh/GitJMSeguradora/JuntoSeguros.Library.svg?style=svg&circle-token=acedae51865c9abfed87fa884cb8ec62b1ace486)](https://circleci.com/gh/GitJMSeguradora/platform-web)
 
 ## Descrição
+
 Repositório em formato monorepo para as aplicações React front-end seguindo o novo padrão de arquitetura de micro-frontends, tendo como referência o [Guideline FrontEnd](https://github.com/GitJMSeguradora/guidelines/tree/master/frontend)
 
-O repositório conta atualmente com 3 aplicações: 
-- Fidelize 
+O repositório conta atualmente com 2 aplicações:
+
+- Fidelize
 - Plataforma (corretor)
-- Digital
 
 Obs: Apenas o app Fidelize possui a esteira de pipeline completa até o momento dessa atualização (16 de março de 2022).
 
@@ -55,7 +56,7 @@ Este repositório é dividido em 3 principais partes:
 
 ## Ambientes
 
-- App Fidelize 
+- App Fidelize
 
 URL QAS: https://fidelize-qas-2.juntoseguros.com/
 

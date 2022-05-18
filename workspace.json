@@ -16,81 +16,11 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/modules/corretor-emissao"],
+          "outputs": [
+            "coverage/modules/corretor-emissao"
+          ],
           "options": {
             "jestConfig": "modules/corretor-emissao/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": []
-    },
-    "digital": {
-      "root": "apps/digital",
-      "sourceRoot": "apps/digital/src",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/web:webpack",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/apps/digital",
-            "index": "apps/digital/src/index.html",
-            "main": "apps/digital/src/main.tsx",
-            "polyfills": "apps/digital/src/polyfills.ts",
-            "tsConfig": "apps/digital/tsconfig.app.json",
-            "assets": ["apps/digital/src/assets"],
-            "styles": ["apps/digital/src/styles.scss"],
-            "scripts": [],
-            "webpackConfig": "apps/digital/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/digital/src/environments/environment.ts",
-                  "with": "apps/digital/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "digital:build"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "digital:build:production"
-            }
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/digital/**/*.{ts,tsx,js,jsx}"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/digital"],
-          "options": {
-            "jestConfig": "apps/digital/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -104,15 +34,21 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:webpack",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/fidelize",
             "index": "apps/fidelize/src/index.html",
             "main": "apps/fidelize/src/main.tsx",
             "polyfills": "apps/fidelize/src/polyfills.ts",
             "tsConfig": "apps/fidelize/tsconfig.app.json",
-            "assets": ["apps/fidelize/src/favicon.ico"],
-            "styles": ["apps/fidelize/src/styles.scss"],
+            "assets": [
+              "apps/fidelize/src/favicon.ico"
+            ],
+            "styles": [
+              "apps/fidelize/src/styles.scss"
+            ],
             "scripts": [],
             "webpackConfig": "apps/fidelize/webpack.config.js"
           },
@@ -157,12 +93,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/fidelize/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "apps/fidelize/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/fidelize"],
+          "outputs": [
+            "coverage/apps/fidelize"
+          ],
           "options": {
             "jestConfig": "apps/fidelize/jest.config.js",
             "passWithNoTests": true
@@ -179,7 +119,9 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
             "lintFilePatterns": [
               "modules/fidelize-dashboard/**/*.{ts,tsx,js,jsx}"
@@ -188,7 +130,9 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/modules/fidelize-dashboard"],
+          "outputs": [
+            "coverage/modules/fidelize-dashboard"
+          ],
           "options": {
             "jestConfig": "modules/fidelize-dashboard/jest.config.js",
             "passWithNoTests": true
@@ -226,12 +170,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/fidelize-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/fidelize-e2e/**/*.{js,ts}"
+            ]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": ["fidelize"]
+      "implicitDependencies": [
+        "fidelize"
+      ]
     },
     "infrastructure-http-client": {
       "root": "libs/infrastructure/http-client",
@@ -241,12 +189,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/infrastructure/http-client/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/infrastructure/http-client/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/infrastructure/http-client"],
+          "outputs": [
+            "coverage/libs/infrastructure/http-client"
+          ],
           "options": {
             "jestConfig": "libs/infrastructure/http-client/jest.config.js",
             "passWithNoTests": true
@@ -262,15 +214,21 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:webpack",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/plataforma",
             "index": "apps/plataforma/src/index.html",
             "main": "apps/plataforma/src/main.tsx",
             "polyfills": "apps/plataforma/src/polyfills.ts",
             "tsConfig": "apps/plataforma/tsconfig.app.json",
-            "assets": ["apps/plataforma/src/assets"],
-            "styles": ["apps/plataforma/src/styles.scss"],
+            "assets": [
+              "apps/plataforma/src/assets"
+            ],
+            "styles": [
+              "apps/plataforma/src/styles.scss"
+            ],
             "scripts": [],
             "webpackConfig": "apps/plataforma/webpack.config.js"
           },
@@ -313,12 +271,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/plataforma/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "apps/plataforma/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/plataforma"],
+          "outputs": [
+            "coverage/apps/plataforma"
+          ],
           "options": {
             "jestConfig": "apps/plataforma/jest.config.js",
             "passWithNoTests": true
@@ -334,14 +296,20 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/services/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/services/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/services"],
+          "outputs": [
+            "coverage/libs/services"
+          ],
           "options": {
             "jestConfig": "libs/services/jest.config.js",
             "passWithNoTests": true
@@ -358,12 +326,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/shared/hooks/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/shared/hooks/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/hooks"],
+          "outputs": [
+            "coverage/libs/shared/hooks"
+          ],
           "options": {
             "jestConfig": "libs/shared/hooks/jest.config.js",
             "passWithNoTests": true
@@ -380,12 +352,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/shared/ui/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/shared/ui/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/ui"],
+          "outputs": [
+            "coverage/libs/shared/ui"
+          ],
           "options": {
             "jestConfig": "libs/shared/ui/jest.config.js",
             "passWithNoTests": true
@@ -401,14 +377,20 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/shared/utils/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/shared/utils/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/utils"],
+          "outputs": [
+            "coverage/libs/shared/utils"
+          ],
           "options": {
             "jestConfig": "libs/shared/utils/jest.config.js",
             "passWithNoTests": true

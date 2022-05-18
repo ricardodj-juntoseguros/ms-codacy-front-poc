@@ -150,18 +150,18 @@ const PolicyholderFilterSelector: React.FC = () => {
   };
 
   const handleApplyFilter = () => {
-    dispatch(opportunitiesDetailsActions.resetSettings());
-    dispatch(
-      policyholderFilterActions.setPolicyholderSelection({
-        selection: selectedPolicyholders.map(selected => selected.federalId),
-      }),
-    );
     TagManager.dataLayer({
       dataLayer: {
         event: 'ClickApplyPolicyholderFilterButton',
         policyholderCount: selectedPolicyholders.length,
       },
     });
+    dispatch(opportunitiesDetailsActions.resetSettings());
+    dispatch(
+      policyholderFilterActions.setPolicyholderSelection({
+        selection: selectedPolicyholders.map(selected => selected.federalId),
+      }),
+    );
   };
 
   return (
