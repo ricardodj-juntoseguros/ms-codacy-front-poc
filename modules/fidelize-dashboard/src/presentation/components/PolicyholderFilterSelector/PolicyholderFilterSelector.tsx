@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, SearchInput, SearchOptions } from 'junto-design-system';
-import { federalIdFormatter, objectArraysMerger } from '@shared/utils';
+import TagManager from 'react-gtm-module';
 import classNames from 'classnames';
+import { federalIdFormatter, objectArraysMerger } from '@shared/utils';
 import PolicyholderFilterSelectorTags from '../PolicyholderFilterSelectorTags';
 import { PolicyholderDTO } from '../../../application/types/dto';
 import PolicyholderFilterApi from '../../../application/features/policyholderFilter/PolicyholderFilterApi';
@@ -155,6 +156,12 @@ const PolicyholderFilterSelector: React.FC = () => {
         selection: selectedPolicyholders.map(selected => selected.federalId),
       }),
     );
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'ClickApplyPolicyholderFilterButton',
+        policyholderCount: selectedPolicyholders.length,
+      },
+    });
   };
 
   return (
