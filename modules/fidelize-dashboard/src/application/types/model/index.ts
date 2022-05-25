@@ -1,3 +1,5 @@
+export * from './AccessCheckFeatureModel';
+export * from './AccessCheckModel';
 export * from './ModalitySelectionModel';
 export * from './ModalityEnum';
 export * from './OpportunitiesDetailsSettingsModel';

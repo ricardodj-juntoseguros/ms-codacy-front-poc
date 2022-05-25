@@ -4,4 +4,5 @@ export interface ModalitySummaryDTO {
   modality: ModalityEnum;
   totalOpportunities: number;
   totalInsuredAmount: number;
+  error: boolean;
 }

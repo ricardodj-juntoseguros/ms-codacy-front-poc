@@ -18,6 +18,16 @@ class AccessCheckApi {
 
     return await this.instance.get<any>(params);
   }
+
+  async checkAccessToFeature(feature: string): Promise<any> {
+    const params: IHttpClientRequestParameters = {
+      url: '/v2/access',
+      params: {
+        feature,
+      },
+    };
+    return await this.instance.get<any>(params);
+  }
 }
 
 export default new AccessCheckApi();

@@ -18,7 +18,7 @@ export const getLabelByModality = (
       label = isPlural ? 'trabalhistas' : 'trabalhista';
       break;
     default:
-      return null;
+      return '';
   }
   if (capitalizeFirst) {
     label = label.charAt(0).toUpperCase() + label.slice(1);

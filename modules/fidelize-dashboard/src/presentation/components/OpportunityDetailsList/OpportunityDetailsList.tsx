@@ -46,7 +46,6 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
 
   useEffect(() => {
     const fetchOpportunityDetails = () => {
-      setLoadingItems(true);
       OpportunitiesDetailsApi.getOpportunitiesDetailsByModality(
         modality,
         activePage,
@@ -63,6 +62,8 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
         .finally(() => setLoadingItems(false));
     };
 
+    setError(false);
+    setLoadingItems(true);
     fetchOpportunityDetails();
   }, [
     activePage,
