@@ -17,7 +17,7 @@ KUBECTL_BIN="https://storage.googleapis.com/kubernetes-release/release/v1.13.10/
 KOPS_BIN="https://github.com/kubernetes/kops/releases/download/v1.18.1/kops-linux-amd64"
 KOPS_STATE_STORE="s3://kops-k8s-state-store-prd"
 SERVICE_DEFINITION_FILE="ServiceDefinitions-k8s.json"
-NAMESPACE_1="squad1"
+NAMESPACE_1="squad2"
 SERVICE_1="ms-plataforma-bff"
 SERVICE_2="fidelize-bff"
 

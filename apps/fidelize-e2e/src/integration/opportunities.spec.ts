@@ -34,11 +34,21 @@ describe('Opportunities', () => {
       .contains(messages.moreDetailsSuccess);
   });
   
-  it.only('Deve validar disclaimer de condições de produto', () => {
+  it('Deve validar disclaimer de condições de produto', () => {
     cy.goToOpportunityDetailsListTab('fiscal')
       .clickOnFirstMoreDetailsButton().first();
 
     cy.get(selectors.modal.disclaimer)
       .should('be.visible');
   });
+
+  it('Deve validar dados da trabalhista', () => {
+    cy.get('[data-testid=tab-labor]').click();
+
+    cy.get('.ModalitySummary_modality-summary__wrapper__c_k1B > :nth-child(1)')
+    .should('be.visible');
+
+    cy.get('.ModalitySummary_modality-summary__wrapper__c_k1B > :nth-child(2)')
+    .should('be.visible');
+  })
 });

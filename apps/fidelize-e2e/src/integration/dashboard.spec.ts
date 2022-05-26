@@ -65,4 +65,5 @@ describe('Dashboard', () => {
 
     cy.get(selectors.dashboardSummary.searchButton).click();
   });
+
 });
