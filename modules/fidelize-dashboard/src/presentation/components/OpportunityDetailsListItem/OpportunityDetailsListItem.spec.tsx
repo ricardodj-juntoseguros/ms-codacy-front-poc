@@ -20,6 +20,7 @@ describe('Opportunity Details List Item', () => {
       mappingDate: '2022-01-01T10:00:00.000Z',
       securityAmount: 2550650.5,
       expired: false,
+      observation: 'Com vencimento em 01/01/26',
     };
     const { getByText } = render(
       <OpportunityDetailsListItem
@@ -29,7 +30,7 @@ describe('Opportunity Details List Item', () => {
     );
     expect(getByText('Renovação')).toBeTruthy();
     expect(getByText('Alta')).toBeTruthy();
-    expect(getByText('Com vencimento em 01/jan/26')).toBeTruthy();
+    expect(getByText('Com vencimento em 01/01/26')).toBeTruthy();
     expect(getByText('2.550.650,50')).toBeTruthy();
     expect(getByText('Teste tomador')).toBeTruthy();
     expect(getByText('01/jan/22')).toBeTruthy();
@@ -46,6 +47,7 @@ describe('Opportunity Details List Item', () => {
       mappingDate: '2022-01-01T10:00:00.000Z',
       securityAmount: 2550650.5,
       expired: false,
+      observation: 'Prazo indeterminado',
     };
     const { getByText } = render(
       <OpportunityDetailsListItem
@@ -67,6 +69,7 @@ describe('Opportunity Details List Item', () => {
       mappingDate: '2022-01-01T10:00:00.000Z',
       securityAmount: 2550650.5,
       expired: false,
+      observation: 'Com vencimento em 01/02/22',
     };
     const { queryByText } = render(
       <OpportunityDetailsListItem
@@ -75,7 +78,7 @@ describe('Opportunity Details List Item', () => {
       />,
     );
     expect(queryByText('Prazo indeterminado')).not.toBeInTheDocument();
-    expect(queryByText('Expirada em 01/fev/2022')).not.toBeInTheDocument();
+    expect(queryByText('Vencida em 01/02/2022')).not.toBeInTheDocument();
   });
 
   it('Should render expired message if opportunity is expired', () => {
@@ -89,6 +92,7 @@ describe('Opportunity Details List Item', () => {
       mappingDate: '2022-01-01T10:00:00.000Z',
       securityAmount: 2550650.5,
       expired: true,
+      observation: 'Vencida em 01/02/2022',
     };
     const { getByText } = render(
       <OpportunityDetailsListItem
@@ -96,6 +100,6 @@ describe('Opportunity Details List Item', () => {
         opportunity={opportunityMock}
       />,
     );
-    expect(getByText('Expirada em 01/fev/22')).toBeTruthy();
+    expect(getByText('Vencida em 01/02/2022')).toBeTruthy();
   });
 });

@@ -4,10 +4,7 @@ import { nanoid } from 'nanoid';
 import TagManager from 'react-gtm-module';
 import { thousandSeparator } from '@shared/utils';
 import { SuccessIllustration } from '@shared/ui';
-import {
-  getLabelByModality,
-  shouldRenderExpirationLabel,
-} from '../../../helpers';
+import { getLabelByModality } from '../../../helpers';
 import { ModalityEnum } from '../../../application/types/model';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import OpportunityDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
@@ -30,7 +27,7 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
       category,
       policyholder,
       securityAmount,
-      expiration,
+      observation,
       mappingDate,
       relevance,
       expired,
@@ -42,7 +39,7 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
         {
           label: 'Tipo/Obs',
           value: `${category} ${
-            shouldRenderExpirationLabel(opportunity) ? `- ${expiration}` : ''
+            observation !== null ? `- ${observation}` : ''
           }`,
         },
         {

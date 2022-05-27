@@ -32,6 +32,7 @@ describe('OpportunityDetailsList', () => {
               mappingDate: '2022-03-18T03:00:00.000Z',
               policyholder: 'Tomador',
               expired: false,
+              observation: 'Com vencimento em 19/03/25',
             },
           ],
         };
@@ -66,6 +67,7 @@ describe('OpportunityDetailsList', () => {
               mappingDate: '2022-03-18T03:00:00.000Z',
               policyholder: 'Tomador',
               expired: false,
+              observation: 'Com vencimento em 19/03/25',
             },
           ],
         };
@@ -100,6 +102,7 @@ describe('OpportunityDetailsList', () => {
               mappingDate: '2022-03-18T03:00:00.000Z',
               policyholder: 'Tomador',
               expired: false,
+              observation: 'Com vencimento em 19/03/25',
             },
           ],
         };
@@ -136,6 +139,7 @@ describe('OpportunityDetailsList', () => {
               mappingDate: '2022-03-18T03:00:00.000Z',
               policyholder: 'Tomador',
               expired: false,
+              observation: 'Com vencimento em 19/03/25',
             },
           ],
         };

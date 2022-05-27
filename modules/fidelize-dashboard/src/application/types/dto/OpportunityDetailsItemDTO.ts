@@ -10,4 +10,5 @@ export interface OpportunityDetailsItemDTO {
   expiration: string | null;
   mappingDate: string;
   expired: boolean;
+  observation: string | null;
 }

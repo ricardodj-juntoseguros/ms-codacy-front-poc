@@ -2,7 +2,6 @@ import { format } from 'date-fns';
 import brLocale from 'date-fns/locale/pt-BR';
 import classNames from 'classnames';
 import { thousandSeparator } from '@shared/utils';
-import { shouldRenderExpirationLabel } from '../../../helpers';
 import styles from './OpportunityDetailsListItem.module.scss';
 import {
   ModalityEnum,
@@ -23,21 +22,12 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
   const {
     relevance,
     category,
-    expiration,
     securityAmount,
     policyholder,
     mappingDate,
     expired,
+    observation,
   } = opportunity;
-
-  const getExpirationLabel = () => {
-    if (!shouldRenderExpirationLabel(opportunity)) return '';
-    if (!expiration) return 'Prazo indeterminado';
-    const expirationFormatted = formatDate(expiration);
-    return expired
-      ? `Expirada em ${expirationFormatted}`
-      : `Com vencimento em ${expirationFormatted}`;
-  };
 
   const getRelevanceTagClassName = (relevance: OpportunityRelevanceEnum) => {
     if (expired)
@@ -80,9 +70,13 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
         <p className={styles['opportunity-details-listitem__label']}>
           {category}
         </p>
-        <span className={styles['opportunity-details-listitem__label-helper']}>
-          {getExpirationLabel()}
-        </span>
+        {observation !== null && (
+          <span
+            className={styles['opportunity-details-listitem__label-helper']}
+          >
+            {observation}
+          </span>
+        )}
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <p className={styles['opportunity-details-listitem__label']}>
@@ -108,7 +102,6 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
           opportunity={{
             ...opportunity,
             mappingDate: formatDate(mappingDate),
-            expiration: getExpirationLabel(),
           }}
         />
       </div>

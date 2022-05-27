@@ -18,10 +18,11 @@ describe('MoreOpportunityDetailsModal', () => {
       id: 'id',
       policyholder: 'Teste tomador',
       relevance: OpportunityRelevanceEnum.HIGH,
-      expiration: 'Com vencimento em 22/fev/2024',
+      expiration: '2024-02-02T03:00:00.000Z',
       mappingDate: '01/jan/2021',
       securityAmount: 2550650.5,
       expired: false,
+      observation: 'Com vencimento em 22/02/2024',
     };
     const { container } = render(
       <MoreOpportunityDetailsModal
@@ -44,7 +45,8 @@ describe('MoreOpportunityDetailsModal', () => {
       id: 'id',
       policyholder: 'Teste tomador',
       relevance: OpportunityRelevanceEnum.HIGH,
-      expiration: 'Com vencimento em 22/fev/2024',
+      expiration: '2024-02-02T03:00:00.000Z',
+      observation: 'Com vencimento em 22/02/2024',
       mappingDate: '01/jan/2021',
       securityAmount: 2550650.5,
       expired: false,
