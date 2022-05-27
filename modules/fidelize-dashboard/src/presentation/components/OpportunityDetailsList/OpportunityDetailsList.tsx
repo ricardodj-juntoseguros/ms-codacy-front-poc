@@ -55,8 +55,8 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
         filteredPolicyholders,
       )
         .then(response => {
-          setTotalCount(response.totalCount);
           setData(response.data);
+          setTotalCount(response.totalCount);
         })
         .catch(() => setError(true))
         .finally(() => setLoadingItems(false));
@@ -73,6 +73,10 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     direction,
     filteredPolicyholders,
   ]);
+
+  useEffect(() => {
+    setTotalCount(undefined);
+  }, [modality]);
 
   const handlePaging = (page: number) => {
     dispatch(opportunitiesDetailsActions.setActivePage({ page, modality }));

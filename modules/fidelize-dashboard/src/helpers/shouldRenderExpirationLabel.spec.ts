@@ -37,4 +37,36 @@ describe('ShouldRenderExpirationLabel Helper', () => {
     const result = shouldRenderExpirationLabel(mockOpportunity);
     expect(result).toBeTruthy();
   });
+
+  it('Should return true if type is Labor and category is Fiança', () => {
+    const mockOpportunity: OpportunityDetailsItemDTO = {
+      id: 'id',
+      expiration: 'expiration',
+      mappingDate: 'mappingDate',
+      policyholder: 'Teste tomador',
+      relevance: OpportunityRelevanceEnum.HIGH,
+      securityAmount: 10000,
+      type: OpportunityDetailsTypeEnum.LABOR,
+      category: 'Fiança',
+      expired: false,
+    };
+    const result = shouldRenderExpirationLabel(mockOpportunity);
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return true if type is Labor and category is Renovação', () => {
+    const mockOpportunity: OpportunityDetailsItemDTO = {
+      id: 'id',
+      expiration: 'expiration',
+      mappingDate: 'mappingDate',
+      policyholder: 'Teste tomador',
+      relevance: OpportunityRelevanceEnum.HIGH,
+      securityAmount: 10000,
+      type: OpportunityDetailsTypeEnum.LABOR,
+      category: 'Renovação',
+      expired: false,
+    };
+    const result = shouldRenderExpirationLabel(mockOpportunity);
+    expect(result).toBeTruthy();
+  });
 });

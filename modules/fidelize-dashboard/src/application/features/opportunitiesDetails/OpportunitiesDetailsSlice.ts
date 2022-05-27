@@ -15,6 +15,13 @@ const initialState: OpportunitiesDetailsModel = {
       orderBy: OpportunityDetailsOrderEnum.RELEVANCE,
       direction: 'desc',
     },
+    {
+      modality: ModalityEnum.TRABALHISTA,
+      activePage: 1,
+      pageSize: 10,
+      orderBy: OpportunityDetailsOrderEnum.RELEVANCE,
+      direction: 'desc',
+    },
   ],
 };
 

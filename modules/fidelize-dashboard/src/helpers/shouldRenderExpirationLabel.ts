@@ -6,9 +6,12 @@ export const shouldRenderExpirationLabel = (
 ) => {
   const { category, type } = opportunity;
 
-  if (type === OpportunityDetailsTypeEnum.FISCAL) {
-    const fiscalShouldRender = ['Renovação', 'Fiança'];
-    return fiscalShouldRender.includes(category);
+  if (
+    type === OpportunityDetailsTypeEnum.FISCAL ||
+    type === OpportunityDetailsTypeEnum.LABOR
+  ) {
+    const categoriesShouldRender = ['Renovação', 'Fiança'];
+    return categoriesShouldRender.includes(category);
   }
   return false;
 };

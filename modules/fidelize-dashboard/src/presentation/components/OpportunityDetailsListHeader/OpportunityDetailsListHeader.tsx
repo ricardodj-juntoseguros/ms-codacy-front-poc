@@ -20,7 +20,7 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
     const { orderBy, direction } = useSelector(
       selectSettingsByModality(modality),
     ) || {
-      orderBy: OpportunityDetailsOrderEnum.MAPPING_DATE,
+      orderBy: OpportunityDetailsOrderEnum.RELEVANCE,
       direction: 'desc',
     };
 

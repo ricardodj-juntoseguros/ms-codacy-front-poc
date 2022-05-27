@@ -116,7 +116,7 @@ function DashboardContainer() {
       hasAccessToLaborModality !== null &&
       !hasAccessToLaborModality
     ) {
-      content = () => <ModalityUnderConstruction />;
+      content = () => <ModalityNotAvailable />;
     }
 
     return (
