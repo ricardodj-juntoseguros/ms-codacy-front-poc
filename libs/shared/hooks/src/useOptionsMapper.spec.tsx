@@ -18,6 +18,13 @@ describe('useOptionsMapper', () => {
       mockSelectCallback,
     );
     result.selectOption(result.mappedOptions[0]);
-    expect(mockSelectCallback).toHaveBeenCalledWith(optionsToMap[0]);
+    expect(mockSelectCallback).toHaveBeenCalledWith(
+      {
+        ...optionsToMap[0],
+        label: optionsToMap[0].description,
+        value: optionsToMap[0].id,
+      },
+      optionsToMap[0].description,
+    );
   });
 });

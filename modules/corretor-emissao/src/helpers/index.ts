@@ -4,3 +4,4 @@ export * from './getStepByName';
 export * from './getModalityByGroup';
 export * from './parseStringToDate';
 export * from './parseDateToString';
+export * from './verifyDateIsSameOrBefore';

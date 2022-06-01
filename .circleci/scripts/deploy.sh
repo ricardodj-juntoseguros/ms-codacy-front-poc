@@ -41,19 +41,19 @@ function deploy_cf_qas () {
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad1") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_1"
     CF_ID=$AWS_CF_QAS_1
-    AWS_S3_QAS=$AWS_S3_QAS_1
+    AWS_S3=$AWS_S3_QAS_1
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad5") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_5"
     CF_ID=$AWS_CF_QAS_5
-    AWS_S3_QAS=$AWS_S3_QAS_5
+    AWS_S3=$AWS_S3_QAS_5
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad6") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_6"
     CF_ID=$AWS_CF_QAS_6
-    AWS_S3_QAS=$AWS_S3_QAS_6
+    AWS_S3=$AWS_S3_QAS_6
     elif [ $(echo $CIRCLE_BRANCH | grep -i "squad7") ]; then
     echo "Setting env AWS_CF and AWS_S3 to QAS_7"
     CF_ID=$AWS_CF_QAS_7
-    AWS_S3_QAS=$AWS_S3_QAS_7
+    AWS_S3=$AWS_S3_QAS_7
     fi
 
 
@@ -186,7 +186,12 @@ quality)
     for i in ${LIST_APPS}
     do
 
+        #APP="${i}"
+        if [ "$i" == "plataforma" ]; then
+        APP="corretor"
+        else
         APP="${i}"
+        fi
         echo "Initing deploy app ${APP}..."
         if [ -n "${SQUAD}" ]; then
           echo "On envorinment squad${SQUAD}..."

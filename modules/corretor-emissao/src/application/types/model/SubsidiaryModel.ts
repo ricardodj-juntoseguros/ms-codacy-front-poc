@@ -1,4 +1,5 @@
-export interface SubsidiaryModel {
-  id: number;
+import { SubsidiaryDTO } from '../dto';
+
+export interface SubsidiaryModel extends SubsidiaryDTO {
   label: string;
 }

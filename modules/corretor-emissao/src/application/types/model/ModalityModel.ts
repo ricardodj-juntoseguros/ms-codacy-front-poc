@@ -1,4 +1,5 @@
-export interface ModalityModel {
-  id: number;
-  description: string;
+import { ModalityDTO } from '../dto';
+
+export interface ModalityModel extends ModalityDTO {
+  label?: string;
 }

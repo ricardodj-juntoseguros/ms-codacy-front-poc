@@ -1,0 +1,27 @@
+export const modalityMock = {
+  id: 48,
+  externalDescription: 'Registro ANEEL',
+  externalId: 82,
+  description: 'Registro ANEEL - 477',
+  labelNoticeContract: 'N° Edital / Contrato',
+  labelNoticeAnnex: 'Anexo do Edital',
+  helpNoticeContract:
+    'No preenchimento do campo N.° Edital/Contrato, observar o seguinte: a) Caso o Contrato já esteja assinado, preencher o campo com o número do Contrato; b) Caso o Contrato ainda não tenha sido assinado, preencher o campo com a seguinte frase, sem aspas: "a ser assinado, referente ao Edital n.° (AQUI DEVERÁ SER PREENCHIDO COM O NÚMERO REAL DO EDITAL REFERENTE A ESTA PROPOSTA)"; c) Após o preenchimento, caso esteja no GOL Clássico, clique no link abaixo, caso esteja na Nova Plataforma, faça a impressão da Minuta, para visualizar o texto formatado no Objeto da apólice. Caso não esteja de forma harmônica, revisar preenchimento do campo do N.° Edital / Contrato ou entre em contato com a Regional que lhe atende.',
+  helpNoticeAnnex:
+    'Esta caixa deve ser preenchida somente para os processos dos Segurados DER/SP e SABESP. Neste campo deve ser informado o Número do Anexo / Modelo previsto nos Editais do DER/SP e da SABESP. A descrição desta caixa será impressa nas condições particulares do documento. Após o preenchimento, clicar no link "Clique aqui para visualizar as Condições Particulares". CASO NÃO SE TRATE DE UM PROCESSO DOS SEGURADOS DER/SP E SABESP, DEIXAR ESTA CAIXA EM BRANCO. ',
+  isJudicial: false,
+  allowsAdditionalCoverageLabor: false,
+  allowsAdditionalCoverageGuarantee: false,
+  allowsAdditionalCoverageVigilance: false,
+  retroactiveDays: 90,
+  showAuctionNoticeFields: false,
+  submodalityExternalIdForCoverageLabor: 0,
+  submodalityExternalIdForCoverageGuarantee: 0,
+  typeId: 0,
+  typeDescription: 'Modalidades Tradicionais',
+  isSubstitute: false,
+  labelSpecialClause: '',
+  needAcceptAdditionalCoverageLabor: false,
+  showSpecialClause: false,
+  submodalities: [],
+};

@@ -3,23 +3,21 @@ import {
   IHttpClient,
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
+import { QuoteDTO } from '../../types/dto/QuoteDTO';
 import { QuoteResultDTO } from '../../types/dto/QuoteResultDTO';
-import { TimeframeAndCoverageModel } from '../../types/model';
+import IssueBrokerBaseApi from '../IssueBrokerBaseApi';
 
 class QuoteApi {
   private readonly httpClient: IHttpClient;
 
   public constructor() {
-    this.httpClient = new AxiosHttpClient(
-      'https://ms-gateway-qas.juntoseguros.com/squad1/plataforma-preview-api/',
-      {},
-      100000,
-    );
+    this.httpClient = new IssueBrokerBaseApi().getInstance();
   }
 
-  async generateQuote(rateData: TimeframeAndCoverageModel) {
+  async generateQuote(quotePayload: QuoteDTO) {
     const params: IHttpClientRequestParameters = {
-      url: '/generate-quote',
+      url: 'ms-middleware-proposal/api/quotation',
+      payload: quotePayload,
     };
 
     return await this.httpClient.post<QuoteResultDTO>(params);

@@ -7,7 +7,17 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/modules/corretor-emissao',
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/config/*.{ts,tsx}',
+    '!src/constants/*.{ts,tsx}',
+    '!src/application/types/*.{ts,tsx}',
+    '!src/application/validations/*.{ts,tsx}',
+    '!src/application/**/dataPresenter/*.{ts,tsx}',
+    '!src/declarations.d.ts',
+  ],
   transformIgnorePatterns: ['node_modules/(?!junto-design-system/.*)'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'index.ts', 'index.tsx'],
   moduleNameMapper: {
     '\\.(scss|css)$': 'identity-obj-proxy',
   },

@@ -10,7 +10,7 @@ export function useOptionsMapper(
   labelName: string,
   secondaryLabel = '',
   id = '',
-  selectCallback: (selectedItem: any) => void,
+  selectCallback: (selectedItem: any, label: string) => void,
   customLabel?: (item: any) => string,
 ) {
   const mappedOptions: MappedOptions[] = optionsToMap.map(item => {
@@ -33,8 +33,9 @@ export function useOptionsMapper(
 
   const selectOption = (option: MappedOptions) => {
     const selectedOption = optionsToMap.find(opt => opt[id] === option.value);
+
     if (selectedOption) {
-      selectCallback(selectedOption);
+      selectCallback(option, option.label);
     }
   };
 

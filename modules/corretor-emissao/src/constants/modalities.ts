@@ -5,11 +5,11 @@ import {
   ModalitiesGroupEnum,
 } from '../application/types/model';
 import { ContractDataContainer } from '../presentation/components/contractDataContainer';
-import { RateCalculationContainer } from '../presentation/components/rateCalculationContainer';
-import { TimeframeAndCoverageContainer } from '../presentation/components/timeframeAndCoverageContainer';
+import { RateCalculation } from '../presentation/components/RateCalculation';
+import { CoverageData } from '../presentation/components/CoverageData';
 
 export const defaultStep: StepModel = {
-  name: 'SearchContainer',
+  name: 'Search',
   number: 1,
   isActive: true,
   isVisible: true,
@@ -21,43 +21,44 @@ export const defaultStep: StepModel = {
 
 export const groupModalities: ModalitiesGroup = {
   DEFAULT: ModalitiesGroupEnum.DEFAULT,
-  EXECUTANTE_CONSTRUTOR: ModalitiesGroupEnum.TRADITIONAL,
-  EXECUTANTE_CONSTRUTOR_TERMINO_DE_OBRAS: ModalitiesGroupEnum.TRADITIONAL,
-  ANTECIPACAO_DE_RECEBIVEIS_CONTRATUAIS: ModalitiesGroupEnum.TRADITIONAL,
-  ADUANEIRO_TRANSITO: ModalitiesGroupEnum.TRADITIONAL,
-  REGISTRO_ANELL: ModalitiesGroupEnum.TRADITIONAL,
-  PARCELAMENTO_ADMINISTRATIVO_FISCAL: ModalitiesGroupEnum.TRADITIONAL,
-  RETENCAO_DE_PAGAMENTO: ModalitiesGroupEnum.TRADITIONAL,
-  CONTA_RESERVA: ModalitiesGroupEnum.TRADITIONAL,
-  ADMINISTRATIVO_CREDITO_TRIBUTARIO: ModalitiesGroupEnum.TRADITIONAL,
-  EXECUTANTE_CONCESSIONARIO: ModalitiesGroupEnum.TRADITIONAL,
-  ADIANTAMENTO_DE_PAGAMENTO: ModalitiesGroupEnum.TRADITIONAL,
-  PROCESSO_ADMINISTRATIVO: ModalitiesGroupEnum.TRADITIONAL,
+  EXECUTANTE_CONSTRUTOR: ModalitiesGroupEnum.COMMON,
+  EXECUTANTE_CONSTRUTOR_TERMINO_DE_OBRAS: ModalitiesGroupEnum.COMMON,
+  ANTECIPACAO_DE_RECEBIVEIS_CONTRATUAIS: ModalitiesGroupEnum.COMMON,
+  ADUANEIRO_TRANSITO: ModalitiesGroupEnum.COMMON,
+  REGISTRO_ANELL: ModalitiesGroupEnum.COMMON,
+  PARCELAMENTO_ADMINISTRATIVO_FISCAL: ModalitiesGroupEnum.COMMON,
+  RETENCAO_DE_PAGAMENTO: ModalitiesGroupEnum.COMMON,
+  CONTA_RESERVA: ModalitiesGroupEnum.COMMON,
+  ADMINISTRATIVO_CREDITO_TRIBUTARIO: ModalitiesGroupEnum.COMMON,
+  EXECUTANTE_CONCESSIONARIO: ModalitiesGroupEnum.COMMON,
+  ADIANTAMENTO_DE_PAGAMENTO: ModalitiesGroupEnum.COMMON,
+  PROCESSO_ADMINISTRATIVO: ModalitiesGroupEnum.COMMON,
 };
 
 export const modalities: Modalities = {
   DEFAULT: {
+    validationSchema: 'common',
     steps: [
       {
-        name: 'TimeframeAndCoverageContainer',
+        name: 'CoverageData',
         number: 2,
         isActive: false,
         isVisible: true,
         isEnabled: false,
         isLoading: false,
         isCompleted: false,
-        Component: TimeframeAndCoverageContainer,
-        nextStep: 'RateCalculationContainer',
+        Component: CoverageData,
+        nextStep: 'RateCalculation',
       },
       {
-        name: 'RateCalculationContainer',
+        name: 'RateCalculation',
         number: 3,
         isActive: false,
         isVisible: true,
         isEnabled: false,
         isLoading: false,
         isCompleted: false,
-        Component: RateCalculationContainer,
+        Component: RateCalculation,
         nextStep: 'ContractDataContainer',
       },
       {
@@ -73,28 +74,29 @@ export const modalities: Modalities = {
       },
     ],
   },
-  TRADITIONAL: {
+  COMMON: {
+    validationSchema: 'common',
     steps: [
       {
-        name: 'TimeframeAndCoverageContainer',
+        name: 'CoverageData',
         number: 2,
         isActive: false,
         isVisible: true,
         isEnabled: false,
         isLoading: false,
         isCompleted: false,
-        Component: TimeframeAndCoverageContainer,
-        nextStep: 'RateCalculationContainer',
+        Component: CoverageData,
+        nextStep: 'RateCalculation',
       },
       {
-        name: 'RateCalculationContainer',
+        name: 'RateCalculation',
         number: 3,
         isActive: false,
         isVisible: true,
         isEnabled: false,
         isLoading: false,
         isCompleted: false,
-        Component: RateCalculationContainer,
+        Component: RateCalculation,
         nextStep: 'ContractDataContainer',
       },
       {

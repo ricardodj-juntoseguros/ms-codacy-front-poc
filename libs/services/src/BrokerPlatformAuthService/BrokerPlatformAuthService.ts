@@ -4,6 +4,7 @@ import { addMilliseconds, isBefore } from 'date-fns';
 import jwtDecode from 'jwt-decode';
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import UserAccessToken from './types/UserAccessToken';
+import { Broker } from './types/Broker';
 
 export class BrokerPlatformAuthService {
   private readonly USER_ACCESS_COOKIE =
@@ -109,6 +110,14 @@ export class BrokerPlatformAuthService {
     const { token } = userCookie;
     const decodedToken = jwtDecode<UserAccessToken>(token);
     return decodedToken.realm_access.roles.includes('broker');
+  }
+
+  getBroker(): Broker | null {
+    const userCookie = this.getUserAccessCookie();
+    if (!userCookie) return null;
+
+    const { broker } = userCookie;
+    return broker;
   }
 
   getUsername(): string | null {

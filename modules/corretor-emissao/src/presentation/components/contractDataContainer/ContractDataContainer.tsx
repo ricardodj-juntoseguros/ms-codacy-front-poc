@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { StepContainer } from '@shared/ui';
 import { searchInsuredSliceThunks } from '../../../application/features/searchInsured/thunks';
 import { selectFlow } from '../../../application/features/flow/FlowSlice';
@@ -16,9 +16,10 @@ import {
 } from '../../../application/types/model';
 import { getStepByName } from '../../../helpers';
 import { EmissionContainer } from '../emissionContainer';
+import { useAppDispatch } from '../../../config/store';
 
 export function ContractDataContainer() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [insuredInput, setInsuredInput] = useState('');
 
   const { contractData, installments, loadingQuote } = useSelector(selectQuote);

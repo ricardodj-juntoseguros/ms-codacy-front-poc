@@ -1,7 +1,30 @@
 export interface PricingModel {
-  finalPrize: number;
-  commissionFee: number;
-  commissionValue: number;
+  netPrize: number;
+  totalPrize: number;
+  baseDate: string;
+  fee: number;
+  feeFlex: number;
+  proposalFee: number;
   feeStandard: number;
-  maxRate: number;
+  feeRule: string;
+  hasFeeFlex: boolean;
+  hasCommissionFlex: boolean;
+  feeFlexAggravationPercent: number;
+  commissionFee: number;
+  commissionFlex: number;
+  comissionValue: number;
+  commissionRule: string;
+  reinsuranceRange?: string;
+  guarantor: boolean;
+  guarantorFederalId?: string;
+  paymentType: number;
+  matchedRule: string;
+  discount?: number;
+  aggravations: [];
+  minimumPrizeRule: string;
+  additionalCoverage: [];
+  reinsuranceContractId?: number;
+  hasAdditionalCoverageLabor: boolean;
+  hasAdditionalCoverageGuarantee: boolean;
+  hasAdditionalCoverageVigilance: boolean;
 }

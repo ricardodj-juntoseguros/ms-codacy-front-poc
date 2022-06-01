@@ -102,11 +102,11 @@ export function ContractData({
     );
   }, [address, mappedAddressOptions]);
 
-  function formatInstallment(installment: InstallmentModel) {
-    return `${installment.number} - À vista em ${currencyFormatter(
-      installment.installmentValue,
-    )} `;
-  }
+  // function formatInstallment(installment: InstallmentModel) {
+  //   return `${installment.number} - À vista em ${currencyFormatter(
+  //     installment.installmentValue,
+  //   )} `;
+  // }
 
   const {
     mappedOptions: mappedInstallmentOptions,
@@ -117,16 +117,17 @@ export function ContractData({
     '',
     'number',
     onSelectInstallment,
-    formatInstallment,
+    // formatInstallment,
   );
 
-  const currentInstallment = useMemo(() => {
-    return (
-      mappedInstallmentOptions.find(
-        item => item.number === installment?.number,
-      ) || null
-    );
-  }, [installment, mappedInstallmentOptions]);
+  // const currentInstallment = useMemo(() => {
+  // return (
+  //   mappedInstallmentOptions.find(
+  //     item => item.number === installment?.number,
+  //   ) || null
+  // );
+  // return [];
+  // }, [installment, mappedInstallmentOptions]);
 
   return (
     <div className={styles['contract-data__wrapper']}>
@@ -194,13 +195,13 @@ export function ContractData({
 
       <div className={styles['contract-data__form-row']}>
         <div className={styles['contract-data__form-field']}>
-          <Dropdown
+          {/* <Dropdown
             label="Parcelas"
             placeholder="Parcelas"
             options={mappedInstallmentOptions}
             onValueSelected={setInstallmentOption}
             value={currentInstallment}
-          />
+          /> */}
         </div>
         <div className={styles['contract-data__form-field']}>
           <DateInput
@@ -211,7 +212,7 @@ export function ContractData({
         </div>
       </div>
 
-      <div className={styles['contract-data__form-field']}>
+      {/* <div className={styles['contract-data__form-field']}>
         <TagInput
           label="Adicionar e-mails para recebimento da apólice"
           placeholder="Adicionar e-mails para recebimento da apólice"
@@ -219,7 +220,7 @@ export function ContractData({
           value={emails}
           helperMessage="Para mais de um destinatário, escreva os endereços de e-mail separados por ponto e vírgula (;)."
         />
-      </div>
+      </div> */}
 
       <div className={styles['contract-data__form-toggle']}>
         <Toggle
