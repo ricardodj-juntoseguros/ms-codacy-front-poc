@@ -17,13 +17,6 @@ import { fetchAccessToFeature } from '../../../application/features/accessCheck/
 describe('DashboardContainer', () => {
   beforeEach(() => {
     jest
-      .spyOn(SummaryApi, 'getPolicyholdersTotal')
-      .mockImplementation(async () => {
-        return {
-          totalPolicyholders: 123,
-        };
-      });
-    jest
       .spyOn(OpportunitiesDetailsApi, 'getOpportunitiesDetailsByModality')
       .mockImplementation(async () => {
         return {

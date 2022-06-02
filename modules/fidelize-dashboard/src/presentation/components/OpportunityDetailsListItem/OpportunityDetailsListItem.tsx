@@ -30,7 +30,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
   } = opportunity;
 
   const getRelevanceTagClassName = (relevance: OpportunityRelevanceEnum) => {
-    if (expired)
+    if (expired || relevance === OpportunityRelevanceEnum.EXPIRED)
       return styles['opportunity-details-listitem__relevance-tag--expired'];
     switch (relevance) {
       case OpportunityRelevanceEnum.HIGH:
@@ -53,7 +53,8 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
   return (
     <div
       className={classNames(styles['opportunity-details-listitem__wrapper'], {
-        [styles['opportunity-details-listitem__wrapper--expired']]: expired,
+        [styles['opportunity-details-listitem__wrapper--expired']]:
+          expired || relevance === OpportunityRelevanceEnum.EXPIRED,
       })}
     >
       <div className={styles['opportunity-details-listitem__column']}>

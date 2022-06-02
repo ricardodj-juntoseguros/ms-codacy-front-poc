@@ -3,6 +3,7 @@ import ModalitySelectionSlice from '../application/features/modalitySelection/Mo
 import OpportunitiesDetailsSlice from '../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import PolicyholderFilterSlice from '../application/features/policyholderFilter/PolicyholderFilterSlice';
 import AccessCheckSlice from '../application/features/accessCheck/AccessCheckSlice';
+import SummarySlice from '../application/features/summary/SummarySlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     opportunityDetails: OpportunitiesDetailsSlice,
     policyholderFilter: PolicyholderFilterSlice,
     accessCheck: AccessCheckSlice,
+    summary: SummarySlice,
   },
 });
 

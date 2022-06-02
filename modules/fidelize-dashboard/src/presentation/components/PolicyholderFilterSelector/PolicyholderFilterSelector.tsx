@@ -12,6 +12,7 @@ import {
   policyholderFilterActions,
 } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 import { opportunitiesDetailsActions } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
+import { summaryActions } from '../../../application/features/summary/SummarySlice';
 import styles from './PolicyholderFilterSelector.module.scss';
 
 const PolicyholderFilterSelector: React.FC = () => {
@@ -35,11 +36,14 @@ const PolicyholderFilterSelector: React.FC = () => {
       .then(response => {
         setPolicyholders(response);
         setSearchedPolicyholders(response);
+        dispatch(summaryActions.setTotalPolicyholders(response.length));
+        dispatch(summaryActions.setErrorPolicyholders(false));
       })
       .catch(() => {
         setFetchError(true);
+        dispatch(summaryActions.setErrorPolicyholders(true));
       });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const selectedFederalIds = selectedPolicyholders.map(
@@ -147,19 +151,22 @@ const PolicyholderFilterSelector: React.FC = () => {
         selection: [],
       }),
     );
+    dispatch(summaryActions.setTotalPolicyholders(policyholders.length));
   };
 
   const handleApplyFilter = () => {
+    const count = selectedPolicyholders.length;
     dispatch(opportunitiesDetailsActions.resetSettings());
     dispatch(
       policyholderFilterActions.setPolicyholderSelection({
         selection: selectedPolicyholders.map(selected => selected.federalId),
       }),
     );
+    dispatch(summaryActions.setTotalPolicyholders(count));
     TagManager.dataLayer({
       dataLayer: {
         event: 'ClickApplyPolicyholderFilterButton',
-        policyholderCount: selectedPolicyholders.length,
+        policyholderCount: count,
       },
     });
   };

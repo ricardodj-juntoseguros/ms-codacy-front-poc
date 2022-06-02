@@ -1,51 +1,20 @@
-import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { SUMMARY_CARDS } from '../../../constants';
 import { DashboardTotalCard } from '../DashboardTotalCard';
 import styles from './DashboardSummary.module.scss';
-import SummaryApi from '../../../application/features/summary/SummaryApi';
-import { selectPolicyholderSelection } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
-
-interface DashboardSummaryData {
-  value: number | null;
-  loading: boolean;
-  error: boolean;
-}
+import { selectPolicyholdersSummary } from '../../../application/features/summary/SummarySlice';
 
 const DashboardSummary: React.FC = () => {
-  const filteredFederalIds = useSelector(selectPolicyholderSelection);
-  const [policyholders, setPolicyholders] = useState<DashboardSummaryData>({
-    value: null,
-    loading: true,
-    error: false,
-  });
-
-  useEffect(() => {
-    setPolicyholders({
-      value: null,
-      loading: true,
-      error: false,
-    });
-    fetchSummaryData(filteredFederalIds);
-  }, [filteredFederalIds]);
-
-  const fetchSummaryData = (federalIds: string[]) => {
-    SummaryApi.getPolicyholdersTotal(federalIds)
-      .then(response => {
-        setPolicyholders({
-          value: response.totalPolicyholders,
-          loading: false,
-          error: false,
-        });
-      })
-      .catch(() => {
-        setPolicyholders({ value: null, loading: false, error: true });
-      });
-  };
-
+  const { totalPolicyholders, errorPolicyholders } = useSelector(
+    selectPolicyholdersSummary,
+  );
   const renderCards = () => {
     const mapConstantsToState = [
-      { key: 'policyholders', stateToUse: policyholders },
+      {
+        key: 'policyholders',
+        value: totalPolicyholders,
+        error: errorPolicyholders,
+      },
     ];
 
     return SUMMARY_CARDS.map(item => {
@@ -53,10 +22,7 @@ const DashboardSummary: React.FC = () => {
       const dataToRender = mapConstantsToState.find(each => each.key === key);
 
       if (!dataToRender) return null;
-
-      const {
-        stateToUse: { error, loading, value },
-      } = dataToRender;
+      const { value, error } = dataToRender;
 
       return (
         <DashboardTotalCard
@@ -64,11 +30,11 @@ const DashboardSummary: React.FC = () => {
           icon={icon}
           totalLabel={label}
           totalValue={
-            valueFormatter ? valueFormatter(value) : value?.toString()
+            valueFormatter ? valueFormatter(value || 0) : value?.toString()
           }
           changedValue={useChangeValue ? 10 : undefined}
           error={error}
-          loading={loading}
+          loading={value === undefined}
         />
       );
     });

@@ -17,14 +17,6 @@ describe('Dashboard', () => {
   });
 
   it('Deve validar pesquisa pelo nome do tomador', () => {
-    cy.intercept(
-      '/squad2/fidelize-bff/api/v1/opportunities/summary/policyholders',
-    ).as('getPolicyHolders');
-    cy.wait('@getPolicyHolders', {
-      requestTimeout: 30000,
-      responseTimeout: 30000,
-    });
-
     cy.get(selectors.dashboardSummary.searchText).type('Construtora junto', {
       delay: 200,
     });
@@ -42,13 +34,6 @@ describe('Dashboard', () => {
   });
 
   it('Deve validar pesquisa pelo CNPJ do tomador', () => {
-    cy.intercept(
-      '/squad2/fidelize-bff/api/v1/opportunities/summary/policyholders',
-    ).as('getPolicyHolders');
-    cy.wait('@getPolicyHolders', {
-      requestTimeout: 30000,
-      responseTimeout: 30000,
-    });
     cy.get(selectors.dashboardSummary.searchText).type('65182718000191', {
       delay: 200,
     });
@@ -65,5 +50,4 @@ describe('Dashboard', () => {
 
     cy.get(selectors.dashboardSummary.searchButton).click();
   });
-
 });

@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import '@testing-library/jest-dom';
+import { act } from 'react-dom/test-utils';
+import { summaryActions } from 'modules/fidelize-dashboard/src/application/features/summary/SummarySlice';
 import { store } from '../../../config/store';
-import SummaryApi from '../../../application/features/summary/SummaryApi';
 import DashboardSummary from '.';
 
 describe('DashboardSummary', () => {
@@ -9,36 +11,31 @@ describe('DashboardSummary', () => {
     jest.clearAllMocks();
   });
 
-  it('Should call SummaryApi to fetch total policyholders', async () => {
-    const apiMock = jest
-      .spyOn(SummaryApi, 'getPolicyholdersTotal')
-      .mockImplementation(async () => {
-        return { totalPolicyholders: 150 };
-      });
-
+  it('Should render policyholder total card with store values correctly', async () => {
     const { findByText } = render(
       <Provider store={store}>
         <DashboardSummary />
       </Provider>,
     );
 
-    expect(await findByText('150')).toBeTruthy();
-    expect(await findByText('Tomadores')).toBeTruthy();
-    expect(apiMock).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      store.dispatch(summaryActions.setTotalPolicyholders(200));
+    });
+
+    expect(await findByText('200')).toBeInTheDocument();
+    expect(await findByText('Tomadores')).toBeInTheDocument();
   });
 
-  it('Should render card with error if SummaryApi fetch failed', async () => {
-    jest
-      .spyOn(SummaryApi, 'getPolicyholdersTotal')
-      .mockImplementation(async () => {
-        throw new Error();
-      });
-
+  it('Should render policyholder total card with error if store flag is set to true', async () => {
     const { findByText } = render(
       <Provider store={store}>
         <DashboardSummary />
       </Provider>,
     );
+
+    await act(async () => {
+      store.dispatch(summaryActions.setErrorPolicyholders(true));
+    });
 
     expect(
       await findByText(

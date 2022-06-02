@@ -1,5 +1,5 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
-import { ModalitySummaryDTO, SummaryPolicyholdersDTO } from '../../types/dto';
+import { ModalitySummaryDTO } from '../../types/dto';
 import { ModalityEnum } from '../../types/model';
 import SummaryApi from './SummaryApi';
 
@@ -10,21 +10,6 @@ describe('SummaryApi', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  it('getPolicyholdersTotal should call bff service correctly without filtered policyholders', async () => {
-    const mockGet = jest
-      .spyOn(AxiosHttpClient.prototype, 'get')
-      .mockImplementation(async () => {
-        return { totalPolicyholders: 100 } as SummaryPolicyholdersDTO;
-      });
-    const result = await SummaryApi.getPolicyholdersTotal([]);
-
-    expect(mockGet).toHaveBeenCalledWith({
-      url: '/v1/opportunities/summary/policyholders',
-      params: {},
-    });
-    expect(result.totalPolicyholders).toBe(100);
   });
 
   it('getModalitiesSummary should call bff service correctly without filtered policyholders', async () => {
@@ -48,24 +33,6 @@ describe('SummaryApi', () => {
     expect(result[0].modality).toBe(ModalityEnum.FISCAL);
     expect(result[0].totalOpportunities).toBe(100);
     expect(result[0].totalInsuredAmount).toBe(1000000);
-  });
-
-  it('getPolicyholdersTotal should call bff service correctly with filtered policyholders', async () => {
-    const mockGet = jest
-      .spyOn(AxiosHttpClient.prototype, 'get')
-      .mockImplementation(async () => {
-        return { totalPolicyholders: 100 } as SummaryPolicyholdersDTO;
-      });
-    const result = await SummaryApi.getPolicyholdersTotal([
-      '11223344556677',
-      '12345671234567',
-    ]);
-
-    expect(mockGet).toHaveBeenCalledWith({
-      url: '/v1/opportunities/summary/policyholders',
-      params: { federalids: '11223344556677,12345671234567' },
-    });
-    expect(result.totalPolicyholders).toBe(100);
   });
 
   it('getModalitiesSummary should call bff service correctly without filtered policyholders', async () => {
