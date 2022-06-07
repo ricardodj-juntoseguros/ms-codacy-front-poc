@@ -162,13 +162,17 @@ const PolicyholderFilterSelector: React.FC = () => {
         selection: selectedPolicyholders.map(selected => selected.federalId),
       }),
     );
-    dispatch(summaryActions.setTotalPolicyholders(count));
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'ClickApplyPolicyholderFilterButton',
-        policyholderCount: count,
-      },
-    });
+    if (count > 0) {
+      dispatch(summaryActions.setTotalPolicyholders(count));
+      TagManager.dataLayer({
+        dataLayer: {
+          event: 'ClickApplyPolicyholderFilterButton',
+          policyholderCount: count,
+        },
+      });
+    } else {
+      dispatch(summaryActions.setTotalPolicyholders(policyholders.length));
+    }
   };
 
   return (
