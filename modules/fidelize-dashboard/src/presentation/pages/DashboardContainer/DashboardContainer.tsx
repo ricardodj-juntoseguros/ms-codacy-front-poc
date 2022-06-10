@@ -10,6 +10,7 @@ import ModalityUnderConstruction from '../../components/ModalityUnderConstructio
 import ModalityNotAvailable from '../../components/ModalityNotAvailable';
 import OpportunityDetailsList from '../../components/OpportunityDetailsList';
 import PolicyholderFilterSelector from '../../components/PolicyholderFilterSelector';
+import ModalitySummaryCharts from '../../components/ModalitySummaryCharts';
 import {
   selectModality,
   modalitySelectionSliceActions,
@@ -108,6 +109,9 @@ function DashboardContainer() {
       ) : (
         <>
           {renderModalitySummary(modality)}
+          {process.env.NX_FID_FEATURE_SUMMARY_CHARTS === 'true' && (
+            <ModalitySummaryCharts modality={modality} />
+          )}
           <OpportunityDetailsList modality={modality} />
         </>
       );

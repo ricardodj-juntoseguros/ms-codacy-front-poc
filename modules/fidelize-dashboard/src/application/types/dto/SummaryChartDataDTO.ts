@@ -10,7 +10,11 @@ export interface SummaryChartDataDTO {
       useThousandFormatter: boolean;
       preffix: string;
       suffix: string;
-      legend: { totalizer: number };
+      legend: {
+        useThousandFormatter: boolean;
+        useThousandSeparator: boolean;
+        totalizer: number;
+      };
     };
   }[];
   categories: (string[] | string)[];

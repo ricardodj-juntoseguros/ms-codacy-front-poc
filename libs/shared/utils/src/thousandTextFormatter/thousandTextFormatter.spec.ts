@@ -15,4 +15,9 @@ describe('Thousand Text Formatter', () => {
     const result = thousandTextFormatter(650);
     expect(result).toBe('650');
   });
+
+  it('Should return short label if argument format is short', () => {
+    const result = thousandTextFormatter(150000, '', '', 'short');
+    expect(result).toBe('150K');
+  });
 });

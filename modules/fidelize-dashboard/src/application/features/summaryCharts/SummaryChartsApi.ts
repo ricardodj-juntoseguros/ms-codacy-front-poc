@@ -19,7 +19,7 @@ class SummaryChartsApi {
     federalids: string[],
   ): Promise<SummaryChartDataDTO> {
     const query =
-      federalids.length > 0 ? { federalids: federalids.join(',') } : {};
+      federalids.length > 0 ? { federalIds: federalids.join(',') } : {};
 
     const params: IHttpClientRequestParameters = {
       url: `/v1/charts/${modality}/${chartType}`,

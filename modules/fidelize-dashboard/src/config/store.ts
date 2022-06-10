@@ -3,6 +3,7 @@ import ModalitySelectionSlice from '../application/features/modalitySelection/Mo
 import OpportunitiesDetailsSlice from '../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import PolicyholderFilterSlice from '../application/features/policyholderFilter/PolicyholderFilterSlice';
 import AccessCheckSlice from '../application/features/accessCheck/AccessCheckSlice';
+import SummaryChartsSlice from '../application/features/summaryCharts/SummaryChartsSlice';
 import SummarySlice from '../application/features/summary/SummarySlice';
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
     policyholderFilter: PolicyholderFilterSlice,
     accessCheck: AccessCheckSlice,
     summary: SummarySlice,
+    summaryCharts: SummaryChartsSlice,
   },
 });
 

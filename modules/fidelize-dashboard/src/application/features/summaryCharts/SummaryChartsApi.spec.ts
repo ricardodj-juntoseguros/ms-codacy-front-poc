@@ -20,7 +20,11 @@ describe('SummaryChartsApi', () => {
           },
           metadata: {
             useThousandFormatter: false,
-            legend: { totalizer: 200 },
+            legend: {
+              totalizer: 200,
+              useThousandFormatter: true,
+              useThousandSeparator: false,
+            },
             preffix: '',
             suffix: '',
           },
@@ -42,7 +46,7 @@ describe('SummaryChartsApi', () => {
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/v1/charts/fiscal/renewal',
-      params: { federalids: '11223344556677' },
+      params: { federalIds: '11223344556677' },
     });
 
     expect(result).toStrictEqual(mockResponse);

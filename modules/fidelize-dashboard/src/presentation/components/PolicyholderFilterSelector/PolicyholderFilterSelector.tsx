@@ -13,6 +13,7 @@ import {
 } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 import { opportunitiesDetailsActions } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import { summaryActions } from '../../../application/features/summary/SummarySlice';
+import { summaryChartsActions } from '../../../application/features/summaryCharts/SummaryChartsSlice';
 import styles from './PolicyholderFilterSelector.module.scss';
 
 const PolicyholderFilterSelector: React.FC = () => {
@@ -146,6 +147,7 @@ const PolicyholderFilterSelector: React.FC = () => {
   const handleClearAll = () => {
     setSelectedPolicyholders([]);
     dispatch(opportunitiesDetailsActions.resetSettings());
+    dispatch(summaryChartsActions.clearAllChartsData());
     dispatch(
       policyholderFilterActions.setPolicyholderSelection({
         selection: [],
@@ -157,6 +159,7 @@ const PolicyholderFilterSelector: React.FC = () => {
   const handleApplyFilter = () => {
     const count = selectedPolicyholders.length;
     dispatch(opportunitiesDetailsActions.resetSettings());
+    dispatch(summaryChartsActions.clearAllChartsData());
     dispatch(
       policyholderFilterActions.setPolicyholderSelection({
         selection: selectedPolicyholders.map(selected => selected.federalId),

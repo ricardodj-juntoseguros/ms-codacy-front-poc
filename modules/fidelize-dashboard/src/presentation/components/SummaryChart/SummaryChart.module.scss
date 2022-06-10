@@ -1,0 +1,58 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.summary-chart__wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  border: 1px solid color('grey-200');
+  border-radius: spacing('xs');
+  width: 310px;
+
+  @media screen and (max-width: 990px) {
+    margin-bottom: spacing('l');
+  }
+}
+
+.summary-chart__title {
+  @include font('sm');
+  color: color('dark');
+  padding: spacing('xl') spacing('l');
+  margin: 0px;
+}
+
+.summary-chart__message {
+  display: flex;
+  flex-direction: column;
+  padding-left: spacing('l');
+  padding-right: spacing('l');
+  padding-bottom: spacing('xxl-4');
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: spacing('xl');
+  }
+
+  & p {
+    @include font('xs');
+    display: inline-flex;
+    color: color('grey-600');
+    margin: 0px;
+    margin-left: spacing('m');
+  }
+
+  & i {
+    align-self: center;
+  }
+
+  &--error {
+    & i {
+      color: color('error');
+    }
+  }
+
+  &--empty {
+    & i {
+      color: color('brand-primary');
+    }
+  }
+}

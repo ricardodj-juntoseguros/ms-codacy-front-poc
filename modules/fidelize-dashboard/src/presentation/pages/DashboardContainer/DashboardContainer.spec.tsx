@@ -5,7 +5,9 @@ import '@testing-library/jest-dom';
 import {
   ModalitySummaryDTO,
   PolicyholderDTO,
+  SummaryChartDataDTO,
 } from 'modules/fidelize-dashboard/src/application/types/dto';
+import SummaryChartsApi from '../../../application/features/summaryCharts/SummaryChartsApi';
 import AccessCheckApi from '../../../application/features/accessCheck/AccessCheckApi';
 import PolicyholderFilterApi from '../../../application/features/policyholderFilter/PolicyholderFilterApi';
 import { store } from '../../../config/store';
@@ -33,6 +35,15 @@ describe('DashboardContainer', () => {
       .spyOn(PolicyholderFilterApi, 'getMappedPolicyholderList')
       .mockImplementation(async () => {
         return [] as PolicyholderDTO[];
+      });
+    jest
+      .spyOn(SummaryChartsApi, 'getChartData')
+      .mockImplementation(async () => {
+        return {
+          series: [],
+          categories: [],
+          tooltip: { labels: [] },
+        } as SummaryChartDataDTO;
       });
   });
 
