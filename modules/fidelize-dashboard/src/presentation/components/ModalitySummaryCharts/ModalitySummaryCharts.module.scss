@@ -5,9 +5,11 @@
   flex-flow: row wrap;
   padding-bottom: spacing('xxl-3');
   align-content: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: spacing('xxl-2');
 
   @media screen and (max-width: 1000px) {
     justify-content: center;
+    gap: spacing('l');
   }
 }

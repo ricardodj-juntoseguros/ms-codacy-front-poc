@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
 import {
   ModalityEnum,
@@ -12,6 +12,13 @@ const initialState: SummaryChartsModel = {
     {
       modality: ModalityEnum.FISCAL,
       chartType: SummaryChartTypeEnum.RENEWAL,
+      loading: true,
+      error: false,
+      data: null,
+    },
+    {
+      modality: ModalityEnum.FISCAL,
+      chartType: SummaryChartTypeEnum.SUBSTITUTION,
       loading: true,
       error: false,
       data: null,
@@ -55,7 +62,7 @@ const summaryChartsSlice = createSlice({
           },
         } = action;
         const newState = state.charts.map(chart => {
-          if (chart.modality !== modality && chart.chartType !== chartType)
+          if (chart.modality !== modality || chart.chartType !== chartType)
             return chart;
           return { ...chart, loading: true, error: false };
         });
@@ -69,7 +76,7 @@ const summaryChartsSlice = createSlice({
           },
         } = action;
         const newState = state.charts.map(chart => {
-          if (chart.modality !== modality && chart.chartType !== chartType)
+          if (chart.modality !== modality || chart.chartType !== chartType)
             return chart;
           return { ...chart, loading: false, error: false, data: payload };
         });
@@ -82,7 +89,7 @@ const summaryChartsSlice = createSlice({
           },
         } = action;
         const newState = state.charts.map(chart => {
-          if (chart.modality !== modality && chart.chartType !== chartType)
+          if (chart.modality !== modality || chart.chartType !== chartType)
             return chart;
           return { ...chart, loading: false, error: true, data: null };
         });

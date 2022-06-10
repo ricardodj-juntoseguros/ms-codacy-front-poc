@@ -66,6 +66,61 @@ const renewalMock: SummaryChartDataDTO = {
   },
 };
 
+const substitutionMock: SummaryChartDataDTO = {
+  series: [
+    {
+      values: {
+        name: 'oportunidades',
+        type: 'column',
+        color: '#9000ff',
+        data: [100, 200, 300, 400],
+      },
+      metadata: {
+        useThousandFormatter: true,
+        preffix: '',
+        suffix: '',
+        legend: {
+          useThousandFormatter: false,
+          useThousandSeparator: true,
+          totalizer: 1000,
+        },
+      },
+    },
+    {
+      values: {
+        name: 'em IS',
+        type: 'line',
+        color: '#180a33',
+        data: [10000, 20000, 30000, 40000],
+      },
+      metadata: {
+        useThousandFormatter: true,
+        preffix: 'R$',
+        suffix: '',
+        legend: {
+          useThousandFormatter: true,
+          useThousandSeparator: false,
+          totalizer: 100000,
+        },
+      },
+    },
+  ],
+  categories: [
+    ['Penhora'],
+    ['Fiança'],
+    ['Depósito'],
+    ['Bloqueio', 'de Conta'],
+  ],
+  tooltip: {
+    labels: [
+			"Penhora",
+			"Fiança Bancária",
+			"Depósito Judicial",
+			"Bloqueio de Conta"
+		]
+  },
+};
+
 const emptyMock: SummaryChartDataDTO = {
   series: [
     {
@@ -151,6 +206,25 @@ describe('SummaryChart', () => {
     );
     expect(container).toBeInTheDocument();
     expect(await findByText('Renovações fiscais')).toBeInTheDocument();
+  });
+
+  it('Should render correctly for substitution type chart', async () => {
+    jest
+      .spyOn(SummaryChartsApi, 'getChartData')
+      .mockImplementation(async () => {
+        return renewalMock;
+      });
+
+    const { container, findByText } = render(
+      <Provider store={store}>
+        <SummaryChart
+          modality={ModalityEnum.FISCAL}
+          chartType={SummaryChartTypeEnum.SUBSTITUTION}
+        />
+      </Provider>,
+    );
+    expect(container).toBeInTheDocument();
+    expect(await findByText('Substituições fiscais')).toBeInTheDocument();
   });
 
   it('Should render placeholder if chart data is all empty', async () => {

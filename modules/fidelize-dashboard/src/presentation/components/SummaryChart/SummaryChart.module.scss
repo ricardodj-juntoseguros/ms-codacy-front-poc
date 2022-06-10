@@ -6,10 +6,6 @@
   border: 1px solid color('grey-200');
   border-radius: spacing('xs');
   width: 310px;
-
-  @media screen and (max-width: 990px) {
-    margin-bottom: spacing('l');
-  }
 }
 
 .summary-chart__title {
