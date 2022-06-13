@@ -1,5 +1,5 @@
 import styles from './ModalityUnderConstruction.module.scss';
-import { ReactComponent as Illustration } from './assets/under-construction.svg';
+import { ReactComponent as Illustration } from '../../assets/under-construction.svg';
 
 const ModalityUnderConstruction: React.FC = () => {
   return (

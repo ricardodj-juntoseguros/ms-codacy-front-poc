@@ -27,7 +27,6 @@ export const selectors = {
     wrapper: 'div[class*="modal__wrapper"]',
     title: 'h1[class*="modal__title"]',
     primaryButton: '[data-testid=submit-more-details]',
-    icon: 'div[class*="modal__icon"]',
     disclaimer: 'div[class*="more-opportunity-details-modal__disclaimer"]'
   }
 }

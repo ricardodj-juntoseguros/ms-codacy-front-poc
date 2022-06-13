@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
+import { SummaryChartDataDTO } from '../../types/dto';
 import {
   ModalityEnum,
   SummaryChartsModel,
@@ -22,6 +23,13 @@ const initialState: SummaryChartsModel = {
       loading: true,
       error: false,
       data: null,
+    },
+    {
+      modality: ModalityEnum.FISCAL,
+      chartType: SummaryChartTypeEnum.NEW_ISSUES,
+      loading: false,
+      error: false,
+      data: {} as SummaryChartDataDTO,
     },
   ],
 };
@@ -49,7 +57,7 @@ const summaryChartsSlice = createSlice({
   reducers: {
     clearAllChartsData: state => {
       state.charts.forEach(chart => {
-        chart.data = null;
+        chart.data = chart.chartType === SummaryChartTypeEnum.NEW_ISSUES ? {} as SummaryChartDataDTO : null;
       });
     },
   },

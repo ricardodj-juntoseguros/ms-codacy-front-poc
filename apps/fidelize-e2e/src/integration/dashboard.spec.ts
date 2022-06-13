@@ -18,7 +18,7 @@ describe('Dashboard', () => {
 
   it('Deve validar pesquisa pelo nome do tomador', () => {
     cy.get(selectors.dashboardSummary.searchText).type('Construtora junto', {
-      delay: 200,
+      delay: 1000,
     });
     cy.get(selectors.dashboardSummary.searchInput)
       .should('be.visible')
@@ -35,7 +35,7 @@ describe('Dashboard', () => {
 
   it('Deve validar pesquisa pelo CNPJ do tomador', () => {
     cy.get(selectors.dashboardSummary.searchText).type('65182718000191', {
-      delay: 200,
+      delay: 1000,
     });
 
     cy.get(selectors.dashboardSummary.searchInput)

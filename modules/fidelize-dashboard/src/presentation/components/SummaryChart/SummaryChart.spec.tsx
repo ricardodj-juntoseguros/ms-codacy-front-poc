@@ -212,7 +212,7 @@ describe('SummaryChart', () => {
     jest
       .spyOn(SummaryChartsApi, 'getChartData')
       .mockImplementation(async () => {
-        return renewalMock;
+        return substitutionMock;
       });
 
     const { container, findByText } = render(
@@ -225,6 +225,24 @@ describe('SummaryChart', () => {
     );
     expect(container).toBeInTheDocument();
     expect(await findByText('Substituições fiscais')).toBeInTheDocument();
+  });
+
+  it('Should render placeholder for new issues chart type', async () => {
+    const { container, findByText } = render(
+      <Provider store={store}>
+        <SummaryChart
+          modality={ModalityEnum.FISCAL}
+          chartType={SummaryChartTypeEnum.NEW_ISSUES}
+        />
+      </Provider>,
+    );
+    expect(container).toBeInTheDocument();
+    expect(await findByText('Novas emissões fiscais')).toBeInTheDocument();
+    expect(
+      await findByText(
+        'Tipo de oportunidade em construção',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('Should render placeholder if chart data is all empty', async () => {

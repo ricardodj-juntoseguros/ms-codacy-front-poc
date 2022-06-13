@@ -20,6 +20,7 @@ import { SummaryChartSkeleton } from '../Skeletons';
 import { getLabelByModality } from '../../../helpers';
 import SummaryChartCustomTooltip from '../SummaryChartCustomTooltip';
 import { ReactComponent as EmptyIllustration } from './assets/empty-chart.svg';
+import { ReactComponent as UnderConstructionIllustration } from '../../assets/under-construction.svg';
 import styles from './SummaryChart.module.scss';
 
 interface SummaryChartProps {
@@ -33,7 +34,7 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
   const filteredPolicyholders = useSelector(selectPolicyholderSelection);
 
   useEffect(() => {
-    if (!chartData?.data) {
+    if (!chartData?.data && chartType !== SummaryChartTypeEnum.NEW_ISSUES) {
       dispatch(
         fetchChartData({
           modality,
@@ -154,6 +155,15 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
     );
   };
 
+  const renderNotAvailable = () => {
+    return (
+      <div className={styles['summary-chart__not-available']}>
+          <UnderConstructionIllustration />
+          <p>Tipo de oportunidade em construção</p>
+      </div>
+    );
+  };
+
   const contentTitle = (
     <h3 className={styles['summary-chart__title']}>
       {getLabelByModality(modality, getChartTypeLabel(chartType), true, false)}
@@ -172,6 +182,14 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
         </>
       );
     if (!data) return null;
+    if (chartType === SummaryChartTypeEnum.NEW_ISSUES) {
+      return (
+        <>
+          {contentTitle}
+          {renderNotAvailable()}
+        </>
+      );
+    }
     if (data.series.every(s => s.values.data.every(data => data === 0))) {
       return (
         <>

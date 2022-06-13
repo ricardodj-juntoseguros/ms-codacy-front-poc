@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe('Opportunities', () => {
   it('Should navigate to Fiscal tab and request for more details', () => {
- 
+
     cy.goToOpportunityDetailsListTab('fiscal')
       .clickOnFirstMoreDetailsButton().first();
 
@@ -27,13 +27,10 @@ describe('Opportunities', () => {
           .click();
       });
 
-    cy.get(selectors.modal.icon)
-      .should('be.visible');
-
     cy.get(selectors.modal.title)
       .contains(messages.moreDetailsSuccess);
   });
-  
+
   it('Deve validar disclaimer de condições de produto', () => {
     cy.goToOpportunityDetailsListTab('fiscal')
       .clickOnFirstMoreDetailsButton().first();
