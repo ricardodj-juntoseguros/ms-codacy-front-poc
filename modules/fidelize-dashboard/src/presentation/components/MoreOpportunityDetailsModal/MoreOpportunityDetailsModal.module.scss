@@ -18,12 +18,17 @@
   background-color: transparent;
   display: inline-flex;
   text-align: center;
-  cursor: pointer;
 
   & i {
     color: color('brand-primary');
     align-self: center;
   }
+
+  @media screen and (min-width: 1008px) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
 }
 
 .more-opportunity-details-modal__content-title {
