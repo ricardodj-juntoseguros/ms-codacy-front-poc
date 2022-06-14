@@ -158,11 +158,18 @@
               },
               "devServerTarget": "fidelize:serve"
             },
-            "qas": {
+            "quality": {
               "env": {
-                "target": "qas"
+                "target": "quality"
               },
               "baseUrl": "https://fidelize-qas-2.juntoseguros.com/",
+              "headed": false
+            },
+            "staging": {
+              "env": {
+                "target": "staging"
+              },
+              "baseUrl": "https://fidelize-stg.juntoseguros.com/",
               "headed": false
             }
           }
@@ -288,6 +295,57 @@
         }
       },
       "tags": []
+    },
+    "plataforma-e2e": {
+      "root": "apps/plataforma-e2e",
+      "sourceRoot": "apps/plataforma-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/plataforma-e2e/cypress.json",
+            "tsConfig": "apps/plataforma-e2e/tsconfig.e2e.json"
+          },
+          "configurations": {
+            "dev": {
+              "env": {
+                "target": "dev"
+              },
+              "devServerTarget": "plataforma:serve"
+            },
+            "quality": {
+              "env": {
+                "target": "quality"
+              },
+              "baseUrl": "https://corretor-qas-1.juntoseguros.com/",
+              "headed": false
+            },
+            "staging": {
+              "env": {
+                "target": "staging"
+              },
+              "baseUrl": "https://corretor-stg.juntoseguros.com/",
+              "headed": false
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
+          ],
+          "options": {
+            "lintFilePatterns": [
+              "apps/plataforma-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": [
+        "plataforma"
+      ]
     },
     "services": {
       "root": "libs/services",

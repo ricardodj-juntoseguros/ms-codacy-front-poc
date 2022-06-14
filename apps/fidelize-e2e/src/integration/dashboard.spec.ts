@@ -1,11 +1,11 @@
 import { loadData } from '../utils/loadData';
 import { selectors } from '../support/selectors';
+import { HOSTS } from '../../../../e2e/quality.json';
 
 const { user } = loadData();
 
 beforeEach(() => {
-  cy.visit('https://fidelize-qas-2.juntoseguros.com/');
-
+  cy.visit(HOSTS.FIDELIZE);
   cy.login(user.username, user.password);
 
   cy.get(selectors.login.submitButton).should('be.visible').click();

@@ -1,0 +1,12 @@
+{
+  "ENV": "quality",
+  "SQUAD": "squad7/",
+  "HOSTS": {
+    "PLATAFORMA": "https://corretor-qas-7.juntoseguros.com/",
+    "FIDELIZE": "https://fidelize-qas-7.juntoseguros.com/"
+  },
+  "URL": {
+    "PLATAFORMA_BFF": "https://ms-gateway-qas.juntoseguros.com/squad7/ms-plataforma-bff/",
+    "FIDELIZE_BFF": "https://ms-gateway-qas.juntoseguros.com/squad7/fidelize-bff/"
+  }
+}

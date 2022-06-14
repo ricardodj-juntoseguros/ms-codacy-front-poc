@@ -124,6 +124,10 @@ jobs:
 
   e2e_tests:
     <<: *defaults
+    parameters:
+      environment:
+        description: Environment to e2e tests to
+        type: string
     steps:
       - attach_workspace:
           at: /tmp/persist_to_workspace
@@ -138,20 +142,27 @@ jobs:
           command: |
             cp .circleci/scripts/kong-manipulation.sh .
             chmod +x kong-manipulation.sh
-            ./kong-manipulation.sh quality open ./e2e/qas.json
+            ./kong-manipulation.sh << parameters.environment >> open ./e2e/<< parameters.environment >>.json
       - run:
           name: E2E Tests
           command: |
             # Executando Testes
             ./node_modules/cypress/bin/cypress install
+            npm install --no-optional --unsafe-perm
             npm rebuild node-sass
-            yarn nx affected:e2e -c=qas --base=master --head=HEAD
+            yarn nx affected:e2e -c=quality --base=master --head=HEAD
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:
           path: /tmp/persist_to_workspace/dist/cypress/apps/fidelize-e2e/screenshots
+      - store_artifacts:
+          path: /tmp/persist_to_workspace/dist/cypress/apps/plataforma-e2e/screenshots
 
   e2e_close_kong:
+    parameters:
+      environment:
+        description: Environment to e2e tests close kong to
+        type: string
     working_directory: /tmp/persist_to_workspace
     docker:
       - image: juntoseguros/devops:base
@@ -163,7 +174,7 @@ jobs:
           command: |
             cp .circleci/scripts/kong-manipulation.sh .
             chmod +x kong-manipulation.sh
-            ./kong-manipulation.sh quality close ./e2e/qas.json
+            ./kong-manipulation.sh << parameters.environment >> close ./e2e/<< parameters.environment >>.json
 
   deploy-cf:
     <<: *defaults
@@ -302,12 +313,20 @@ workflows:
                 job_type: deployment
 
       - e2e_tests:
+          environment: quality
+          filters:
+            branches: { ignore: 'master' }
+            tags: { ignore: '/.*/' }
           context: GitJMSeguradora
           requires:
             - checkout
             - deploy-cf-qas
 
       - e2e_close_kong:
+          environment: quality
+          filters:
+            branches: { ignore: 'master' }
+            tags: { ignore: '/.*/' }
           context: GitJMSeguradora
           requires:
             - checkout

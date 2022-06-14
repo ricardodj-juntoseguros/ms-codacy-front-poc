@@ -247,6 +247,7 @@ export const CoverageData: React.FC = () => {
             </div>
             <div>
               <CurrencyInput
+                data-cy="secured-amount"
                 label="Valor da cobertura"
                 helperMessage={secureAmountHelpText}
                 value={securedAmount}

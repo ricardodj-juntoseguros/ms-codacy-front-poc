@@ -15,40 +15,45 @@ quality)
 echo "Initing pre-build on quality!"
 
 if [ "$ENV_SQUAD" == "squad2" ]; then
-	for DIR in $APPS 
-    do 
-    cp ./environments/.env.qa.$ENV_SQUAD .env 
+	for DIR in $APPS
+    do
+    cp ./environments/.env.qa.$ENV_SQUAD .env
+    cp ./e2e/quality-$ENV_SQUAD.json ./e2e/quality.json
     cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.qa.$ENV_SQUAD ${DIR_APPS}/${DIR##*/}/.env
 	done
 
 elif [ "$ENV_SQUAD" == "squad1" ]; then
-	for DIR in $APPS 
-    do 
-    cp ./environments/.env.qa.$ENV_SQUAD .env 
+	for DIR in $APPS
+    do
+    cp ./environments/.env.qa.$ENV_SQUAD .env
+    cp ./e2e/quality-$ENV_SQUAD.json ./e2e/quality.json
     cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.qa.$ENV_SQUAD ${DIR_APPS}/${DIR##*/}/.env
-	done 
+	done
 
 
 elif [ "$ENV_SQUAD" == "squad5" ]; then
-	for DIR in $APPS 
-    do 
-    cp ./environments/.env.qa.$ENV_SQUAD .env 
+	for DIR in $APPS
+    do
+    cp ./environments/.env.qa.$ENV_SQUAD .env
+    cp ./e2e/quality-$ENV_SQUAD.json ./e2e/quality.json
     cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.qa.$ENV_SQUAD ${DIR_APPS}/${DIR##*/}/.env
 	done
 
 
 elif [ "$ENV_SQUAD" == "squad6" ]; then
-	for DIR in $APPS 
-    do 
-    cp ./environments/.env.qa.$ENV_SQUAD .env 
+	for DIR in $APPS
+    do
+    cp ./environments/.env.qa.$ENV_SQUAD .env
+    cp ./e2e/quality-$ENV_SQUAD.json ./e2e/quality.json
     cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.qa.$ENV_SQUAD ${DIR_APPS}/${DIR##*/}/.env
 	done
 
 
 elif [ "$ENV_SQUAD" == "squad7" ]; then
-	for DIR in $APPS 
-    do 
-    cp ./environments/.env.qa.$ENV_SQUAD .env 
+	for DIR in $APPS
+    do
+    cp ./environments/.env.qa.$ENV_SQUAD .env
+    cp ./e2e/quality-$ENV_SQUAD.json ./e2e/quality.json
     cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.qa.$ENV_SQUAD ${DIR_APPS}/${DIR##*/}/.env
 	done
 fi
@@ -57,8 +62,8 @@ fi
 staging)
 echo "Initing pre-build on staging!"
 
-	for DIR in $APPS 
-    do 
+	for DIR in $APPS
+    do
     cp ./environments/.env.staging .env && cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.staging ${DIR_APPS}/${DIR##*/}/.env
 	done
 ;;
@@ -67,8 +72,8 @@ echo "Initing pre-build on staging!"
 production)
 echo "Initing pre-build on production!"
 
-	for DIR in $APPS 
-    do 
+	for DIR in $APPS
+    do
     cp ./environments/.env.production .env && cp ${DIR_APPS}/${DIR##*/}/src/environments/.env.production ${DIR_APPS}/${DIR##*/}/.env
 	done
 ;;

@@ -49,7 +49,6 @@ describe('RateFlexCalculation.spec', () => {
 
     const input = getByTestId('input-rate-flex');
     fireEvent.change(input, { target: { value: 100 } });
-
     expect(onChangeFeeFlex).toHaveBeenCalledWith(100);
   });
 
