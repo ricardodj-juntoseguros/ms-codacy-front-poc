@@ -33,7 +33,7 @@ describe('MoreOpportunityDetailsModal', () => {
     expect(container).toBeInTheDocument();
   });
 
-  it('Should call api on submit button click', async () => {
+  it('Should call correct api method on submit button click if opportunity modality is FISCAL', async () => {
     jest
       .spyOn(OpportunityDetailsApi, 'sendMoreOpportunityDetailsMail')
       .mockImplementationOnce(async () => {
@@ -81,6 +81,104 @@ describe('MoreOpportunityDetailsModal', () => {
     expect(
       OpportunityDetailsApi.sendMoreOpportunityDetailsMail,
     ).toHaveBeenCalledTimes(1);
+    expect(queryByText('Agora é só aguardar')).not.toBeInTheDocument();
+  });
+
+  it('Should call correct api method on submit button click if opportunity modality is LABOR', async () => {
+    jest
+      .spyOn(OpportunityDetailsApi, 'sendMoreDetailsFromOpportunityList')
+      .mockImplementationOnce(async () => {
+        return { success: true };
+      });
+    const opportunityMock: OpportunityDetailsItemDTO = {
+      category: 'Renovação',
+      type: OpportunityDetailsTypeEnum.LABOR,
+      id: 'id',
+      policyholder: 'Teste tomador',
+      relevance: OpportunityRelevanceEnum.HIGH,
+      expiration: '2024-02-02T03:00:00.000Z',
+      observation: 'Com vencimento em 22/02/2024',
+      mappingDate: '01/jan/2021',
+      securityAmount: 2550650.5,
+      expired: false,
+    };
+    const { getByTestId, getByText, queryByText } = render(
+      <MoreOpportunityDetailsModal
+        modality={ModalityEnum.TRABALHISTA}
+        opportunity={opportunityMock}
+      />,
+    );
+
+    const triggerBtn = getByTestId('modal-trigger');
+
+    await act(async () => {
+      fireEvent.click(triggerBtn);
+    });
+
+    const submitBtn = getByTestId('submit-more-details');
+
+    await act(async () => {
+      fireEvent.click(submitBtn);
+    });
+
+    expect(getByText('Agora é só aguardar')).toBeInTheDocument();
+
+    const closeModalBtn = getByTestId('modal-close-button');
+
+    await act(async () => {
+      fireEvent.click(closeModalBtn);
+    });
+
+    expect(
+      OpportunityDetailsApi.sendMoreDetailsFromOpportunityList,
+    ).toHaveBeenCalledTimes(1);
+    expect(queryByText('Agora é só aguardar')).not.toBeInTheDocument();
+  });
+
+  it('Should render error message if api method on submit fails', async () => {
+    jest
+      .spyOn(OpportunityDetailsApi, 'sendMoreOpportunityDetailsMail')
+      .mockImplementationOnce(async () => {
+        return new Promise((resolve, reject) => {
+          reject();
+        });
+      });
+    const opportunityMock: OpportunityDetailsItemDTO = {
+      category: 'Renovação',
+      type: OpportunityDetailsTypeEnum.FISCAL,
+      id: 'id',
+      policyholder: 'Teste tomador',
+      relevance: OpportunityRelevanceEnum.HIGH,
+      expiration: '2024-02-02T03:00:00.000Z',
+      observation: 'Com vencimento em 22/02/2024',
+      mappingDate: '01/jan/2021',
+      securityAmount: 2550650.5,
+      expired: false,
+    };
+    const { getByTestId, getByText, queryByText } = render(
+      <MoreOpportunityDetailsModal
+        modality={ModalityEnum.FISCAL}
+        opportunity={opportunityMock}
+      />,
+    );
+
+    const triggerBtn = getByTestId('modal-trigger');
+
+    await act(async () => {
+      fireEvent.click(triggerBtn);
+    });
+
+    const submitBtn = getByTestId('submit-more-details');
+
+    await act(async () => {
+      fireEvent.click(submitBtn);
+    });
+
+    expect(
+      getByText(
+        'Ocorreu um erro inesperado ao realizar a sua solicitação. Por favor, tente novamente.',
+      ),
+    ).toBeInTheDocument();
     expect(queryByText('Agora é só aguardar')).not.toBeInTheDocument();
   });
 });

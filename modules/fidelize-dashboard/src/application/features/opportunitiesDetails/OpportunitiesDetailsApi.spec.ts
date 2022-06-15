@@ -8,6 +8,10 @@ describe('OpportunitiesDetailsApi', () => {
     process.env.NX_GLOBAL_FIDELIZE_BFF_URL = 'any_url';
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('getOpportunitiesDetailsByModality should call bff service correctly for modality fiscal', async () => {
     const mockGet = jest
       .spyOn(AxiosHttpClient.prototype, 'get')
@@ -55,7 +59,7 @@ describe('OpportunitiesDetailsApi', () => {
   });
 
   it('sendMoreOpportunityDetailsMail should call bff service correctly', async () => {
-    const mockGet = jest
+    const httpMock = jest
       .spyOn(AxiosHttpClient.prototype, 'post')
       .mockImplementation(async () => {
         return {
@@ -66,9 +70,41 @@ describe('OpportunitiesDetailsApi', () => {
       'sample-opportunity-id',
     );
 
-    expect(mockGet).toHaveBeenCalledWith({
+    expect(httpMock).toHaveBeenCalledWith({
       url: '/v1/opportunities/mail/mapping-details',
       payload: { opportunityId: 'sample-opportunity-id' },
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('sendMoreDetailsFromOpportunityList should call bff service correctly', async () => {
+    const httpMock = jest
+      .spyOn(AxiosHttpClient.prototype, 'post')
+      .mockImplementation(async () => {
+        return {
+          success: true,
+        };
+      });
+
+    const result =
+      await OpportunitiesDetailsApi.sendMoreDetailsFromOpportunityList(
+        ModalityEnum.TRABALHISTA,
+        [
+          'f39e3651-b5de-4344-a026-d56685f8760c',
+          'ae0182cc-f2ca-4907-b953-a7da555acff6',
+          '7212dff3-7205-419e-ae14-8bbdd5729742',
+        ],
+      );
+
+    expect(httpMock).toHaveBeenCalledWith({
+      url: '/v2/opportunities/labor/mapping-details',
+      payload: {
+        opportunities: [
+          'f39e3651-b5de-4344-a026-d56685f8760c',
+          'ae0182cc-f2ca-4907-b953-a7da555acff6',
+          '7212dff3-7205-419e-ae14-8bbdd5729742',
+        ],
+      },
     });
     expect(result.success).toBe(true);
   });

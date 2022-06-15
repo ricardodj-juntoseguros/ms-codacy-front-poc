@@ -13,27 +13,27 @@ beforeEach(() => {
 });
 
 describe('Opportunities', () => {
-  // it('Should navigate to Fiscal tab and request for more details', () => {
-  //   cy.goToOpportunityDetailsListTab('fiscal')
-  //     .clickOnFirstMoreDetailsButton()
-  //     .first();
+  it('Should navigate to Fiscal tab and request for more details', () => {
+    cy.goToOpportunityDetailsListTab('fiscal')
+      .clickOnFirstMoreDetailsButton()
+      .first();
 
-  //   cy.get(selectors.modal.wrapper)
-  //     .should('be.visible')
-  //     .within(() => {
-  //       cy.get(selectors.modal.primaryButton).click();
-  //     });
+    cy.get(selectors.modal.wrapper)
+      .should('be.visible')
+      .within(() => {
+        cy.get(selectors.modal.primaryButton).click();
+      });
 
-  //   cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
-  // });
+    cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
+  });
 
-  // it('Deve validar disclaimer de condições de produto', () => {
-  //   cy.goToOpportunityDetailsListTab('fiscal')
-  //     .clickOnFirstMoreDetailsButton()
-  //     .first();
+  it('Deve validar disclaimer de condições de produto', () => {
+    cy.goToOpportunityDetailsListTab('fiscal')
+      .clickOnFirstMoreDetailsButton()
+      .first();
 
-  //   cy.get(selectors.modal.disclaimer).should('be.visible');
-  // });
+    cy.get(selectors.modal.disclaimer).should('be.visible');
+  });
 
   it('Deve validar dados da trabalhista', () => {
     cy.get('[data-testid=tab-labor]').click();

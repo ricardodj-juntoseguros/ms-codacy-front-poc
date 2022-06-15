@@ -46,6 +46,18 @@ class OpportunitiesDetailsApi {
 
     return await this.instance.post(params);
   }
+
+  async sendMoreDetailsFromOpportunityList(
+    modality: ModalityEnum,
+    opportunitiesIds: string[],
+  ): Promise<any> {
+    const params: IHttpClientRequestParameters = {
+      url: `/v2/opportunities/${modality}/mapping-details`,
+      payload: { opportunities: opportunitiesIds },
+    };
+
+    return await this.instance.post(params);
+  }
 }
 
 export default new OpportunitiesDetailsApi();

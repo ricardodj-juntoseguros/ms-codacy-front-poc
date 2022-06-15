@@ -104,7 +104,13 @@ const MoreOpportunityDetailsModal: React.FC<MoreOpportunityDetailsModalProps> =
           opportunityId: id,
         },
       });
-      OpportunityDetailsApi.sendMoreOpportunityDetailsMail(id)
+
+      (modality === ModalityEnum.TRABALHISTA
+        ? OpportunityDetailsApi.sendMoreDetailsFromOpportunityList(modality, [
+            id,
+          ])
+        : OpportunityDetailsApi.sendMoreOpportunityDetailsMail(id)
+      )
         .then(() => setHasSubmitted(true))
         .catch(() => setSubmitError(true))
         .finally(() => {
