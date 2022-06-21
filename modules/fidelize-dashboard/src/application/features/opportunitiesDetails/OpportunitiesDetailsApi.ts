@@ -50,10 +50,11 @@ class OpportunitiesDetailsApi {
   async sendMoreDetailsFromOpportunityList(
     modality: ModalityEnum,
     opportunitiesIds: string[],
+    emailsToSend: string[],
   ): Promise<any> {
     const params: IHttpClientRequestParameters = {
       url: `/v2/opportunities/${modality}/mapping-details`,
-      payload: { opportunities: opportunitiesIds },
+      payload: { opportunities: opportunitiesIds, otherEmails: emailsToSend },
     };
 
     return await this.instance.post(params);

@@ -8,7 +8,7 @@ import {
   OpportunityRelevanceEnum,
 } from '../../../application/types/model';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
-import MoreOpportunityDetailsModal from '../MoreOpportunityDetailsModal';
+import OpportunityDetailsModal from '../OpportunityDetailsModal';
 
 interface OpportunityDetailsListItemProps {
   modality: ModalityEnum;
@@ -98,7 +98,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
         </p>
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
-        <MoreOpportunityDetailsModal
+        <OpportunityDetailsModal
           modality={modality}
           opportunity={{
             ...opportunity,

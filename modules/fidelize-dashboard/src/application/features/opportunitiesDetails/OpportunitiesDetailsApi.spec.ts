@@ -94,6 +94,7 @@ describe('OpportunitiesDetailsApi', () => {
           'ae0182cc-f2ca-4907-b953-a7da555acff6',
           '7212dff3-7205-419e-ae14-8bbdd5729742',
         ],
+        ['teste@juntoseguros.com'],
       );
 
     expect(httpMock).toHaveBeenCalledWith({
@@ -104,6 +105,7 @@ describe('OpportunitiesDetailsApi', () => {
           'ae0182cc-f2ca-4907-b953-a7da555acff6',
           '7212dff3-7205-419e-ae14-8bbdd5729742',
         ],
+        otherEmails: ['teste@juntoseguros.com'],
       },
     });
     expect(result.success).toBe(true);

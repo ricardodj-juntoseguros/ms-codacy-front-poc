@@ -7,10 +7,10 @@ import {
   OpportunityRelevanceEnum,
 } from '../../../application/types/model';
 import OpportunityDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
-import MoreOpportunityDetailsModal from './MoreOpportunityDetailsModal';
+import OpportunityDetailsModal from './OpportunityDetailsModal';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 
-describe('MoreOpportunityDetailsModal', () => {
+describe('OpportunityDetailsModal', () => {
   it('Should render sucessfully with given props', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: 'Renovação',
@@ -25,7 +25,7 @@ describe('MoreOpportunityDetailsModal', () => {
       observation: 'Com vencimento em 22/02/2024',
     };
     const { container } = render(
-      <MoreOpportunityDetailsModal
+      <OpportunityDetailsModal
         modality={ModalityEnum.FISCAL}
         opportunity={opportunityMock}
       />,
@@ -52,7 +52,7 @@ describe('MoreOpportunityDetailsModal', () => {
       expired: false,
     };
     const { getByTestId, getByText, queryByText } = render(
-      <MoreOpportunityDetailsModal
+      <OpportunityDetailsModal
         modality={ModalityEnum.FISCAL}
         opportunity={opportunityMock}
       />,
@@ -84,7 +84,7 @@ describe('MoreOpportunityDetailsModal', () => {
     expect(queryByText('Agora é só aguardar')).not.toBeInTheDocument();
   });
 
-  it('Should call correct api method on submit button click if opportunity modality is LABOR', async () => {
+  it('Should show email step and call correct api method on submit if opportunity modality is LABOR', async () => {
     jest
       .spyOn(OpportunityDetailsApi, 'sendMoreDetailsFromOpportunityList')
       .mockImplementationOnce(async () => {
@@ -102,8 +102,8 @@ describe('MoreOpportunityDetailsModal', () => {
       securityAmount: 2550650.5,
       expired: false,
     };
-    const { getByTestId, getByText, queryByText } = render(
-      <MoreOpportunityDetailsModal
+    const { getByTestId, findByText, queryByText } = render(
+      <OpportunityDetailsModal
         modality={ModalityEnum.TRABALHISTA}
         opportunity={opportunityMock}
       />,
@@ -121,14 +121,19 @@ describe('MoreOpportunityDetailsModal', () => {
       fireEvent.click(submitBtn);
     });
 
-    expect(getByText('Agora é só aguardar')).toBeInTheDocument();
+    const mailInput = getByTestId('mail-input-more-details');
+    const mailSubmitBtn = getByTestId('submit-more-details-email');
 
+    fireEvent.change(mailInput, {
+      target: { value: 'teste@juntoseguros.com' },
+    });
+    fireEvent.click(mailSubmitBtn);
+
+    expect(await findByText('Agora é só aguardar')).toBeInTheDocument();
     const closeModalBtn = getByTestId('modal-close-button');
-
     await act(async () => {
       fireEvent.click(closeModalBtn);
     });
-
     expect(
       OpportunityDetailsApi.sendMoreDetailsFromOpportunityList,
     ).toHaveBeenCalledTimes(1);
@@ -156,7 +161,7 @@ describe('MoreOpportunityDetailsModal', () => {
       expired: false,
     };
     const { getByTestId, getByText, queryByText } = render(
-      <MoreOpportunityDetailsModal
+      <OpportunityDetailsModal
         modality={ModalityEnum.FISCAL}
         opportunity={opportunityMock}
       />,

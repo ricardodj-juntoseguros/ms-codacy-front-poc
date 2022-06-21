@@ -11,33 +11,14 @@
   }
 }
 
-.more-opportunity-details-modal__trigger {
-  border: none;
-  width: spacing('xl');
-  height: spacing('xl');
-  background-color: transparent;
-  display: inline-flex;
-  text-align: center;
-
-  & i {
-    color: color('brand-primary');
-    align-self: center;
-  }
-
-  @media screen and (min-width: 1008px) {
-    opacity: 0;
-  }
-
-}
-
-.more-opportunity-details-modal__content-title {
+.opportunity-details-modal-confirm__title {
   @include font('base-emphasys');
   color: color('dark');
   margin-bottom: spacing('m');
   margin-top: 0px;
 }
 
-.more-opportunity-details-modal__opportunity-data {
+.opportunity-details-modal-confirm__data {
   padding: spacing('l');
   border-radius: spacing('xs');
   background-color: color('grey-100');
@@ -50,20 +31,20 @@
   }
 }
 
-.more-opportunity-details-modal__field-value {
+.opportunity-details-modal-confirm__data-value {
   @include font('sm');
   color: color('dark');
   display: inline;
 }
 
-.more-opportunity-details-modal__field-label {
+.opportunity-details-modal-confirm__data-label {
   @include font('sm');
   color: color('grey-500');
   display: inline;
   margin-right: spacing('xs');
 }
 
-.more-opportunity-details-modal__submit-wrapper {
+.opportunity-details-modal-confirm__submit {
   & > button {
     @media screen and (min-width: 768px) {
       width: 274px;
@@ -75,26 +56,5 @@
     animation: rotating 1s linear infinite;
     -webkit-animation: rotating 1s linear infinite;
     display: inline-block;
-  }
-}
-
-.more-opportunity-details-modal__error {
-  @include font('xs-emphasys');
-  max-width: 100%;
-  text-align: center;
-  padding: spacing('m');
-  margin-bottom: spacing('l');
-  background-color: #ffecec;
-  color: color('error');
-}
-
-.more-opportunity-details-modal__disclaimer {
-  margin-top: spacing('xl');
-  width: 100%;
-
-  & > p {
-    margin: 0px;
-    @include font('xs');
-    color: color('grey-500');
   }
 }
