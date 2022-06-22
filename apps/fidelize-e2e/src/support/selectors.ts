@@ -21,12 +21,14 @@ export const selectors = {
     civilTab: '[data-testid="tab-civil"]',
     listBox: '[class^="OpportunityDetailsList"][class*="box"]',
     listItemWrapper: '[class*="listitem__wrapper"]',
-    moreDetailsButton: '[data-testid="modal-trigger"]'
+    moreDetailsButton: '[data-testid="modal-trigger"]',
+    email: '[data-testid="mail-input-more-details"]',
+    sendButton: '[data-testid="submit-more-details-email"]'
   },
   modal: {
     wrapper: 'div[class*="modal__wrapper"]',
     title: 'h1[class*="modal__title"]',
     primaryButton: '[data-testid=submit-more-details]',
-    disclaimer: 'div[class*="more-opportunity-details-modal__disclaimer"]'
+    disclaimer: 'div[class^="OpportunityDetailsModal_opportunity"][class*="details-modal__disclaimer"]'
   }
 }

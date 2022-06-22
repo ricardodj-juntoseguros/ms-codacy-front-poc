@@ -5,7 +5,7 @@ import { HOSTS } from '../../../../e2e/quality.json';
 const { user, cookies } = loadData();
 
 describe('Logout', () => {
-  it('Should log in and log out', () => {
+  it('Deve validar login e logout', () => {
     cy.visit(HOSTS.FIDELIZE);
 
     cy.login(user.username, user.password);

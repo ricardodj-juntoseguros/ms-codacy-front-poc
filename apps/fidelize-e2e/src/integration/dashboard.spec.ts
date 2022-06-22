@@ -12,7 +12,7 @@ beforeEach(() => {
 });
 
 describe('Dashboard', () => {
-  it('Should go to the dashboard', () => {
+  it('Deve validar o dashboard', () => {
     cy.get(selectors.dashboardSummary.totalCard).should('be.visible');
   });
 
