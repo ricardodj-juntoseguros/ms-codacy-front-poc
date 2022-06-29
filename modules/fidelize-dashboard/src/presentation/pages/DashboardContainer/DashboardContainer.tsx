@@ -109,9 +109,7 @@ function DashboardContainer() {
       ) : (
         <>
           {renderModalitySummary(modality)}
-          {process.env.NX_FID_FEATURE_SUMMARY_CHARTS === 'true' && (
-            <ModalitySummaryCharts modality={modality} />
-          )}
+          <ModalitySummaryCharts modality={modality} />
           <OpportunityDetailsList modality={modality} />
         </>
       );
