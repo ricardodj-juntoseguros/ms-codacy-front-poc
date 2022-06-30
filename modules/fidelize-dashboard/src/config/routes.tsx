@@ -4,13 +4,14 @@ import AccessCheckApi from '../application/features/accessCheck/AccessCheckApi';
 import DashboardContainer from '../presentation/pages/DashboardContainer';
 import NoAccessContainer from '../presentation/pages/NoAccessContainer';
 import LoadingSpinner from '../presentation/components/LoadingSpinner';
+import { AccessFeatureEnum } from '../application/types/model/AccessFeatureEnum';
 
 const Routes: React.FC = () => {
   const [hasAccess, setHasAccess] = useState(false);
   const [isCheckingAccess, setIsCheckingAccess] = useState(true);
 
   useEffect(() => {
-    AccessCheckApi.checkAccessToDashboard()
+    AccessCheckApi.checkAccessToFeature(AccessFeatureEnum.ACCESS_FIDELIZE)
       .then(() => setHasAccess(true))
       .catch(() => setHasAccess(false))
       .finally(() => setIsCheckingAccess(false));

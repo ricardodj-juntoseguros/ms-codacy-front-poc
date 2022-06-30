@@ -1,0 +1,5 @@
+export enum AccessFeatureEnum {
+  LABOR_MODALITY = 'TRABALHISTA',
+  ACCESS_FIDELIZE = 'ACCESS_FIDELIZE'
+}
+  

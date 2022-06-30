@@ -11,14 +11,6 @@ class AccessCheckApi {
     this.instance = new FidelizeDashboardBaseApi().getInstance();
   }
 
-  async checkAccessToDashboard(): Promise<any> {
-    const params: IHttpClientRequestParameters = {
-      url: '/v1/access',
-    };
-
-    return await this.instance.get<any>(params);
-  }
-
   async checkAccessToFeature(feature: string): Promise<any> {
     const params: IHttpClientRequestParameters = {
       url: '/v2/access',

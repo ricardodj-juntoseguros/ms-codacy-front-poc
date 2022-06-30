@@ -10,19 +10,6 @@ describe('AccessCheckApi', () => {
     jest.clearAllMocks();
   });
 
-  it('checkAccessToDashboard should call bff service correctly', async () => {
-    const mockGet = jest
-      .spyOn(AxiosHttpClient.prototype, 'get')
-      .mockImplementation(async () => {
-        return 'OK';
-      });
-    const result = await AccessCheckApi.checkAccessToDashboard();
-    expect(mockGet).toHaveBeenCalledWith({
-      url: '/v1/access',
-    });
-    expect(result).toBe('OK');
-  });
-
   it('checkAccessToFeature should call bff service correctly', async () => {
     const mockGet = jest
       .spyOn(AxiosHttpClient.prototype, 'get')

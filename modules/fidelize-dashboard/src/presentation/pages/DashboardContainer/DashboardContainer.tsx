@@ -26,13 +26,14 @@ import { ModalitySummaryDTO } from '../../../application/types/dto';
 import { MODALITIES_IDS } from '../../../constants';
 import { getLabelByModality } from '../../../helpers';
 import styles from './DashboardContainer.module.scss';
+import { AccessFeatureEnum } from '../../../application/types/model/AccessFeatureEnum';
 
 function DashboardContainer() {
   const dispatch = useDispatch();
 
   const { selectedModality } = useSelector(selectModality);
   const hasAccessToLaborModality = useSelector(
-    checkAccessToFeature('TRABALHISTA'),
+    checkAccessToFeature(AccessFeatureEnum.LABOR_MODALITY),
   );
   const filteredPolicyholders = useSelector(selectPolicyholderSelection);
 
@@ -43,7 +44,7 @@ function DashboardContainer() {
   >([]);
 
   useEffect(() => {
-    dispatch(fetchAccessToFeature('TRABALHISTA'));
+    dispatch(fetchAccessToFeature(AccessFeatureEnum.LABOR_MODALITY));
   }, [dispatch]);
 
   useEffect(() => {
