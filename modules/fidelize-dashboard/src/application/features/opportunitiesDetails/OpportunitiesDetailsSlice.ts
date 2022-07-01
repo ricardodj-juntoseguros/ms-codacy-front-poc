@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { makeToast } from 'junto-design-system';
 import { RootState } from '../../../config/store';
+import { OpportunityDetailsItemDTO } from '../../types/dto';
 import {
   ModalityEnum,
   OpportunitiesDetailsModel,
@@ -23,6 +25,7 @@ const initialState: OpportunitiesDetailsModel = {
       direction: 'desc',
     },
   ],
+  selectedOpportunities: [],
 };
 
 export const opportunitiesDetailsSlice = createSlice({
@@ -74,6 +77,29 @@ export const opportunitiesDetailsSlice = createSlice({
         setting.activePage = 1;
       });
     },
+    addOpportunityToSelection: (
+      state,
+      action: PayloadAction<OpportunityDetailsItemDTO>,
+    ) => {
+      if (state.selectedOpportunities.length === 20) {
+        makeToast('warning', 'Você pode selecionar no máximo 20');
+        return;
+      }
+      const { payload } = action;
+      state.selectedOpportunities.push(payload);
+    },
+    removeOpportunityFromSelection: (
+      state,
+      action: PayloadAction<OpportunityDetailsItemDTO>,
+    ) => {
+      const { payload } = action;
+      state.selectedOpportunities = state.selectedOpportunities.filter(
+        op => op.id !== payload.id,
+      );
+    },
+    clearOpportunitySelection: state => {
+      state.selectedOpportunities = [];
+    },
   },
 });
 
@@ -82,6 +108,9 @@ export const selectSettingsByModality =
     state.opportunityDetails.settings.find(
       setting => setting.modality === modality,
     );
+
+export const selectSelectedOpportunities = (state: RootState) =>
+  state.opportunityDetails.selectedOpportunities;
 
 export const { actions: opportunitiesDetailsActions } =
   opportunitiesDetailsSlice;

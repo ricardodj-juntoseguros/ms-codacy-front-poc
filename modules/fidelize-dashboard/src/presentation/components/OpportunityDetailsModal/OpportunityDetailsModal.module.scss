@@ -1,23 +1,5 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.opportunity-details-modal__trigger {
-  border: none;
-  width: spacing('xl');
-  height: spacing('xl');
-  background-color: transparent;
-  display: inline-flex;
-  text-align: center;
-
-  & i {
-    color: color('brand-primary');
-    align-self: center;
-  }
-
-  @media screen and (min-width: 1008px) {
-    opacity: 0;
-  }
-}
-
 .opportunity-details-modal__error {
   @include font('xs-emphasys');
   max-width: 100%;

@@ -1,10 +1,9 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
 .opportunity-details-header__wrapper {
-  padding: spacing('l');
+  padding: spacing('l') spacing('m');
   display: grid;
-  grid-template-columns: 100px 190px 120px 240px 136px 32px;
-  column-gap: spacing('l') + spacing('xs');
+  grid-template-columns: 40px 142px 222px 142px 250px 160px;
   border-bottom: 1px solid color('grey-200');
 }
 

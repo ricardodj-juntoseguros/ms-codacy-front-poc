@@ -4,6 +4,7 @@ import styles from './OpportunityDetailsListItemSkeleton.module.scss';
 const OpportunityDetailsListItemSkeleton: React.FC = () => {
   return (
     <div className={styles['opportunity-details-listitem__wrapper']}>
+      <div className={styles['opportunity-details-listitem__column']} />
       <div className={styles['opportunity-details-listitem__column']}>
         <Skeleton width={46} height={8} />
       </div>

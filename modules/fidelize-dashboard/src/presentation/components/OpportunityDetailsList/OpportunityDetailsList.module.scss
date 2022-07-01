@@ -28,80 +28,10 @@
   width: 100%;
 }
 
-.opportunity-details-list__paging-container {
-  margin-top: spacing('l');
-  margin-bottom: spacing('xxl-5');
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-
-  & > div:last-child {
-    display: flex;
-    justify-self: flex-end;
-  }
-
-  @media screen and (max-width: 768px) {
-    margin-top: spacing('l');
-    display: flex;
-    flex-flow: column;
-
-    & > div:last-child {
-      display: flex;
-      align-self: center;
-    }
-  }
-}
-
 .opportunity-details-list__error {
   @include font('l');
   width: 100%;
   padding: spacing('l');
   color: color('error');
   text-align: center;
-}
-
-.opportunity-details-list__pagesize-selector {
-  & > p {
-    @include font('base');
-    color: color('grey-500');
-    display: inline;
-  }
-
-  @media screen and (max-width: 768px) {
-    display: flex;
-    margin-bottom: spacing('l');
-    justify-content: flex-end;
-  }
-
-  // customization for dropdown
-  & > div {
-    width: 82px;
-    display: inline-block;
-    margin-left: spacing('m');
-
-    @mixin customized-height {
-      height: spacing('xxl-2');
-      min-height: spacing('xxl-2');
-    }
-
-    & > div:not(:last-child) {
-      @include customized-height();
-      & > div {
-        @include customized-height();
-      }
-    }
-
-    & > div:last-child {
-      top: spacing('xxl-2');
-    }
-
-    & input {
-      padding: 0px;
-      padding-left: spacing('m');
-      @include customized-height();
-    }
-
-    & i {
-      padding: spacing('xs');
-    }
-  }
 }

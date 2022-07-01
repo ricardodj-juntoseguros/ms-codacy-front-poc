@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Divider, Tabs, Tab } from 'junto-design-system';
 import { useSelector, useDispatch } from 'react-redux';
 import TagManager from 'react-gtm-module';
@@ -24,9 +24,13 @@ import SummaryApi from '../../../application/features/summary/SummaryApi';
 import { ModalityEnum } from '../../../application/types/model';
 import { ModalitySummaryDTO } from '../../../application/types/dto';
 import { MODALITIES_IDS } from '../../../constants';
-import { getLabelByModality } from '../../../helpers';
+import {
+  getLabelByModality,
+  renderOpportunitySelectionLossModal,
+} from '../../../helpers';
 import styles from './DashboardContainer.module.scss';
 import { AccessFeatureEnum } from '../../../application/types/model/AccessFeatureEnum';
+import { selectSelectedOpportunities } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 
 function DashboardContainer() {
   const dispatch = useDispatch();
@@ -36,7 +40,8 @@ function DashboardContainer() {
     checkAccessToFeature(AccessFeatureEnum.LABOR_MODALITY),
   );
   const filteredPolicyholders = useSelector(selectPolicyholderSelection);
-
+  const selectedOpportunities = useSelector(selectSelectedOpportunities);
+  const selectionLossModalRef = useRef<HTMLDivElement>(null);
   const [loadingModalitySummary, setLoadingModalitySummary] = useState(true);
   const [errorModalitySummary, setErrorModalitySummary] = useState(false);
   const [modalitiesSummaryData, setModalitiesSummaryData] = useState<
@@ -61,13 +66,21 @@ function DashboardContainer() {
 
   const handleModalityTabSelection = (selectedTab: string) => {
     const selectedEnum = selectedTab as ModalityEnum;
-    dispatch(modalitySelectionSliceActions.setSelectedModality(selectedEnum));
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'SelectDashboardModalityTab',
-        modalityId: MODALITIES_IDS[selectedEnum],
-      },
-    });
+    const action = () => {
+      dispatch(modalitySelectionSliceActions.setSelectedModality(selectedEnum));
+      TagManager.dataLayer({
+        dataLayer: {
+          event: 'SelectDashboardModalityTab',
+          modalityId: MODALITIES_IDS[selectedEnum],
+        },
+      });
+    };
+    return selectedOpportunities.length > 0
+      ? renderOpportunitySelectionLossModal(
+          action,
+          selectionLossModalRef.current,
+        )
+      : action();
   };
 
   const getDataToRender = (modality: ModalityEnum) => {
@@ -111,7 +124,10 @@ function DashboardContainer() {
         <>
           {renderModalitySummary(modality)}
           <ModalitySummaryCharts modality={modality} />
-          <OpportunityDetailsList modality={modality} />
+          <OpportunityDetailsList
+            modality={modality}
+            multipleSelection={modality === ModalityEnum.TRABALHISTA}
+          />
         </>
       );
     if (
@@ -158,6 +174,7 @@ function DashboardContainer() {
           {renderModalityTab(ModalityEnum.CIVIL)}
         </Tabs>
       </div>
+      <div ref={selectionLossModalRef} />
     </div>
   );
 }

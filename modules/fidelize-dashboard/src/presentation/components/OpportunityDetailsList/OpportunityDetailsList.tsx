@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Divider, Pagination, Skeleton, Dropdown } from 'junto-design-system';
+import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import TagManager from 'react-gtm-module';
+import { Divider, Skeleton, ToastContainer } from 'junto-design-system';
 import { nanoid } from 'nanoid';
 import { thousandSeparator } from '@shared/utils';
 import OpportunityDetailsListHeader from '../OpportunityDetailsListHeader';
 import OpportunityDetailsListItem from '../OpportunityDetailsListItem';
+import OpportunityDetailsListPaging from '../OpportunityDetailsListPaging';
+import OpportunityDetailsListFooter from '../OpportunityDetailsListFooter';
+import OpportunityDetailsModal from '../OpportunityDetailsModal';
 import { OpportunityDetailsListItemSkeleton } from '../Skeletons';
 import {
   ModalityEnum,
@@ -13,7 +17,7 @@ import {
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import {
   selectSettingsByModality,
-  opportunitiesDetailsActions,
+  selectSelectedOpportunities,
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import { selectPolicyholderSelection } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
@@ -22,12 +26,13 @@ import styles from './OpportunityDetailsList.module.scss';
 
 interface OpportunityDetailsListProps {
   modality: ModalityEnum;
+  multipleSelection: boolean;
 }
 
 const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
   modality,
+  multipleSelection,
 }) => {
-  const dispatch = useDispatch();
   const { activePage, pageSize, orderBy, direction } = useSelector(
     selectSettingsByModality(modality),
   ) || {
@@ -38,11 +43,15 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     direction: 'desc',
   };
   const filteredPolicyholders = useSelector(selectPolicyholderSelection);
-
+  const selectedOpportunities = useSelector(selectSelectedOpportunities);
+  const listItemsContainerRef = useRef<HTMLDivElement>(null);
   const [loadingItems, setLoadingItems] = useState(true);
   const [data, setData] = useState<OpportunityDetailsItemDTO[]>();
+  const [interestedOpportunity, setInterestedOpportunity] =
+    useState<OpportunityDetailsItemDTO>();
   const [totalCount, setTotalCount] = useState<number>();
   const [error, setError] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchOpportunityDetails = () => {
@@ -76,16 +85,37 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
 
   useEffect(() => {
     setTotalCount(undefined);
-  }, [modality]);
+  }, [modality, filteredPolicyholders]);
 
-  const handlePaging = (page: number) => {
-    dispatch(opportunitiesDetailsActions.setActivePage({ page, modality }));
+  const handleClickMoreDetailsItem = (
+    opportunity: OpportunityDetailsItemDTO,
+  ) => {
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'ClickMoreOpportunityDetailsButton',
+        opportunityId: opportunity.id,
+        opportunityCount: 1,
+      },
+    });
+    setInterestedOpportunity(opportunity);
+    setModalOpen(true);
   };
 
-  const handleSelectPageSize = (value: any) => {
-    const pageSize = Number(value);
-    dispatch(opportunitiesDetailsActions.setActivePage({ page: 1, modality }));
-    dispatch(opportunitiesDetailsActions.setPageSize({ pageSize, modality }));
+  const handleClickMoreDetailsFooter = () => {
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'ClickMoreOpportunityDetailsButton',
+        opportunityId: undefined,
+        opportunityCount: selectedOpportunities.length,
+      },
+    });
+    setInterestedOpportunity(undefined);
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setInterestedOpportunity(undefined);
   };
 
   const renderListItems = () => {
@@ -97,9 +127,10 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     return data.map(opportunity => {
       return (
         <OpportunityDetailsListItem
+          checkable={multipleSelection}
           key={`opportunity-details-listitem-${nanoid(5)}`}
-          modality={modality}
           opportunity={opportunity}
+          onMoreDetailsClick={handleClickMoreDetailsItem}
         />
       );
     });
@@ -129,42 +160,31 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
             <Divider />
             <div className={styles['opportunity-details-list__list-container']}>
               <OpportunityDetailsListHeader modality={modality} />
-              {renderListItems()}
+              <div ref={listItemsContainerRef}>{renderListItems()}</div>
             </div>
           </>
         )}
       </div>
-      {totalCount !== undefined && totalCount > 10 && (
-        <div className={styles['opportunity-details-list__paging-container']}>
-          <div
-            className={styles['opportunity-details-list__pagesize-selector']}
-          >
-            <p>Mostrando</p>
-            <Dropdown
-              label=""
-              placeholder=""
-              value={{
-                label: pageSize.toString(),
-                value: pageSize.toString(),
-              }}
-              options={[
-                { label: '10', value: '10' },
-                { label: '25', value: '25' },
-                { label: '50', value: '50' },
-              ]}
-              onValueSelected={item => handleSelectPageSize(item.value)}
-            />
-          </div>
-          <div>
-            <Pagination
-              activePage={activePage}
-              itemsPerPage={pageSize}
-              totalItemsCount={totalCount || 0}
-              onChange={handlePaging}
-            />
-          </div>
-        </div>
+      {multipleSelection && selectedOpportunities.length > 0 && (
+        <OpportunityDetailsListFooter
+          listContainerRef={listItemsContainerRef}
+          selectedOpportunities={selectedOpportunities}
+          onMoreDetailsClick={handleClickMoreDetailsFooter}
+        />
       )}
+      {totalCount !== undefined && totalCount > 10 && (
+        <OpportunityDetailsListPaging
+          totalCount={totalCount}
+          modality={modality}
+        />
+      )}
+      <OpportunityDetailsModal
+        isOpen={modalOpen}
+        modality={modality}
+        opportunity={interestedOpportunity}
+        onModalClose={handleModalClose}
+      />
+      <ToastContainer />
     </div>
   );
 };

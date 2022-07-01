@@ -1,17 +1,24 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'junto-design-system';
 import TagManager from 'react-gtm-module';
 import { SuccessIllustration, MailIllustration } from '@shared/ui';
+import OpportunityDetailsModalConfirm from '../OpportunityDetailsModalConfirm';
+import OpportunityDetailsModalMail from '../OpportunityDetailsModalMail';
 import { ModalityEnum } from '../../../application/types/model';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import OpportunityDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
-import OpportunityDetailsModalConfirm from '../OpportunityDetailsModalConfirm';
-import OpportunityDetailsModalMail from '../OpportunityDetailsModalMail';
+import {
+  opportunitiesDetailsActions,
+  selectSelectedOpportunities,
+} from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import styles from './OpportunityDetailsModal.module.scss';
 
 interface OpportunityDetailsModalProps {
   modality: ModalityEnum;
-  opportunity: OpportunityDetailsItemDTO;
+  opportunity?: OpportunityDetailsItemDTO | null;
+  isOpen: boolean;
+  onModalClose: () => void;
 }
 
 type ModalFlowStep = 'CONFIRM' | 'EMAIL' | 'COMPLETED';
@@ -19,14 +26,16 @@ type ModalFlowStep = 'CONFIRM' | 'EMAIL' | 'COMPLETED';
 const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
   modality,
   opportunity,
+  isOpen,
+  onModalClose,
 }) => {
-  const btnRef = useRef(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const selectedOpportunities = useSelector(selectSelectedOpportunities);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [currentStep, setCurrentStep] = useState<ModalFlowStep>('CONFIRM');
-
-  const { id } = opportunity;
+  const isOnlyOneOpportunity =
+    opportunity || selectedOpportunities.length === 1;
 
   const getModalTemplate = () => {
     switch (currentStep) {
@@ -34,10 +43,13 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
         return {
           title: {
             value: 'Quero mais detalhes!',
+            align: (isOnlyOneOpportunity ? 'left' : 'center') as any,
           },
           text: {
-            value:
-              'Confirme os dados da oportunidade que você deseja obter mais detalhes, que em breve te retornaremos com as informações adicionais (como número de CNJ, entre outras).',
+            value: isOnlyOneOpportunity
+              ? 'Confirme os dados da oportunidade que você deseja obter mais detalhes, que em breve te retornaremos com as informações adicionais (como número de CNJ, entre outras).'
+              : `Você selecionou ${selectedOpportunities.length} oportunidades para obter mais detalhes. Clique no botão abaixo que te retornaremos com as informações adicionais (como número de CNJ, entre outras)`,
+            align: (isOnlyOneOpportunity ? 'left' : 'center') as any,
           },
         };
       case 'EMAIL':
@@ -66,6 +78,75 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
     }
   };
 
+  const fireTagManagerEvent = () => {
+    const opportunityId = isOnlyOneOpportunity
+      ? opportunity?.id || selectedOpportunities[0].id
+      : undefined;
+    const opportunityCount = isOnlyOneOpportunity
+      ? 1
+      : selectedOpportunities.length;
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'ClickMoreOpportunityDetailsSubmit',
+        opportunityId,
+        opportunityCount,
+      },
+    });
+  };
+
+  const handleSubmit = (submit: Promise<any>) => {
+    setIsSubmitting(true);
+    fireTagManagerEvent();
+    submit
+      .then(() => {
+        dispatch(opportunitiesDetailsActions.clearOpportunitySelection());
+        setCurrentStep('COMPLETED');
+        setSubmitError(false);
+        ('');
+      })
+      .catch(() => setSubmitError(true))
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
+
+  const handleConfirmSubmit = () => {
+    if (modality === ModalityEnum.TRABALHISTA) {
+      setCurrentStep('EMAIL');
+      return;
+    }
+    if (!opportunity) return;
+    handleSubmit(
+      OpportunityDetailsApi.sendMoreOpportunityDetailsMail(opportunity.id),
+    );
+  };
+
+  const handleEmailSubmit = (email: string) => {
+    const opportunitiesIds = opportunity
+      ? [opportunity.id]
+      : selectedOpportunities.map(op => op.id);
+    handleSubmit(
+      OpportunityDetailsApi.sendMoreDetailsFromOpportunityList(
+        modality,
+        opportunitiesIds,
+        [email],
+      ),
+    );
+  };
+
+  const handleModalClose = () => {
+    setCurrentStep('CONFIRM');
+    setIsSubmitting(false);
+    setSubmitError(false);
+    onModalClose();
+  };
+
+  const getModalSize = () => {
+    return currentStep === 'CONFIRM' && isOnlyOneOpportunity
+      ? 'large'
+      : 'default';
+  };
+
   const renderSubmitError = () => {
     return submitError ? (
       <div className={styles['opportunity-details-modal__error']}>
@@ -86,66 +167,12 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
     </div>
   );
 
-  const handleSubmit = (submit: Promise<any>) => {
-    setIsSubmitting(true);
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'ClickMoreOpportunityDetailsSubmit',
-        opportunityId: id,
-      },
-    });
-    submit
-      .then(() => {
-        setCurrentStep('COMPLETED');
-        setSubmitError(false);
-      })
-      .catch(() => setSubmitError(true))
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  };
-
-  const handleConfirmSubmit = () => {
-    if (modality === ModalityEnum.TRABALHISTA) {
-      setCurrentStep('EMAIL');
-      return;
-    }
-    handleSubmit(OpportunityDetailsApi.sendMoreOpportunityDetailsMail(id));
-  };
-
-  const handleEmailSubmit = (email: string) => {
-    handleSubmit(
-      OpportunityDetailsApi.sendMoreDetailsFromOpportunityList(
-        modality,
-        [id],
-        [email],
-      ),
-    );
-  };
-
-  const handleTriggerClick = () => {
-    setModalOpen(true);
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'ClickMoreOpportunityDetailsButton',
-        opportunityId: id,
-      },
-    });
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setCurrentStep('CONFIRM');
-    setIsSubmitting(false);
-    setSubmitError(false);
-  };
-
   const renderContentByStep = (step: ModalFlowStep) => {
     if (step === 'CONFIRM') {
       return (
         <OpportunityDetailsModalConfirm
           modality={modality}
-          opportunity={opportunity}
+          opportunities={opportunity ? [opportunity] : selectedOpportunities}
           isSubmitting={isSubmitting}
           onSubmit={handleConfirmSubmit}
           renderError={renderSubmitError}
@@ -166,26 +193,15 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
   };
 
   return (
-    <>
-      <button
-        ref={btnRef}
-        data-testid="modal-trigger"
-        type="button"
-        className={styles['opportunity-details-modal__trigger']}
-        onClick={() => handleTriggerClick()}
-      >
-        <i className="icon icon-plus-circle" />
-      </button>
-      <Modal
-        open={modalOpen}
-        onClose={() => handleModalClose()}
-        onBackdropClick={() => handleModalClose()}
-        size={currentStep === 'CONFIRM' ? 'large' : 'default'}
-        template={getModalTemplate()}
-      >
-        {renderContentByStep(currentStep)}
-      </Modal>
-    </>
+    <Modal
+      open={isOpen}
+      onClose={() => handleModalClose()}
+      onBackdropClick={() => handleModalClose()}
+      size={getModalSize()}
+      template={getModalTemplate()}
+    >
+      {renderContentByStep(currentStep)}
+    </Modal>
   );
 };
 

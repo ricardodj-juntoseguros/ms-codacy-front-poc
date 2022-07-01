@@ -1,0 +1,80 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.opportunity-details-list-footer__wrapper {
+  width: 100%;
+  background-color: color('grey-100');
+  border: 1px solid color('grey-300');
+  border-radius: 0px 0px 4px 4px;
+  display: grid;
+  grid-template-columns: calc(1008px - 230px) 230px;
+
+  & > div:first-child {
+    padding: spacing('l');
+  }
+
+  & > div:last-child {
+    padding: spacing('s');
+    width: 230px;
+
+    & > button {
+      width: 212px;
+      & > p {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        gap: 10px;
+        margin: 0px;
+      }
+    }
+  }
+
+  &--sticky {
+    width: 1008px;
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+  }
+
+  @media screen and (max-width: 1008px) {
+    grid-template-columns: 3fr 1fr;
+    & > div:last-child {
+      width: 100%;
+    }
+
+    &--sticky {
+      width: 100%;
+      left: 0;
+    }
+  }
+
+  @media screen and (max-width: 680px) {
+    & > div:last-child {
+      & > button {
+        width: 180px;
+        padding: 0px 16px;
+      }
+    }
+  }
+}
+
+.opportunity-details-list-footer__selection-counter {
+  @include font('sm-emphasys');
+  color: color('dark');
+  display: inline-block;
+  margin: 0px;
+
+  &--warning {
+    color: color('warning');
+  }
+}
+
+.opportunity-details-list-footer__totalizer {
+  @include font('sm');
+  color: color('dark');
+  display: inline-block;
+  margin: 0px;
+
+  @media screen and (max-width: 680px) {
+    display: none;
+  }
+}

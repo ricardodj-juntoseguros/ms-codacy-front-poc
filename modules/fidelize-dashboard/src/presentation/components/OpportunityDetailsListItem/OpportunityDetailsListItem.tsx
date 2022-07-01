@@ -1,25 +1,32 @@
-import { format } from 'date-fns';
-import brLocale from 'date-fns/locale/pt-BR';
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Checkbox } from 'junto-design-system';
 import classNames from 'classnames';
 import { thousandSeparator } from '@shared/utils';
-import styles from './OpportunityDetailsListItem.module.scss';
-import {
-  ModalityEnum,
-  OpportunityRelevanceEnum,
-} from '../../../application/types/model';
+import { OpportunityRelevanceEnum } from '../../../application/types/model';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
-import OpportunityDetailsModal from '../OpportunityDetailsModal';
+import {
+  opportunitiesDetailsActions,
+  selectSelectedOpportunities,
+} from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
+import { formatDateString } from '../../../helpers';
+import styles from './OpportunityDetailsListItem.module.scss';
 
 interface OpportunityDetailsListItemProps {
-  modality: ModalityEnum;
   opportunity: OpportunityDetailsItemDTO;
+  checkable: boolean;
+  onMoreDetailsClick: (opportunity: OpportunityDetailsItemDTO) => void;
 }
 
 const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
-  modality,
   opportunity,
+  checkable,
+  onMoreDetailsClick,
 }) => {
+  const dispatch = useDispatch();
+  const selectedOpportunities = useSelector(selectSelectedOpportunities);
   const {
+    id,
     relevance,
     category,
     securityAmount,
@@ -28,6 +35,18 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
     expired,
     observation,
   } = opportunity;
+
+  const isOpportunitySelected = useMemo(
+    () => selectedOpportunities.some(o => o.id === id),
+    [selectedOpportunities, id],
+  );
+
+  const handleItemCheck = (checked: boolean) => {
+    const action = checked
+      ? opportunitiesDetailsActions.addOpportunityToSelection
+      : opportunitiesDetailsActions.removeOpportunityFromSelection;
+    dispatch(action(opportunity));
+  };
 
   const getRelevanceTagClassName = (relevance: OpportunityRelevanceEnum) => {
     if (expired || relevance === OpportunityRelevanceEnum.EXPIRED)
@@ -44,19 +63,30 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    return format(new Date(dateStr), 'dd/MMM/yy', {
-      locale: brLocale,
-    }).toLowerCase();
-  };
-
   return (
     <div
-      className={classNames(styles['opportunity-details-listitem__wrapper'], {
-        [styles['opportunity-details-listitem__wrapper--expired']]:
-          expired || relevance === OpportunityRelevanceEnum.EXPIRED,
-      })}
+      className={classNames(
+        styles['opportunity-details-listitem__wrapper'],
+        {
+          [styles['opportunity-details-listitem__wrapper--expired']]:
+            expired || relevance === OpportunityRelevanceEnum.EXPIRED,
+        },
+        {
+          [styles['opportunity-details-listitem__wrapper--selected']]:
+            isOpportunitySelected,
+        },
+      )}
     >
+      <div className={styles['opportunity-details-listitem__column']}>
+        {checkable && (
+          <Checkbox
+            id={`chk-${id}`}
+            checked={isOpportunitySelected}
+            title="Selecionar oportunidade"
+            onChange={v => handleItemCheck(v)}
+          />
+        )}
+      </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <span
           className={classNames(
@@ -94,17 +124,18 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <p className={styles['opportunity-details-listitem__label']}>
-          {formatDate(mappingDate)}
+          {formatDateString(mappingDate, 'dd/MMM/yy')}
         </p>
-      </div>
-      <div className={styles['opportunity-details-listitem__column']}>
-        <OpportunityDetailsModal
-          modality={modality}
-          opportunity={{
-            ...opportunity,
-            mappingDate: formatDate(mappingDate),
-          }}
-        />
+        {selectedOpportunities.length === 0 && (
+          <button
+            data-testid="modal-trigger"
+            type="button"
+            className={styles['opportunity-details-listitem__modal-trigger']}
+            onClick={() => onMoreDetailsClick(opportunity)}
+          >
+            <i className="icon icon-plus-circle" />
+          </button>
+        )}
       </div>
     </div>
   );

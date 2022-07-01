@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, SearchInput, SearchOptions } from 'junto-design-system';
 import TagManager from 'react-gtm-module';
 import classNames from 'classnames';
 import { federalIdFormatter, objectArraysMerger } from '@shared/utils';
+import { renderOpportunitySelectionLossModal } from '../../../helpers';
 import PolicyholderFilterSelectorTags from '../PolicyholderFilterSelectorTags';
 import { PolicyholderDTO } from '../../../application/types/dto';
 import PolicyholderFilterApi from '../../../application/features/policyholderFilter/PolicyholderFilterApi';
@@ -11,15 +12,19 @@ import {
   selectPolicyholderSelection,
   policyholderFilterActions,
 } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
-import { opportunitiesDetailsActions } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
+import {
+  opportunitiesDetailsActions,
+  selectSelectedOpportunities,
+} from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import { summaryActions } from '../../../application/features/summary/SummarySlice';
 import { summaryChartsActions } from '../../../application/features/summaryCharts/SummaryChartsSlice';
 import styles from './PolicyholderFilterSelector.module.scss';
 
 const PolicyholderFilterSelector: React.FC = () => {
-  const storePolicyholders = useSelector(selectPolicyholderSelection);
   const dispatch = useDispatch();
-
+  const storePolicyholders = useSelector(selectPolicyholderSelection);
+  const selectedOpportunities = useSelector(selectSelectedOpportunities);
+  const selectionLossModalRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [policyholders, setPolicyholders] = useState<PolicyholderDTO[]>([]);
   const [searchedPolicyholders, setSearchedPolicyholders] = useState<
@@ -145,37 +150,54 @@ const PolicyholderFilterSelector: React.FC = () => {
   };
 
   const handleClearAll = () => {
-    setSelectedPolicyholders([]);
-    dispatch(opportunitiesDetailsActions.resetSettings());
-    dispatch(summaryChartsActions.clearAllChartsData());
-    dispatch(
-      policyholderFilterActions.setPolicyholderSelection({
-        selection: [],
-      }),
-    );
-    dispatch(summaryActions.setTotalPolicyholders(policyholders.length));
+    const clearAction = () => {
+      setSelectedPolicyholders([]);
+      dispatch(opportunitiesDetailsActions.resetSettings());
+      dispatch(summaryChartsActions.clearAllChartsData());
+      dispatch(
+        policyholderFilterActions.setPolicyholderSelection({
+          selection: [],
+        }),
+      );
+      dispatch(summaryActions.setTotalPolicyholders(policyholders.length));
+    };
+    return selectedOpportunities.length > 0
+      ? renderOpportunitySelectionLossModal(
+          clearAction,
+          selectionLossModalRef.current,
+        )
+      : clearAction();
   };
 
   const handleApplyFilter = () => {
-    const count = selectedPolicyholders.length;
-    dispatch(opportunitiesDetailsActions.resetSettings());
-    dispatch(summaryChartsActions.clearAllChartsData());
-    dispatch(
-      policyholderFilterActions.setPolicyholderSelection({
-        selection: selectedPolicyholders.map(selected => selected.federalId),
-      }),
-    );
-    if (count > 0) {
-      dispatch(summaryActions.setTotalPolicyholders(count));
-      TagManager.dataLayer({
-        dataLayer: {
-          event: 'ClickApplyPolicyholderFilterButton',
-          policyholderCount: count,
-        },
-      });
-    } else {
-      dispatch(summaryActions.setTotalPolicyholders(policyholders.length));
-    }
+    const applyAction = () => {
+      const count = selectedPolicyholders.length;
+      dispatch(opportunitiesDetailsActions.resetSettings());
+      dispatch(summaryChartsActions.clearAllChartsData());
+      dispatch(
+        policyholderFilterActions.setPolicyholderSelection({
+          selection: selectedPolicyholders.map(selected => selected.federalId),
+        }),
+      );
+      if (count > 0) {
+        dispatch(summaryActions.setTotalPolicyholders(count));
+        TagManager.dataLayer({
+          dataLayer: {
+            event: 'ClickApplyPolicyholderFilterButton',
+            policyholderCount: count,
+          },
+        });
+      } else {
+        dispatch(summaryActions.setTotalPolicyholders(policyholders.length));
+      }
+    };
+
+    return selectedOpportunities.length > 0
+      ? renderOpportunitySelectionLossModal(
+          applyAction,
+          selectionLossModalRef.current,
+        )
+      : applyAction();
   };
 
   return (
@@ -219,6 +241,7 @@ const PolicyholderFilterSelector: React.FC = () => {
           </Button>
         </div>
       </div>
+      <div ref={selectionLossModalRef} />
     </div>
   );
 };

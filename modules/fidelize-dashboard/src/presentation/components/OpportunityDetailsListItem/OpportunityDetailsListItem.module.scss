@@ -1,11 +1,23 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
 .opportunity-details-listitem__wrapper {
-  padding: spacing('l');
-  display: grid;
-  grid-template-columns: 100px 190px 120px 240px 136px 32px;
-  column-gap: spacing('l') + spacing('xs');
+  padding: spacing('l') spacing('m');
   border-bottom: 1px solid color('grey-200');
+  display: grid;
+  grid-template-columns: 40px 142px 222px 142px 250px 160px;
+  box-sizing: border-box;
+  height: 82px;
+
+  &--expired {
+    & span,
+    p {
+      color: color('grey-500');
+    }
+  }
+
+  &--selected {
+    background-color: rgba(241, 245, 247, 0.7);
+  }
 
   &:hover {
     background-color: rgba(241, 245, 247, 0.7);
@@ -16,17 +28,32 @@
     border-bottom: none;
   }
 
-  &--expired {
-    & span,
-    p {
-      color: color('grey-500');
+  & > .opportunity-details-listitem__column:first-child {
+    display: block;
+    padding-left: spacing('xs');
+  }
+
+  & > .opportunity-details-listitem__column:last-child {
+    flex-flow: row;
+    justify-content: space-between;
+    & > p {
+      align-self: center;
     }
   }
 
   @media screen and (min-width: 1008px) {
+    &:not(.opportunity-details-listitem__wrapper--selected)
+      .opportunity-details-listitem__column:first-child {
+      & > label {
+        opacity: 0;
+      }
+    }
+
     &:hover {
-      & .opportunity-details-listitem__column:last-child {
-        & > button {
+      & .opportunity-details-listitem__column:first-child,
+      .opportunity-details-listitem__column:last-child {
+        & > label,
+        > button {
           opacity: 1;
           transition: all 0.3s ease-in-out;
           cursor: pointer;
@@ -40,6 +67,10 @@
   align-self: center;
   display: flex;
   flex-flow: column;
+
+  &:not(:first-child, :last-child) {
+    padding-right: spacing('l') + spacing('xs');
+  }
 }
 
 .opportunity-details-listitem__label {
@@ -91,8 +122,26 @@
   }
 }
 
+.opportunity-details-listitem__modal-trigger {
+  border: none;
+  width: spacing('xl');
+  height: spacing('xl');
+  background-color: transparent;
+  display: inline-flex;
+  text-align: center;
+
+  & i {
+    color: color('brand-primary');
+    align-self: center;
+  }
+
+  @media screen and (min-width: 1008px) {
+    opacity: 0;
+  }
+}
+
 @media screen and (max-width: 1008px) {
   .opportunity-details-listitem__wrapper {
-    width: fit-content
+    width: fit-content;
   }
 }

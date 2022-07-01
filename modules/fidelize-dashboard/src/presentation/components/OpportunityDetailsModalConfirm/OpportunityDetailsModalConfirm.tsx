@@ -1,14 +1,14 @@
 import { Button } from 'junto-design-system';
 import { nanoid } from 'nanoid';
 import { thousandSeparator } from '@shared/utils';
-import { getLabelByModality } from '../../../helpers';
+import { formatDateString, getLabelByModality } from '../../../helpers';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import { ModalityEnum } from '../../../application/types/model';
 import styles from './OpportunityDetailsModalConfirm.module.scss';
 
 interface OpportunityDetailsModalConfirmProps {
   modality: ModalityEnum;
-  opportunity: OpportunityDetailsItemDTO;
+  opportunities: OpportunityDetailsItemDTO[];
   isSubmitting: boolean;
   onSubmit: () => void;
   renderError: () => JSX.Element | null;
@@ -18,23 +18,22 @@ interface OpportunityDetailsModalConfirmProps {
 const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmProps> =
   ({
     modality,
-    opportunity,
+    opportunities,
     isSubmitting,
     onSubmit,
     renderError,
     renderDisclaimer,
   }) => {
-    const {
-      category,
-      policyholder,
-      securityAmount,
-      observation,
-      mappingDate,
-      relevance,
-      expired,
-    } = opportunity;
-
     const getDataToRender = () => {
+      const {
+        category,
+        policyholder,
+        securityAmount,
+        observation,
+        mappingDate,
+        relevance,
+        expired,
+      } = opportunities[0];
       return [
         { label: 'Tomador', value: policyholder },
         {
@@ -47,7 +46,10 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
           label: 'Importância segurada',
           value: `R$ ${thousandSeparator(securityAmount, '.', 2)}`,
         },
-        { label: 'Data do mapeamento', value: mappingDate },
+        {
+          label: 'Data do mapeamento',
+          value: formatDateString(mappingDate, 'dd/MMM/yy'),
+        },
         {
           label: 'Relevância',
           value: expired ? 'Expirada' : relevance,
@@ -82,10 +84,15 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
 
     return (
       <>
-        <p className={styles['opportunity-details-modal-confirm__title']}>
-          Oportunidade {getLabelByModality(modality)} selecionada:
-        </p>
-        {renderOpportunityData()}
+        {opportunities.length === 1 && (
+          // Renders only when there is one opportunity
+          <>
+            <p className={styles['opportunity-details-modal-confirm__title']}>
+              Oportunidade {getLabelByModality(modality)} selecionada:
+            </p>
+            {renderOpportunityData()}
+          </>
+        )}
         <div className={styles['opportunity-details-modal-confirm__submit']}>
           {renderError()}
           <Button

@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import {
@@ -6,9 +7,11 @@ import {
 } from '../../../application/types/model';
 import {
   opportunitiesDetailsActions,
+  selectSelectedOpportunities,
   selectSettingsByModality,
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import styles from './OpportunityDetailsListHeader.module.scss';
+import { renderOpportunitySelectionLossModal } from '../../../helpers';
 
 export interface OpportunityDetailsListHeaderProps {
   modality: ModalityEnum;
@@ -16,6 +19,7 @@ export interface OpportunityDetailsListHeaderProps {
 
 const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> =
   ({ modality }) => {
+    const selectionLossModalRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
     const { orderBy, direction } = useSelector(
       selectSettingsByModality(modality),
@@ -23,6 +27,7 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
       orderBy: OpportunityDetailsOrderEnum.RELEVANCE,
       direction: 'desc',
     };
+    const selectedOpportunities = useSelector(selectSelectedOpportunities);
 
     const columns = [
       { title: 'RELEVÂNCIA', value: OpportunityDetailsOrderEnum.RELEVANCE },
@@ -39,13 +44,21 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
       orderBy: OpportunityDetailsOrderEnum,
       direction: 'asc' | 'desc',
     ) => {
-      dispatch(
-        opportunitiesDetailsActions.setOrderAndDirection({
-          modality,
-          orderBy,
-          direction,
-        }),
-      );
+      const dispatcher = () => {
+        dispatch(
+          opportunitiesDetailsActions.setOrderAndDirection({
+            modality,
+            orderBy,
+            direction,
+          }),
+        );
+      };
+      return selectedOpportunities.length > 0
+        ? renderOpportunitySelectionLossModal(
+            dispatcher,
+            selectionLossModalRef.current,
+          )
+        : dispatcher();
     };
 
     const renderColumns = () => {
@@ -97,7 +110,9 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
 
     return (
       <div className={styles['opportunity-details-header__wrapper']}>
+        <div className={styles['opportunity-details-header__column']} />
         {renderColumns()}
+        <div ref={selectionLossModalRef} />
       </div>
     );
   };
