@@ -4,7 +4,12 @@ import { DashboardTotalCard } from '../DashboardTotalCard';
 import styles from './DashboardSummary.module.scss';
 import { selectPolicyholdersSummary } from '../../../application/features/summary/SummarySlice';
 
-const DashboardSummary: React.FC = () => {
+interface DashboardSummaryProps {
+  totalOpportunities: number | undefined;
+  errorModalitySummary: boolean
+}
+
+const DashboardSummary: React.FC<DashboardSummaryProps> = ({totalOpportunities, errorModalitySummary}) => {
   const { totalPolicyholders, errorPolicyholders } = useSelector(
     selectPolicyholdersSummary,
   );
@@ -15,6 +20,11 @@ const DashboardSummary: React.FC = () => {
         value: totalPolicyholders,
         error: errorPolicyholders,
       },
+      {
+        key: 'opportunities',
+        value: totalOpportunities,
+        error: errorModalitySummary,
+      },    
     ];
 
     return SUMMARY_CARDS.map(item => {

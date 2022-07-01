@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Divider, Tabs, Tab } from 'junto-design-system';
 import { useSelector, useDispatch } from 'react-redux';
 import TagManager from 'react-gtm-module';
+import { ModalitiesSummaryDTO } from 'modules/fidelize-dashboard/src/application/types/dto';
 import DashboardHeader from '../../components/DashboardHeader';
 import DashboardSummary from '../../components/DashboardSummary';
 import ModalitySummary from '../../components/ModalitySummary';
@@ -22,7 +23,6 @@ import {
 import { selectPolicyholderSelection } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 import SummaryApi from '../../../application/features/summary/SummaryApi';
 import { ModalityEnum } from '../../../application/types/model';
-import { ModalitySummaryDTO } from '../../../application/types/dto';
 import { MODALITIES_IDS } from '../../../constants';
 import {
   getLabelByModality,
@@ -45,8 +45,8 @@ function DashboardContainer() {
   const [loadingModalitySummary, setLoadingModalitySummary] = useState(true);
   const [errorModalitySummary, setErrorModalitySummary] = useState(false);
   const [modalitiesSummaryData, setModalitiesSummaryData] = useState<
-    ModalitySummaryDTO[]
-  >([]);
+    ModalitiesSummaryDTO
+  >();
 
   useEffect(() => {
     dispatch(fetchAccessToFeature(AccessFeatureEnum.LABOR_MODALITY));
@@ -85,7 +85,7 @@ function DashboardContainer() {
 
   const getDataToRender = (modality: ModalityEnum) => {
     return (
-      modalitiesSummaryData.find(data => data.modality === modality) || {
+      modalitiesSummaryData?.totalsModalities.find(data => data.modality === modality) || {
         modality,
         totalOpportunities: 0,
         totalInsuredAmount: 0,
@@ -159,7 +159,10 @@ function DashboardContainer() {
       <DashboardHeader />
       <Divider />
       <PolicyholderFilterSelector />
-      <DashboardSummary />
+      <DashboardSummary 
+        totalOpportunities={loadingModalitySummary ? undefined : (modalitiesSummaryData?.totalOpportunities ?? 0)}
+        errorModalitySummary={errorModalitySummary}
+      />
       <h2 className={styles['dashboard-container__modalities-title']}>
         Oportunidades por modalidade
       </h2>

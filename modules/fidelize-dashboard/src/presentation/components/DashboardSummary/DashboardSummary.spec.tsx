@@ -14,7 +14,7 @@ describe('DashboardSummary', () => {
   it('Should render policyholder total card with store values correctly', async () => {
     const { findByText } = render(
       <Provider store={store}>
-        <DashboardSummary />
+        <DashboardSummary totalOpportunities={undefined} errorModalitySummary={false}/>
       </Provider>,
     );
 
@@ -29,13 +29,38 @@ describe('DashboardSummary', () => {
   it('Should render policyholder total card with error if store flag is set to true', async () => {
     const { findByText } = render(
       <Provider store={store}>
-        <DashboardSummary />
+        <DashboardSummary totalOpportunities={undefined} errorModalitySummary={false}/>
       </Provider>,
     );
 
     await act(async () => {
       store.dispatch(summaryActions.setErrorPolicyholders(true));
     });
+
+    expect(
+      await findByText(
+        'Ocorreu um erro inesperado ao carregar esta informação.',
+      ),
+    ).toBeTruthy();
+  });
+
+  it('Should render total opportunities card with values correctly', async () => {
+    const { findByText } = render(
+      <Provider store={store}>
+        <DashboardSummary totalOpportunities={200} errorModalitySummary={false}/>
+      </Provider>,
+    );
+
+    expect(await findByText('200')).toBeInTheDocument();
+    expect(await findByText('Total de oportunidades')).toBeInTheDocument();
+  });
+
+  it('Should render total opportunities card with error if request fail', async () => {
+    const { findByText } = render(
+      <Provider store={store}>
+        <DashboardSummary totalOpportunities={undefined} errorModalitySummary/>
+      </Provider>,
+    );
 
     expect(
       await findByText(

@@ -6,7 +6,8 @@ import {
   ModalitySummaryDTO,
   PolicyholderDTO,
   SummaryChartDataDTO,
-} from 'modules/fidelize-dashboard/src/application/types/dto';
+ ModalitiesSummaryDTO } from 'modules/fidelize-dashboard/src/application/types/dto';
+
 import SummaryChartsApi from '../../../application/features/summaryCharts/SummaryChartsApi';
 import AccessCheckApi from '../../../application/features/accessCheck/AccessCheckApi';
 import PolicyholderFilterApi from '../../../application/features/policyholderFilter/PolicyholderFilterApi';
@@ -51,18 +52,22 @@ describe('DashboardContainer', () => {
     const apiMock = jest
       .spyOn(SummaryApi, 'getModalitiesSummary')
       .mockImplementation(async () => {
-        return [
-          {
-            modality: 'fiscal',
-            totalOpportunities: 100,
-            totalInsuredAmount: 1000000,
-          },
-          {
-            modality: 'labor',
-            totalOpportunities: 350,
-            totalInsuredAmount: 2550000,
-          },
-        ] as ModalitySummaryDTO[];
+        return {
+          totalOpportunities: 450,
+          totalInsuredAmount: 3550000,
+          totalsModalities: [
+            {
+              modality: 'fiscal',
+              totalOpportunities: 100,
+              totalInsuredAmount: 1000000,
+            },
+            {
+              modality: 'labor',
+              totalOpportunities: 350,
+              totalInsuredAmount: 2550000,
+            },
+          ]
+        } as ModalitiesSummaryDTO;
       });
     await store.dispatch(fetchAccessToFeature('TRABALHISTA'));
 

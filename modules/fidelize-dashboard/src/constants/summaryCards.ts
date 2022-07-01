@@ -8,14 +8,14 @@ export const SUMMARY_CARDS = [
     label: 'Tomadores',
     useChangeValue: false,
   },
-  /* {
+  {
     key: 'opportunities',
     icon: 'file',
     valueFormatter: thousandSeparator,
     label: 'Total de oportunidades',
     useChangeValue: false,
   },
-  {
+  /* {
     key: 'is',
     icon: 'dollar-sign',
     valueFormatter: undefined,
