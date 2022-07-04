@@ -6,10 +6,11 @@ import { selectPolicyholdersSummary } from '../../../application/features/summar
 
 interface DashboardSummaryProps {
   totalOpportunities: number | undefined;
+  totalInsuredAmount: number | undefined;
   errorModalitySummary: boolean
 }
 
-const DashboardSummary: React.FC<DashboardSummaryProps> = ({totalOpportunities, errorModalitySummary}) => {
+const DashboardSummary: React.FC<DashboardSummaryProps> = ({totalOpportunities, totalInsuredAmount, errorModalitySummary}) => {
   const { totalPolicyholders, errorPolicyholders } = useSelector(
     selectPolicyholdersSummary,
   );
@@ -24,11 +25,16 @@ const DashboardSummary: React.FC<DashboardSummaryProps> = ({totalOpportunities, 
         key: 'opportunities',
         value: totalOpportunities,
         error: errorModalitySummary,
+      },   
+      {
+        key: 'is',
+        value: totalInsuredAmount,
+        error: errorModalitySummary,
       },    
     ];
 
     return SUMMARY_CARDS.map(item => {
-      const { icon, key, label, useChangeValue, valueFormatter } = item;
+      const { icon, key, label, useChangeValue, valueFormatter, isMoney } = item;
       const dataToRender = mapConstantsToState.find(each => each.key === key);
 
       if (!dataToRender) return null;
@@ -36,6 +42,7 @@ const DashboardSummary: React.FC<DashboardSummaryProps> = ({totalOpportunities, 
 
       return (
         <DashboardTotalCard
+          isMoney={isMoney}
           key={key}
           icon={icon}
           totalLabel={label}

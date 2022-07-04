@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import styles from './DashboardTotalCard.module.scss';
 
 export interface DashboardTotalCardProps {
+  isMoney: boolean;
   icon: string;
   totalValue?: string | null;
   totalLabel: string;
@@ -12,6 +13,7 @@ export interface DashboardTotalCardProps {
 }
 
 export const DashboardTotalCard: React.FC<DashboardTotalCardProps> = ({
+  isMoney,
   icon,
   totalValue,
   totalLabel,
@@ -52,7 +54,7 @@ export const DashboardTotalCard: React.FC<DashboardTotalCardProps> = ({
               )}
             />
           </div>
-          <p className={styles['dashboard-total-card__value']}>{totalValue}</p>
+          <p className={styles['dashboard-total-card__value']}>{isMoney ? `R$ ${totalValue}` : totalValue}</p>
           <p className={styles['dashboard-total-card__label']}>{totalLabel}</p>
           {changedValue && (
             <p className={styles['dashboard-total-card__changed-value']}>

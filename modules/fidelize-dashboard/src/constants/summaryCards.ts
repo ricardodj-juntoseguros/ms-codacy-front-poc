@@ -1,4 +1,4 @@
-import { thousandSeparator } from '@shared/utils';
+import { thousandSeparator, thousandTextFormatter } from '@shared/utils';
 
 export const SUMMARY_CARDS = [
   {
@@ -7,6 +7,7 @@ export const SUMMARY_CARDS = [
     valueFormatter: thousandSeparator,
     label: 'Tomadores',
     useChangeValue: false,
+    isMoney: false
   },
   {
     key: 'opportunities',
@@ -14,15 +15,17 @@ export const SUMMARY_CARDS = [
     valueFormatter: thousandSeparator,
     label: 'Total de oportunidades',
     useChangeValue: false,
+    isMoney: false
   },
-  /* {
+   {
     key: 'is',
     icon: 'dollar-sign',
-    valueFormatter: undefined,
+    valueFormatter: thousandTextFormatter,
     label: 'Em importância segurada (IS)',
     useChangeValue: false,
+    isMoney: true
   },
-  {
+  /* {
     key: 'premium',
     icon: 'dollar-sign',
     valueFormatter: undefined,

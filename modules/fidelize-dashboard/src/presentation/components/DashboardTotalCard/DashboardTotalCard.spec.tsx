@@ -5,6 +5,7 @@ describe('DashboardTotalCard', () => {
   it('Should render successfully', () => {
     const component = render(
       <DashboardTotalCard
+        isMoney={false}
         icon="check"
         totalLabel="Teste 123"
         totalValue="Teste ABC"

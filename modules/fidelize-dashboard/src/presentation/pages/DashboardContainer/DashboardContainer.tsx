@@ -161,6 +161,7 @@ function DashboardContainer() {
       <PolicyholderFilterSelector />
       <DashboardSummary 
         totalOpportunities={loadingModalitySummary ? undefined : (modalitiesSummaryData?.totalOpportunities ?? 0)}
+        totalInsuredAmount={loadingModalitySummary ? undefined : (modalitiesSummaryData?.totalInsuredAmount ?? 0)}
         errorModalitySummary={errorModalitySummary}
       />
       <h2 className={styles['dashboard-container__modalities-title']}>
