@@ -37,9 +37,9 @@ describe('Opportunities', () => {
 
   it('Deve validar dados da trabalhista', () => {
     cy.get(selectors.opportunityDetailsList.laborTab)
-    .should('be.visible')
-    .wait(6000)
-    .click();
+      .should('be.visible')
+      .wait(6000)
+      .click();
 
     cy.get(
       '.ModalitySummary_modality-summary__wrapper__c_k1B > :nth-child(1)',
@@ -71,6 +71,34 @@ describe('Opportunities', () => {
       .within(() => {
         cy.get(selectors.modal.primaryButton).click();
     });
+
+    cy.get(selectors.opportunityDetailsList.email)
+      .type('ti_homologacao@juntoseguros.com');
+
+    cy.get(selectors.opportunityDetailsList.sendButton)
+      .should('be.visible')
+      .click();
+
+    cy.get(selectors.modal.title)
+      .contains(messages.moreDetailsSuccess);
+  });
+
+  it('Deve navegar até a guia Trabalhista e validar seleção de multipla', () => {
+    cy.get(selectors.opportunityDetailsList.laborTab)
+      .should('be.visible')
+      .wait(6000)
+      .click();
+
+    cy.get('.Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]').eq(0).click().wait(1000);
+
+    cy.get('.Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]').eq(1).click().wait(1000);
+
+    cy.get('.Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]').eq(2).click().wait(1000);
+    
+    cy.get('[data-testid=btn-more-details-footer]')
+      .click();
+
+    cy.get(selectors.modal.primaryButton).click();
 
     cy.get(selectors.opportunityDetailsList.email)
       .type('ti_homologacao@juntoseguros.com');
