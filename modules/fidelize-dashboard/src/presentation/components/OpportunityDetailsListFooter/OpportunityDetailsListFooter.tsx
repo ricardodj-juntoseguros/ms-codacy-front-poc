@@ -4,6 +4,7 @@ import { Button } from 'junto-design-system';
 import { thousandSeparator } from '@shared/utils';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import styles from './OpportunityDetailsListFooter.module.scss';
+import { OpportunityDetailsCategoryEnum } from '../../../application/types/model';
 
 interface OpportunityDetailsListFooterProps {
   listContainerRef: React.RefObject<HTMLDivElement>;
@@ -47,12 +48,21 @@ const OpportunityDetailsListFooter: React.FC<OpportunityDetailsListFooterProps> 
     };
 
     const getInsuredAmountTotalizer = () => {
+      if (!selectedOpportunities.find(op => op.securityAmount !== null))
+        return '';
+      const hasNewIssue = selectedOpportunities.find(
+        op =>
+          op.category === OpportunityDetailsCategoryEnum.NEW_ISSUE &&
+          op.securityAmount !== null,
+      );
       const sum = selectedOpportunities
         .map(o => o.securityAmount)
         .reduce((accumulator, current) => {
-          return accumulator + current;
+          return (accumulator || 0) + (current || 0);
         });
-      return thousandSeparator(sum, '.', 2);
+      return `, totalizando R$  ${thousandSeparator(sum, '.', 2)} em IS${
+        hasNewIssue ? ' aproximada' : ''
+      }.`;
     };
 
     return (
@@ -81,7 +91,7 @@ const OpportunityDetailsListFooter: React.FC<OpportunityDetailsListFooterProps> 
               {getSelectionCount()}
             </p>
             <p className={styles['opportunity-details-list-footer__totalizer']}>
-              , totalizando R$ {getInsuredAmountTotalizer()} em IS.
+              {getInsuredAmountTotalizer()}
             </p>
           </div>
           <div>

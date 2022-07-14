@@ -3,7 +3,10 @@ import { nanoid } from 'nanoid';
 import { thousandSeparator } from '@shared/utils';
 import { formatDateString, getLabelByModality } from '../../../helpers';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
-import { ModalityEnum } from '../../../application/types/model';
+import {
+  ModalityEnum,
+  OpportunityDetailsCategoryEnum,
+} from '../../../application/types/model';
 import styles from './OpportunityDetailsModalConfirm.module.scss';
 
 interface OpportunityDetailsModalConfirmProps {
@@ -43,8 +46,16 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
           }`,
         },
         {
-          label: 'Importância segurada',
-          value: `R$ ${thousandSeparator(securityAmount, '.', 2)}`,
+          label: `Importância segurada${
+            category === OpportunityDetailsCategoryEnum.NEW_ISSUE &&
+            securityAmount !== null
+              ? ' aproximada'
+              : ''
+          }`,
+          value:
+            securityAmount !== null
+              ? `R$ ${thousandSeparator(securityAmount, '.', 2)}`
+              : 'Valor a definir',
         },
         {
           label: 'Data do mapeamento',

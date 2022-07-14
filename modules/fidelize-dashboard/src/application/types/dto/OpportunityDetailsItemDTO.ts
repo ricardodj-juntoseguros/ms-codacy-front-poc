@@ -1,11 +1,15 @@
-import { OpportunityDetailsTypeEnum, OpportunityRelevanceEnum } from '../model';
+import {
+  OpportunityDetailsTypeEnum,
+  OpportunityRelevanceEnum,
+  OpportunityDetailsCategoryEnum,
+} from '../model';
 
 export interface OpportunityDetailsItemDTO {
   id: string;
   relevance: OpportunityRelevanceEnum;
   type: OpportunityDetailsTypeEnum;
-  category: string;
-  securityAmount: number;
+  category: OpportunityDetailsCategoryEnum;
+  securityAmount: number | null;
   policyholder: string;
   expiration: string | null;
   mappingDate: string;

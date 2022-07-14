@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import { fireEvent, render } from '@testing-library/react';
 import { OpportunityDetailsItemDTO } from 'modules/fidelize-dashboard/src/application/types/dto';
 import {
+  OpportunityDetailsCategoryEnum,
   OpportunityDetailsTypeEnum,
   OpportunityRelevanceEnum,
 } from 'modules/fidelize-dashboard/src/application/types/model';
@@ -18,7 +19,7 @@ describe('OpportunityDetailsListFooter', () => {
         id: '38bb2d24-6056-4310-a62c-e98b9867d179',
         relevance: OpportunityRelevanceEnum.HIGH,
         type: OpportunityDetailsTypeEnum.LABOR,
-        category: 'Renovação',
+        category: OpportunityDetailsCategoryEnum.RENEWAL,
         securityAmount: 50000,
         policyholder: 'Tomador 1',
         expiration: '2024-10-15T03:00:00Z',
@@ -30,7 +31,7 @@ describe('OpportunityDetailsListFooter', () => {
         id: '0c3e0081-8afc-4c32-b6ca-28acf6b406da',
         relevance: OpportunityRelevanceEnum.HIGH,
         type: OpportunityDetailsTypeEnum.LABOR,
-        category: 'Renovação',
+        category: OpportunityDetailsCategoryEnum.RENEWAL,
         securityAmount: 20000,
         policyholder: 'Tomador 2',
         expiration: '2024-11-25T03:00:00Z',

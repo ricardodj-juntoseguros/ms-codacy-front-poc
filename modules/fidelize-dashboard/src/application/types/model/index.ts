@@ -7,6 +7,7 @@ export * from './OpportunitiesDetailsModel';
 export * from './OpportunityRelevanceEnum';
 export * from './PolicyholderFilterModel';
 export * from './OpportunityDetailsTypeEnum';
+export * from './OpportunityDetailsCategoryEnum';
 export * from './OpportunityDetailsOrderEnum';
 export * from './SummaryChartsModel';
 export * from './SummaryChartTypeEnum';

@@ -1,9 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Checkbox } from 'junto-design-system';
+import { Checkbox, Tooltip } from 'junto-design-system';
 import classNames from 'classnames';
 import { thousandSeparator } from '@shared/utils';
-import { OpportunityRelevanceEnum } from '../../../application/types/model';
+import {
+  OpportunityDetailsCategoryEnum,
+  OpportunityRelevanceEnum,
+} from '../../../application/types/model';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import {
   opportunitiesDetailsActions,
@@ -24,6 +27,9 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
   onMoreDetailsClick,
 }) => {
   const dispatch = useDispatch();
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const approximateIconRef = useRef<HTMLSpanElement>(null);
+  const valueToDefineIconRef = useRef<HTMLSpanElement>(null);
   const selectedOpportunities = useSelector(selectSelectedOpportunities);
   const {
     id,
@@ -35,6 +41,9 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
     expired,
     observation,
   } = opportunity;
+
+  const isNewIssue = category === OpportunityDetailsCategoryEnum.NEW_ISSUE;
+  const isValueToDefine = isNewIssue && securityAmount === null;
 
   const isOpportunitySelected = useMemo(
     () => selectedOpportunities.some(o => o.id === id),
@@ -61,6 +70,37 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       default:
         return null;
     }
+  };
+
+  const renderSecurityAmountColumn = () => {
+    const labelContent = isValueToDefine
+      ? 'Valor a definir'
+      : thousandSeparator(securityAmount, '.', 2);
+
+    return !isNewIssue ? (
+      labelContent
+    ) : (
+      <>
+        {isValueToDefine ? labelContent : ''}
+        <span
+          onMouseEnter={() => setTooltipVisible(true)}
+          onMouseLeave={() => setTooltipVisible(false)}
+          className={classNames(
+            styles['opportunity-details-listitem__label-icon'],
+            {
+              [styles['opportunity-details-listitem__label-icon--info']]:
+                isValueToDefine,
+            },
+          )}
+          ref={isValueToDefine ? valueToDefineIconRef : approximateIconRef}
+        >
+          <i
+            className={isValueToDefine ? 'icon-info' : 'icon-approximate-value'}
+          />
+        </span>
+        {!isValueToDefine ? labelContent : ''}
+      </>
+    );
   };
 
   return (
@@ -111,8 +151,20 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <p className={styles['opportunity-details-listitem__label']}>
-          {thousandSeparator(securityAmount, '.', 2)}
+          {renderSecurityAmountColumn()}
         </p>
+        <Tooltip
+          anchorRef={
+            isValueToDefine ? valueToDefineIconRef : approximateIconRef
+          }
+          text={
+            isValueToDefine
+              ? 'Valor a ser definido de acordo com o valor da sentença na fase de execução do processo.'
+              : 'Valor aproximado'
+          }
+          visible={tooltipVisible}
+          position="top"
+        />
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <p

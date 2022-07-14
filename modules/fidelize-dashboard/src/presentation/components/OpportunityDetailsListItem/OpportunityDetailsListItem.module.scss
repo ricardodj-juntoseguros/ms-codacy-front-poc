@@ -4,7 +4,7 @@
   padding: spacing('l') spacing('m');
   border-bottom: 1px solid color('grey-200');
   display: grid;
-  grid-template-columns: 40px 142px 222px 142px 250px 160px;
+  grid-template-columns: 40px 142px 222px 154px 250px 160px;
   box-sizing: border-box;
   height: 82px;
 
@@ -71,12 +71,27 @@
   &:not(:first-child, :last-child) {
     padding-right: spacing('l') + spacing('xs');
   }
+
+  &:nth-child(4) {
+    padding-right: spacing('xxl');
+
+    & > p {
+      align-self: flex-end;
+    }
+  }
+
+  &:nth-child(5) {
+    padding-right: spacing('l');
+  }
 }
 
 .opportunity-details-listitem__label {
   @include font('sm');
   color: color('dark');
   margin: 0px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
 }
 
 .opportunity-details-listitem__label-helper {
@@ -91,6 +106,25 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow-x: hidden;
+}
+
+.opportunity-details-listitem__label-icon {
+  color: color('grey-400');
+  margin-right: spacing('xs');
+  display: inline-block;
+  margin-top: spacing('xs');
+  cursor: pointer;
+
+  &--info {
+    margin-right: 0px;
+    margin-left: 4px;
+    & > i {
+      &::before {
+        font-size: spacing('m') !important;
+        line-height: spacing('m') !important;
+      }
+    }
+  }
 }
 
 .opportunity-details-listitem__relevance-tag {

@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import '@testing-library/jest-dom';
 import {
   ModalityEnum,
+  OpportunityDetailsCategoryEnum,
   OpportunityDetailsTypeEnum,
   OpportunityRelevanceEnum,
 } from '../../../application/types/model';
@@ -20,7 +21,7 @@ describe('OpportunityDetailsModal', () => {
 
   it('Should render the confirmation step correctly when opportunity prop is passed', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
-      category: 'Renovação',
+      category: OpportunityDetailsCategoryEnum.RENEWAL,
       type: OpportunityDetailsTypeEnum.FISCAL,
       id: 'id',
       policyholder: 'Teste tomador',
@@ -53,7 +54,7 @@ describe('OpportunityDetailsModal', () => {
 
   it('Should render the confirmation step correctly without opportunity prop when there is only one opportunity selected', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
-      category: 'Renovação',
+      category: OpportunityDetailsCategoryEnum.RENEWAL,
       type: OpportunityDetailsTypeEnum.LABOR,
       id: 'id',
       policyholder: 'Teste tomador',
@@ -96,7 +97,7 @@ describe('OpportunityDetailsModal', () => {
       });
     const onCloseMock = jest.fn();
     const opportunityMock: OpportunityDetailsItemDTO = {
-      category: 'Renovação',
+      category: OpportunityDetailsCategoryEnum.RENEWAL,
       type: OpportunityDetailsTypeEnum.FISCAL,
       id: 'id',
       policyholder: 'Teste tomador',
@@ -142,7 +143,7 @@ describe('OpportunityDetailsModal', () => {
       });
     const onCloseMock = jest.fn();
     const opportunityMock: OpportunityDetailsItemDTO = {
-      category: 'Renovação',
+      category: OpportunityDetailsCategoryEnum.RENEWAL,
       type: OpportunityDetailsTypeEnum.LABOR,
       id: 'id',
       policyholder: 'Teste tomador',
@@ -198,7 +199,7 @@ describe('OpportunityDetailsModal', () => {
         });
       });
     const opportunityMock: OpportunityDetailsItemDTO = {
-      category: 'Renovação',
+      category: OpportunityDetailsCategoryEnum.RENEWAL,
       type: OpportunityDetailsTypeEnum.FISCAL,
       id: 'id',
       policyholder: 'Teste tomador',
