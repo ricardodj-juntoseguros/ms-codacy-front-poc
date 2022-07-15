@@ -238,4 +238,32 @@ describe('Opportunity Details List Item', () => {
     );
     expect(getByText('Valor aproximado')).toBeInTheDocument();
   });
+
+  it('Should display tooltip when more details button is hovered', () => {
+    const opportunityMock: OpportunityDetailsItemDTO = {
+      category: OpportunityDetailsCategoryEnum.RENEWAL,
+      type: OpportunityDetailsTypeEnum.FISCAL,
+      id: 'id',
+      policyholder: 'Teste tomador',
+      relevance: OpportunityRelevanceEnum.HIGH,
+      expiration: '2026-01-01T10:00:00.000Z',
+      mappingDate: '2022-01-01T10:00:00.000Z',
+      securityAmount: 10000,
+      expired: false,
+      observation: 'Com vencimento em 01/jan/26',
+    };
+    const { getByText, getByTestId, queryByText } = render(
+      <Provider store={store}>
+        <OpportunityDetailsListItem
+          opportunity={opportunityMock}
+          checkable
+          onMoreDetailsClick={jest.fn()}
+        />
+      </Provider>,
+    );
+    fireEvent.mouseEnter(getByTestId('modal-trigger'));
+    expect(getByText('Quero mais detalhes')).toBeInTheDocument();
+    fireEvent.mouseLeave(getByTestId('modal-trigger'));
+    expect(queryByText('Quero mais detalhes')).not.toBeInTheDocument();
+  });
 });

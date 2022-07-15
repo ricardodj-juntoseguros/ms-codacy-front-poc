@@ -27,9 +27,13 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
   onMoreDetailsClick,
 }) => {
   const dispatch = useDispatch();
-  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [securityAmountTooltipVisible, setSecurityAmountTooltipVisible] =
+    useState(false);
+  const [moreDetailsTooltipVisible, setMoreDetailsTooltipVisible] =
+    useState(false);
   const approximateIconRef = useRef<HTMLSpanElement>(null);
   const valueToDefineIconRef = useRef<HTMLSpanElement>(null);
+  const moreDetailsButtonRef = useRef<HTMLButtonElement>(null);
   const selectedOpportunities = useSelector(selectSelectedOpportunities);
   const {
     id,
@@ -55,6 +59,11 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       ? opportunitiesDetailsActions.addOpportunityToSelection
       : opportunitiesDetailsActions.removeOpportunityFromSelection;
     dispatch(action(opportunity));
+  };
+
+  const handleMoreDetailsButtonHover = (mouseEnter: boolean) => {
+    if (window.innerWidth < 768) return;
+    setMoreDetailsTooltipVisible(mouseEnter);
   };
 
   const getRelevanceTagClassName = (relevance: OpportunityRelevanceEnum) => {
@@ -83,8 +92,8 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       <>
         {isValueToDefine ? labelContent : ''}
         <span
-          onMouseEnter={() => setTooltipVisible(true)}
-          onMouseLeave={() => setTooltipVisible(false)}
+          onMouseEnter={() => setSecurityAmountTooltipVisible(true)}
+          onMouseLeave={() => setSecurityAmountTooltipVisible(false)}
           className={classNames(
             styles['opportunity-details-listitem__label-icon'],
             {
@@ -162,7 +171,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
               ? 'Valor a ser definido de acordo com o valor da sentença na fase de execução do processo.'
               : 'Valor aproximado'
           }
-          visible={tooltipVisible}
+          visible={securityAmountTooltipVisible}
           position="top"
         />
       </div>
@@ -179,14 +188,25 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
           {formatDateString(mappingDate, 'dd/MMM/yy')}
         </p>
         {selectedOpportunities.length === 0 && (
-          <button
-            data-testid="modal-trigger"
-            type="button"
-            className={styles['opportunity-details-listitem__modal-trigger']}
-            onClick={() => onMoreDetailsClick(opportunity)}
-          >
-            <i className="icon icon-plus-circle" />
-          </button>
+          <>
+            <button
+              data-testid="modal-trigger"
+              type="button"
+              ref={moreDetailsButtonRef}
+              className={styles['opportunity-details-listitem__modal-trigger']}
+              onClick={() => onMoreDetailsClick(opportunity)}
+              onMouseEnter={() => handleMoreDetailsButtonHover(true)}
+              onMouseLeave={() => handleMoreDetailsButtonHover(false)}
+            >
+              <i className="icon icon-plus-circle" />
+            </button>
+            <Tooltip
+              anchorRef={moreDetailsButtonRef}
+              text="Quero mais detalhes"
+              visible={moreDetailsTooltipVisible}
+              position="top"
+            />
+          </>
         )}
       </div>
     </div>
