@@ -47,7 +47,7 @@ describe('Modality Summary', () => {
 
     expect(getByText('Op. trabalhistas')).toBeTruthy();
     expect(getByText('237.580')).toBeTruthy();
-    expect(getByText('Importância segurada')).toBeTruthy();
+    expect(getByText('Importância segurada aproximada')).toBeTruthy();
     expect(getByText('R$ 6,5 milhões')).toBeTruthy();
   });
 
