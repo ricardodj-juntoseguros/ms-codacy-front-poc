@@ -6,9 +6,12 @@ export const CHART_TYPES_BY_MODALITY = [
     chartTypes: [
       SummaryChartTypeEnum.SUBSTITUTION,
       SummaryChartTypeEnum.RENEWAL,
-      SummaryChartTypeEnum.NEW_ISSUES
+      SummaryChartTypeEnum.NEW_ISSUES,
     ],
   },
-  { modality: ModalityEnum.TRABALHISTA, chartTypes: [] },
+  {
+    modality: ModalityEnum.TRABALHISTA,
+    chartTypes: [SummaryChartTypeEnum.RENEWAL],
+  },
   { modality: ModalityEnum.CIVIL, chartTypes: [] },
 ];

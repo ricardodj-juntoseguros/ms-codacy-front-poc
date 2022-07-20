@@ -11,19 +11,28 @@ jest.mock('../SummaryChart', () => ({
 }));
 
 describe('ModalitySummaryCharts', () => {
-  it('Should render only renewal chart for modality FISCAL', () => {
-    const { getByTestId, container } = render(
+  it('Should render all charts for modality FISCAL', () => {
+    const { getByTestId } = render(
       <ModalitySummaryCharts modality={ModalityEnum.FISCAL} />,
     );
-    expect(container.children.length).toBe(1);
     expect(getByTestId('chart-fiscal-renewal-wrapper')).toBeInTheDocument();
+    expect(
+      getByTestId('chart-fiscal-substitution-wrapper'),
+    ).toBeInTheDocument();
+    expect(getByTestId('chart-fiscal-new-issues-wrapper')).toBeInTheDocument();
   });
 
-  it('Should render nothing for modality LABOR', () => {
-    const { container } = render(
+  it('Should render only renewal chart for modality LABOR', () => {
+    const { getByTestId, queryByTestId } = render(
       <ModalitySummaryCharts modality={ModalityEnum.TRABALHISTA} />,
     );
-    expect(container.children.length).toBe(0);
+    expect(getByTestId('chart-labor-renewal-wrapper')).toBeInTheDocument();
+    expect(
+      queryByTestId('chart-labor-substitution-wrapper'),
+    ).not.toBeInTheDocument();
+    expect(
+      queryByTestId('chart-labor-new-issues-wrapper'),
+    ).not.toBeInTheDocument();
   });
 
   it('Should render nothing for modality CIVEL', () => {

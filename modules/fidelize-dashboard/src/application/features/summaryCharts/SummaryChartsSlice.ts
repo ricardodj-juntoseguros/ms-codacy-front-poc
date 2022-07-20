@@ -31,6 +31,13 @@ const initialState: SummaryChartsModel = {
       error: false,
       data: {} as SummaryChartDataDTO,
     },
+    {
+      modality: ModalityEnum.TRABALHISTA,
+      chartType: SummaryChartTypeEnum.RENEWAL,
+      loading: true,
+      error: false,
+      data: null,
+    },
   ],
 };
 
@@ -57,7 +64,10 @@ const summaryChartsSlice = createSlice({
   reducers: {
     clearAllChartsData: state => {
       state.charts.forEach(chart => {
-        chart.data = chart.chartType === SummaryChartTypeEnum.NEW_ISSUES ? {} as SummaryChartDataDTO : null;
+        chart.data =
+          chart.chartType === SummaryChartTypeEnum.NEW_ISSUES
+            ? ({} as SummaryChartDataDTO)
+            : null;
       });
     },
   },

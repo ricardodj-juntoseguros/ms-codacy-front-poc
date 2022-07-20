@@ -105,19 +105,14 @@ const substitutionMock: SummaryChartDataDTO = {
       },
     },
   ],
-  categories: [
-    ['Penhora'],
-    ['Fiança'],
-    ['Depósito'],
-    ['Bloqueio', 'de Conta'],
-  ],
+  categories: [['Penhora'], ['Fiança'], ['Depósito'], ['Bloqueio', 'de Conta']],
   tooltip: {
     labels: [
-			"Penhora",
-			"Fiança Bancária",
-			"Depósito Judicial",
-			"Bloqueio de Conta"
-		]
+      'Penhora',
+      'Fiança Bancária',
+      'Depósito Judicial',
+      'Bloqueio de Conta',
+    ],
   },
 };
 
@@ -189,7 +184,7 @@ describe('SummaryChart', () => {
     store.dispatch(summaryChartsActions.clearAllChartsData());
   });
 
-  it('Should render correctly for renewal type chart', async () => {
+  it('Should render correctly for fiscal modality and renewal type chart', async () => {
     jest
       .spyOn(SummaryChartsApi, 'getChartData')
       .mockImplementation(async () => {
@@ -208,7 +203,7 @@ describe('SummaryChart', () => {
     expect(await findByText('Renovações fiscais')).toBeInTheDocument();
   });
 
-  it('Should render correctly for substitution type chart', async () => {
+  it('Should render correctly for fiscal modality and substitution type chart', async () => {
     jest
       .spyOn(SummaryChartsApi, 'getChartData')
       .mockImplementation(async () => {
@@ -227,6 +222,25 @@ describe('SummaryChart', () => {
     expect(await findByText('Substituições fiscais')).toBeInTheDocument();
   });
 
+  it('Should render correctly for labor modality and renewal type chart', async () => {
+    jest
+      .spyOn(SummaryChartsApi, 'getChartData')
+      .mockImplementation(async () => {
+        return renewalMock;
+      });
+
+    const { container, findByText } = render(
+      <Provider store={store}>
+        <SummaryChart
+          modality={ModalityEnum.TRABALHISTA}
+          chartType={SummaryChartTypeEnum.RENEWAL}
+        />
+      </Provider>,
+    );
+    expect(container).toBeInTheDocument();
+    expect(await findByText('Renovações trabalhistas')).toBeInTheDocument();
+  });
+
   it('Should render placeholder for new issues chart type', async () => {
     const { container, findByText } = render(
       <Provider store={store}>
@@ -239,9 +253,7 @@ describe('SummaryChart', () => {
     expect(container).toBeInTheDocument();
     expect(await findByText('Novas emissões fiscais')).toBeInTheDocument();
     expect(
-      await findByText(
-        'Tipo de oportunidade em construção',
-      ),
+      await findByText('Tipo de oportunidade em construção'),
     ).toBeInTheDocument();
   });
 
