@@ -19,18 +19,16 @@ describe('ModalitySummaryCharts', () => {
     expect(
       getByTestId('chart-fiscal-substitution-wrapper'),
     ).toBeInTheDocument();
-    expect(getByTestId('chart-fiscal-new-issues-wrapper')).toBeInTheDocument();
+    expect(getByTestId('chart-fiscal-new-issue-wrapper')).toBeInTheDocument();
   });
 
-  it('Should render renewal and substitution charts for modality LABOR', () => {
-    const { getByTestId, queryByTestId } = render(
+  it('Should render all charts for modality LABOR', () => {
+    const { getByTestId } = render(
       <ModalitySummaryCharts modality={ModalityEnum.TRABALHISTA} />,
     );
     expect(getByTestId('chart-labor-renewal-wrapper')).toBeInTheDocument();
     expect(getByTestId('chart-labor-substitution-wrapper')).toBeInTheDocument();
-    expect(
-      queryByTestId('chart-labor-new-issues-wrapper'),
-    ).not.toBeInTheDocument();
+    expect(getByTestId('chart-labor-new-issue-wrapper')).toBeInTheDocument();
   });
 
   it('Should render nothing for modality CIVEL', () => {

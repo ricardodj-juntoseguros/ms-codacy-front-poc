@@ -24,7 +24,6 @@ export const CHART_OPTIONS: ApexOptions = {
   legend: {
     position: 'top',
     fontSize: '14px',
-    offsetX: -55,
     fontWeight: 400,
     itemMargin: { horizontal: 8 },
     markers: {

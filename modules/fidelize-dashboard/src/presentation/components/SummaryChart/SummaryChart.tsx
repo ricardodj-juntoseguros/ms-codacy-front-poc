@@ -34,7 +34,7 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
   const filteredPolicyholders = useSelector(selectPolicyholderSelection);
 
   useEffect(() => {
-    if (!chartData?.data && chartType !== SummaryChartTypeEnum.NEW_ISSUES) {
+    if (!chartData?.data) {
       dispatch(
         fetchChartData({
           modality,
@@ -52,7 +52,7 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
         return 'Renovações';
       case SummaryChartTypeEnum.SUBSTITUTION:
         return 'Substituições';
-      case SummaryChartTypeEnum.NEW_ISSUES:
+      case SummaryChartTypeEnum.NEW_ISSUE:
         return 'Novas emissões';
       default:
         return '';
@@ -111,6 +111,7 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
     };
     options.legend = {
       ...options.legend,
+      offsetX: chartType === SummaryChartTypeEnum.NEW_ISSUE ? -15 : -55,
       formatter: getLegendFormatter(data),
     };
     return options;
@@ -158,8 +159,8 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
   const renderNotAvailable = () => {
     return (
       <div className={styles['summary-chart__not-available']}>
-          <UnderConstructionIllustration />
-          <p>Tipo de oportunidade em construção</p>
+        <UnderConstructionIllustration />
+        <p>Tipo de oportunidade em construção</p>
       </div>
     );
   };
@@ -182,7 +183,10 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
         </>
       );
     if (!data) return null;
-    if (chartType === SummaryChartTypeEnum.NEW_ISSUES) {
+    if (
+      chartType === SummaryChartTypeEnum.NEW_ISSUE &&
+      modality === ModalityEnum.FISCAL
+    ) {
       return (
         <>
           {contentTitle}

@@ -133,6 +133,61 @@ const substitutionMock = (modality: ModalityEnum): SummaryChartDataDTO => {
   };
 };
 
+const newIssueMock: SummaryChartDataDTO = {
+  series: [
+    {
+      values: {
+        name: 'oportunidades',
+        type: 'column',
+        color: '#9000ff',
+        data: [211, 946, 383, 7474],
+      },
+      metadata: {
+        useThousandFormatter: true,
+        preffix: '',
+        suffix: '',
+        legend: {
+          useThousandFormatter: false,
+          useThousandSeparator: true,
+          totalizer: 9014,
+        },
+      },
+    },
+    {
+      values: {
+        name: 'em IS aproximada',
+        type: 'line',
+        color: '#180a33',
+        data: [5733873.97, 31392728.33, 11744199.61, 272582976.63],
+      },
+      metadata: {
+        useThousandFormatter: true,
+        preffix: 'R$',
+        suffix: '',
+        legend: {
+          useThousandFormatter: true,
+          useThousandSeparator: false,
+          totalizer: 321453778.54,
+        },
+      },
+    },
+  ],
+  categories: [
+    ['Imedi', 'ato'],
+    ['Semanas', ''],
+    ['Meses', ''],
+    ['Indetermi', 'nado'],
+  ],
+  tooltip: {
+    labels: [
+      'Iminência imediata (de 1 a 30 dias)',
+      'Iminência de semanas (de 31 a 90 dias)',
+      'Iminência de meses (91 a 180 dias)',
+      'Iminência indeterminada',
+    ],
+  },
+};
+
 const emptyMock: SummaryChartDataDTO = {
   series: [
     {
@@ -277,12 +332,31 @@ describe('SummaryChart', () => {
     expect(await findByText('Substituições trabalhistas')).toBeInTheDocument();
   });
 
-  it('Should render placeholder for new issues chart type', async () => {
+  it('Should render correctly for labor modality and new issue type chart', async () => {
+    jest
+      .spyOn(SummaryChartsApi, 'getChartData')
+      .mockImplementation(async () => {
+        return newIssueMock;
+      });
+
+    const { container, findByText } = render(
+      <Provider store={store}>
+        <SummaryChart
+          modality={ModalityEnum.TRABALHISTA}
+          chartType={SummaryChartTypeEnum.NEW_ISSUE}
+        />
+      </Provider>,
+    );
+    expect(container).toBeInTheDocument();
+    expect(await findByText('Novas emissões trabalhistas')).toBeInTheDocument();
+  });
+
+  it('Should render placeholder for fiscal modality and new issues chart type', async () => {
     const { container, findByText } = render(
       <Provider store={store}>
         <SummaryChart
           modality={ModalityEnum.FISCAL}
-          chartType={SummaryChartTypeEnum.NEW_ISSUES}
+          chartType={SummaryChartTypeEnum.NEW_ISSUE}
         />
       </Provider>,
     );

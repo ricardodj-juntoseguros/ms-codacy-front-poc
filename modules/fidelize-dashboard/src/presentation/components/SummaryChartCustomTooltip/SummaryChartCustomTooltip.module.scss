@@ -27,7 +27,7 @@
   margin-bottom: spacing('s');
   @include font('xs-emphasys');
   color: color('dark');
-  word-break: break-all;
+  word-break: normal;
   white-space: normal;
 }
 
@@ -36,6 +36,8 @@
   margin-bottom: spacing('xs');
   @include font('xs');
   color: color('grey-600');
+  word-break: normal;
+  white-space: normal;
 
   &:last-child {
     margin-bottom: 0px;

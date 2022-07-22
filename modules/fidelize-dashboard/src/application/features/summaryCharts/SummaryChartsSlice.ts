@@ -26,7 +26,7 @@ const initialState: SummaryChartsModel = {
     },
     {
       modality: ModalityEnum.FISCAL,
-      chartType: SummaryChartTypeEnum.NEW_ISSUES,
+      chartType: SummaryChartTypeEnum.NEW_ISSUE,
       loading: false,
       error: false,
       data: {} as SummaryChartDataDTO,
@@ -41,6 +41,13 @@ const initialState: SummaryChartsModel = {
     {
       modality: ModalityEnum.TRABALHISTA,
       chartType: SummaryChartTypeEnum.SUBSTITUTION,
+      loading: true,
+      error: false,
+      data: null,
+    },
+    {
+      modality: ModalityEnum.TRABALHISTA,
+      chartType: SummaryChartTypeEnum.NEW_ISSUE,
       loading: true,
       error: false,
       data: null,
@@ -72,7 +79,8 @@ const summaryChartsSlice = createSlice({
     clearAllChartsData: state => {
       state.charts.forEach(chart => {
         chart.data =
-          chart.chartType === SummaryChartTypeEnum.NEW_ISSUES
+          chart.chartType === SummaryChartTypeEnum.NEW_ISSUE &&
+          chart.modality === ModalityEnum.FISCAL
             ? ({} as SummaryChartDataDTO)
             : null;
       });
