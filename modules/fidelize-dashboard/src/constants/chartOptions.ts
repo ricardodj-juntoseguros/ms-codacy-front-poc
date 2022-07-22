@@ -66,6 +66,7 @@ export const CHART_OPTIONS: ApexOptions = {
     labels: {
       rotate: 0,
       style: { fontSize: '10px', colors: '#4A5365' },
+      hideOverlappingLabels: false,
       show: true,
     },
     axisTicks: { show: true },

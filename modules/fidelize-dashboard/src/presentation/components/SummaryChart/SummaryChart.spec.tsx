@@ -66,54 +66,71 @@ const renewalMock: SummaryChartDataDTO = {
   },
 };
 
-const substitutionMock: SummaryChartDataDTO = {
-  series: [
-    {
-      values: {
-        name: 'oportunidades',
-        type: 'column',
-        color: '#9000ff',
-        data: [100, 200, 300, 400],
-      },
-      metadata: {
-        useThousandFormatter: true,
-        preffix: '',
-        suffix: '',
-        legend: {
-          useThousandFormatter: false,
-          useThousandSeparator: true,
-          totalizer: 1000,
+const substitutionMock = (modality: ModalityEnum): SummaryChartDataDTO => {
+  const categories =
+    modality === ModalityEnum.TRABALHISTA
+      ? [['Ordinário'], ['Revista'], ['Agravo', 'de Inst.'], ['Execução']]
+      : [['Penhora'], ['Fiança'], ['Depósito'], ['Bloqueio', 'de Conta']];
+
+  const tooltipLabels =
+    modality === ModalityEnum.TRABALHISTA
+      ? [
+          'Recurso Ordinário',
+          'Recurso de Revista',
+          'Agravo de Instrumento',
+          'Execução',
+        ]
+      : [
+          'Penhora',
+          'Fiança Bancária',
+          'Depósito Judicial',
+          'Bloqueio de Conta',
+        ];
+
+  return {
+    series: [
+      {
+        values: {
+          name: 'oportunidades',
+          type: 'column',
+          color: '#9000ff',
+          data: [100, 200, 300, 400],
         },
-      },
-    },
-    {
-      values: {
-        name: 'em IS',
-        type: 'line',
-        color: '#180a33',
-        data: [10000, 20000, 30000, 40000],
-      },
-      metadata: {
-        useThousandFormatter: true,
-        preffix: 'R$',
-        suffix: '',
-        legend: {
+        metadata: {
           useThousandFormatter: true,
-          useThousandSeparator: false,
-          totalizer: 100000,
+          preffix: '',
+          suffix: '',
+          legend: {
+            useThousandFormatter: false,
+            useThousandSeparator: true,
+            totalizer: 1000,
+          },
         },
       },
-    },
-  ],
-  categories: [['Penhora'], ['Fiança'], ['Depósito'], ['Bloqueio', 'de Conta']],
-  tooltip: {
-    labels: [
-      'Penhora',
-      'Fiança Bancária',
-      'Depósito Judicial',
-      'Bloqueio de Conta',
+      {
+        values: {
+          name: 'em IS',
+          type: 'line',
+          color: '#180a33',
+          data: [10000, 20000, 30000, 40000],
+        },
+        metadata: {
+          useThousandFormatter: true,
+          preffix: 'R$',
+          suffix: '',
+          legend: {
+            useThousandFormatter: true,
+            useThousandSeparator: false,
+            totalizer: 100000,
+          },
+        },
+      },
     ],
-  },
+    categories,
+    tooltip: {
+      labels: tooltipLabels,
+    },
+  };
 };
 
 const emptyMock: SummaryChartDataDTO = {
@@ -207,7 +224,7 @@ describe('SummaryChart', () => {
     jest
       .spyOn(SummaryChartsApi, 'getChartData')
       .mockImplementation(async () => {
-        return substitutionMock;
+        return substitutionMock(ModalityEnum.FISCAL);
       });
 
     const { container, findByText } = render(
@@ -239,6 +256,25 @@ describe('SummaryChart', () => {
     );
     expect(container).toBeInTheDocument();
     expect(await findByText('Renovações trabalhistas')).toBeInTheDocument();
+  });
+
+  it('Should render correctly for labor modality and substitution type chart', async () => {
+    jest
+      .spyOn(SummaryChartsApi, 'getChartData')
+      .mockImplementation(async () => {
+        return substitutionMock(ModalityEnum.TRABALHISTA);
+      });
+
+    const { container, findByText } = render(
+      <Provider store={store}>
+        <SummaryChart
+          modality={ModalityEnum.TRABALHISTA}
+          chartType={SummaryChartTypeEnum.SUBSTITUTION}
+        />
+      </Provider>,
+    );
+    expect(container).toBeInTheDocument();
+    expect(await findByText('Substituições trabalhistas')).toBeInTheDocument();
   });
 
   it('Should render placeholder for new issues chart type', async () => {

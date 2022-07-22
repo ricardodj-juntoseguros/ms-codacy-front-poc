@@ -1,7 +1,7 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
 .summary-chart-custom-tooltip__wrapper {
-  max-width: 180px;
+  width: 180px;
   min-height: spacing('xl');
   padding: spacing('m');
   box-sizing: border-box;
@@ -29,7 +29,6 @@
   color: color('dark');
   word-break: break-all;
   white-space: normal;
-
 }
 
 .summary-chart-custom-tooltip__data {

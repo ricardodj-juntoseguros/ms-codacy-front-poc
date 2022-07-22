@@ -17,6 +17,6 @@ Cypress.Commands.add('clickOnFirstMoreDetailsButton', () => {
       .get(selectors.opportunityDetailsList.moreDetailsButton)
       .first()
       .should('not.be.empty')
-      .click();
+      .trigger('click');
   });
 });

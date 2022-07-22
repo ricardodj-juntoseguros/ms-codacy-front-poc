@@ -38,6 +38,13 @@ const initialState: SummaryChartsModel = {
       error: false,
       data: null,
     },
+    {
+      modality: ModalityEnum.TRABALHISTA,
+      chartType: SummaryChartTypeEnum.SUBSTITUTION,
+      loading: true,
+      error: false,
+      data: null,
+    },
   ],
 };
 

@@ -22,14 +22,12 @@ describe('ModalitySummaryCharts', () => {
     expect(getByTestId('chart-fiscal-new-issues-wrapper')).toBeInTheDocument();
   });
 
-  it('Should render only renewal chart for modality LABOR', () => {
+  it('Should render renewal and substitution charts for modality LABOR', () => {
     const { getByTestId, queryByTestId } = render(
       <ModalitySummaryCharts modality={ModalityEnum.TRABALHISTA} />,
     );
     expect(getByTestId('chart-labor-renewal-wrapper')).toBeInTheDocument();
-    expect(
-      queryByTestId('chart-labor-substitution-wrapper'),
-    ).not.toBeInTheDocument();
+    expect(getByTestId('chart-labor-substitution-wrapper')).toBeInTheDocument();
     expect(
       queryByTestId('chart-labor-new-issues-wrapper'),
     ).not.toBeInTheDocument();
