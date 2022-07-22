@@ -4,7 +4,7 @@
   padding: spacing('l') spacing('m');
   border-bottom: 1px solid color('grey-200');
   display: grid;
-  grid-template-columns: 40px 142px 222px 154px 250px 160px;
+  grid-template-columns: 40px 142px 230px 154px 250px 160px;
   box-sizing: border-box;
   height: 82px;
 
@@ -72,6 +72,10 @@
     padding-right: spacing('l') + spacing('xs');
   }
 
+  &:nth-child(2) {
+    padding-right: spacing('m') + spacing('xs');
+  }
+
   &:nth-child(4) {
     padding-right: spacing('xxl');
 
@@ -97,6 +101,9 @@
 .opportunity-details-listitem__label-helper {
   @include font('xs');
   color: color('grey-500');
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
 }
 
 .opportunity-details-listitem__label-emphasys {

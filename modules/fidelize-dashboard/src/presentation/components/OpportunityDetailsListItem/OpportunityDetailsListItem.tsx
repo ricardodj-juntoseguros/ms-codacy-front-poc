@@ -153,6 +153,11 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
         {observation !== null && (
           <span
             className={styles['opportunity-details-listitem__label-helper']}
+            title={
+              category === OpportunityDetailsCategoryEnum.NEW_ISSUE
+                ? observation
+                : ''
+            }
           >
             {observation}
           </span>

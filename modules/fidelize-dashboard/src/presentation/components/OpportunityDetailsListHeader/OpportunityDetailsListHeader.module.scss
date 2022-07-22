@@ -3,7 +3,7 @@
 .opportunity-details-header__wrapper {
   padding: spacing('l') spacing('m');
   display: grid;
-  grid-template-columns: 40px 142px 222px 154px 250px 160px;
+  grid-template-columns: 40px 142px 230px 154px 250px 160px;
   border-bottom: 1px solid color('grey-200');
 }
 
@@ -19,6 +19,10 @@
   & > div:last-child {
     display: flex;
     flex-flow: column;
+  }
+
+  &:nth-child(2) {
+    padding-right: spacing('m') + spacing('xs');
   }
 
   &:nth-child(4) {
