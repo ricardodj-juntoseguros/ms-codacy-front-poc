@@ -174,7 +174,9 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
           text={
             isValueToDefine
               ? 'Valor a ser definido de acordo com o valor da sentença na fase de execução do processo.'
-              : 'Valor aproximado'
+              : `Valor aproximado considerando os valores recursais estipulados para cada tipo de recurso.
+                 No entanto, caso o processo já esteja próximo da fase de execução, consideramos o valor
+                 da sentença ou da própria execução.`
           }
           visible={securityAmountTooltipVisible}
           position="top"

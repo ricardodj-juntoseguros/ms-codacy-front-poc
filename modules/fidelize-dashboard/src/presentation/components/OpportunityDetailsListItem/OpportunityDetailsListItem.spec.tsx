@@ -236,7 +236,11 @@ describe('Opportunity Details List Item', () => {
     fireEvent.mouseEnter(
       container.querySelector('.icon-approximate-value') as Element,
     );
-    expect(getByText('Valor aproximado')).toBeInTheDocument();
+    expect(
+      getByText(
+        'Valor aproximado considerando os valores recursais estipulados para cada tipo de recurso. No entanto, caso o processo já esteja próximo da fase de execução, consideramos o valor da sentença ou da própria execução.',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('Should display tooltip when more details button is hovered', () => {
