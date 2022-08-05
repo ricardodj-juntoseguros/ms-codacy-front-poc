@@ -1,0 +1,22 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.opportunity-details-category-filter__wrapper {
+  & > div > div:last-child {
+    width: 300px;
+    border-top: 1px solid color('grey-300');
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  & input[type='text'] {
+    color: color('grey-500');
+  }
+
+  &--applied {
+    & input[type='text'] {
+      color: color('dark');
+    }
+  }
+}

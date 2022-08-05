@@ -1,4 +1,5 @@
 import { ModalityEnum } from './ModalityEnum';
+import { OpportunitiesDetailsFilterModel } from './OpportunitiesDetailsFilterModel';
 import { OpportunityDetailsOrderEnum } from './OpportunityDetailsOrderEnum';
 
 export interface OpportunitiesDetailsSettingsModel {
@@ -7,4 +8,5 @@ export interface OpportunitiesDetailsSettingsModel {
   pageSize: number;
   orderBy: OpportunityDetailsOrderEnum;
   direction: 'asc' | 'desc';
+  filters: OpportunitiesDetailsFilterModel[];
 }

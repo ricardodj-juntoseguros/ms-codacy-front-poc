@@ -10,6 +10,11 @@
   margin: 0px;
 }
 
+.opportunity-details-list-title-wrapper {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
 .opportunity-details-list__box {
   width: 100%;
   margin-top: spacing('xl');

@@ -8,6 +8,7 @@ import OpportunityDetailsListHeader from '../OpportunityDetailsListHeader';
 import OpportunityDetailsListItem from '../OpportunityDetailsListItem';
 import OpportunityDetailsListPaging from '../OpportunityDetailsListPaging';
 import OpportunityDetailsListFooter from '../OpportunityDetailsListFooter';
+import OpportunityDetailsListFilters from '../OpportunityDetailsListFilters';
 import OpportunityDetailsModal from '../OpportunityDetailsModal';
 import { OpportunityDetailsListItemSkeleton } from '../Skeletons';
 import {
@@ -138,9 +139,12 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
 
   return (
     <div className={styles['opportunity-details-list__wrapper']}>
-      <h3 className={styles['opportunity-details-list__title']}>
-        Detalhes das oportunidades {getLabelByModality(modality, '', true)}
-      </h3>
+      <div className={styles['opportunity-details-list-title-wrapper']}>
+        <h3 className={styles['opportunity-details-list__title']}>
+          Detalhes das oportunidades {getLabelByModality(modality, '', true)}
+        </h3>
+      </div>
+      <OpportunityDetailsListFilters modality={modality} />
       <div className={styles['opportunity-details-list__box']}>
         {error ? (
           <div className={styles['opportunity-details-list__error']}>

@@ -73,15 +73,21 @@ describe('Opportunities', () => {
       .should('be.visible')
       .wait(6000)
       .click();
-    cy.get('.Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]')
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
       .eq(0)
       .click()
       .wait(1000);
-    cy.get('.Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]')
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
       .eq(1)
       .click()
       .wait(1000);
-    cy.get('.Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]')
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
       .eq(2)
       .click()
       .wait(1000);

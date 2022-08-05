@@ -1,0 +1,90 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+@keyframes badge-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.opportunity-details-list-filters__wrapper {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+  margin-top: -(spacing('l'));
+
+  & > :first-child {
+    align-self: flex-end;
+  }
+}
+
+.opportunity-details-list-filters__container {
+  max-height: 0px;
+  display: grid;
+  grid-template-columns: 7fr 1fr;
+  transition: all 300ms ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+
+  &--open {
+    max-height: spacing('xxl-2');
+    margin-top: spacing('l');
+    margin-bottom: -(spacing('l'));
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  & > div:first-child {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+  }
+
+  & > div:last-child {
+    display: flex;
+    align-self: center;
+    justify-content: end;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-flow: column;
+    gap: spacing('m');
+
+    &--open {
+      max-height: 100%;
+      margin-bottom: -(spacing('m'));
+    }
+
+    & > div:first-child {
+      display: flex;
+      flex-flow: column;
+      gap: spacing('s');
+    }
+
+    & > div:last-child {
+      display: flex;
+      align-self: center;
+      justify-content: start;
+    }
+  }
+}
+
+.opportunity-details-list-filters__applied-badge {
+  height: spacing('s');
+  width: spacing('s');
+  border: 2px solid color('white');
+  border-radius: 50%;
+  display: inline-block;
+  background-color: color('brand-primary');
+  position: absolute;
+  margin-top: -4px;
+  margin-left: -8px;
+  animation: badge-in 0.3s linear;
+
+  &::after {
+    content: '';
+  }
+}
