@@ -144,7 +144,9 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
           Detalhes das oportunidades {getLabelByModality(modality, '', true)}
         </h3>
       </div>
-      <OpportunityDetailsListFilters modality={modality} />
+      {process.env.NX_FID_FEATURE_OPPORTUNITY_FILTERS === 'true' && (
+        <OpportunityDetailsListFilters modality={modality} />
+      )}
       <div className={styles['opportunity-details-list__box']}>
         {error ? (
           <div className={styles['opportunity-details-list__error']}>
