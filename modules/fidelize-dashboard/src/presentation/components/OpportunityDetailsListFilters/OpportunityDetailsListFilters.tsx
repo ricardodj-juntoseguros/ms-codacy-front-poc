@@ -1,14 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { LinkButton } from 'junto-design-system';
 import { ModalityEnum } from '../../../application/types/model';
+import { OpportunitiesFilterOptionsDTO } from '../../../application/types/dto';
 import {
   selectFiltersByModality,
   opportunitiesDetailsActions,
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
+import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import OpportunityDetailsCategoryFilter from '../OpportunityDetailsCategoryFilter';
 import styles from './OpportunityDetailsListFilters.module.scss';
+import { hasAppliedAnyFilter } from '../../../helpers';
 
 interface OpportunityDetailsListFiltersProps {
   modality: ModalityEnum;
@@ -17,7 +20,13 @@ interface OpportunityDetailsListFiltersProps {
 const FILTERS_BY_MODALITY = [
   {
     modality: ModalityEnum.TRABALHISTA,
-    filters: [{ key: 'category', component: OpportunityDetailsCategoryFilter }],
+    filters: [
+      {
+        name: 'category',
+        component: OpportunityDetailsCategoryFilter,
+        useOptions: true,
+      },
+    ],
   },
 ];
 
@@ -26,27 +35,50 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
     const dispatch = useDispatch();
     const filters = useSelector(selectFiltersByModality(modality));
     const [open, setOpen] = useState(false);
+    const [error, setError] = useState(false);
+    const [filtersContent, setFiltersContent] = useState<
+      OpportunitiesFilterOptionsDTO[]
+    >([]);
 
-    const filtersToRender = FILTERS_BY_MODALITY.find(
-      each => each.modality === modality,
+    const filtersToRender = useMemo(() => {
+      return FILTERS_BY_MODALITY.find(each => each.modality === modality);
+    }, [modality]);
+
+    const hasFilterApplied = useMemo(
+      () => hasAppliedAnyFilter(filters),
+      [filters],
     );
 
-    const hasAppliedAnyFilter = useMemo(() => {
-      return (
-        filters.length > 0 &&
-        !!filters.find(f => {
-          if (!f.values) return false;
-          if (Object.keys(f.values).length === 0) return false;
-          return true;
-        })
-      );
-    }, [filters]);
+    useEffect(() => {
+      if (filtersToRender) {
+        OpportunitiesDetailsApi.getFiltersContentByModality(modality)
+          .then(response => {
+            setFiltersContent(response.filters);
+            setError(false);
+          })
+          .catch(() => setError(true));
+      }
+    }, [modality, filtersToRender]);
 
     const handleClearAllClick = () => {
       dispatch(opportunitiesDetailsActions.clearFiltersByModality(modality));
     };
 
+    const getFilterOptions = (filterName: string) => {
+      const foundFilter = filtersContent.find(
+        filter => filter.filterName === filterName,
+      );
+      if (!foundFilter) return null;
+      return foundFilter.options;
+    };
+
     if (!filtersToRender) return null;
+    if (error)
+      return (
+        <div className={styles['opportunity-details-list-filters__error']}>
+          Ocorreu um erro ao carregar os filtros das oportunidades.
+        </div>
+      );
     return (
       <div className={styles['opportunity-details-list-filters__wrapper']}>
         <div>
@@ -56,7 +88,7 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
             iconPosition="right"
             onClick={() => setOpen(!open)}
           />
-          {hasAppliedAnyFilter && !open && (
+          {hasFilterApplied && !open && (
             <span
               className={
                 styles['opportunity-details-list-filters__applied-badge']
@@ -75,12 +107,18 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
         >
           <div>
             {filtersToRender.filters.map(filter => {
-              const { key, component: Component } = filter;
-              return <Component key={key} modality={modality} />;
+              const { name, component: Component } = filter;
+              return (
+                <Component
+                  key={name}
+                  modality={modality}
+                  options={getFilterOptions(name) || []}
+                />
+              );
             })}
           </div>
           <div>
-            {hasAppliedAnyFilter && (
+            {hasFilterApplied && (
               <LinkButton
                 data-testid="btn-clear-all-filters"
                 size="small"

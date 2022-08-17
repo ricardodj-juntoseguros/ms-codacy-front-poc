@@ -2,8 +2,16 @@ import {
   AxiosHttpClient,
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
-import { OpportunityDetailsDTO } from '../../types/dto';
-import { ModalityEnum, OpportunityDetailsOrderEnum } from '../../types/model';
+import {
+  OpportunitiesFiltersContentDTO,
+  OpportunityDetailsDTO,
+} from '../../types/dto';
+import {
+  ModalityEnum,
+  OpportunitiesDetailsFilterModel,
+  OpportunityDetailsOrderEnum,
+} from '../../types/model';
+import { getFiltersQueryParams } from '../../../helpers';
 import FidelizeDashboardBaseApi from '../FidelizeDashboardBaseApi';
 
 class OpportunitiesDetailsApi {
@@ -20,8 +28,9 @@ class OpportunitiesDetailsApi {
     orderBy: OpportunityDetailsOrderEnum,
     direction: string,
     federalids: string[],
+    filters?: OpportunitiesDetailsFilterModel[] | undefined,
   ): Promise<OpportunityDetailsDTO> {
-    const query: any = {
+    let query: any = {
       page,
       pageSize,
       orderBy,
@@ -29,6 +38,9 @@ class OpportunitiesDetailsApi {
     };
     if (federalids.length > 0) {
       query.federalids = federalids.join(',');
+    }
+    if (filters && filters.length > 0) {
+      query = { ...query, ...getFiltersQueryParams(filters) };
     }
     const params: IHttpClientRequestParameters = {
       url: `/v1/opportunities/${modality}`,
@@ -58,6 +70,15 @@ class OpportunitiesDetailsApi {
     };
 
     return await this.instance.post(params);
+  }
+
+  async getFiltersContentByModality(
+    modality: ModalityEnum,
+  ): Promise<OpportunitiesFiltersContentDTO> {
+    const params: IHttpClientRequestParameters = {
+      url: `/v1/filters/${modality}`,
+    };
+    return await this.instance.get<OpportunitiesFiltersContentDTO>(params);
   }
 }
 

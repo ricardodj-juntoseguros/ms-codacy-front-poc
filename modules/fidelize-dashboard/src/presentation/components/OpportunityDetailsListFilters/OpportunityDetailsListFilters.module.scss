@@ -88,3 +88,10 @@
     content: '';
   }
 }
+
+.opportunity-details-list-filters__error {
+  @include font('m');
+  padding: spacing('m') 0px;
+  color: color('error');
+  text-align: left;
+}

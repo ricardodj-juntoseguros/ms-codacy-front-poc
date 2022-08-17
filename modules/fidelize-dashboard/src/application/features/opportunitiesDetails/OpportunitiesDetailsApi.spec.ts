@@ -38,6 +38,7 @@ describe('OpportunitiesDetailsApi', () => {
         OpportunityDetailsOrderEnum.RELEVANCE,
         'desc',
         ['11223344556677', '12345671234567'],
+        [{ key: 'category', values: ['1', '2'] }],
       );
 
     expect(mockGet).toHaveBeenCalledWith({
@@ -48,6 +49,7 @@ describe('OpportunitiesDetailsApi', () => {
         orderBy: 'Relevance',
         direction: 'desc',
         federalids: '11223344556677,12345671234567',
+        categories: '1,2',
       },
     });
     expect(result.data[0].category).toBe('Renovação');
@@ -109,5 +111,21 @@ describe('OpportunitiesDetailsApi', () => {
       },
     });
     expect(result.success).toBe(true);
+  });
+
+  it('getFiltersContentByModality should call bff service correctly', async () => {
+    const httpMock = jest
+      .spyOn(AxiosHttpClient.prototype, 'get')
+      .mockImplementation(async () => {
+        return { filters: [] };
+      });
+
+    const result = await OpportunitiesDetailsApi.getFiltersContentByModality(
+      ModalityEnum.TRABALHISTA,
+    );
+    expect(httpMock).toHaveBeenCalledWith({
+      url: '/v1/filters/labor',
+    });
+    expect(result.filters).toStrictEqual([]);
   });
 });

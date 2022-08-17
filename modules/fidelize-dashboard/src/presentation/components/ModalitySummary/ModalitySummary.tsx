@@ -62,16 +62,16 @@ const ModalitySummary: React.FC<ModalitySummaryProps> = ({
           className={styles['modality-summary__no-ops-illustration']}
         />
         <h2 className={styles['modality-summary__no-ops-title']}>
-          Não há oportunidades {getLabelByModality(modality, '', true)}
+          Não há oportunidades {getLabelByModality(modality, '', true)} ativas
         </h2>
         <p className={styles['modality-summary__no-ops-text']}>
-          Até o momento não foram encontradas oportunidades no âmbito{' '}
+          Até o momento não foram encontradas oportunidades ativas na modalidade{' '}
           {getLabelByModality(modality)} para o(s) tomador(es) selecionado(s).
+          Caso existam oportunidades expiradas, elas estarão listadas abaixo.
         </p>
         <p className={styles['modality-summary__no-ops-text']}>
-          Caso você tenha solicitado o mapeamento recentemente, o retorno pode
-          demorar aproximadamente 15 dias. Se não, você pode solicitar um novo
-          mapeamento, por meio do seu comercial responsável.
+          Você pode solicitar a qualquer momento, por meio do seu comercial
+          responsável, um mapeamento para que o Fidelize faça uma nova busca.
         </p>
       </div>
     );

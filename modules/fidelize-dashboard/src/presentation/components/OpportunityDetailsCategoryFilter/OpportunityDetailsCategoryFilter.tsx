@@ -1,5 +1,6 @@
 import { CheckboxMultiselect } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
+import TagManager from 'react-gtm-module';
 import classnames from 'classnames';
 import {
   ModalityEnum,
@@ -10,13 +11,16 @@ import {
   selectFilterValues,
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import styles from './OpportunityDetailsCategoryFilter.module.scss';
+import { MODALITIES_IDS } from '../../../constants';
 
 interface OpportunityDetailsCategoryFilterProps {
   modality: ModalityEnum;
+  options: { value: string; label: string }[];
 }
 
 const OpportunityDetailsCategoryFilter: React.FC<OpportunityDetailsCategoryFilterProps> =
-  ({ modality }) => {
+  ({ modality, options }) => {
+    const FILTER_TYPE = 'category';
     const dispatch = useDispatch();
     const filterValue = useSelector(
       selectFilterValues(modality, 'category'),
@@ -24,10 +28,20 @@ const OpportunityDetailsCategoryFilter: React.FC<OpportunityDetailsCategoryFilte
 
     const handleMultiselectApply = (selection: string[]) => {
       const filter: OpportunitiesDetailsFilterModel = {
-        key: 'category',
+        key: FILTER_TYPE,
         values: selection,
       };
       dispatch(opportunitiesDetailsActions.setFilter({ modality, filter }));
+      if (selection.length > 0) {
+        TagManager.dataLayer({
+          dataLayer: {
+            event: 'ClickApplyOpportunityListFilterButton',
+            modalityId: MODALITIES_IDS[modality],
+            filterType: FILTER_TYPE,
+            selectedFilters: selection,
+          },
+        });
+      }
     };
 
     return (
@@ -43,14 +57,10 @@ const OpportunityDetailsCategoryFilter: React.FC<OpportunityDetailsCategoryFilte
       >
         <CheckboxMultiselect
           id={`${modality}-category-filter`}
-          options={[
-            { value: 'BC', label: 'Bloqueio de conta', disabled: false },
-            { value: 'DJ', label: 'Depósito judicial', disabled: false },
-            { value: 'FB', label: 'Fiança bancária', disabled: false },
-            { value: 'PE', label: 'Penhora', disabled: false },
-            { value: 'NE', label: 'Nova emissão', disabled: false },
-            { value: 'RE', label: 'Renovação', disabled: false },
-          ]}
+          options={options.map(opt => {
+            const { label, value } = opt;
+            return { label, value, disabled: false };
+          })}
           initialSelection={filterValue || []}
           variant="medium"
           inputValue="Tipo"

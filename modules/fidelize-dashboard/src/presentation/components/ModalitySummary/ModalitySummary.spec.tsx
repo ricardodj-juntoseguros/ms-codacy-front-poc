@@ -61,10 +61,15 @@ describe('Modality Summary', () => {
       />,
     );
 
-    expect(getByText('Não há oportunidades trabalhistas')).toBeTruthy();
+    expect(getByText('Não há oportunidades trabalhistas ativas')).toBeTruthy();
     expect(
       getByText(
-        'Até o momento não foram encontradas oportunidades no âmbito trabalhista para o(s) tomador(es) selecionado(s).',
+        'Até o momento não foram encontradas oportunidades ativas na modalidade trabalhista para o(s) tomador(es) selecionado(s). Caso existam oportunidades expiradas, elas estarão listadas abaixo.',
+      ),
+    ).toBeTruthy();
+    expect(
+      getByText(
+        'Você pode solicitar a qualquer momento, por meio do seu comercial responsável, um mapeamento para que o Fidelize faça uma nova busca.',
       ),
     ).toBeTruthy();
   });

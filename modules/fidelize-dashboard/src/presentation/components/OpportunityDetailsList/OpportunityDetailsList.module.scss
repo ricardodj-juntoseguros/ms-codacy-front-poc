@@ -40,3 +40,46 @@
   color: color('error');
   text-align: center;
 }
+
+.opportunity-details-list__no-results {
+  padding: spacing('xxl') spacing('l');
+
+  & > p {
+    @include font('sm');
+    color: color('grey-600');
+    margin: 0px;
+    text-align: center;
+  }
+}
+
+.opportunity-details-list__no-filtered-results {
+  padding: spacing('xxl-6') 0px;
+  box-sizing: border-box;
+  text-align: center;
+  max-width: 576px;
+  margin-left: auto;
+  margin-right: auto;
+
+  & > svg {
+    width: 528px;
+    height: 112px;
+
+    @media screen and (max-width: 528px) {
+      width: 100%;
+    }
+  }
+
+  & > h3 {
+    @include font('l-emphasys');
+    color: color('dark');
+    margin-top: spacing('xxl');
+    margin-bottom: spacing('s');
+  }
+
+  & > p {
+    @include font('base');
+    color: color('dark');
+    margin: 0px;
+    text-align: center;
+  }
+}

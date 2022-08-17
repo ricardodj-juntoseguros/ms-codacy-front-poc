@@ -44,9 +44,8 @@ function DashboardContainer() {
   const selectionLossModalRef = useRef<HTMLDivElement>(null);
   const [loadingModalitySummary, setLoadingModalitySummary] = useState(true);
   const [errorModalitySummary, setErrorModalitySummary] = useState(false);
-  const [modalitiesSummaryData, setModalitiesSummaryData] = useState<
-    ModalitiesSummaryDTO
-  >();
+  const [modalitiesSummaryData, setModalitiesSummaryData] =
+    useState<ModalitiesSummaryDTO>();
 
   useEffect(() => {
     dispatch(fetchAccessToFeature(AccessFeatureEnum.LABOR_MODALITY));
@@ -85,7 +84,9 @@ function DashboardContainer() {
 
   const getDataToRender = (modality: ModalityEnum) => {
     return (
-      modalitiesSummaryData?.totalsModalities.find(data => data.modality === modality) || {
+      modalitiesSummaryData?.totalsModalities.find(
+        data => data.modality === modality,
+      ) || {
         modality,
         totalOpportunities: 0,
         totalInsuredAmount: 0,
@@ -123,7 +124,9 @@ function DashboardContainer() {
       ) : (
         <>
           {renderModalitySummary(modality)}
-          <ModalitySummaryCharts modality={modality} />
+          {getDataToRender(modality).totalOpportunities > 0 && (
+            <ModalitySummaryCharts modality={modality} />
+          )}
           <OpportunityDetailsList
             modality={modality}
             multipleSelection={modality === ModalityEnum.TRABALHISTA}
@@ -159,9 +162,17 @@ function DashboardContainer() {
       <DashboardHeader />
       <Divider />
       <PolicyholderFilterSelector />
-      <DashboardSummary 
-        totalOpportunities={loadingModalitySummary ? undefined : (modalitiesSummaryData?.totalOpportunities ?? 0)}
-        totalInsuredAmount={loadingModalitySummary ? undefined : (modalitiesSummaryData?.totalInsuredAmount ?? 0)}
+      <DashboardSummary
+        totalOpportunities={
+          loadingModalitySummary
+            ? undefined
+            : modalitiesSummaryData?.totalOpportunities ?? 0
+        }
+        totalInsuredAmount={
+          loadingModalitySummary
+            ? undefined
+            : modalitiesSummaryData?.totalInsuredAmount ?? 0
+        }
         errorModalitySummary={errorModalitySummary}
       />
       <h2 className={styles['dashboard-container__modalities-title']}>

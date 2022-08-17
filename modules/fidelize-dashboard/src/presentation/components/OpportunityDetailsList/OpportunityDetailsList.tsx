@@ -4,6 +4,7 @@ import TagManager from 'react-gtm-module';
 import { Divider, Skeleton, ToastContainer } from 'junto-design-system';
 import { nanoid } from 'nanoid';
 import { thousandSeparator } from '@shared/utils';
+import { NotFoundIllustration } from '@shared/ui';
 import OpportunityDetailsListHeader from '../OpportunityDetailsListHeader';
 import OpportunityDetailsListItem from '../OpportunityDetailsListItem';
 import OpportunityDetailsListPaging from '../OpportunityDetailsListPaging';
@@ -22,7 +23,7 @@ import {
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import { selectPolicyholderSelection } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
-import { getLabelByModality } from '../../../helpers';
+import { getLabelByModality, hasAppliedAnyFilter } from '../../../helpers';
 import styles from './OpportunityDetailsList.module.scss';
 
 interface OpportunityDetailsListProps {
@@ -34,7 +35,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
   modality,
   multipleSelection,
 }) => {
-  const { activePage, pageSize, orderBy, direction } = useSelector(
+  const { activePage, pageSize, orderBy, direction, filters } = useSelector(
     selectSettingsByModality(modality),
   ) || {
     activePage: 1,
@@ -63,6 +64,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
         orderBy,
         direction,
         filteredPolicyholders,
+        filters,
       )
         .then(response => {
           setData(response.data);
@@ -82,6 +84,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     orderBy,
     direction,
     filteredPolicyholders,
+    filters,
   ]);
 
   useEffect(() => {
@@ -119,11 +122,36 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     setInterestedOpportunity(undefined);
   };
 
+  const renderEmptyListFeedback = () => {
+    if (filters && hasAppliedAnyFilter(filters)) {
+      return (
+        <div
+          className={styles['opportunity-details-list__no-filtered-results']}
+        >
+          <NotFoundIllustration />
+          <h3>Não encontramos oportunidades para o seu filtro.</h3>
+          <p>
+            Tente usar outros parâmetros e filtre novamente. Caso tenha alguma
+            dúvida, seu comercial está sempre disponível para te ajudar.
+          </p>
+        </div>
+      );
+    }
+    return (
+      <div className={styles['opportunity-details-list__no-results']}>
+        <p>Nenhuma oportunidade encontrada.</p>
+      </div>
+    );
+  };
+
   const renderListItems = () => {
     if (loadingItems || !data) {
       return Array.from({ length: pageSize }, () => (
         <OpportunityDetailsListItemSkeleton key={nanoid(5)} />
       ));
+    }
+    if (data.length === 0) {
+      return renderEmptyListFeedback();
     }
     return data.map(opportunity => {
       return (
