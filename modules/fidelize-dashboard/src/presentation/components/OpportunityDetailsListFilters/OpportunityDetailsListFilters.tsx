@@ -9,7 +9,7 @@ import {
   opportunitiesDetailsActions,
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
-import OpportunityDetailsCategoryFilter from '../OpportunityDetailsCategoryFilter';
+import OpportunityDetailsMultiselectFilter from '../OpportunityDetailsMultiselectFilter';
 import styles from './OpportunityDetailsListFilters.module.scss';
 import { hasAppliedAnyFilter } from '../../../helpers';
 
@@ -22,8 +22,13 @@ const FILTERS_BY_MODALITY = [
     modality: ModalityEnum.TRABALHISTA,
     filters: [
       {
+        name: 'relevance',
+        component: OpportunityDetailsMultiselectFilter,
+        useOptions: true,
+      },
+      {
         name: 'category',
-        component: OpportunityDetailsCategoryFilter,
+        component: OpportunityDetailsMultiselectFilter,
         useOptions: true,
       },
     ],
@@ -107,14 +112,12 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
         >
           <div>
             {filtersToRender.filters.map(filter => {
-              const { name, component: Component } = filter;
-              return (
-                <Component
-                  key={name}
-                  modality={modality}
-                  options={getFilterOptions(name) || []}
-                />
-              );
+              const { name, component: Component, useOptions } = filter;
+              const props = { filterName: name, modality } as any;
+              if (useOptions) {
+                props.options = getFilterOptions(name) || [];
+              }
+              return <Component key={name} {...props} />;
             })}
           </div>
           <div>

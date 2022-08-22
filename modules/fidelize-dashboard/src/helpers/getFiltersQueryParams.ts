@@ -8,8 +8,11 @@ export const getFiltersQueryParams = (
     const filterName = filter.key;
     switch (filterName) {
       case 'category':
+      case 'relevance':
         if (Object.keys(filter.values).length !== 0) {
-          query.categories = (filter.values as string[]).join(',');
+          const fieldName =
+            filterName === 'category' ? 'categories' : 'relevances';
+          query[fieldName] = (filter.values as string[]).join(',');
         }
         break;
       default:

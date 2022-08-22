@@ -1,6 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.opportunity-details-category-filter__wrapper {
+.opportunity-details-multiselect-filter__wrapper {
   & > div > div:last-child {
     width: 300px;
     border-top: 1px solid color('grey-300');
@@ -12,6 +12,13 @@
 
   & input[type='text'] {
     color: color('grey-500');
+  }
+
+  & > div > div > div {
+    & i {
+      padding: spacing('m') 0px !important;
+      margin-right: spacing('m');
+    }
   }
 
   &--applied {

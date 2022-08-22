@@ -10,25 +10,25 @@ import {
   opportunitiesDetailsActions,
   selectFilterValues,
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
-import styles from './OpportunityDetailsCategoryFilter.module.scss';
+import styles from './OpportunityDetailsMultiselectFilter.module.scss';
 import { MODALITIES_IDS } from '../../../constants';
 
-interface OpportunityDetailsCategoryFilterProps {
+interface OpportunityDetailsMultiselectFilterProps {
+  filterName: string;
   modality: ModalityEnum;
   options: { value: string; label: string }[];
 }
 
-const OpportunityDetailsCategoryFilter: React.FC<OpportunityDetailsCategoryFilterProps> =
-  ({ modality, options }) => {
-    const FILTER_TYPE = 'category';
+const OpportunityDetailsMultiselectFilter: React.FC<OpportunityDetailsMultiselectFilterProps> =
+  ({ filterName, modality, options }) => {
     const dispatch = useDispatch();
     const filterValue = useSelector(
-      selectFilterValues(modality, 'category'),
+      selectFilterValues(modality, filterName),
     ) as string[] | null;
 
     const handleMultiselectApply = (selection: string[]) => {
       const filter: OpportunitiesDetailsFilterModel = {
-        key: FILTER_TYPE,
+        key: filterName,
         values: selection,
       };
       dispatch(opportunitiesDetailsActions.setFilter({ modality, filter }));
@@ -37,33 +37,45 @@ const OpportunityDetailsCategoryFilter: React.FC<OpportunityDetailsCategoryFilte
           dataLayer: {
             event: 'ClickApplyOpportunityListFilterButton',
             modalityId: MODALITIES_IDS[modality],
-            filterType: FILTER_TYPE,
+            filterType: filterName,
             selectedFilters: selection,
           },
         });
       }
     };
 
+    const getInputValueByFilterName = (filterName: string) => {
+      switch (filterName) {
+        case 'category':
+          return 'Tipo';
+        case 'relevance':
+          return 'Relevância';
+        default:
+          return undefined;
+      }
+    };
+
     return (
       <div
-        data-testid={`${modality}-category-filter`}
+        data-testid={`${modality}-${filterName}-filter`}
         className={classnames(
-          styles['opportunity-details-category-filter__wrapper'],
+          styles['opportunity-details-multiselect-filter__wrapper'],
           {
-            [styles['opportunity-details-category-filter__wrapper--applied']]:
-              filterValue !== null && (filterValue || []).length > 0,
+            [styles[
+              'opportunity-details-multiselect-filter__wrapper--applied'
+            ]]: filterValue !== null && (filterValue || []).length > 0,
           },
         )}
       >
         <CheckboxMultiselect
-          id={`${modality}-category-filter`}
+          id={`${modality}-${filterName}-filter`}
           options={options.map(opt => {
             const { label, value } = opt;
             return { label, value, disabled: false };
           })}
           initialSelection={filterValue || []}
           variant="medium"
-          inputValue="Tipo"
+          inputValue={getInputValueByFilterName(filterName)}
           showActionButtons
           onApplySelection={handleMultiselectApply}
           closeOnApply
@@ -72,4 +84,4 @@ const OpportunityDetailsCategoryFilter: React.FC<OpportunityDetailsCategoryFilte
     );
   };
 
-export default OpportunityDetailsCategoryFilter;
+export default OpportunityDetailsMultiselectFilter;

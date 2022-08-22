@@ -89,7 +89,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
 
   useEffect(() => {
     setTotalCount(undefined);
-  }, [modality, filteredPolicyholders]);
+  }, [modality, filteredPolicyholders, filters]);
 
   const handleClickMoreDetailsItem = (
     opportunity: OpportunityDetailsItemDTO,
