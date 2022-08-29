@@ -1,0 +1,29 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.broker-contact-modal__wrapper {
+  display: flex;
+  flex-flow: column;
+  gap: spacing('m');
+
+  & > div:nth-child(2) > div {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+
+  & i::before {
+    animation: rotating 1s linear infinite;
+    -webkit-animation: rotating 1s linear infinite;
+    display: inline-block;
+  }
+}
