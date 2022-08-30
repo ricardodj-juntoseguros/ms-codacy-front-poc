@@ -2,9 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
 import { SummaryModel } from '../../types/model';
 
-const initialState: SummaryModel = {
-  errorPolicyholders: false,
-};
+const initialState: SummaryModel = {};
 
 export const summarySlice = createSlice({
   name: 'summary',
@@ -14,16 +12,12 @@ export const summarySlice = createSlice({
       const newTotalPolicyholders = action.payload;
       state.totalPolicyholders = newTotalPolicyholders;
     },
-    setErrorPolicyholders: (state, action: PayloadAction<boolean>) => {
-      const newErrorPolicyholders = action.payload;
-      state.errorPolicyholders = newErrorPolicyholders;
-    },
   },
 });
 
 export const selectPolicyholdersSummary = (state: RootState) => {
-  const { totalPolicyholders, errorPolicyholders } = state.summary;
-  return { totalPolicyholders, errorPolicyholders };
+  const { totalPolicyholders } = state.summary;
+  return { totalPolicyholders };
 };
 
 export const { actions: summaryActions } = summarySlice;

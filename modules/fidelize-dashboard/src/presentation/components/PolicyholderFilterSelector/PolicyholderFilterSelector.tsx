@@ -7,10 +7,11 @@ import { federalIdFormatter, objectArraysMerger } from '@shared/utils';
 import { renderOpportunitySelectionLossModal } from '../../../helpers';
 import PolicyholderFilterSelectorTags from '../PolicyholderFilterSelectorTags';
 import { PolicyholderDTO } from '../../../application/types/dto';
-import PolicyholderFilterApi from '../../../application/features/policyholderFilter/PolicyholderFilterApi';
 import {
   selectPolicyholderSelection,
   policyholderFilterActions,
+  selectMappedPolicyholders,
+  selectErrorFetchPolicyholders,
 } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 import {
   opportunitiesDetailsActions,
@@ -22,47 +23,36 @@ import styles from './PolicyholderFilterSelector.module.scss';
 
 const PolicyholderFilterSelector: React.FC = () => {
   const dispatch = useDispatch();
-  const storePolicyholders = useSelector(selectPolicyholderSelection);
+  const mappedPolicyholders = useSelector(selectMappedPolicyholders) || [];
+  const storePolicyholderSelection = useSelector(selectPolicyholderSelection);
   const selectedOpportunities = useSelector(selectSelectedOpportunities);
+  const fetchError = useSelector(selectErrorFetchPolicyholders);
+
   const selectionLossModalRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState<string>('');
-  const [policyholders, setPolicyholders] = useState<PolicyholderDTO[]>([]);
-  const [searchedPolicyholders, setSearchedPolicyholders] = useState<
-    PolicyholderDTO[]
-  >([]);
+  const [searchedPolicyholders, setSearchedPolicyholders] =
+    useState<PolicyholderDTO[]>(mappedPolicyholders);
   const [selectedPolicyholders, setSelectedPolicyholders] = useState<
     PolicyholderDTO[]
   >([]);
-  const [fetchError, setFetchError] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [showMaxAlert, setShowMaxAlert] = useState(false);
-
-  useEffect(() => {
-    PolicyholderFilterApi.getMappedPolicyholderList()
-      .then(response => {
-        setPolicyholders(response);
-        setSearchedPolicyholders(response);
-        dispatch(summaryActions.setTotalPolicyholders(response.length));
-        dispatch(summaryActions.setErrorPolicyholders(false));
-      })
-      .catch(() => {
-        setFetchError(true);
-        dispatch(summaryActions.setErrorPolicyholders(true));
-      });
-  }, [dispatch]);
 
   useEffect(() => {
     const selectedFederalIds = selectedPolicyholders.map(
       selected => selected.federalId,
     );
 
-    if (selectedFederalIds.length === 0 && storePolicyholders.length === 0) {
+    if (
+      selectedFederalIds.length === 0 &&
+      storePolicyholderSelection.length === 0
+    ) {
       setHasChanges(false);
     } else {
       setHasChanges(
-        selectedFederalIds.length === storePolicyholders.length
+        selectedFederalIds.length === storePolicyholderSelection.length
           ? !selectedFederalIds.every(selected => {
-              if (storePolicyholders.includes(selected)) {
+              if (storePolicyholderSelection.includes(selected)) {
                 return true;
               }
               return false;
@@ -70,7 +60,7 @@ const PolicyholderFilterSelector: React.FC = () => {
           : true,
       );
     }
-  }, [selectedPolicyholders, storePolicyholders]);
+  }, [selectedPolicyholders, storePolicyholderSelection]);
 
   const mapSearchOptions = (): SearchOptions[] => {
     if (fetchError)
@@ -81,7 +71,7 @@ const PolicyholderFilterSelector: React.FC = () => {
         },
       ];
 
-    if (policyholders.length === 0)
+    if (mappedPolicyholders.length === 0)
       return [{ label: 'Carregando...', value: '-1' }];
 
     const options = searchedPolicyholders.map(policyholder => ({
@@ -97,13 +87,13 @@ const PolicyholderFilterSelector: React.FC = () => {
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
     if (value.length < 3) {
-      setSearchedPolicyholders(policyholders);
+      setSearchedPolicyholders(mappedPolicyholders);
       return;
     }
-    const filteredByName = policyholders.filter(policyholder =>
+    const filteredByName = mappedPolicyholders.filter(policyholder =>
       policyholder.name.toLowerCase().includes(value.toLowerCase()),
     );
-    const filteredByFederalId = policyholders.filter(policyholder =>
+    const filteredByFederalId = mappedPolicyholders.filter(policyholder =>
       policyholder.federalId.includes(value),
     );
     const mergedPolicyholders = objectArraysMerger(
@@ -118,7 +108,7 @@ const PolicyholderFilterSelector: React.FC = () => {
     const { value } = selectedOption;
     if (value === '-1') return;
 
-    const selectedPolicyholder = policyholders.find(
+    const selectedPolicyholder = mappedPolicyholders.find(
       policyholder => policyholder.federalId === value,
     );
 
@@ -159,7 +149,9 @@ const PolicyholderFilterSelector: React.FC = () => {
           selection: [],
         }),
       );
-      dispatch(summaryActions.setTotalPolicyholders(policyholders.length));
+      dispatch(
+        summaryActions.setTotalPolicyholders(mappedPolicyholders.length),
+      );
     };
     return selectedOpportunities.length > 0
       ? renderOpportunitySelectionLossModal(
@@ -188,7 +180,9 @@ const PolicyholderFilterSelector: React.FC = () => {
           },
         });
       } else {
-        dispatch(summaryActions.setTotalPolicyholders(policyholders.length));
+        dispatch(
+          summaryActions.setTotalPolicyholders(mappedPolicyholders.length),
+        );
       }
     };
 

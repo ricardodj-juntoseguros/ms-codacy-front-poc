@@ -6,9 +6,10 @@ import { PolicyholderDTO } from '../../../application/types/dto';
 import PolicyholderFilterApi from '../../../application/features/policyholderFilter/PolicyholderFilterApi';
 import PolicyholderFilterSelector from '.';
 import { store } from '../../../config/store';
+import { fetchMappedPolicyholders } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 
 describe('PolicyholderFilterSelector', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     jest
       .spyOn(PolicyholderFilterApi, 'getMappedPolicyholderList')
       .mockImplementation(async () => {
@@ -31,9 +32,10 @@ describe('PolicyholderFilterSelector', () => {
           },
         ] as PolicyholderDTO[];
       });
+    await store.dispatch(fetchMappedPolicyholders());
   });
 
-  it('Should fetch policyholder list on mount', async () => {
+  it('Should render policyholder list from store', async () => {
     const { findByText } = render(
       <Provider store={store}>
         <PolicyholderFilterSelector />

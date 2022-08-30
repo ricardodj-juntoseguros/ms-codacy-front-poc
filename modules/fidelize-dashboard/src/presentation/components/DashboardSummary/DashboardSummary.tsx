@@ -3,17 +3,22 @@ import { SUMMARY_CARDS } from '../../../constants';
 import { DashboardTotalCard } from '../DashboardTotalCard';
 import styles from './DashboardSummary.module.scss';
 import { selectPolicyholdersSummary } from '../../../application/features/summary/SummarySlice';
+import { selectErrorFetchPolicyholders } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
 
 interface DashboardSummaryProps {
   totalOpportunities: number | undefined;
   totalInsuredAmount: number | undefined;
-  errorModalitySummary: boolean
+  errorModalitySummary: boolean;
 }
 
-const DashboardSummary: React.FC<DashboardSummaryProps> = ({totalOpportunities, totalInsuredAmount, errorModalitySummary}) => {
-  const { totalPolicyholders, errorPolicyholders } = useSelector(
-    selectPolicyholdersSummary,
-  );
+const DashboardSummary: React.FC<DashboardSummaryProps> = ({
+  totalOpportunities,
+  totalInsuredAmount,
+  errorModalitySummary,
+}) => {
+  const { totalPolicyholders } = useSelector(selectPolicyholdersSummary);
+  const errorPolicyholders = useSelector(selectErrorFetchPolicyholders);
+
   const renderCards = () => {
     const mapConstantsToState = [
       {
@@ -25,16 +30,17 @@ const DashboardSummary: React.FC<DashboardSummaryProps> = ({totalOpportunities, 
         key: 'opportunities',
         value: totalOpportunities,
         error: errorModalitySummary,
-      },   
+      },
       {
         key: 'is',
         value: totalInsuredAmount,
         error: errorModalitySummary,
-      },    
+      },
     ];
 
     return SUMMARY_CARDS.map(item => {
-      const { icon, key, label, useChangeValue, valueFormatter, isMoney } = item;
+      const { icon, key, label, useChangeValue, valueFormatter, isMoney } =
+        item;
       const dataToRender = mapConstantsToState.find(each => each.key === key);
 
       if (!dataToRender) return null;

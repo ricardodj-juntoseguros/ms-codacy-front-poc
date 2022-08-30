@@ -137,7 +137,7 @@ const NoOpportunitiesMappedContainer: React.FC = () => {
               viewport={{ once: true }}
               transition={{ delay: 0, duration: 0.5 }}
             >
-              Como funciona o fidelize?
+              Como funciona o Fidelize?
             </motion.h2>
             <div>{renderHowItWorks()}</div>
           </div>
@@ -153,7 +153,7 @@ const NoOpportunitiesMappedContainer: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ delay: 0, duration: 0.5 }}
               >
-                Porque o fidelize traz mais vantagens?
+                Porque o Fidelize traz mais vantagens?
               </motion.h2>
               <motion.div
                 initial={{ opacity: 0 }}
