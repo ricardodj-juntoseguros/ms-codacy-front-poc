@@ -15,6 +15,18 @@ export const getFiltersQueryParams = (
           query[fieldName] = (filter.values as string[]).join(',');
         }
         break;
+      case 'securityAmount':
+        if (filter.values) {
+          const filterValue = filter.values as {
+            min: number | null;
+            max: number | null;
+          };
+          if (filterValue.max && filterValue.max > 0)
+            query.maxSecurityAmount = filterValue.max;
+          if (filterValue.min && filterValue.min > 0)
+            query.minSecurityAmount = filterValue.min;
+        }
+        break;
       default:
         break;
     }
