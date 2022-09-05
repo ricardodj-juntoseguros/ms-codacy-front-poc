@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, waitFor } from '@testing-library/react';
-import BrokerContactApi from 'modules/fidelize-dashboard/src/application/features/brokerContact/BrokerContactApi';
 import { act } from 'react-dom/test-utils';
+import { fireEvent, render, waitFor } from '@testing-library/react';
+import BrokerContactApi from '../../../application/features/brokerContact/BrokerContactApi';
 import BrokerContactModal from './BrokerContactModal';
 
 describe('BrokerContactModal', () => {
@@ -26,13 +26,11 @@ describe('BrokerContactModal', () => {
       fireEvent.click(getByTestId('submit-btn'));
     });
 
-    waitFor(async () => {
-      expect(await findByText('Contato solicitado!')).toBeInTheDocument();
-      expect(BrokerContactApi.sendBrokerContactLead).toHaveBeenCalledWith(
-        'teste@juntoseguros.com',
-        'test question',
-      );
-    });
+    expect(await findByText('Contato solicitado!')).toBeInTheDocument();
+    expect(BrokerContactApi.sendBrokerContactLead).toHaveBeenCalledWith(
+      'teste@juntoseguros.com',
+      'test question',
+    );
   });
 
   it('Should call onCloseModal callback on modal close button click', () => {

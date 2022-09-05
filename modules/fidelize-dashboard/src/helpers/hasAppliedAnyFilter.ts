@@ -7,6 +7,12 @@ export const hasAppliedAnyFilter = (
     filters.length > 0 &&
     !!filters.find(f => {
       if (Object.keys(f.values).length === 0) return false;
+      if (
+        Object.values(f.values).every(
+          v => Number.isNaN(v) || v === null || v === undefined,
+        )
+      )
+        return false;
       return true;
     })
   );

@@ -57,6 +57,13 @@ describe('OpportunityDetailsListFilters', () => {
     expect(
       await findByTestId('labor-category-filter-chk-multi-A'),
     ).toBeInTheDocument();
+    expect(await findByTestId('labor-relevance-filter')).toBeInTheDocument();
+    expect(
+      await findByTestId('labor-relevance-filter-chk-multi-1'),
+    ).toBeInTheDocument();
+    expect(
+      await findByTestId('labor-securityAmount-filter'),
+    ).toBeInTheDocument();
   });
 
   it('Should display clear all button when there is any filter applied', async () => {

@@ -11,7 +11,10 @@ class BrokerContactApi {
     this.instance = new FidelizeDashboardBaseApi().getInstance();
   }
 
-  async sendBrokerContactLead(contactEmail: string, question: string) {
+  async sendBrokerContactLead(
+    contactEmail: string,
+    question: string,
+  ): Promise<any> {
     const params: IHttpClientRequestParameters = {
       url: `/v1/contacts/leads`,
       payload: { leadEmails: [contactEmail], leadQuestion: question },

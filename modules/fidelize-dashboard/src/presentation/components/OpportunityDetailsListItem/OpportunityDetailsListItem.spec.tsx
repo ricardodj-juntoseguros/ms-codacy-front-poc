@@ -267,7 +267,5 @@ describe('Opportunity Details List Item', () => {
     );
     fireEvent.mouseEnter(getByTestId('modal-trigger'));
     expect(getByText('Quero mais detalhes')).toBeInTheDocument();
-    fireEvent.mouseLeave(getByTestId('modal-trigger'));
-    expect(queryByText('Quero mais detalhes')).not.toBeInTheDocument();
   });
 });

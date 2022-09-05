@@ -12,6 +12,7 @@ import OpportunitiesDetailsApi from '../../../application/features/opportunities
 import OpportunityDetailsMultiselectFilter from '../OpportunityDetailsMultiselectFilter';
 import styles from './OpportunityDetailsListFilters.module.scss';
 import { hasAppliedAnyFilter } from '../../../helpers';
+import OpportunityDetailsSecurityAmountFilter from '../OpportunityDetailsSecurityAmountFilter';
 
 interface OpportunityDetailsListFiltersProps {
   modality: ModalityEnum;
@@ -30,6 +31,11 @@ const FILTERS_BY_MODALITY = [
         name: 'category',
         component: OpportunityDetailsMultiselectFilter,
         useOptions: true,
+      },
+      {
+        name: 'securityAmount',
+        component: OpportunityDetailsSecurityAmountFilter,
+        useOptions: false,
       },
     ],
   },
