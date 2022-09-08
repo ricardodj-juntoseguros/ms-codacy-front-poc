@@ -17,7 +17,7 @@ beforeEach(() => {
     .wait(6000)
     .click();
 
-  cy.get('.OpportunityDetailsListFilters_opportunity-details-list-filters__wrapper__dH-8P > :nth-child(1) > .LinkButton_j-link-button__btn__3ltGA')
+  cy.contains('.LinkButton_j-link-button__label__3_HaD', /^Filtros/)
     .click();
        
 });
@@ -75,7 +75,7 @@ describe('Filtros', () => {
       
   });
 
-  it.only('Deve filtrar por Tipo "Depósito judicial"', () => {
+  it('Deve filtrar por Tipo "Depósito judicial"', () => {
 
     cy.get('[data-testid=labor-category-filter]')
       .click(); 
@@ -101,7 +101,61 @@ describe('Filtros', () => {
 
   });
 
+  it('Deve filtrar Valor IS, com valor minimo vazio e máximo preenchido', () => {
+
+    cy.get('[data-testid=labor-securityAmount-filter]').click();
+
+    cy.get('[data-testid=max-security-amount-input]').type('9000');
+
+    cy.get('[data-testid=security-amount-filter-apply-btn]').click().wait(6000);
+
+    cy.get('.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6')
+      .should('not.be.empty');
+  }); 
+
+  it('Deve filtrar Valor IS, com valor minimo preenchido e máximo vazio', () => {
+
+    cy.get('[data-testid=labor-securityAmount-filter]').click();
+
+    cy.get('[data-testid=min-security-amount-input]').type('9000');
+
+    cy.get('[data-testid=security-amount-filter-apply-btn]').click().wait(6000);
+
+    cy.get('.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6')
+      .should('not.be.empty');
+  }); 
+
+  it('Deve filtrar Valor IS, com valor minimo e máximo preenchidos', () => {
+
+    cy.get('[data-testid=labor-securityAmount-filter]').click();
+
+    cy.get('[data-testid=min-security-amount-input]').type('8000');
+
+    cy.get('[data-testid=max-security-amount-input]').type('9000');
+
+    cy.get('[data-testid=security-amount-filter-apply-btn]').click().wait(6000);
+
+    cy.get('.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6')
+      .should('not.be.empty');
+  }); 
+
+  it('Deve filtrar Valor IS, com valor minimo maior que o máximo', () => {
+
+    cy.get('[data-testid=labor-securityAmount-filter]').click();
+
+    cy.get('[data-testid=min-security-amount-input]').type('9000');
+
+    cy.get('[data-testid=max-security-amount-input]').type('8000');
+
+    cy.get('[data-testid=security-amount-filter-apply-btn]').click();
+
+    cy.get('.InputBase_j-input__error__gFKZW')
+      .should('have.text', 'O valor máximo precisa ser maior que o valor mínimo');
+  });
+
   it('Deve Limpar a seleção', () => {
+
+    cy.get('[data-testid=labor-relevance-filter]').click();
 
     cy.get('[data-testid=labor-relevance-filter-chk-multi-2]').click();
 
