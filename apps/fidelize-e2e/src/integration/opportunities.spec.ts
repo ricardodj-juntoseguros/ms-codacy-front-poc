@@ -11,24 +11,6 @@ beforeEach(() => {
 });
 
 describe('Opportunities', () => {
-  it('Deve navegar até a guia Fiscal e solicitar mais detalhes', () => {
-    cy.goToOpportunityDetailsListTab('fiscal')
-      .wait(6000)
-      .clickOnFirstMoreDetailsButton()
-      .first();
-    cy.get(selectors.modal.wrapper)
-      .should('be.visible')
-      .within(() => {
-        cy.get(selectors.modal.primaryButton).click();
-    });
-    cy.get(selectors.opportunityDetailsList.email).type(
-        'ti_homologacao@juntoseguros.com',
-    );
-    cy.get(selectors.opportunityDetailsList.sendButton)
-      .should('be.visible')
-      .click();
-    cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
-  });
   it('Deve validar disclaimer de condições de produto', () => {
     cy.goToOpportunityDetailsListTab('fiscal')
       .wait(6000)
