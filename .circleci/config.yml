@@ -151,6 +151,7 @@ jobs:
             npm install --no-optional --unsafe-perm
             npm rebuild node-sass
             yarn nx affected:e2e -c=quality --base=master --head=HEAD
+          no_output_timeout: 20m
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:
