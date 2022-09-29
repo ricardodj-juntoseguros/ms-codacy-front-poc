@@ -89,53 +89,7 @@ describe('OpportunityDetailsModal', () => {
     ).toBeInTheDocument();
   });
 
-  it('Should call correct api method on submit button click if opportunity modality is FISCAL', async () => {
-    jest
-      .spyOn(OpportunityDetailsApi, 'sendMoreOpportunityDetailsMail')
-      .mockImplementationOnce(async () => {
-        return { success: true };
-      });
-    const onCloseMock = jest.fn();
-    const opportunityMock: OpportunityDetailsItemDTO = {
-      category: OpportunityDetailsCategoryEnum.RENEWAL,
-      type: OpportunityDetailsTypeEnum.FISCAL,
-      id: 'id',
-      policyholder: 'Teste tomador',
-      relevance: OpportunityRelevanceEnum.HIGH,
-      expiration: '2024-02-02T03:00:00.000Z',
-      observation: 'Com vencimento em 22/02/2024',
-      mappingDate: '01/jan/2021',
-      securityAmount: 2550650.5,
-      expired: false,
-    };
-    const { getByTestId, getByText, queryByText } = render(
-      <Provider store={store}>
-        <OpportunityDetailsModal
-          isOpen
-          onModalClose={onCloseMock}
-          modality={ModalityEnum.FISCAL}
-          opportunity={opportunityMock}
-        />
-      </Provider>,
-    );
-
-    const submitBtn = getByTestId('submit-more-details');
-    await act(async () => {
-      fireEvent.click(submitBtn);
-    });
-    expect(getByText('Agora é só aguardar')).toBeInTheDocument();
-    const closeModalBtn = getByTestId('modal-close-button');
-    await act(async () => {
-      fireEvent.click(closeModalBtn);
-    });
-    expect(
-      OpportunityDetailsApi.sendMoreOpportunityDetailsMail,
-    ).toHaveBeenCalledTimes(1);
-    expect(queryByText('Agora é só aguardar')).not.toBeInTheDocument();
-    expect(onCloseMock).toHaveBeenCalled();
-  });
-
-  it('Should show email step and call correct api method on submit if opportunity modality is LABOR', async () => {
+  it('Should show email step and call correct api method on submit', async () => {
     jest
       .spyOn(OpportunityDetailsApi, 'sendMoreDetailsFromOpportunityList')
       .mockImplementationOnce(async () => {
@@ -210,7 +164,7 @@ describe('OpportunityDetailsModal', () => {
       securityAmount: 2550650.5,
       expired: false,
     };
-    const { getByTestId, getByText, queryByText } = render(
+    const { getByTestId, getByText, queryByText, findByText } = render(
       <Provider store={store}>
         <OpportunityDetailsModal
           isOpen
@@ -225,8 +179,15 @@ describe('OpportunityDetailsModal', () => {
     await act(async () => {
       fireEvent.click(submitBtn);
     });
+    const mailInput = getByTestId('mail-input-more-details');
+    const mailSubmitBtn = getByTestId('submit-more-details-email');
+
+    fireEvent.change(mailInput, {
+      target: { value: 'teste@juntoseguros.com' },
+    });
+    fireEvent.click(mailSubmitBtn);
     expect(
-      getByText(
+      await findByText(
         'Ocorreu um erro inesperado ao realizar a sua solicitação. Por favor, tente novamente.',
       ),
     ).toBeInTheDocument();

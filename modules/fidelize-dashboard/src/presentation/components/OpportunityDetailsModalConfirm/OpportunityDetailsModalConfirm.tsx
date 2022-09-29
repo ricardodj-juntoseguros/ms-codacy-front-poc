@@ -96,7 +96,6 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
     return (
       <>
         {opportunities.length === 1 && (
-          // Renders only when there is one opportunity
           <>
             <p className={styles['opportunity-details-modal-confirm__title']}>
               Oportunidade {getLabelByModality(modality)} selecionada:

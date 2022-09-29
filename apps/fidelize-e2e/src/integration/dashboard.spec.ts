@@ -17,14 +17,14 @@ describe('Dashboard', () => {
   });
 
   it('Deve validar pesquisa pelo nome do tomador', () => {
-    cy.get(selectors.dashboardSummary.searchText).type('Construtora junto', {
+    cy.get(selectors.dashboardSummary.searchText).type('DEXCO S.A', {
       delay: 1000,
     });
     cy.get(selectors.dashboardSummary.searchInput)
       .should('be.visible')
       .should(
         'have.text',
-        'CONSTRUTORA JUNTO SEGUROS - TESTE - 65.182.718/0001-91',
+        'DEXCO S.A - 97.837.181/0001-47',
       )
       .click();
 
@@ -34,7 +34,7 @@ describe('Dashboard', () => {
   });
 
   it('Deve validar pesquisa pelo CNPJ do tomador', () => {
-    cy.get(selectors.dashboardSummary.searchText).type('65182718000191', {
+    cy.get(selectors.dashboardSummary.searchText).type('97837181000147', {
       delay: 1000,
     });
 
@@ -42,7 +42,7 @@ describe('Dashboard', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'CONSTRUTORA JUNTO SEGUROS - TESTE - 65.182.718/0001-91',
+        'DEXCO S.A - 97.837.181/0001-47',
       )
       .click();
 

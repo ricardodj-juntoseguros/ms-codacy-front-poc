@@ -94,44 +94,27 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
     });
   };
 
-  const handleSubmit = (submit: Promise<any>) => {
+  const handleSubmit = (email: string) => {
     setIsSubmitting(true);
     fireTagManagerEvent();
-    submit
+    const opportunitiesIds = opportunity
+      ? [opportunity.id]
+      : selectedOpportunities.map(op => op.id);
+
+    OpportunityDetailsApi.sendMoreDetailsFromOpportunityList(
+      modality,
+      opportunitiesIds,
+      [email],
+    )
       .then(() => {
         dispatch(opportunitiesDetailsActions.clearOpportunitySelection());
         setCurrentStep('COMPLETED');
         setSubmitError(false);
-        ('');
       })
       .catch(() => setSubmitError(true))
       .finally(() => {
         setIsSubmitting(false);
       });
-  };
-
-  const handleConfirmSubmit = () => {
-    if (modality === ModalityEnum.TRABALHISTA) {
-      setCurrentStep('EMAIL');
-      return;
-    }
-    if (!opportunity) return;
-    handleSubmit(
-      OpportunityDetailsApi.sendMoreOpportunityDetailsMail(opportunity.id),
-    );
-  };
-
-  const handleEmailSubmit = (email: string) => {
-    const opportunitiesIds = opportunity
-      ? [opportunity.id]
-      : selectedOpportunities.map(op => op.id);
-    handleSubmit(
-      OpportunityDetailsApi.sendMoreDetailsFromOpportunityList(
-        modality,
-        opportunitiesIds,
-        [email],
-      ),
-    );
   };
 
   const handleModalClose = () => {
@@ -174,7 +157,7 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
           modality={modality}
           opportunities={opportunity ? [opportunity] : selectedOpportunities}
           isSubmitting={isSubmitting}
-          onSubmit={handleConfirmSubmit}
+          onSubmit={() => setCurrentStep('EMAIL')}
           renderError={renderSubmitError}
           renderDisclaimer={renderDisclaimer}
         />
@@ -183,7 +166,7 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
     if (step === 'EMAIL') {
       return (
         <OpportunityDetailsModalMail
-          onSubmit={v => handleEmailSubmit(v)}
+          onSubmit={value => handleSubmit(value)}
           isSubmitting={isSubmitting}
           renderSubmitError={renderSubmitError}
         />
