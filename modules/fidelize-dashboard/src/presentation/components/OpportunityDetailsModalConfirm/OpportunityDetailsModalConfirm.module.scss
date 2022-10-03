@@ -58,3 +58,23 @@
     display: inline-block;
   }
 }
+
+.opportunity-details-modal-confirm__policyholder-feedback {
+  padding-bottom: spacing('l');
+  & > div {
+    width: 100% !important;
+  }
+
+  &--loading,
+  &--error {
+    padding-bottom: 0px;
+  }
+
+  &--loading {
+    & i::before {
+      animation: rotating 1s linear infinite;
+      -webkit-animation: rotating 1s linear infinite;
+      display: inline-block;
+    }
+  }
+}

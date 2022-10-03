@@ -193,7 +193,14 @@ describe('OpportunityDetailsList', () => {
           ],
         };
       });
-
+    jest
+      .spyOn(
+        OpportunitiesDetailsApi,
+        'getOpportunityCompleteDetailsByModalityAndId',
+      )
+      .mockImplementationOnce(async () => {
+        return { hasLimit: true };
+      });
     const { findByTestId, getByText, queryByText } = render(
       <Provider store={store}>
         <OpportunityDetailsList

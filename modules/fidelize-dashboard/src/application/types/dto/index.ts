@@ -6,3 +6,4 @@ export * from './SummaryChartDataDTO';
 export * from './ModalitiesSummaryDTO';
 export * from './OpportunitiesFiltersContentDTO';
 export * from './OpportunitiesFilterOptionsDTO';
+export * from './OpportunityCompleteDetailsDTO';

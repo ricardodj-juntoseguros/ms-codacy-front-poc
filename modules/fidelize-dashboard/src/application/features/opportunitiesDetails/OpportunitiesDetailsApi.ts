@@ -4,6 +4,7 @@ import {
 } from '@infrastructure/http-client';
 import {
   OpportunitiesFiltersContentDTO,
+  OpportunityCompleteDetailsDTO,
   OpportunityDetailsDTO,
 } from '../../types/dto';
 import {
@@ -79,6 +80,16 @@ class OpportunitiesDetailsApi {
       url: `/v1/filters/${modality}`,
     };
     return await this.instance.get<OpportunitiesFiltersContentDTO>(params);
+  }
+
+  async getOpportunityCompleteDetailsByModalityAndId(
+    modality: ModalityEnum,
+    opportunityId: string,
+  ): Promise<OpportunityCompleteDetailsDTO> {
+    const params: IHttpClientRequestParameters = {
+      url: `/v1/opportunities/${modality}/${opportunityId}`,
+    };
+    return await this.instance.get<OpportunityCompleteDetailsDTO>(params);
   }
 }
 

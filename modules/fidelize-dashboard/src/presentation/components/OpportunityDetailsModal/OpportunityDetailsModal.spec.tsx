@@ -8,7 +8,7 @@ import {
   OpportunityDetailsTypeEnum,
   OpportunityRelevanceEnum,
 } from '../../../application/types/model';
-import OpportunityDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
+import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import { opportunitiesDetailsActions } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import OpportunityDetailsModal from './OpportunityDetailsModal';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
@@ -19,7 +19,7 @@ describe('OpportunityDetailsModal', () => {
     jest.clearAllMocks();
   });
 
-  it('Should render the confirmation step correctly when opportunity prop is passed', () => {
+  it('Should render the confirmation step correctly when opportunity prop is passed', async () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: OpportunityDetailsCategoryEnum.RENEWAL,
       type: OpportunityDetailsTypeEnum.FISCAL,
@@ -32,10 +32,17 @@ describe('OpportunityDetailsModal', () => {
       expired: false,
       observation: 'Com vencimento em 22/02/2024',
     };
-    const { container, getByText } = render(
+    jest
+      .spyOn(
+        OpportunitiesDetailsApi,
+        'getOpportunityCompleteDetailsByModalityAndId',
+      )
+      .mockImplementationOnce(async () => {
+        return { hasLimit: true };
+      });
+    const { container, getByText, findByText } = render(
       <Provider store={store}>
         <OpportunityDetailsModal
-          isOpen
           onModalClose={jest.fn()}
           modality={ModalityEnum.FISCAL}
           opportunity={opportunityMock}
@@ -43,6 +50,7 @@ describe('OpportunityDetailsModal', () => {
       </Provider>,
     );
     expect(container).toBeInTheDocument();
+    expect(await findByText('Solicitar detalhes')).toBeInTheDocument();
     expect(getByText('Quero mais detalhes!')).toBeInTheDocument();
     expect(
       getByText(
@@ -52,7 +60,7 @@ describe('OpportunityDetailsModal', () => {
     expect(getByText('Oportunidade fiscal selecionada:')).toBeInTheDocument();
   });
 
-  it('Should render the confirmation step correctly without opportunity prop when there is only one opportunity selected', () => {
+  it('Should render the confirmation step correctly without opportunity prop when there is only one opportunity selected', async () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: OpportunityDetailsCategoryEnum.RENEWAL,
       type: OpportunityDetailsTypeEnum.LABOR,
@@ -65,10 +73,17 @@ describe('OpportunityDetailsModal', () => {
       expired: false,
       observation: 'Com vencimento em 22/02/2024',
     };
-    const { container, getByText } = render(
+    jest
+      .spyOn(
+        OpportunitiesDetailsApi,
+        'getOpportunityCompleteDetailsByModalityAndId',
+      )
+      .mockImplementationOnce(async () => {
+        return { hasLimit: true };
+      });
+    const { container, getByText, findByText } = render(
       <Provider store={store}>
         <OpportunityDetailsModal
-          isOpen
           onModalClose={jest.fn()}
           modality={ModalityEnum.TRABALHISTA}
         />
@@ -78,6 +93,7 @@ describe('OpportunityDetailsModal', () => {
       opportunitiesDetailsActions.addOpportunityToSelection(opportunityMock),
     );
     expect(container).toBeInTheDocument();
+    expect(await findByText('Solicitar detalhes')).toBeInTheDocument();
     expect(getByText('Quero mais detalhes!')).toBeInTheDocument();
     expect(
       getByText(
@@ -91,9 +107,17 @@ describe('OpportunityDetailsModal', () => {
 
   it('Should show email step and call correct api method on submit', async () => {
     jest
-      .spyOn(OpportunityDetailsApi, 'sendMoreDetailsFromOpportunityList')
+      .spyOn(OpportunitiesDetailsApi, 'sendMoreDetailsFromOpportunityList')
       .mockImplementationOnce(async () => {
         return { success: true };
+      });
+    jest
+      .spyOn(
+        OpportunitiesDetailsApi,
+        'getOpportunityCompleteDetailsByModalityAndId',
+      )
+      .mockImplementationOnce(async () => {
+        return { hasLimit: true };
       });
     const onCloseMock = jest.fn();
     const opportunityMock: OpportunityDetailsItemDTO = {
@@ -108,10 +132,9 @@ describe('OpportunityDetailsModal', () => {
       securityAmount: 2550650.5,
       expired: false,
     };
-    const { getByTestId, findByText, queryByText } = render(
+    const { getByTestId, findByText, queryByText, findByTestId } = render(
       <Provider store={store}>
         <OpportunityDetailsModal
-          isOpen
           onModalClose={onCloseMock}
           modality={ModalityEnum.TRABALHISTA}
           opportunity={opportunityMock}
@@ -119,7 +142,7 @@ describe('OpportunityDetailsModal', () => {
       </Provider>,
     );
 
-    const submitBtn = getByTestId('submit-more-details');
+    const submitBtn = await findByTestId('submit-more-details');
     await act(async () => {
       fireEvent.click(submitBtn);
     });
@@ -138,7 +161,7 @@ describe('OpportunityDetailsModal', () => {
       fireEvent.click(closeModalBtn);
     });
     expect(
-      OpportunityDetailsApi.sendMoreDetailsFromOpportunityList,
+      OpportunitiesDetailsApi.sendMoreDetailsFromOpportunityList,
     ).toHaveBeenCalledTimes(1);
     expect(queryByText('Agora é só aguardar')).not.toBeInTheDocument();
     expect(onCloseMock).toHaveBeenCalled();
@@ -146,11 +169,19 @@ describe('OpportunityDetailsModal', () => {
 
   it('Should render error message if api method on submit fails', async () => {
     jest
-      .spyOn(OpportunityDetailsApi, 'sendMoreOpportunityDetailsMail')
+      .spyOn(OpportunitiesDetailsApi, 'sendMoreOpportunityDetailsMail')
       .mockImplementationOnce(async () => {
         return new Promise((resolve, reject) => {
           reject();
         });
+      });
+    jest
+      .spyOn(
+        OpportunitiesDetailsApi,
+        'getOpportunityCompleteDetailsByModalityAndId',
+      )
+      .mockImplementationOnce(async () => {
+        return { hasLimit: true };
       });
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: OpportunityDetailsCategoryEnum.RENEWAL,
@@ -164,10 +195,9 @@ describe('OpportunityDetailsModal', () => {
       securityAmount: 2550650.5,
       expired: false,
     };
-    const { getByTestId, getByText, queryByText, findByText } = render(
+    const { getByTestId, findByTestId, queryByText, findByText } = render(
       <Provider store={store}>
         <OpportunityDetailsModal
-          isOpen
           onModalClose={jest.fn()}
           modality={ModalityEnum.FISCAL}
           opportunity={opportunityMock}
@@ -175,7 +205,7 @@ describe('OpportunityDetailsModal', () => {
       </Provider>,
     );
 
-    const submitBtn = getByTestId('submit-more-details');
+    const submitBtn = await findByTestId('submit-more-details');
     await act(async () => {
       fireEvent.click(submitBtn);
     });

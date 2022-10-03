@@ -1,5 +1,6 @@
-import { Button } from 'junto-design-system';
+import { Alert, Button } from 'junto-design-system';
 import { nanoid } from 'nanoid';
+import classNames from 'classnames';
 import { thousandSeparator } from '@shared/utils';
 import { formatDateString, getLabelByModality } from '../../../helpers';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
@@ -13,6 +14,7 @@ interface OpportunityDetailsModalConfirmProps {
   modality: ModalityEnum;
   opportunities: OpportunityDetailsItemDTO[];
   isSubmitting: boolean;
+  validPolicyholder: 'OK' | 'LOADING' | 'INVALID' | 'ERROR';
   onSubmit: () => void;
   renderError: () => JSX.Element | null;
   renderDisclaimer: () => JSX.Element;
@@ -23,6 +25,7 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
     modality,
     opportunities,
     isSubmitting,
+    validPolicyholder,
     onSubmit,
     renderError,
     renderDisclaimer,
@@ -93,6 +96,50 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
       );
     };
 
+    const getSubmitButtonLabel = () =>
+      validPolicyholder === 'OK' ? 'Solicitar detalhes' : 'Tenho interesse';
+
+    const getPolicyholderValidationAlertContent = (validStatus: string) => {
+      const data: {
+        [key: string]: { text: string; icon: string; variant: string };
+      } = {
+        LOADING: {
+          text: 'Verificando situação do tomador...',
+          icon: 'loading',
+          variant: 'info',
+        },
+        INVALID: {
+          text: 'Limite insuficiente para a oportunidade. Mesmo assim você pode demostrar interesse que encaminharemos ao time Comercial.',
+          icon: 'alert-triangle',
+          variant: 'warning',
+        },
+        ERROR: {
+          text: 'Opa! Ocorreu um erro inesperado ao verificar a situação do tomador. Tente novamente mais tarde.',
+          icon: 'x-circle',
+          variant: 'error',
+        },
+      };
+      return data[validStatus];
+    };
+
+    const renderPolicyholderValidation = () => {
+      if (validPolicyholder === 'OK') return null;
+      const { text, variant, icon } =
+        getPolicyholderValidationAlertContent(validPolicyholder);
+      return (
+        <div
+          className={classNames(
+            styles['opportunity-details-modal-confirm__policyholder-feedback'],
+            styles[
+              `opportunity-details-modal-confirm__policyholder-feedback--${validPolicyholder.toLowerCase()}`
+            ],
+          )}
+        >
+          <Alert text={text} variant={variant as any} icon={icon} />
+        </div>
+      );
+    };
+
     return (
       <>
         {opportunities.length === 1 && (
@@ -101,20 +148,23 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
               Oportunidade {getLabelByModality(modality)} selecionada:
             </p>
             {renderOpportunityData()}
+            {renderPolicyholderValidation()}
           </>
         )}
-        <div className={styles['opportunity-details-modal-confirm__submit']}>
-          {renderError()}
-          <Button
-            data-testid="submit-more-details"
-            onClick={() => onSubmit()}
-            mobileFullWidth
-          >
-            {isSubmitting
-              ? ((<i className="icon icon-loading" />) as any)
-              : 'Solicitar detalhes'}
-          </Button>
-        </div>
+        {validPolicyholder !== 'ERROR' && validPolicyholder !== 'LOADING' && (
+          <div className={styles['opportunity-details-modal-confirm__submit']}>
+            {renderError()}
+            <Button
+              data-testid="submit-more-details"
+              onClick={() => onSubmit()}
+              mobileFullWidth
+            >
+              {isSubmitting
+                ? ((<i className="icon icon-loading" />) as any)
+                : getSubmitButtonLabel()}
+            </Button>
+          </div>
+        )}
         {renderDisclaimer()}
       </>
     );

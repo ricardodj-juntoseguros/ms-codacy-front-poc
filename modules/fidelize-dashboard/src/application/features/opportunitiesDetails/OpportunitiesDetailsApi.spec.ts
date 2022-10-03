@@ -128,4 +128,21 @@ describe('OpportunitiesDetailsApi', () => {
     });
     expect(result.filters).toStrictEqual([]);
   });
+
+  it('getOpportunityCompleteDetailsByModalityAndId should call bff service correctly', async () => {
+    const httpMock = jest
+      .spyOn(AxiosHttpClient.prototype, 'get')
+      .mockImplementation(async () => {
+        return { hasLimit: true };
+      });
+    const result =
+      await OpportunitiesDetailsApi.getOpportunityCompleteDetailsByModalityAndId(
+        ModalityEnum.TRABALHISTA,
+        'test-opportunity-id',
+      );
+    expect(httpMock).toHaveBeenCalledWith({
+      url: '/v1/opportunities/labor/test-opportunity-id',
+    });
+    expect(result.hasLimit).toBeTruthy();
+  });
 });

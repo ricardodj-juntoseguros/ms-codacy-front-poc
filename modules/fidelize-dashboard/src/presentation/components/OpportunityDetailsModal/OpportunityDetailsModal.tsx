@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'junto-design-system';
 import TagManager from 'react-gtm-module';
@@ -7,7 +7,7 @@ import OpportunityDetailsModalConfirm from '../OpportunityDetailsModalConfirm';
 import OpportunityDetailsModalMail from '../OpportunityDetailsModalMail';
 import { ModalityEnum } from '../../../application/types/model';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
-import OpportunityDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
+import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import {
   opportunitiesDetailsActions,
   selectSelectedOpportunities,
@@ -17,25 +17,47 @@ import styles from './OpportunityDetailsModal.module.scss';
 interface OpportunityDetailsModalProps {
   modality: ModalityEnum;
   opportunity?: OpportunityDetailsItemDTO | null;
-  isOpen: boolean;
   onModalClose: () => void;
 }
 
 type ModalFlowStep = 'CONFIRM' | 'EMAIL' | 'COMPLETED';
+type PolicyholderValidationStatus = 'OK' | 'LOADING' | 'INVALID' | 'ERROR';
 
 const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
   modality,
   opportunity,
-  isOpen,
   onModalClose,
 }) => {
   const dispatch = useDispatch();
   const selectedOpportunities = useSelector(selectSelectedOpportunities);
+  const isOnlyOneOpportunity =
+    opportunity || selectedOpportunities.length === 1;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [currentStep, setCurrentStep] = useState<ModalFlowStep>('CONFIRM');
-  const isOnlyOneOpportunity =
-    opportunity || selectedOpportunities.length === 1;
+  const [validPolicyholder, setValidPolicyholder] =
+    useState<PolicyholderValidationStatus>(
+      isOnlyOneOpportunity ? 'LOADING' : 'OK',
+    );
+
+  useEffect(() => {
+    if (isOnlyOneOpportunity) {
+      const opportunityId = opportunity
+        ? opportunity.id
+        : selectedOpportunities[0].id;
+      OpportunitiesDetailsApi.getOpportunityCompleteDetailsByModalityAndId(
+        modality,
+        opportunityId,
+      )
+        .then(response =>
+          setValidPolicyholder(response.hasLimit ? 'OK' : 'INVALID'),
+        )
+        .catch(() => setValidPolicyholder('ERROR'));
+    } else {
+      setValidPolicyholder('OK');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getModalTemplate = () => {
     switch (currentStep) {
@@ -55,7 +77,10 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
       case 'EMAIL':
         return {
           title: {
-            value: 'Enviaremos as informações no seu e-mail!',
+            value:
+              validPolicyholder === 'OK'
+                ? 'Enviaremos as informações no seu e-mail!'
+                : 'Entraremos em contato por e-mail!',
             align: 'center' as any,
           },
           icon: <MailIllustration />,
@@ -68,7 +93,9 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
           },
           text: {
             value:
-              'Em breve, entraremos em contato enviando as informações solicitadas.',
+              validPolicyholder === 'OK'
+                ? 'Em breve, entraremos em contato enviando as informações solicitadas.'
+                : 'Já encaminhamos seu interesse ao time comercial.',
             align: 'center' as any,
           },
           icon: <SuccessIllustration />,
@@ -101,7 +128,7 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
       ? [opportunity.id]
       : selectedOpportunities.map(op => op.id);
 
-    OpportunityDetailsApi.sendMoreDetailsFromOpportunityList(
+    OpportunitiesDetailsApi.sendMoreDetailsFromOpportunityList(
       modality,
       opportunitiesIds,
       [email],
@@ -157,6 +184,7 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
           modality={modality}
           opportunities={opportunity ? [opportunity] : selectedOpportunities}
           isSubmitting={isSubmitting}
+          validPolicyholder={validPolicyholder}
           onSubmit={() => setCurrentStep('EMAIL')}
           renderError={renderSubmitError}
           renderDisclaimer={renderDisclaimer}
@@ -177,7 +205,7 @@ const OpportunityDetailsModal: React.FC<OpportunityDetailsModalProps> = ({
 
   return (
     <Modal
-      open={isOpen}
+      open
       onClose={() => handleModalClose()}
       onBackdropClick={() => handleModalClose()}
       size={getModalSize()}

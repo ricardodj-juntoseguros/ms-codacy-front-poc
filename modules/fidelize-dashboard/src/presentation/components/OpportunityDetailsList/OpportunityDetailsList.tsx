@@ -210,12 +210,13 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
           modality={modality}
         />
       )}
-      <OpportunityDetailsModal
-        isOpen={modalOpen}
-        modality={modality}
-        opportunity={interestedOpportunity}
-        onModalClose={handleModalClose}
-      />
+      {modalOpen && (
+        <OpportunityDetailsModal
+          modality={modality}
+          opportunity={interestedOpportunity}
+          onModalClose={handleModalClose}
+        />
+      )}
       <ToastContainer />
     </div>
   );
