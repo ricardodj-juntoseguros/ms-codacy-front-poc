@@ -14,7 +14,7 @@ export const getLabelByModality = (
     case ModalityEnum.CIVIL:
       label = isPlural ? 'cíveis' : 'cível';
       break;
-    case ModalityEnum.TRABALHISTA:
+    case ModalityEnum.LABOR:
       label = isPlural ? 'trabalhistas' : 'trabalhista';
       break;
     default:

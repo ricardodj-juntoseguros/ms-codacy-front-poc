@@ -38,7 +38,7 @@ describe('Modality Summary', () => {
   it('Should render labor accordingly to props', () => {
     const { getByText } = render(
       <ModalitySummary
-        modality={ModalityEnum.TRABALHISTA}
+        modality={ModalityEnum.LABOR}
         totalInsuredValue={6500000}
         totalOpportunities={237580}
         hasError={false}
@@ -54,7 +54,7 @@ describe('Modality Summary', () => {
   it('Should render placeholder if there is no opportunities', () => {
     const { getByText } = render(
       <ModalitySummary
-        modality={ModalityEnum.TRABALHISTA}
+        modality={ModalityEnum.LABOR}
         totalInsuredValue={0}
         totalOpportunities={0}
         hasError={false}
@@ -77,7 +77,7 @@ describe('Modality Summary', () => {
   it('Should render error message if hasError is tru', () => {
     const { getByText } = render(
       <ModalitySummary
-        modality={ModalityEnum.TRABALHISTA}
+        modality={ModalityEnum.LABOR}
         totalInsuredValue={6500000}
         totalOpportunities={237580}
         hasError

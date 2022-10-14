@@ -3,7 +3,7 @@ import { RootState } from '../../../config/store';
 import { ModalitySelectionModel, ModalityEnum } from '../../types/model';
 
 const initialState: ModalitySelectionModel = {
-  selectedModality: ModalityEnum.FISCAL,
+  selectedModality: ModalityEnum.LABOR,
 };
 
 export const modalitySelectionSlice = createSlice({

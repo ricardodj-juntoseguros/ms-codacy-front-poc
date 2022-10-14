@@ -28,19 +28,19 @@ describe('GetLabelByModality Helper', () => {
 
   it('Should get label for Modality TRABALHISTA correctly', () => {
     const resultSingular = getLabelByModality(
-      ModalityEnum.TRABALHISTA,
+      ModalityEnum.LABOR,
       'Teste',
       false,
       false,
     );
     const resultPlural = getLabelByModality(
-      ModalityEnum.TRABALHISTA,
+      ModalityEnum.LABOR,
       'Teste',
       true,
       false,
     );
     const resultCapitalizeFirst = getLabelByModality(
-      ModalityEnum.TRABALHISTA,
+      ModalityEnum.LABOR,
       'Teste',
       true,
       true,

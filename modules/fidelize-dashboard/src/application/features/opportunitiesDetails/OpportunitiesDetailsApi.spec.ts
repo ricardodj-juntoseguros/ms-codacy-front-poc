@@ -90,7 +90,7 @@ describe('OpportunitiesDetailsApi', () => {
 
     const result =
       await OpportunitiesDetailsApi.sendMoreDetailsFromOpportunityList(
-        ModalityEnum.TRABALHISTA,
+        ModalityEnum.LABOR,
         [
           'f39e3651-b5de-4344-a026-d56685f8760c',
           'ae0182cc-f2ca-4907-b953-a7da555acff6',
@@ -121,7 +121,7 @@ describe('OpportunitiesDetailsApi', () => {
       });
 
     const result = await OpportunitiesDetailsApi.getFiltersContentByModality(
-      ModalityEnum.TRABALHISTA,
+      ModalityEnum.LABOR,
     );
     expect(httpMock).toHaveBeenCalledWith({
       url: '/v1/filters/labor',
@@ -137,7 +137,7 @@ describe('OpportunitiesDetailsApi', () => {
       });
     const result =
       await OpportunitiesDetailsApi.getOpportunityCompleteDetailsByModalityAndId(
-        ModalityEnum.TRABALHISTA,
+        ModalityEnum.LABOR,
         'test-opportunity-id',
       );
     expect(httpMock).toHaveBeenCalledWith({

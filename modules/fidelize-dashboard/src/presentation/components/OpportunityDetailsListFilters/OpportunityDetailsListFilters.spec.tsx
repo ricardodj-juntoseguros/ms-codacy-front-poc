@@ -37,18 +37,18 @@ describe('OpportunityDetailsListFilters', () => {
   });
 
   it('Should call api method to get filter contents if there is filters to render by modality', async () => {
-    const { findByTestId } = component(ModalityEnum.TRABALHISTA);
+    const { findByTestId } = component(ModalityEnum.LABOR);
     expect(await findByTestId('labor-category-filter')).toBeInTheDocument();
     expect(
       await findByTestId('labor-category-filter-chk-multi-A'),
     ).toBeInTheDocument();
     expect(
       OpportunitiesDetailsApi.getFiltersContentByModality,
-    ).toHaveBeenCalledWith(ModalityEnum.TRABALHISTA);
+    ).toHaveBeenCalledWith(ModalityEnum.LABOR);
   });
 
   it('Should render filters correctly for modality Labor', async () => {
-    const { findByTestId, getByText } = component(ModalityEnum.TRABALHISTA);
+    const { findByTestId, getByText } = component(ModalityEnum.LABOR);
 
     act(() => {
       fireEvent.click(getByText('Filtros'));
@@ -67,12 +67,12 @@ describe('OpportunityDetailsListFilters', () => {
   });
 
   it('Should display clear all button when there is any filter applied', async () => {
-    const { getByTestId, findByTestId } = component(ModalityEnum.TRABALHISTA);
+    const { getByTestId, findByTestId } = component(ModalityEnum.LABOR);
     await findByTestId('labor-category-filter-chk-multi-A');
     act(() => {
       store.dispatch(
         opportunitiesDetailsActions.setFilter({
-          modality: ModalityEnum.TRABALHISTA,
+          modality: ModalityEnum.LABOR,
           filter: { key: 'category', values: ['A'] },
         }),
       );
@@ -82,13 +82,13 @@ describe('OpportunityDetailsListFilters', () => {
 
   it('Should clear all filters on store and hide clear button when clicked', async () => {
     const { getByTestId, queryByTestId, findByTestId } = component(
-      ModalityEnum.TRABALHISTA,
+      ModalityEnum.LABOR,
     );
     await findByTestId('labor-category-filter-chk-multi-A');
     act(() => {
       store.dispatch(
         opportunitiesDetailsActions.setFilter({
-          modality: ModalityEnum.TRABALHISTA,
+          modality: ModalityEnum.LABOR,
           filter: { key: 'category', values: ['1'] },
         }),
       );

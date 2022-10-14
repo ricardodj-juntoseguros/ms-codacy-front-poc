@@ -52,16 +52,35 @@ function DashboardContainer() {
   }, [dispatch]);
 
   useEffect(() => {
+    const fetchModalitiesSummary = (federalIds: string[]) => {
+      SummaryApi.getModalitiesSummary(federalIds)
+        .then(response => {
+          setModalitiesSummaryData(response);
+          const { totalsModalities } = response;
+          // If there is no active Labor opportunities but has active fiscal, select fiscal tab by default
+          if (
+            totalsModalities.some(
+              t =>
+                t.modality === ModalityEnum.LABOR && t.totalOpportunities === 0,
+            ) &&
+            totalsModalities.some(
+              t =>
+                t.modality === ModalityEnum.FISCAL && t.totalOpportunities > 0,
+            )
+          ) {
+            dispatch(
+              modalitySelectionSliceActions.setSelectedModality(
+                ModalityEnum.FISCAL,
+              ),
+            );
+          }
+        })
+        .catch(() => setErrorModalitySummary(true))
+        .finally(() => setLoadingModalitySummary(false));
+    };
     setLoadingModalitySummary(true);
     fetchModalitiesSummary(filteredPolicyholders);
-  }, [filteredPolicyholders]);
-
-  const fetchModalitiesSummary = (federalIds: string[]) => {
-    SummaryApi.getModalitiesSummary(federalIds)
-      .then(response => setModalitiesSummaryData(response))
-      .catch(() => setErrorModalitySummary(true))
-      .finally(() => setLoadingModalitySummary(false));
-  };
+  }, [filteredPolicyholders, dispatch]);
 
   const handleModalityTabSelection = (selectedTab: string) => {
     const selectedEnum = selectedTab as ModalityEnum;
@@ -98,8 +117,7 @@ function DashboardContainer() {
   const renderModalitySummary = (modality: ModalityEnum) => {
     if (
       loadingModalitySummary ||
-      (modality === ModalityEnum.TRABALHISTA &&
-        hasAccessToLaborModality === null)
+      (modality === ModalityEnum.LABOR && hasAccessToLaborModality === null)
     ) {
       return <ModalitySummarySkeleton />;
     }
@@ -124,17 +142,21 @@ function DashboardContainer() {
       ) : (
         <>
           {renderModalitySummary(modality)}
-          {getDataToRender(modality).totalOpportunities > 0 && (
-            <ModalitySummaryCharts modality={modality} />
+          {!loadingModalitySummary && (
+            <>
+              {getDataToRender(modality).totalOpportunities > 0 && (
+                <ModalitySummaryCharts modality={modality} />
+              )}
+              <OpportunityDetailsList
+                modality={modality}
+                multipleSelection={modality === ModalityEnum.LABOR}
+              />
+            </>
           )}
-          <OpportunityDetailsList
-            modality={modality}
-            multipleSelection={modality === ModalityEnum.TRABALHISTA}
-          />
         </>
       );
     if (
-      modality === ModalityEnum.TRABALHISTA &&
+      modality === ModalityEnum.LABOR &&
       hasAccessToLaborModality !== null &&
       !hasAccessToLaborModality
     ) {
@@ -180,11 +202,11 @@ function DashboardContainer() {
       </h2>
       <div className={styles['dashboard-container__tabs-wrapper']}>
         <Tabs
-          activeTab={selectedModality || 'fiscal'}
+          activeTab={selectedModality || 'labor'}
           onSelectTab={value => handleModalityTabSelection(value)}
           withDivider
         >
-          {renderModalityTab(ModalityEnum.TRABALHISTA)}
+          {renderModalityTab(ModalityEnum.LABOR)}
           {renderModalityTab(ModalityEnum.FISCAL)}
           {renderModalityTab(ModalityEnum.CIVIL)}
         </Tabs>

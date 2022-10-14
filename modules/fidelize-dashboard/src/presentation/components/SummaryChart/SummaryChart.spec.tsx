@@ -68,12 +68,12 @@ const renewalMock: SummaryChartDataDTO = {
 
 const substitutionMock = (modality: ModalityEnum): SummaryChartDataDTO => {
   const categories =
-    modality === ModalityEnum.TRABALHISTA
+    modality === ModalityEnum.LABOR
       ? [['Ordinário'], ['Revista'], ['Agravo', 'de Inst.'], ['Execução']]
       : [['Penhora'], ['Fiança'], ['Depósito'], ['Bloqueio', 'de Conta']];
 
   const tooltipLabels =
-    modality === ModalityEnum.TRABALHISTA
+    modality === ModalityEnum.LABOR
       ? [
           'Recurso Ordinário',
           'Recurso de Revista',
@@ -304,7 +304,7 @@ describe('SummaryChart', () => {
     const { container, findByText } = render(
       <Provider store={store}>
         <SummaryChart
-          modality={ModalityEnum.TRABALHISTA}
+          modality={ModalityEnum.LABOR}
           chartType={SummaryChartTypeEnum.RENEWAL}
         />
       </Provider>,
@@ -317,13 +317,13 @@ describe('SummaryChart', () => {
     jest
       .spyOn(SummaryChartsApi, 'getChartData')
       .mockImplementation(async () => {
-        return substitutionMock(ModalityEnum.TRABALHISTA);
+        return substitutionMock(ModalityEnum.LABOR);
       });
 
     const { container, findByText } = render(
       <Provider store={store}>
         <SummaryChart
-          modality={ModalityEnum.TRABALHISTA}
+          modality={ModalityEnum.LABOR}
           chartType={SummaryChartTypeEnum.SUBSTITUTION}
         />
       </Provider>,
@@ -342,7 +342,7 @@ describe('SummaryChart', () => {
     const { container, findByText } = render(
       <Provider store={store}>
         <SummaryChart
-          modality={ModalityEnum.TRABALHISTA}
+          modality={ModalityEnum.LABOR}
           chartType={SummaryChartTypeEnum.NEW_ISSUE}
         />
       </Provider>,

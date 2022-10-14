@@ -24,7 +24,7 @@ describe('ModalitySummaryCharts', () => {
 
   it('Should render all charts for modality LABOR', () => {
     const { getByTestId } = render(
-      <ModalitySummaryCharts modality={ModalityEnum.TRABALHISTA} />,
+      <ModalitySummaryCharts modality={ModalityEnum.LABOR} />,
     );
     expect(getByTestId('chart-labor-renewal-wrapper')).toBeInTheDocument();
     expect(getByTestId('chart-labor-substitution-wrapper')).toBeInTheDocument();

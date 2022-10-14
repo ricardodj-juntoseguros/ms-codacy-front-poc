@@ -265,7 +265,7 @@ describe('OpportunityDetailsList', () => {
       <Provider store={store}>
         <OpportunityDetailsList
           multipleSelection
-          modality={ModalityEnum.TRABALHISTA}
+          modality={ModalityEnum.LABOR}
         />
       </Provider>,
     );

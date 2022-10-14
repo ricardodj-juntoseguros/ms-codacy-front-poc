@@ -6,7 +6,8 @@ import {
   ModalitySummaryDTO,
   PolicyholderDTO,
   SummaryChartDataDTO,
- ModalitiesSummaryDTO } from 'modules/fidelize-dashboard/src/application/types/dto';
+  ModalitiesSummaryDTO,
+} from 'modules/fidelize-dashboard/src/application/types/dto';
 
 import SummaryChartsApi from '../../../application/features/summaryCharts/SummaryChartsApi';
 import AccessCheckApi from '../../../application/features/accessCheck/AccessCheckApi';
@@ -66,7 +67,7 @@ describe('DashboardContainer', () => {
               totalOpportunities: 350,
               totalInsuredAmount: 2550000,
             },
-          ]
+          ],
         } as ModalitiesSummaryDTO;
       });
     await store.dispatch(fetchAccessToFeature('TRABALHISTA'));
@@ -77,17 +78,17 @@ describe('DashboardContainer', () => {
       </Provider>,
     );
 
-    expect(await findByText('Op. fiscais')).toBeTruthy();
-    expect((await findAllByText('100')).length).toBe(2);
-    expect(await findByText('R$ 1 milhões')).toBeTruthy();
-
-    const tabTrabalhista = await findByTestId('tab-labor');
-    await act(async () => {
-      fireEvent.click(tabTrabalhista);
-    });
     expect(await findByText('Op. trabalhistas')).toBeTruthy();
     expect((await findAllByText('350')).length).toBe(2);
     expect(await findByText('R$ 2,55 milhões')).toBeTruthy();
+
+    const tabFiscal = await findByTestId('tab-fiscal');
+    await act(async () => {
+      fireEvent.click(tabFiscal);
+    });
+    expect(await findByText('Op. fiscais')).toBeTruthy();
+    expect((await findAllByText('100')).length).toBe(2);
+    expect(await findByText('R$ 1 milhões')).toBeTruthy();
 
     expect(apiMock).toHaveBeenCalledTimes(1);
   });

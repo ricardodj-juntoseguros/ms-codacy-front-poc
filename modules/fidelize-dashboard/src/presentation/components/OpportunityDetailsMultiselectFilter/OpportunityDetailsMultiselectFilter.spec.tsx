@@ -38,7 +38,7 @@ describe('OpportunityDetailsMultiselectFilter', () => {
       <Provider store={store}>
         <OpportunityDetailsMultiselectFilter
           filterName="test"
-          modality={ModalityEnum.TRABALHISTA}
+          modality={ModalityEnum.LABOR}
           options={mockOptions}
         />
       </Provider>,
@@ -62,7 +62,7 @@ describe('OpportunityDetailsMultiselectFilter', () => {
       <Provider store={store}>
         <OpportunityDetailsMultiselectFilter
           filterName="test"
-          modality={ModalityEnum.TRABALHISTA}
+          modality={ModalityEnum.LABOR}
           options={mockOptions}
         />
       </Provider>,
@@ -78,7 +78,7 @@ describe('OpportunityDetailsMultiselectFilter', () => {
 
     expect(
       settings
-        .find(s => s.modality === ModalityEnum.TRABALHISTA)
+        .find(s => s.modality === ModalityEnum.LABOR)
         ?.filters.find(f => f.key === 'test')?.values,
     ).toStrictEqual(['1', '2']);
   });

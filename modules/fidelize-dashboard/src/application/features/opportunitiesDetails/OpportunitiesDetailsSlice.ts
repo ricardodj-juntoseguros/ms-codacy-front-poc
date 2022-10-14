@@ -20,7 +20,7 @@ const initialState: OpportunitiesDetailsModel = {
       filters: [],
     },
     {
-      modality: ModalityEnum.TRABALHISTA,
+      modality: ModalityEnum.LABOR,
       activePage: 1,
       pageSize: 10,
       orderBy: OpportunityDetailsOrderEnum.RELEVANCE,

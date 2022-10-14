@@ -85,7 +85,7 @@ describe('OpportunityDetailsModal', () => {
       <Provider store={store}>
         <OpportunityDetailsModal
           onModalClose={jest.fn()}
-          modality={ModalityEnum.TRABALHISTA}
+          modality={ModalityEnum.LABOR}
         />
       </Provider>,
     );
@@ -136,7 +136,7 @@ describe('OpportunityDetailsModal', () => {
       <Provider store={store}>
         <OpportunityDetailsModal
           onModalClose={onCloseMock}
-          modality={ModalityEnum.TRABALHISTA}
+          modality={ModalityEnum.LABOR}
           opportunity={opportunityMock}
         />
       </Provider>,

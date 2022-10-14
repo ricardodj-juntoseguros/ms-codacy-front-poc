@@ -20,7 +20,7 @@ interface OpportunityDetailsListFiltersProps {
 
 const FILTERS_BY_MODALITY = [
   {
-    modality: ModalityEnum.TRABALHISTA,
+    modality: ModalityEnum.LABOR,
     filters: [
       {
         name: 'relevance',

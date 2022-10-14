@@ -29,7 +29,7 @@ const ModalitySummary: React.FC<ModalitySummaryProps> = ({
         key: 'is',
         icon: 'dollar-sign',
         label: `Importância segurada${
-          modality === ModalityEnum.TRABALHISTA ? ' aproximada' : ''
+          modality === ModalityEnum.LABOR ? ' aproximada' : ''
         }`,
         value: thousandTextFormatter(totalInsuredValue, 'R$ '),
       },
