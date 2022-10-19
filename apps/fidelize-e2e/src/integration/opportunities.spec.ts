@@ -111,4 +111,86 @@ describe('Opportunities', () => {
       .click();
     cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
   });
+
+  it('Deve descartar seleção', () => {
+    cy.get(selectors.opportunityDetailsList.laborTab)
+      .should('be.visible')
+      .wait(6000)
+      .click();
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(0)
+      .click()
+      .wait(1000);
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(1)
+      .click()
+      .wait(1000);
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(2)
+      .click()
+      .wait(1000);
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(3)
+      .click()
+      .wait(1000);
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(4)
+      .click()
+      .wait(1000); 
+    cy.get('[data-testid=btn-clear-selection-footer]').click();
+    cy.get('.Modal_j-modal__title__3s1FM').contains('Tem certeza que deseja descartar sua seleção?');
+    cy.get('[data-testid=btn-discard-selection]').click();
+  });
+  
+  it('Deve manter seleção', () => {
+    cy.get(selectors.opportunityDetailsList.laborTab)
+      .should('be.visible')
+      .wait(6000)
+      .click();
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(0)
+      .click()
+      .wait(1000);
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(1)
+      .click()
+      .wait(1000);
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(2)
+      .click()
+      .wait(1000);
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(3)
+      .click()
+      .wait(1000);
+    cy.get(
+      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+    )
+      .eq(4)
+      .click()
+      .wait(1000); 
+    cy.get('[data-testid=btn-clear-selection-footer]').click();
+    cy.get('.Modal_j-modal__title__3s1FM').contains('Tem certeza que deseja descartar sua seleção?');
+    cy.get('[data-testid=btn-keep-selection]').click();
+    cy.get('[data-testid=btn-clear-selection-footer]').should('be.visible');
+  });
+
 });
