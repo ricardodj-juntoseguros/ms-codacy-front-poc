@@ -95,8 +95,8 @@ function DashboardContainer() {
     };
     return selectedOpportunities.length > 0
       ? renderOpportunitySelectionLossModal(
-          action,
           selectionLossModalRef.current,
+          action,
         )
       : action();
   };

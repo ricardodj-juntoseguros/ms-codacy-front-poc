@@ -71,26 +71,6 @@ describe('Filtros', () => {
     ).should('not.be.empty');
   });
 
-  it('Deve filtrar por Tipo "Depósito judicial"', () => {
-    let itemCount = 0;
-
-    cy.get('[data-testid=labor-category-filter]').click();
-
-    cy.get('[data-testid=labor-category-filter-chk-multi-3]').click();
-
-    cy.get('[data-testid=labor-category-filter-chk-multi-apply-btn]').click();
-
-    cy.contains(
-      '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
-      /^Depósito judicial/,
-    )
-      .its('length')
-      .then(n => {
-        itemCount = n;
-        expect(itemCount).to.be.gt(0);
-      });
-  });
-
   it('Deve filtrar por Tipo "Nova Emissão"', () => {
     let itemCount = 0;
 
@@ -103,6 +83,26 @@ describe('Filtros', () => {
     cy.contains(
       '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
       /^Nova emissão/,
+    )
+      .its('length')
+      .then(n => {
+        itemCount = n;
+        expect(itemCount).to.be.gt(0);
+      });
+  });
+
+  it('Deve filtrar por Tipo "Renovação"', () => {
+    let itemCount = 0;
+
+    cy.get('[data-testid=labor-category-filter]').click();
+
+    cy.get('[data-testid=labor-category-filter-chk-multi-1]').click();
+
+    cy.get('[data-testid=labor-category-filter-chk-multi-apply-btn]').click();
+
+    cy.contains(
+      '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
+      /^Renovação/,
     )
       .its('length')
       .then(n => {

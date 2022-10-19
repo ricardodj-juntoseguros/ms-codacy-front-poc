@@ -63,6 +63,16 @@ describe('OpportunityDetailsListFooter', () => {
     expect(getByText(', totalizando R$ 70.000,00 em IS.')).toBeInTheDocument();
   });
 
+  it('Should open selection loss modal when discard button is clicked', () => {
+    const { getByTestId, getByText } = render(<WrapperComponent />);
+    const button = getByTestId('btn-clear-selection-footer');
+    fireEvent.click(button);
+    expect(
+      getByText('Tem certeza que deseja descartar sua seleção?'),
+    ).toBeInTheDocument();
+    expect(getByText('Descartar seleção')).toBeInTheDocument();
+  });
+
   it('Should call the callback prop on button click', () => {
     const { getByTestId } = render(<WrapperComponent />);
     const button = getByTestId('btn-more-details-footer');

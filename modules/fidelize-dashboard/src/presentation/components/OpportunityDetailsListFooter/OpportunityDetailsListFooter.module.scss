@@ -6,7 +6,7 @@
   border: 1px solid color('grey-300');
   border-radius: 0px 0px 4px 4px;
   display: grid;
-  grid-template-columns: calc(1008px - 230px) 230px;
+  grid-template-columns: calc(1008px - 420px) 420px;
 
   & > div:first-child {
     padding: spacing('l');
@@ -14,11 +14,29 @@
 
   & > div:last-child {
     padding: spacing('s');
-    width: 230px;
+    width: 420px;
+    display: flex;
+    gap: 4px;
 
-    & > button {
+    & > button:first-child {
+      width: 187px;
+      padding: 0px;
+      background-color: transparent;
+
+      & > p:first-child {
+        display: none;
+      }
+      & > p:last-child {
+        display: block;
+      }
+    }
+
+    & > button:last-child {
       width: 212px;
-      & > p {
+      & > p:first-child {
+        display: none;
+      }
+      & > p:last-child {
         display: flex;
         flex-flow: row;
         align-items: center;
@@ -49,9 +67,46 @@
 
   @media screen and (max-width: 680px) {
     & > div:last-child {
-      & > button {
-        width: 180px;
+      & > button:first-child {
+        width: 100px;
         padding: 0px 16px;
+
+        & > p:first-child {
+          display: block;
+        }
+        & > p:last-child {
+          display: none;
+        }
+      }
+
+      & > button:last-child {
+        width: 135px;
+        padding: 0px 24px;
+
+        & > p:first-child {
+          display: flex;
+          flex-flow: row;
+          align-items: center;
+          gap: 10px;
+          margin: 0px;
+        }
+        & > p:last-child {
+          display: none;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 420px) {
+    & > div:first-child {
+      overflow-x: hidden;
+      padding-right: 0px;
+      & > p {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow-x: hidden;
+        overflow-x: hidden;
+        width: 100%;
       }
     }
   }

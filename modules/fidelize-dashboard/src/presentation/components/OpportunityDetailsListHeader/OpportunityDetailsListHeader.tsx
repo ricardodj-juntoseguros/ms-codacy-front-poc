@@ -55,8 +55,8 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
       };
       return selectedOpportunities.length > 0
         ? renderOpportunitySelectionLossModal(
-            dispatcher,
             selectionLossModalRef.current,
+            dispatcher,
           )
         : dispatcher();
     };

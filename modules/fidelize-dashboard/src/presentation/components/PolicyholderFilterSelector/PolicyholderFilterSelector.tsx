@@ -155,8 +155,8 @@ const PolicyholderFilterSelector: React.FC = () => {
     };
     return selectedOpportunities.length > 0
       ? renderOpportunitySelectionLossModal(
-          clearAction,
           selectionLossModalRef.current,
+          clearAction,
         )
       : clearAction();
   };
@@ -188,8 +188,8 @@ const PolicyholderFilterSelector: React.FC = () => {
 
     return selectedOpportunities.length > 0
       ? renderOpportunitySelectionLossModal(
-          applyAction,
           selectionLossModalRef.current,
+          applyAction,
         )
       : applyAction();
   };

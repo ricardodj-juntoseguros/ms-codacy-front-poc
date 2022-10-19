@@ -5,6 +5,7 @@ import { thousandSeparator } from '@shared/utils';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import styles from './OpportunityDetailsListFooter.module.scss';
 import { OpportunityDetailsCategoryEnum } from '../../../application/types/model';
+import { renderOpportunitySelectionLossModal } from '../../../helpers';
 
 interface OpportunityDetailsListFooterProps {
   listContainerRef: React.RefObject<HTMLDivElement>;
@@ -15,6 +16,7 @@ interface OpportunityDetailsListFooterProps {
 const OpportunityDetailsListFooter: React.FC<OpportunityDetailsListFooterProps> =
   ({ listContainerRef, selectedOpportunities, onMoreDetailsClick }) => {
     const bottomRef = useRef<HTMLDivElement>(null);
+    const selectionLossModalRef = useRef<HTMLDivElement>(null);
     const [sticky, setSticky] = useState(false);
 
     useEffect(() => {
@@ -65,9 +67,18 @@ const OpportunityDetailsListFooter: React.FC<OpportunityDetailsListFooterProps> 
       }.`;
     };
 
+    const handleClearSelectionClick = () => {
+      renderOpportunitySelectionLossModal(
+        selectionLossModalRef.current,
+        undefined,
+        true,
+      );
+    };
+
     return (
       <>
         <div ref={bottomRef} />
+        <div ref={selectionLossModalRef} />
         <div
           className={classNames(
             styles['opportunity-details-list-footer__wrapper'],
@@ -97,15 +108,36 @@ const OpportunityDetailsListFooter: React.FC<OpportunityDetailsListFooterProps> 
           <div>
             <Button
               size="medium"
+              variant="secondary"
+              data-testid="btn-clear-selection-footer"
+              onClick={() => handleClearSelectionClick()}
+            >
+              {
+                (
+                  <>
+                    <p>Descartar</p>
+                    <p>Descartar seleção</p>
+                  </>
+                ) as any
+              }
+            </Button>
+            <Button
+              size="medium"
               onClick={() => onMoreDetailsClick()}
               data-testid="btn-more-details-footer"
             >
               {
                 (
-                  <p>
-                    Solicitar detalhes
-                    <i className="icon-plus-circle" />
-                  </p>
+                  <>
+                    <p>
+                      Solicitar
+                      <i className="icon-plus-circle" />
+                    </p>
+                    <p>
+                      Solicitar detalhes
+                      <i className="icon-plus-circle" />
+                    </p>
+                  </>
                 ) as any
               }
             </Button>

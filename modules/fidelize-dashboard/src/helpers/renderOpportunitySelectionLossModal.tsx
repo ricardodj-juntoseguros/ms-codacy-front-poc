@@ -4,8 +4,9 @@ import { store } from '../config/store';
 import OpportunitySelectionLossModal from '../presentation/components/OpportunitySelectionLossModal';
 
 export const renderOpportunitySelectionLossModal = (
-  onDiscardCallback: () => void,
   container: Element | null,
+  onDiscardCallback?: () => void,
+  isDiscardFirst = false,
 ) => {
   const renderContainer =
     container || (document.querySelector('body') as Element);
@@ -13,8 +14,11 @@ export const renderOpportunitySelectionLossModal = (
     <Provider store={store}>
       <OpportunitySelectionLossModal
         isOpen
+        variant={isDiscardFirst ? 'discard-first' : 'keep-first'}
         onDiscardSelection={() => {
-          onDiscardCallback();
+          if (onDiscardCallback) {
+            onDiscardCallback();
+          }
           unmountComponentAtNode(renderContainer);
         }}
         onModalClose={() => unmountComponentAtNode(renderContainer)}

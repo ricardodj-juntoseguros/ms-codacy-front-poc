@@ -7,13 +7,14 @@ import { renderOpportunitySelectionLossModal } from './renderOpportunitySelectio
 const onDiscardCallbackMock = jest.fn();
 
 describe('Render OpportunitySelectionLossModal helper', () => {
-  const WrapperComponent: React.FC = () => {
+  const WrapperComponent: React.FC<any> = ({ isDiscardFirst = false }) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     const handleButtonClick = () => {
       renderOpportunitySelectionLossModal(
-        onDiscardCallbackMock,
         wrapperRef.current,
+        onDiscardCallbackMock,
+        isDiscardFirst,
       );
     };
 
@@ -66,5 +67,17 @@ describe('Render OpportunitySelectionLossModal helper', () => {
       queryByText('A sua seleção de oportunidades será perdida'),
     ).not.toBeInTheDocument();
     expect(onDiscardCallbackMock).toHaveBeenCalledTimes(0);
+  });
+
+  it('Should render OpportunitySelectionLossModal component correctly with discard first flag set to true', () => {
+    const { getByTestId, getByText } = render(
+      <WrapperComponent isDiscardFirst />,
+    );
+    const trigger = getByTestId('btn-open-modal');
+    fireEvent.click(trigger);
+    expect(
+      getByText('Tem certeza que deseja descartar sua seleção?'),
+    ).toBeInTheDocument();
+    fireEvent.click(getByTestId('modal-close-button'));
   });
 });
