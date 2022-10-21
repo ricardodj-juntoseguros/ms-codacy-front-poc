@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { makeToast } from 'junto-design-system';
+import { OPPORTUNITY_SELECTION_LIMIT } from '../../../constants';
 import { RootState } from '../../../config/store';
 import { OpportunityDetailsItemDTO } from '../../types/dto';
 import {
@@ -80,17 +81,6 @@ export const opportunitiesDetailsSlice = createSlice({
         setting.activePage = 1;
       });
     },
-    addOpportunityToSelection: (
-      state,
-      action: PayloadAction<OpportunityDetailsItemDTO>,
-    ) => {
-      if (state.selectedOpportunities.length === 20) {
-        makeToast('warning', 'Você pode selecionar no máximo 20');
-        return;
-      }
-      const { payload } = action;
-      state.selectedOpportunities.push(payload);
-    },
     removeOpportunityFromSelection: (
       state,
       action: PayloadAction<OpportunityDetailsItemDTO>,
@@ -99,6 +89,20 @@ export const opportunitiesDetailsSlice = createSlice({
       state.selectedOpportunities = state.selectedOpportunities.filter(
         op => op.id !== payload.id,
       );
+    },
+    addOpportunityToSelection: (
+      state,
+      action: PayloadAction<OpportunityDetailsItemDTO>,
+    ) => {
+      if (state.selectedOpportunities.length === OPPORTUNITY_SELECTION_LIMIT) {
+        makeToast(
+          'warning',
+          `Você pode selecionar no máximo ${OPPORTUNITY_SELECTION_LIMIT}`,
+        );
+        return;
+      }
+      const { payload } = action;
+      state.selectedOpportunities.push(payload);
     },
     clearOpportunitySelection: state => {
       state.selectedOpportunities = [];

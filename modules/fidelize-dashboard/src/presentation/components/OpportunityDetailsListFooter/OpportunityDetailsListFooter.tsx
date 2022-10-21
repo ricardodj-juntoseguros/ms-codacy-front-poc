@@ -6,6 +6,7 @@ import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import styles from './OpportunityDetailsListFooter.module.scss';
 import { OpportunityDetailsCategoryEnum } from '../../../application/types/model';
 import { renderOpportunitySelectionLossModal } from '../../../helpers';
+import { OPPORTUNITY_SELECTION_LIMIT } from '../../../constants';
 
 interface OpportunityDetailsListFooterProps {
   listContainerRef: React.RefObject<HTMLDivElement>;
@@ -95,7 +96,9 @@ const OpportunityDetailsListFooter: React.FC<OpportunityDetailsListFooterProps> 
                 {
                   [styles[
                     'opportunity-details-list-footer__selection-counter--warning'
-                  ]]: selectedOpportunities.length === 20,
+                  ]]:
+                    selectedOpportunities.length ===
+                    OPPORTUNITY_SELECTION_LIMIT,
                 },
               )}
             >
