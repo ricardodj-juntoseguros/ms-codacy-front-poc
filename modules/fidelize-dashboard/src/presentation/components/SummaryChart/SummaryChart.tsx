@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Tooltip } from 'junto-design-system';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 import { renderToString } from 'react-dom/server';
@@ -15,7 +16,7 @@ import {
   selectChartData,
 } from '../../../application/features/summaryCharts/SummaryChartsSlice';
 import { selectPolicyholderSelection } from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
-import { CHART_OPTIONS } from '../../../constants';
+import { CHART_OPTIONS, CHART_TOOLTIPS } from '../../../constants';
 import { SummaryChartSkeleton } from '../Skeletons';
 import { getLabelByModality } from '../../../helpers';
 import SummaryChartCustomTooltip from '../SummaryChartCustomTooltip';
@@ -32,6 +33,8 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
   const dispatch = useDispatch();
   const chartData = useSelector(selectChartData(modality, chartType));
   const filteredPolicyholders = useSelector(selectPolicyholderSelection);
+  const tooltipButtonRef = useRef<HTMLButtonElement>(null);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   useEffect(() => {
     if (!chartData?.data) {
@@ -165,9 +168,36 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
     );
   };
 
+  const renderTooltip = () => {
+    const tooltipText = CHART_TOOLTIPS[modality][chartType];
+    if (tooltipText) {
+      return (
+        <>
+          <button
+            type="button"
+            ref={tooltipButtonRef}
+            className={styles['summary-chart__tooltip-button']}
+            onMouseEnter={() => setTooltipVisible(true)}
+            onMouseLeave={() => setTooltipVisible(false)}
+          >
+            <i className="icon icon-help-circle" />
+          </button>
+          <Tooltip
+            anchorRef={tooltipButtonRef}
+            text={tooltipText}
+            visible={tooltipVisible}
+            position="top"
+          />
+        </>
+      );
+    }
+    return null;
+  };
+
   const contentTitle = (
     <h3 className={styles['summary-chart__title']}>
       {getLabelByModality(modality, getChartTypeLabel(chartType), true, false)}
+      {renderTooltip()}
     </h3>
   );
 
