@@ -21,6 +21,10 @@
     flex-flow: column;
   }
 
+  &:first-child {
+    padding-left: 4px;
+  }
+
   &:nth-child(2) {
     padding-right: spacing('m') + spacing('xs');
   }

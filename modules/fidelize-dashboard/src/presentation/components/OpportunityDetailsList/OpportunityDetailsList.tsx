@@ -191,7 +191,12 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
             </p>
             <Divider />
             <div className={styles['opportunity-details-list__list-container']}>
-              <OpportunityDetailsListHeader modality={modality} />
+              <OpportunityDetailsListHeader
+                modality={modality}
+                checkable={multipleSelection}
+                opportunities={data || []}
+                loadingItems={loadingItems}
+              />
               <div ref={listItemsContainerRef}>{renderListItems()}</div>
             </div>
           </>

@@ -104,6 +104,38 @@ export const opportunitiesDetailsSlice = createSlice({
       const { payload } = action;
       state.selectedOpportunities.push(payload);
     },
+    addOpportunitiesToSelection: (
+      state,
+      action: PayloadAction<OpportunityDetailsItemDTO[]>,
+    ) => {
+      const { payload } = action;
+      const filteredOpportunities = payload.filter(
+        op =>
+          !state.selectedOpportunities.some(selected => selected.id === op.id),
+      );
+      if (
+        state.selectedOpportunities.length + filteredOpportunities.length >
+        OPPORTUNITY_SELECTION_LIMIT
+      ) {
+        makeToast(
+          'warning',
+          `Você pode selecionar no máximo ${OPPORTUNITY_SELECTION_LIMIT}`,
+        );
+        return;
+      }
+      state.selectedOpportunities = state.selectedOpportunities.concat(
+        filteredOpportunities,
+      );
+    },
+    removeOpportunitiesFromSelection: (
+      state,
+      action: PayloadAction<OpportunityDetailsItemDTO[]>,
+    ) => {
+      const { payload } = action;
+      state.selectedOpportunities = state.selectedOpportunities.filter(
+        op => !payload.some(compare => compare.id === op.id),
+      );
+    },
     clearOpportunitySelection: state => {
       state.selectedOpportunities = [];
     },

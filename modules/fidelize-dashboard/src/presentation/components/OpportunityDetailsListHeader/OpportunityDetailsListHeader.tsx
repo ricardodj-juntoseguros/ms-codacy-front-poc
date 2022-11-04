@@ -1,10 +1,12 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Checkbox } from 'junto-design-system';
 import classNames from 'classnames';
 import {
   ModalityEnum,
   OpportunityDetailsOrderEnum,
 } from '../../../application/types/model';
+import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import {
   opportunitiesDetailsActions,
   selectSelectedOpportunities,
@@ -15,10 +17,13 @@ import { renderOpportunitySelectionLossModal } from '../../../helpers';
 
 export interface OpportunityDetailsListHeaderProps {
   modality: ModalityEnum;
+  checkable: boolean;
+  opportunities: OpportunityDetailsItemDTO[];
+  loadingItems: boolean;
 }
 
 const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> =
-  ({ modality }) => {
+  ({ modality, checkable, opportunities, loadingItems }) => {
     const selectionLossModalRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
     const { orderBy, direction } = useSelector(
@@ -28,6 +33,21 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
       direction: 'desc',
     };
     const selectedOpportunities = useSelector(selectSelectedOpportunities);
+    const [checkboxStatus, setCheckboxStatus] = useState(false);
+
+    useEffect(() => {
+      if (opportunities.length === 0 || loadingItems) {
+        setCheckboxStatus(false);
+        return;
+      }
+      setCheckboxStatus(
+        opportunities.every(opportunity =>
+          selectedOpportunities.some(
+            selOpportunity => selOpportunity.id === opportunity.id,
+          ),
+        ),
+      );
+    }, [opportunities, selectedOpportunities, loadingItems]);
 
     const columns = [
       { title: 'RELEVÂNCIA', value: OpportunityDetailsOrderEnum.RELEVANCE },
@@ -59,6 +79,13 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
             dispatcher,
           )
         : dispatcher();
+    };
+
+    const handleCheckboxChange = (checked: boolean) => {
+      const action = checked
+        ? opportunitiesDetailsActions.addOpportunitiesToSelection
+        : opportunitiesDetailsActions.removeOpportunitiesFromSelection;
+      dispatch(action(opportunities));
     };
 
     const renderColumns = () => {
@@ -110,7 +137,16 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
 
     return (
       <div className={styles['opportunity-details-header__wrapper']}>
-        <div className={styles['opportunity-details-header__column']} />
+        <div className={styles['opportunity-details-header__column']}>
+          {checkable && (
+            <Checkbox
+              id="chk-select-all"
+              checked={checkboxStatus}
+              title="Selecionar todas as oportunidades na página"
+              onChange={checked => handleCheckboxChange(checked)}
+            />
+          )}
+        </div>
         {renderColumns()}
         <div ref={selectionLossModalRef} />
       </div>
