@@ -27,7 +27,7 @@ describe('Opportunities', () => {
     cy.get(selectors.opportunityDetailsList.sendButton)
       .should('be.visible')
       .click();
-    cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
+    // cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
   });
 
   it('Deve validar disclaimer de condições de produto', () => {
@@ -75,7 +75,7 @@ describe('Opportunities', () => {
     cy.get(selectors.opportunityDetailsList.sendButton)
       .should('be.visible')
       .click();
-    cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
+    // cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
   });
 
   it('Deve navegar até a guia Trabalhista e validar seleção de multipla', () => {
@@ -109,7 +109,7 @@ describe('Opportunities', () => {
     cy.get(selectors.opportunityDetailsList.sendButton)
       .should('be.visible')
       .click();
-    cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
+    // cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
   });
 
   it('Deve descartar seleção', () => {
@@ -191,6 +191,32 @@ describe('Opportunities', () => {
     cy.get('.Modal_j-modal__title__3s1FM').contains('Tem certeza que deseja descartar sua seleção?');
     cy.get('[data-testid=btn-keep-selection]').click();
     cy.get('[data-testid=btn-clear-selection-footer]').should('be.visible');
+  });
+
+  it('Deve navegar até a guia Trabalhista e selecionar todas as oportunidades', () => {
+    cy.get(selectors.opportunityDetailsList.laborTab)
+      .should('be.visible')
+      .wait(6000)
+      .click();
+
+    cy.get('[data-testid=chk-select-all]').check();
+
+    cy.get('.OpportunityDetailsListFooter_opportunity-details-list-footer__selection-counter__2Kj79').contains('10 selecionados');
+    
+    cy.get('[data-testid=btn-clear-selection-footer]').should('be.visible');
+
+  });
+
+  it('Deve navegar até a guia Trabalhista e remover seleção de todas as oportunidades', () => {
+    cy.get(selectors.opportunityDetailsList.laborTab)
+      .should('be.visible')
+      .wait(6000)
+      .click();
+
+    cy.get('[data-testid=chk-select-all]').check();
+
+    cy.get('[data-testid=chk-select-all]').uncheck();
+
   });
 
 });
