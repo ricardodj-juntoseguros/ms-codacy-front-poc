@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { Button, Modal } from 'junto-design-system';
+import { AlertIllustration } from '@shared/ui';
 import { opportunitiesDetailsActions } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 
 interface OpportunitySelectionLossModalProps {
@@ -71,6 +72,7 @@ const OpportunitySelectionLossModal: React.FC<OpportunitySelectionLossModalProps
         onBackdropClick={() => onModalClose()}
         size="default"
         template={{
+          icon: <AlertIllustration />,
           title: {
             value: getModalTitle(),
             align: 'center',

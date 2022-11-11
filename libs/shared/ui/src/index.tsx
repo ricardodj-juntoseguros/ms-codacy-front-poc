@@ -5,3 +5,4 @@ export * from './successIllustration';
 export * from './spinner';
 export * from './mailIllustration';
 export * from './notFoundIllustration';
+export * from './alertIllustration';
