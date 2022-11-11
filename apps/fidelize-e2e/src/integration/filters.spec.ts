@@ -15,11 +15,13 @@ beforeEach(() => {
     .wait(6000)
     .click();
 
-  cy.contains('.LinkButton_j-link-button__label__3_HaD', /^Filtros/).click();
+    cy.contains('.LinkButton_j-link-button__label__WwnRS', /^Filtro/).click({force: true});  
+  
 });
 
 describe('Filtros', () => {
   it('Deve filtrar por Relevância "Alta"', () => {
+    
     cy.get('[data-testid=labor-relevance-filter]').click();
 
     cy.get('[data-testid=labor-relevance-filter-chk-multi-3]').click();
@@ -72,7 +74,6 @@ describe('Filtros', () => {
   });
 
   it('Deve filtrar por Tipo "Nova Emissão"', () => {
-    let itemCount = 0;
 
     cy.get('[data-testid=labor-category-filter]').click();
 
@@ -83,16 +84,11 @@ describe('Filtros', () => {
     cy.contains(
       '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
       /^Nova emissão/,
-    )
-      .its('length')
-      .then(n => {
-        itemCount = n;
-        expect(itemCount).to.be.gt(0);
-      });
+    ).should('not.be.empty');
+    
   });
 
   it('Deve filtrar por Tipo "Renovação"', () => {
-    let itemCount = 0;
 
     cy.get('[data-testid=labor-category-filter]').click();
 
@@ -103,12 +99,7 @@ describe('Filtros', () => {
     cy.contains(
       '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
       /^Renovação/,
-    )
-      .its('length')
-      .then(n => {
-        itemCount = n;
-        expect(itemCount).to.be.gt(0);
-      });
+    ).should('not.be.empty');
   });
 
   it('Deve filtrar Valor IS, com valor minimo vazio e máximo preenchido', () => {
@@ -158,7 +149,7 @@ describe('Filtros', () => {
 
     cy.get('[data-testid=security-amount-filter-apply-btn]').click();
 
-    cy.get('.InputBase_j-input__error__gFKZW').should(
+    cy.get('.InputBase_j-input__error__bFwYb').should(
       'have.text',
       'O valor máximo precisa ser maior que o valor mínimo',
     );

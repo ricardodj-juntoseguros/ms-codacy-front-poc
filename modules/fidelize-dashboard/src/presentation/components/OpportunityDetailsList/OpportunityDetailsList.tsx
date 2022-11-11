@@ -144,6 +144,14 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     );
   };
 
+  const renderOpportunityTotalFeedback = () => {
+    if (totalCount === undefined) return <Skeleton width={250} height={8} />;
+    const text = ` oportunidades listadas${
+      totalCount > 0 ? ', incluindo expiradas' : ''
+    }`;
+    return `${thousandSeparator(totalCount)} ${text}`;
+  };
+
   const renderListItems = () => {
     if (loadingItems || !data) {
       return Array.from({ length: pageSize }, () => (
@@ -181,13 +189,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
         ) : (
           <>
             <p className={styles['opportunity-details-list__total-label']}>
-              {totalCount !== undefined ? (
-                `${thousandSeparator(
-                  totalCount,
-                )} oportunidades listadas, incluindo expiradas`
-              ) : (
-                <Skeleton width={250} height={8} />
-              )}
+              {renderOpportunityTotalFeedback()}
             </p>
             <Divider />
             <div className={styles['opportunity-details-list__list-container']}>

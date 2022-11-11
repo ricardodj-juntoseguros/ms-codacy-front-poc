@@ -291,4 +291,25 @@ describe('OpportunityDetailsList', () => {
       ),
     ).toBeInTheDocument();
   });
+
+  it('Should render correct text on opportunity total when count is zero', async () => {
+    jest
+      .spyOn(OpportunitiesDetailsApi, 'getOpportunitiesDetailsByModality')
+      .mockImplementation(async () => {
+        return {
+          totalCount: 0,
+          data: [],
+        };
+      });
+
+    const { findByText } = render(
+      <Provider store={store}>
+        <OpportunityDetailsList
+          multipleSelection={false}
+          modality={ModalityEnum.FISCAL}
+        />
+      </Provider>,
+    );
+    expect(await findByText('0 oportunidades listadas')).toBeTruthy();
+  });
 });

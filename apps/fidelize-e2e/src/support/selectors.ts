@@ -10,9 +10,9 @@ export const selectors = {
   },
   dashboardSummary: {
     totalCard: 'div[class^="DashboardTotalCard"]',
-    searchText: '.InputBase_j-input__field__hIwAu',
+    searchText: '[data-testid=search-input]',
     searchInput: 'button[class*="SearchInput_j-search-input__list__item"]',
-    searchSelect: '.Tag_j-tag__wrapper__2h1qe',
+    searchSelect: '.Tag_j-tag__wrapper__5Dgog',
     searchButton: '[data-testid="btn-apply-filter"]'
   },
   opportunityDetailsList: {

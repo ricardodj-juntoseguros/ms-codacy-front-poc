@@ -23,12 +23,9 @@ describe('Mapeamento de oportunidades', () => {
   });
 
   it('Deve solicitar novas oportunidades', () => {
-    cy.wait(12000);
-
-    cy.scrollTo('bottom');
-      
-    cy.get('.Button_j-button__container__38ymM')
-    .should('be.visible')    
+ 
+    cy.get('.Button_j-button__container__ePge3')
+    .scrollIntoView().should('be.visible')   
     .trigger('click');
 
     cy.get('[data-testid=input-contact-email]')
@@ -39,7 +36,7 @@ describe('Mapeamento de oportunidades', () => {
 
     cy.get('[data-testid=submit-btn]').click();
 
-    cy.get('.Modal_j-modal__title__3s1FM')
+    cy.get('.Modal_j-modal__title__KYzLP')
     .should('be.visible')
     .should(
         'have.text',

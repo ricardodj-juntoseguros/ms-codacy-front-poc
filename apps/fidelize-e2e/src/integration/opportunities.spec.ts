@@ -38,19 +38,6 @@ describe('Opportunities', () => {
     cy.get(selectors.modal.disclaimer).should('be.visible');
   });
 
-  it('Deve validar dados da trabalhista', () => {
-    cy.get(selectors.opportunityDetailsList.laborTab)
-      .should('be.visible')
-      .wait(6000)
-      .click();
-    cy.get(
-      '.ModalitySummary_modality-summary__wrapper__c_k1B > :nth-child(1)',
-    ).should('be.visible');
-    cy.get(
-      '.ModalitySummary_modality-summary__wrapper__c_k1B > :nth-child(2)',
-    ).should('be.visible');
-  });
-  
   it('Deve navegar até a guia Trabalhista e solicitar mais detalhes', () => {
     cy.get(selectors.opportunityDetailsList.laborTab)
       .should('be.visible')
@@ -84,21 +71,18 @@ describe('Opportunities', () => {
       .wait(6000)
       .click();
     cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+      '[data-testid=chk-6402f7d6-7018-4dc6-9ac4-40cf46517ea1][type="checkbox"]',
     )
-      .eq(0)
       .click()
       .wait(1000);
     cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+      '[data-testid=chk-1ae6bd46-7441-4d47-9f95-ac05ff4074c8][type="checkbox"]',
     )
-      .eq(1)
       .click()
       .wait(1000);
     cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
+      '[data-testid=chk-f54b2287-0fb8-4b5e-81e8-b31ee443c4a6][type="checkbox"]',
     )
-      .eq(2)
       .click()
       .wait(1000);
     cy.get('[data-testid=btn-more-details-footer]').click();
@@ -117,38 +101,23 @@ describe('Opportunities', () => {
       .should('be.visible')
       .wait(6000)
       .click();
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(0)
-      .click()
-      .wait(1000);
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(1)
-      .click()
-      .wait(1000);
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(2)
-      .click()
-      .wait(1000);
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(3)
-      .click()
-      .wait(1000);
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(4)
-      .click()
-      .wait(1000); 
+      cy.get(
+        '[data-testid=chk-6402f7d6-7018-4dc6-9ac4-40cf46517ea1][type="checkbox"]',
+      )
+        .click()
+        .wait(1000);
+      cy.get(
+        '[data-testid=chk-1ae6bd46-7441-4d47-9f95-ac05ff4074c8][type="checkbox"]',
+      )
+        .click()
+        .wait(1000);
+      cy.get(
+        '[data-testid=chk-f54b2287-0fb8-4b5e-81e8-b31ee443c4a6][type="checkbox"]',
+      )
+        .click()
+        .wait(1000); 
     cy.get('[data-testid=btn-clear-selection-footer]').click();
-    cy.get('.Modal_j-modal__title__3s1FM').contains('Tem certeza que deseja descartar sua seleção?');
+    cy.get('.Modal_j-modal__title__KYzLP').contains('Tem certeza que deseja descartar sua seleção?');
     cy.get('[data-testid=btn-discard-selection]').click();
   });
   
@@ -157,38 +126,23 @@ describe('Opportunities', () => {
       .should('be.visible')
       .wait(6000)
       .click();
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(0)
-      .click()
-      .wait(1000);
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(1)
-      .click()
-      .wait(1000);
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(2)
-      .click()
-      .wait(1000);
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(3)
-      .click()
-      .wait(1000);
-    cy.get(
-      '.OpportunityDetailsList_opportunity-details-list__box__2Shd4 .Checkbox_j-checkbox__wrapper__2paBi > input[type="checkbox"]',
-    )
-      .eq(4)
-      .click()
-      .wait(1000); 
+      cy.get(
+        '[data-testid=chk-6402f7d6-7018-4dc6-9ac4-40cf46517ea1][type="checkbox"]',
+      )
+        .click()
+        .wait(1000);
+      cy.get(
+        '[data-testid=chk-1ae6bd46-7441-4d47-9f95-ac05ff4074c8][type="checkbox"]',
+      )
+        .click()
+        .wait(1000);
+      cy.get(
+        '[data-testid=chk-f54b2287-0fb8-4b5e-81e8-b31ee443c4a6][type="checkbox"]',
+      )
+        .click()
+        .wait(1000);  
     cy.get('[data-testid=btn-clear-selection-footer]').click();
-    cy.get('.Modal_j-modal__title__3s1FM').contains('Tem certeza que deseja descartar sua seleção?');
+    cy.get('.Modal_j-modal__title__KYzLP').contains('Tem certeza que deseja descartar sua seleção?');
     cy.get('[data-testid=btn-keep-selection]').click();
     cy.get('[data-testid=btn-clear-selection-footer]').should('be.visible');
   });
@@ -199,9 +153,9 @@ describe('Opportunities', () => {
       .wait(6000)
       .click();
 
-    cy.get('[data-testid=chk-select-all]').check();
+    cy.get('[data-testid=chk-select-all]').wait(6000).check();
 
-    cy.get('.OpportunityDetailsListFooter_opportunity-details-list-footer__selection-counter__2Kj79').contains('10 selecionados');
+    cy.get('.OpportunityDetailsListFooter_opportunity-details-list-footer__selection-counter__cQ7JY').contains('10 selecionados');
     
     cy.get('[data-testid=btn-clear-selection-footer]').should('be.visible');
 
@@ -213,9 +167,9 @@ describe('Opportunities', () => {
       .wait(6000)
       .click();
 
-    cy.get('[data-testid=chk-select-all]').check();
+    cy.get('[data-testid=chk-select-all]').wait(6000).check();
 
-    cy.get('[data-testid=chk-select-all]').uncheck();
+    cy.get('[data-testid=chk-select-all]').wait(6000).uncheck();
 
   });
 
