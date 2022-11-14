@@ -7,7 +7,7 @@ describe('DashboardHeader', () => {
     expect(component.getByText('Fidelize Dashboard')).toBeTruthy();
     expect(
       component.getByText(
-        `Visualize as oportunidades judiciais que o Projeto Fidelize já mapeou para alguns tomadores da sua carteira. Caso queira solicitar mapeamento de outro tomador, fale com o seu comercial responsável.`,
+        `Visualize as oportunidades judiciais que o Fidelize já mapeou para alguns tomadores da sua carteira. Caso queira solicitar mapeamento de outro tomador, fale com o seu comercial responsável.`,
       ),
     ).toBeTruthy();
   });
