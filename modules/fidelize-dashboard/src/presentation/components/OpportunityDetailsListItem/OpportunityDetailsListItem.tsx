@@ -197,10 +197,10 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
         {selectedOpportunities.length === 0 && (
           <>
             <button
-              data-testid="modal-trigger"
               type="button"
-              ref={moreDetailsButtonRef}
+              data-testid="modal-trigger"
               className={styles['opportunity-details-listitem__modal-trigger']}
+              ref={moreDetailsButtonRef}
               onClick={() => onMoreDetailsClick(opportunity)}
               onMouseEnter={() => handleMoreDetailsButtonHover(true)}
               onMouseLeave={() => handleMoreDetailsButtonHover(false)}

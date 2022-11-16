@@ -50,10 +50,8 @@
     }
 
     &:hover {
-      & .opportunity-details-listitem__column:first-child,
-      .opportunity-details-listitem__column:last-child {
-        & > label,
-        > button {
+      & .opportunity-details-listitem__column:first-child {
+        & > label {
           opacity: 1;
           transition: all 0.3s ease-in-out;
           cursor: pointer;
@@ -170,14 +168,12 @@
   background-color: transparent;
   display: inline-flex;
   text-align: center;
+  cursor: pointer;
+  margin-right: spacing('xs');
 
   & i {
     color: color('brand-primary');
     align-self: center;
-  }
-
-  @media screen and (min-width: 1008px) {
-    opacity: 0;
   }
 }
 
