@@ -89,13 +89,13 @@ describe('ContractData', () => {
     expect(baseElement).toBeInTheDocument();
   });
 
-  it('should call onChangeContractNumber with the value entered in the field', () => {
-    const { getAllByRole } = render(<ContractData {...contractDataMock} />);
-    const inputs = getAllByRole('textbox');
-    fireEvent.change(inputs[2], { target: { value: 'Contract number' } });
+  // it('should call onChangeContractNumber with the value entered in the field', () => {
+  //   const { getAllByRole } = render(<ContractData {...contractDataMock} />);
+  //   const inputs = getAllByRole('textbox');
+  //   fireEvent.change(inputs[2], { target: { value: 'Contract number' } });
 
-    expect(onChangeContractNumber).toHaveBeenCalledWith('Contract number');
-  });
+  //   expect(onChangeContractNumber).toHaveBeenCalledWith('Contract number');
+  // });
 
   // it('should call onChangeEmails with the value entered in the field', () => {
   //   const { getAllByRole } = render(<ContractData {...contractDataMock} />);
