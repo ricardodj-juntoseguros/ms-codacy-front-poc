@@ -19,65 +19,17 @@ interface OpportunityDetailsSecurityAmountFilterProps {
   modality: ModalityEnum;
 }
 
+interface SecurityAmountFilterFormProps
+  extends OpportunityDetailsSecurityAmountFilterProps {
+  storeFilterValues: { min: number; max: number } | null;
+  closeDropdown?: () => void;
+}
+
 const OpportunityDetailsSecurityAmountFilter: React.FC<OpportunityDetailsSecurityAmountFilterProps> =
   ({ filterName, modality }) => {
-    const dispatch = useDispatch();
     const storeFilterValues = useSelector(
       selectFilterValues(modality, filterName),
     ) as { min: number; max: number } | null;
-
-    const [minSecurityAmount, setMinSecurityAmount] =
-      useState<number | null>(null);
-    const [maxSecurityAmount, setMaxSecurityAmount] =
-      useState<number | null>(null);
-    const [minMaxError, setMinMaxError] = useState(false);
-
-    useEffect(() => {
-      setMinMaxError(false);
-    }, [minSecurityAmount, maxSecurityAmount]);
-
-    useEffect(() => {
-      if (storeFilterValues) {
-        setMaxSecurityAmount(storeFilterValues.max || null);
-        setMinSecurityAmount(storeFilterValues.min || null);
-      } else {
-        setMinSecurityAmount(null);
-        setMaxSecurityAmount(null);
-      }
-    }, [storeFilterValues]);
-
-    const handleClearClick = () => {
-      setMinMaxError(false);
-      setMinSecurityAmount(null);
-      setMaxSecurityAmount(null);
-    };
-
-    const handleApplyClick = () => {
-      if (
-        minSecurityAmount &&
-        maxSecurityAmount &&
-        maxSecurityAmount < minSecurityAmount
-      ) {
-        setMinMaxError(true);
-        return;
-      }
-      setMinMaxError(false);
-      const filter: OpportunitiesDetailsFilterModel = {
-        key: filterName,
-        values: { max: maxSecurityAmount, min: minSecurityAmount },
-      };
-      dispatch(opportunitiesDetailsActions.setFilter({ modality, filter }));
-      if (minSecurityAmount && maxSecurityAmount) {
-        TagManager.dataLayer({
-          dataLayer: {
-            event: 'ClickApplyOpportunityListFilterButton',
-            modalityId: MODALITIES_IDS[modality],
-            filterType: filterName,
-            selectedFilters: `max:${maxSecurityAmount},min:${minSecurityAmount}`,
-          },
-        });
-      }
-    };
 
     const hasAppliedFilter = () => {
       return (
@@ -101,55 +53,122 @@ const OpportunityDetailsSecurityAmountFilter: React.FC<OpportunityDetailsSecurit
           inputValue="Valor IS"
           variant="medium"
           data-testid={`${modality}-${filterName}-filter`}
+          closeActionToChildren
         >
-          <div
-            className={
-              styles['opportunity-details-security-amount-filter__form']
-            }
-          >
-            <CurrencyInput
-              value={minSecurityAmount}
-              onChange={v => setMinSecurityAmount(v)}
-              label="Valor mínimo"
-              variant="medium"
-              placeholder="R$ 0,00"
-              data-testid="min-security-amount-input"
-            />
-            <CurrencyInput
-              value={maxSecurityAmount}
-              onChange={v => setMaxSecurityAmount(v)}
-              label="Valor máximo"
-              variant="medium"
-              placeholder="R$ 0,00"
-              data-testid="max-security-amount-input"
-              errorMessage={
-                minMaxError
-                  ? 'O valor máximo precisa ser maior que o valor mínimo'
-                  : ''
-              }
-            />
-            <div>
-              <Button
-                variant="secondary"
-                size="medium"
-                data-testid="security-amount-filter-clear-btn"
-                onClick={() => handleClearClick()}
-              >
-                Limpar
-              </Button>
-              <Button
-                variant="primary"
-                size="medium"
-                data-testid="security-amount-filter-apply-btn"
-                onClick={() => handleApplyClick()}
-              >
-                Aplicar
-              </Button>
-            </div>
-          </div>
+          <SecurityAmountFilterForm
+            modality={modality}
+            filterName={filterName}
+            storeFilterValues={storeFilterValues}
+          />
         </CustomDropdown>
       </div>
     );
   };
+
+const SecurityAmountFilterForm: React.FC<SecurityAmountFilterFormProps> = ({
+  storeFilterValues,
+  filterName,
+  modality,
+  closeDropdown,
+}) => {
+  const dispatch = useDispatch();
+  const [minSecurityAmount, setMinSecurityAmount] =
+    useState<number | null>(null);
+  const [maxSecurityAmount, setMaxSecurityAmount] =
+    useState<number | null>(null);
+  const [minMaxError, setMinMaxError] = useState(false);
+
+  useEffect(() => {
+    setMinMaxError(false);
+  }, [minSecurityAmount, maxSecurityAmount]);
+
+  useEffect(() => {
+    if (storeFilterValues) {
+      setMaxSecurityAmount(storeFilterValues.max || null);
+      setMinSecurityAmount(storeFilterValues.min || null);
+    } else {
+      setMinSecurityAmount(null);
+      setMaxSecurityAmount(null);
+    }
+  }, [storeFilterValues]);
+
+  const handleClearClick = () => {
+    setMinMaxError(false);
+    setMinSecurityAmount(null);
+    setMaxSecurityAmount(null);
+  };
+
+  const handleApplyClick = () => {
+    if (
+      minSecurityAmount &&
+      maxSecurityAmount &&
+      maxSecurityAmount < minSecurityAmount
+    ) {
+      setMinMaxError(true);
+      return;
+    }
+    setMinMaxError(false);
+    const filter: OpportunitiesDetailsFilterModel = {
+      key: filterName,
+      values: { max: maxSecurityAmount, min: minSecurityAmount },
+    };
+    dispatch(opportunitiesDetailsActions.setFilter({ modality, filter }));
+    if (minSecurityAmount && maxSecurityAmount) {
+      TagManager.dataLayer({
+        dataLayer: {
+          event: 'ClickApplyOpportunityListFilterButton',
+          modalityId: MODALITIES_IDS[modality],
+          filterType: filterName,
+          selectedFilters: `max:${maxSecurityAmount},min:${minSecurityAmount}`,
+        },
+      });
+    }
+    if (closeDropdown) closeDropdown();
+  };
+
+  return (
+    <div className={styles['opportunity-details-security-amount-filter__form']}>
+      <CurrencyInput
+        value={minSecurityAmount}
+        onChange={v => setMinSecurityAmount(v)}
+        label="Valor mínimo"
+        variant="medium"
+        placeholder="R$ 0,00"
+        data-testid="min-security-amount-input"
+      />
+      <CurrencyInput
+        value={maxSecurityAmount}
+        onChange={v => setMaxSecurityAmount(v)}
+        label="Valor máximo"
+        variant="medium"
+        placeholder="R$ 0,00"
+        data-testid="max-security-amount-input"
+        errorMessage={
+          minMaxError
+            ? 'O valor máximo precisa ser maior que o valor mínimo'
+            : ''
+        }
+      />
+      <div>
+        <Button
+          variant="secondary"
+          size="medium"
+          data-testid="security-amount-filter-clear-btn"
+          onClick={() => handleClearClick()}
+        >
+          Limpar
+        </Button>
+        <Button
+          variant="primary"
+          size="medium"
+          data-testid="security-amount-filter-apply-btn"
+          onClick={() => handleApplyClick()}
+        >
+          Aplicar
+        </Button>
+      </div>
+    </div>
+  );
+};
 
 export default OpportunityDetailsSecurityAmountFilter;

@@ -10,12 +10,12 @@
     }
   }
 
-  & > div > div:first-child > div > input[type='text'] {
+  & > div > div:first-child > div > div > input[type='text'] {
     color: color('grey-500');
   }
 
   &--applied {
-    & > div > div:first-child > div > input[type='text'] {
+    & > div > div:first-child > div > div > input[type='text'] {
       color: color('dark');
     }
   }
