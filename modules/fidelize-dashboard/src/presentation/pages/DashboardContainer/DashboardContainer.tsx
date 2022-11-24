@@ -136,8 +136,10 @@ function DashboardContainer() {
   };
 
   const renderModalityTab = (modality: ModalityEnum) => {
+    const civilFeatureEnable =
+      process.env.NX_FID_FEATURE_CIVIL_MODALITY === 'true';
     let content = () =>
-      modality === ModalityEnum.CIVIL ? (
+      modality === ModalityEnum.CIVIL && !civilFeatureEnable ? (
         <ModalityUnderConstruction />
       ) : (
         <>

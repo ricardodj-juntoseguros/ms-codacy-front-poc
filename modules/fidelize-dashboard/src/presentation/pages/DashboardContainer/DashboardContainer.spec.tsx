@@ -19,6 +19,8 @@ import DashboardContainer from './DashboardContainer';
 import { fetchAccessToFeature } from '../../../application/features/accessCheck/AccessCheckSlice';
 
 describe('DashboardContainer', () => {
+  process.env.NX_FID_FEATURE_CIVIL_MODALITY = 'true';
+
   beforeEach(() => {
     jest
       .spyOn(OpportunitiesDetailsApi, 'getOpportunitiesDetailsByModality')
@@ -61,11 +63,19 @@ describe('DashboardContainer', () => {
               modality: 'fiscal',
               totalOpportunities: 100,
               totalInsuredAmount: 1000000,
+              error: false,
             },
             {
               modality: 'labor',
               totalOpportunities: 350,
               totalInsuredAmount: 2550000,
+              error: false,
+            },
+            {
+              modality: 'civil',
+              totalOpportunities: 75,
+              totalInsuredAmount: 150000,
+              error: false,
             },
           ],
         } as ModalitiesSummaryDTO;
@@ -78,17 +88,25 @@ describe('DashboardContainer', () => {
       </Provider>,
     );
 
-    expect(await findByText('Op. trabalhistas')).toBeTruthy();
+    expect(await findByText('Op. trabalhistas')).toBeInTheDocument();
     expect((await findAllByText('350')).length).toBe(2);
-    expect(await findByText('R$ 2,55 milhões')).toBeTruthy();
+    expect(await findByText('R$ 2,55 milhões')).toBeInTheDocument();
 
     const tabFiscal = await findByTestId('tab-fiscal');
+    const tabCivil = await findByTestId('tab-civil');
     await act(async () => {
       fireEvent.click(tabFiscal);
     });
-    expect(await findByText('Op. fiscais')).toBeTruthy();
+    expect(await findByText('Op. fiscais')).toBeInTheDocument();
     expect((await findAllByText('100')).length).toBe(2);
-    expect(await findByText('R$ 1 milhões')).toBeTruthy();
+    expect(await findByText('R$ 1 milhões')).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.click(tabCivil);
+    });
+    expect(await findByText('Op. cíveis')).toBeInTheDocument();
+    expect((await findAllByText('75')).length).toBe(2);
+    expect(await findByText('R$ 150 mil')).toBeInTheDocument();
 
     expect(apiMock).toHaveBeenCalledTimes(1);
   });
