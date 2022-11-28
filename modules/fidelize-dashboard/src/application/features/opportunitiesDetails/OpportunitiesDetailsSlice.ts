@@ -28,6 +28,14 @@ const initialState: OpportunitiesDetailsModel = {
       direction: 'desc',
       filters: [],
     },
+    {
+      modality: ModalityEnum.CIVIL,
+      activePage: 1,
+      pageSize: 10,
+      orderBy: OpportunityDetailsOrderEnum.RELEVANCE,
+      direction: 'desc',
+      filters: [],
+    },
   ],
   selectedOpportunities: [],
 };
