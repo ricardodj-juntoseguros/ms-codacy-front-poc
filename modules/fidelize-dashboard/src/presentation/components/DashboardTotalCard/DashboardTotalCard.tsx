@@ -27,7 +27,6 @@ export const DashboardTotalCard: React.FC<DashboardTotalCardProps> = ({
         <Skeleton height={40} width={40} />
         <Skeleton height={16} width={82} style={{ marginTop: 16 }} />
         <Skeleton height={8} width={160} style={{ marginTop: 16 }} />
-        <Skeleton height={8} width={121} style={{ marginTop: 8 }} />
       </>
     );
   };
@@ -54,7 +53,9 @@ export const DashboardTotalCard: React.FC<DashboardTotalCardProps> = ({
               )}
             />
           </div>
-          <p className={styles['dashboard-total-card__value']}>{isMoney ? `R$ ${totalValue}` : totalValue}</p>
+          <p className={styles['dashboard-total-card__value']}>
+            {isMoney ? `R$ ${totalValue}` : totalValue}
+          </p>
           <p className={styles['dashboard-total-card__label']}>{totalLabel}</p>
           {changedValue && (
             <p className={styles['dashboard-total-card__changed-value']}>

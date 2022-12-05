@@ -57,7 +57,7 @@ const DashboardSummary: React.FC<DashboardSummaryProps> = ({
           }
           changedValue={useChangeValue ? 10 : undefined}
           error={error}
-          loading={value === undefined}
+          loading={value === undefined || value === null}
         />
       );
     });

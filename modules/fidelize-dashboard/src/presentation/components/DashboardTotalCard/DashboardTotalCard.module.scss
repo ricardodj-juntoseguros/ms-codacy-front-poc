@@ -51,7 +51,7 @@
   color: color('grey-500');
   @include font('xs');
   margin: 0px;
-  margin-top: spacing('s');
+  margin-top: spacing('m');
 
   & > span {
     color: color('success');
