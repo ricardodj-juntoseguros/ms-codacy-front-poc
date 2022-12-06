@@ -173,4 +173,11 @@ describe('Opportunities', () => {
 
   });
 
+  it('Deve navegar até a guia Civel e solicitar mais detalhes', () => {
+    cy.get(selectors.opportunityDetailsList.civilTab)
+      .should('be.visible')
+      .wait(6000)
+      .click();
+  });
+
 });
