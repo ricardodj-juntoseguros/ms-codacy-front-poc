@@ -23,6 +23,7 @@ describe('Opportunity Details List Header', () => {
           checkable={false}
           loadingItems={false}
           opportunities={[]}
+          totalOpportunities={100}
         />
         ,
       </Provider>,
@@ -42,6 +43,7 @@ describe('Opportunity Details List Header', () => {
           checkable={false}
           loadingItems={false}
           opportunities={[]}
+          totalOpportunities={100}
         />
         ,
       </Provider>,
@@ -160,6 +162,7 @@ describe('Opportunity Details List Header', () => {
           checkable
           loadingItems={false}
           opportunities={mockOpportunities}
+          totalOpportunities={6}
         />
       </Provider>,
     );

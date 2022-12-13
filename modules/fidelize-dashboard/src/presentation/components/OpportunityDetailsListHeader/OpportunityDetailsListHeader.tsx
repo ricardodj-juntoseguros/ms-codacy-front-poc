@@ -20,10 +20,17 @@ export interface OpportunityDetailsListHeaderProps {
   checkable: boolean;
   opportunities: OpportunityDetailsItemDTO[];
   loadingItems: boolean;
+  totalOpportunities?: number;
 }
 
 const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> =
-  ({ modality, checkable, opportunities, loadingItems }) => {
+  ({
+    modality,
+    checkable,
+    opportunities,
+    loadingItems,
+    totalOpportunities = 0,
+  }) => {
     const selectionLossModalRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
     const { orderBy, direction } = useSelector(
@@ -106,11 +113,14 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
                   styles['opportunity-details-header__order-btn'],
                   {
                     [styles['opportunity-details-header__order-btn--active']]:
-                      orderBy === column.value && direction === 'asc',
+                      orderBy === column.value &&
+                      direction === 'asc' &&
+                      totalOpportunities > 1,
                   },
                 )}
                 title="Ordernar crescente"
                 onClick={() => handleButtonClick(column.value, 'asc')}
+                disabled={loadingItems || totalOpportunities - 1 <= 0}
               >
                 <i className="icon icon-chevron-up" />
               </button>
@@ -121,11 +131,14 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
                   styles['opportunity-details-header__order-btn'],
                   {
                     [styles['opportunity-details-header__order-btn--active']]:
-                      orderBy === column.value && direction === 'desc',
+                      orderBy === column.value &&
+                      direction === 'desc' &&
+                      totalOpportunities > 1,
                   },
                 )}
                 title="Ordernar decrescente"
                 onClick={() => handleButtonClick(column.value, 'desc')}
+                disabled={loadingItems || totalOpportunities - 1 <= 0}
               >
                 <i className="icon icon-chevron-down" />
               </button>

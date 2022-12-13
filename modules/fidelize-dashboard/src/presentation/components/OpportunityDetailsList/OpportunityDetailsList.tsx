@@ -198,6 +198,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
                 checkable={multipleSelection}
                 opportunities={data || []}
                 loadingItems={loadingItems}
+                totalOpportunities={totalCount}
               />
               <div ref={listItemsContainerRef}>{renderListItems()}</div>
             </div>

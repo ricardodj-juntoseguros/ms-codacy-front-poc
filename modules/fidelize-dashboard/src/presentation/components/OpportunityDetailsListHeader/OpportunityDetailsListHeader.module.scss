@@ -52,11 +52,24 @@
   width: 15px;
 
   &--active {
-    color: color('brand-primary');
+    color: color('brand-primary') !important;
+
+    &:disabled {
+      opacity: 0.6;
+    }
   }
 
   &:hover {
     color: color('brand-primary');
+  }
+
+  &:disabled {
+    color: color('grey-100');
+
+    &:hover {
+      color: color('grey-100');
+      cursor: not-allowed;
+    }
   }
 }
 
