@@ -151,7 +151,9 @@ function DashboardContainer() {
               )}
               <OpportunityDetailsList
                 modality={modality}
-                multipleSelection={modality === ModalityEnum.LABOR}
+                multipleSelection={
+                  modality === ModalityEnum.LABOR || civilFeatureEnable
+                }
               />
             </>
           )}

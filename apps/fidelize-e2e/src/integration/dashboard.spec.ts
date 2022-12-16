@@ -24,7 +24,7 @@ describe('Dashboard', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'CONSTRUTORA JUNTO SEGUROS - TESTE 123 - 65.182.718/0001-91',
+        'CONSTRUTORA JUNTO SEGUROS - TESTE - 65.182.718/0001-91',
       )
       .click();
 
@@ -42,7 +42,7 @@ describe('Dashboard', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'CONSTRUTORA JUNTO SEGUROS - TESTE 123 - 65.182.718/0001-91',
+        'CONSTRUTORA JUNTO SEGUROS - TESTE - 65.182.718/0001-91',
       )
       .click();
 
