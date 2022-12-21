@@ -18,7 +18,7 @@ export const selectors = {
   opportunityDetailsList: {
     laborTab: '[data-testid="tab-labor"]',
     fiscalTab: '[data-testid="tab-fiscal"]',
-    civilTab: '[data-testid="tab-civil"]',
+    civilTab: '[data-testid=tab-civil]',
     listBox: '[class^="OpportunityDetailsList"][class*="box"]',
     listItemWrapper: '[class*="listitem__wrapper"]',
     moreDetailsButton: '[data-testid="modal-trigger"]',
