@@ -182,14 +182,14 @@ const NoOpportunitiesMappedContainer: React.FC = () => {
                   <AwardIcon />
                 </div>
                 <div>
-                  <h3>Prêmio inovação</h3>
+                  <h3>Projeto premiado</h3>
                   <p>
-                    O Fidelize foi considerado umas das 100 maiores inovações no
-                    mercado brasileiro no ano de 2022.
+                    O Fidelize foi top 3 no Prêmio de Inovação em Seguros e também uma das 100 maiores
+                    inovações no uso de Tecnologia no mercado brasileiro!
                   </p>
                   <span>
-                    *Prêmio As 100+ Inovadora no Uso de TI de 2022, pela IT
-                    Fórum
+                    *Prêmio Antonio Carlos de Almeida Braga de Inovação em Seguros,
+                    promovido pela CNseg e Prêmio As 100+ Inovadora no Uso de TI, pela IT Fórum.
                   </span>
                 </div>
               </motion.div>
