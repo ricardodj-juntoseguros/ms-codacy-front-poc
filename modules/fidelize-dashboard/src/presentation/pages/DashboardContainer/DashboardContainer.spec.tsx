@@ -19,8 +19,6 @@ import DashboardContainer from './DashboardContainer';
 import { fetchAccessToFeature } from '../../../application/features/accessCheck/AccessCheckSlice';
 
 describe('DashboardContainer', () => {
-  process.env.NX_FID_FEATURE_CIVIL_MODALITY = 'true';
-
   beforeEach(() => {
     jest
       .spyOn(OpportunitiesDetailsApi, 'getOpportunitiesDetailsByModality')
