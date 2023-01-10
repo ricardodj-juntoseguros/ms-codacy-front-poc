@@ -22,8 +22,8 @@ export class BrokerPlatformAuthService {
   private readonly PLATAFORMA_BFF_URL =
     process.env['NX_GLOBAL_BROKER_PLATFORM_BFF_URL'] || '';
 
-  private readonly FIDELIZE_WHITELIST_ACCESS_COOKIE =
-    process.env['NX_GLOBAL_FIDELIZE_WHITELIST_ACCESS_COOKIE'] || 'fwac';
+  private readonly FIDELIZE_BROKER_FEATURES_COOKIE =
+    process.env['NX_GLOBAL_FIDELIZE_BROKER_FEATURES_COOKIE'] || 'fbfc';
 
   getUserAccessCookie() {
     const userCookie = Cookies.get(this.USER_ACCESS_COOKIE) || '';
@@ -37,8 +37,8 @@ export class BrokerPlatformAuthService {
       domain: this.COOKIE_DOMAIN,
     });
     Cookies.set(
-      this.FIDELIZE_WHITELIST_ACCESS_COOKIE,
-      Cookies.get(this.FIDELIZE_WHITELIST_ACCESS_COOKIE) || 'false',
+      this.FIDELIZE_BROKER_FEATURES_COOKIE,
+      Cookies.get(this.FIDELIZE_BROKER_FEATURES_COOKIE) || 'false',
       {
         expires: expirationDate,
         domain: this.COOKIE_DOMAIN,
@@ -53,7 +53,7 @@ export class BrokerPlatformAuthService {
     Cookies.remove(this.USER_ACCESS_COOKIE, { domain: this.COOKIE_DOMAIN });
     Cookies.remove(this.USER_CHAT_COOKIE, { domain: this.COOKIE_DOMAIN });
     Cookies.remove(this.USER_SESSION_COOKIE, { domain: this.COOKIE_DOMAIN });
-    Cookies.remove(this.FIDELIZE_WHITELIST_ACCESS_COOKIE, {
+    Cookies.remove(this.FIDELIZE_BROKER_FEATURES_COOKIE, {
       domain: this.COOKIE_DOMAIN,
     });
     window.location.assign(
