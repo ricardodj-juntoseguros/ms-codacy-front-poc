@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import TagManager from 'react-gtm-module';
 import { Divider, Skeleton, ToastContainer } from 'junto-design-system';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import { thousandSeparator } from '@shared/utils';
 import { NotFoundIllustration } from '@shared/ui';
 import OpportunityDetailsListHeader from '../OpportunityDetailsListHeader';

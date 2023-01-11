@@ -66,6 +66,44 @@ describe('OpportunityDetailsListFilters', () => {
     ).toBeInTheDocument();
   });
 
+  it('Should render filters correctly for modality Fiscal', async () => {
+    const { findByTestId, getByText } = component(ModalityEnum.FISCAL);
+
+    act(() => {
+      fireEvent.click(getByText('Filtros'));
+    });
+    expect(await findByTestId('fiscal-category-filter')).toBeInTheDocument();
+    expect(
+      await findByTestId('fiscal-category-filter-chk-multi-A'),
+    ).toBeInTheDocument();
+    expect(await findByTestId('fiscal-relevance-filter')).toBeInTheDocument();
+    expect(
+      await findByTestId('fiscal-relevance-filter-chk-multi-1'),
+    ).toBeInTheDocument();
+    expect(
+      await findByTestId('fiscal-securityAmount-filter'),
+    ).toBeInTheDocument();
+  });
+
+  it('Should render filters correctly for modality Civil', async () => {
+    const { findByTestId, getByText } = component(ModalityEnum.CIVIL);
+
+    act(() => {
+      fireEvent.click(getByText('Filtros'));
+    });
+    expect(await findByTestId('civil-category-filter')).toBeInTheDocument();
+    expect(
+      await findByTestId('civil-category-filter-chk-multi-A'),
+    ).toBeInTheDocument();
+    expect(await findByTestId('civil-relevance-filter')).toBeInTheDocument();
+    expect(
+      await findByTestId('civil-relevance-filter-chk-multi-1'),
+    ).toBeInTheDocument();
+    expect(
+      await findByTestId('civil-securityAmount-filter'),
+    ).toBeInTheDocument();
+  });
+
   it('Should display clear all button when there is any filter applied', async () => {
     const { getByTestId, findByTestId } = component(ModalityEnum.LABOR);
     await findByTestId('labor-category-filter-chk-multi-A');

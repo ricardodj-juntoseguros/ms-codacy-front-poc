@@ -1,5 +1,5 @@
 import { AxiosHttpClient } from './AxiosHttpClient';
-import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters';
+import {IHttpClientRequestParameters} from '../types/IHttpClientRequestParameters';
 
 describe('Axios HTTP client', () => {
   const client: AxiosHttpClient = new AxiosHttpClient(

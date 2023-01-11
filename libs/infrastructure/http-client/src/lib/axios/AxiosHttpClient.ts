@@ -6,7 +6,7 @@ import axios, {
   Method,
 } from 'axios';
 import { IHttpClient } from '../IHttpClient';
-import IHttpClientRequestParameters from '../types/IHttpClientRequestParameters';
+import {IHttpClientRequestParameters} from '../types/IHttpClientRequestParameters';
 
 export class AxiosHttpClient implements IHttpClient {
   readonly instance: AxiosInstance;

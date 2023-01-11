@@ -1,5 +1,5 @@
 import { thousandSeparator, thousandTextFormatter } from '@shared/utils';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import { SummaryChartDataDTO } from '../../../application/types/dto';
 import styles from './SummaryChartCustomTooltip.module.scss';
 

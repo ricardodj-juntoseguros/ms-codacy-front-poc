@@ -1,4 +1,4 @@
-import IHttpClientRequestParameters from './types/IHttpClientRequestParameters';
+import {IHttpClientRequestParameters} from './types/IHttpClientRequestParameters';
 
 export interface IHttpClient {
   get<T>(parameters: IHttpClientRequestParameters): Promise<T>;

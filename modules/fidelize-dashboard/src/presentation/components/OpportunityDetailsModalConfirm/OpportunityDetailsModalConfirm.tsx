@@ -1,5 +1,5 @@
 import { Alert, Button } from 'junto-design-system';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import classNames from 'classnames';
 import { thousandSeparator } from '@shared/utils';
 import { formatDateString, getLabelByModality } from '../../../helpers';

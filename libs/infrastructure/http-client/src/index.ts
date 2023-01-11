@@ -1,5 +1,3 @@
-import { AxiosHttpClient } from './lib/axios/AxiosHttpClient';
-import { IHttpClient } from './lib/IHttpClient';
-import IHttpClientRequestParameters from './lib/types/IHttpClientRequestParameters';
-
-export { AxiosHttpClient, IHttpClientRequestParameters, IHttpClient };
+export * from './lib/axios/AxiosHttpClient';
+export * from './lib/IHttpClient';
+export * from './lib/types/IHttpClientRequestParameters';

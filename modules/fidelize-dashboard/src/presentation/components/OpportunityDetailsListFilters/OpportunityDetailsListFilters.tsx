@@ -18,26 +18,21 @@ interface OpportunityDetailsListFiltersProps {
   modality: ModalityEnum;
 }
 
-const FILTERS_BY_MODALITY = [
+const FILTER_LIST = [
   {
-    modality: ModalityEnum.LABOR,
-    filters: [
-      {
-        name: 'relevance',
-        component: OpportunityDetailsMultiselectFilter,
-        useOptions: true,
-      },
-      {
-        name: 'category',
-        component: OpportunityDetailsMultiselectFilter,
-        useOptions: true,
-      },
-      {
-        name: 'securityAmount',
-        component: OpportunityDetailsSecurityAmountFilter,
-        useOptions: false,
-      },
-    ],
+    name: 'relevance',
+    component: OpportunityDetailsMultiselectFilter,
+    useOptions: true,
+  },
+  {
+    name: 'category',
+    component: OpportunityDetailsMultiselectFilter,
+    useOptions: true,
+  },
+  {
+    name: 'securityAmount',
+    component: OpportunityDetailsSecurityAmountFilter,
+    useOptions: false,
   },
 ];
 
@@ -51,25 +46,19 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
       OpportunitiesFilterOptionsDTO[]
     >([]);
 
-    const filtersToRender = useMemo(() => {
-      return FILTERS_BY_MODALITY.find(each => each.modality === modality);
-    }, [modality]);
-
     const hasFilterApplied = useMemo(
       () => hasAppliedAnyFilter(filters),
       [filters],
     );
 
     useEffect(() => {
-      if (filtersToRender) {
-        OpportunitiesDetailsApi.getFiltersContentByModality(modality)
-          .then(response => {
-            setFiltersContent(response.filters);
-            setError(false);
-          })
-          .catch(() => setError(true));
-      }
-    }, [modality, filtersToRender]);
+      OpportunitiesDetailsApi.getFiltersContentByModality(modality)
+        .then(response => {
+          setFiltersContent(response.filters);
+          setError(false);
+        })
+        .catch(() => setError(true));
+    }, [modality]);
 
     const handleClearAllClick = () => {
       dispatch(opportunitiesDetailsActions.clearFiltersByModality(modality));
@@ -83,7 +72,6 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
       return foundFilter.options;
     };
 
-    if (!filtersToRender) return null;
     if (error)
       return (
         <div className={styles['opportunity-details-list-filters__error']}>
@@ -117,7 +105,7 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
           )}
         >
           <div>
-            {filtersToRender.filters.map(filter => {
+            {FILTER_LIST.map(filter => {
               const { name, component: Component, useOptions } = filter;
               const props = { filterName: name, modality } as any;
               if (useOptions) {
