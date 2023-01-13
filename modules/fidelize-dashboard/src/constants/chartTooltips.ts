@@ -18,7 +18,8 @@ export const CHART_TOOLTIPS = {
   },
   [ModalityEnum.CIVIL]: {
     [SummaryChartTypeEnum.RENEWAL]: null,
-    [SummaryChartTypeEnum.SUBSTITUTION]: null,
+    [SummaryChartTypeEnum.SUBSTITUTION]:
+      'As substituições cíveis são aquelas oportunidades que o cliente já apresentou uma outra forma de garantia diferente do Seguro, mas pelo fato do processo ainda estar ativo é possível a tentativa da substituição da garantia anterior por uma apólice de Seguro. Quando se tratar de fiança bancária considere a oportunidade relevante, já que o Judiciário aceita bem a substituição desse produto, além do saving que a substituição pode gerar para o seu cliente.  ',
     [SummaryChartTypeEnum.NEW_ISSUE]: null,
   },
 };

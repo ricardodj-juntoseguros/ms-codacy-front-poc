@@ -52,6 +52,13 @@ const initialState: SummaryChartsModel = {
       error: false,
       data: null,
     },
+    {
+      modality: ModalityEnum.CIVIL,
+      chartType: SummaryChartTypeEnum.SUBSTITUTION,
+      loading: true,
+      error: false,
+      data: null
+    }
   ],
 };
 

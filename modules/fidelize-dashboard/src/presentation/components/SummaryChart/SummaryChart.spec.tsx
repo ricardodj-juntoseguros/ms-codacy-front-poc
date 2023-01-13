@@ -416,4 +416,23 @@ describe('SummaryChart', () => {
       ),
     ).toBeInTheDocument();
   });
+
+  it('Should render correctly for civil modality and substitution type chart', async () => {
+    jest
+      .spyOn(SummaryChartsApi, 'getChartData')
+      .mockImplementation(async () => {
+        return substitutionMock(ModalityEnum.CIVIL);
+      });
+
+    const { container, findByText } = render(
+      <Provider store={store}>
+        <SummaryChart
+          modality={ModalityEnum.CIVIL}
+          chartType={SummaryChartTypeEnum.SUBSTITUTION}
+        />
+      </Provider>,
+    );
+    expect(container).toBeInTheDocument();
+    expect(await findByText('Substituições cíveis')).toBeInTheDocument();
+  });
 });

@@ -35,6 +35,6 @@ describe('ModalitySummaryCharts', () => {
     const { container } = render(
       <ModalitySummaryCharts modality={ModalityEnum.CIVIL} />,
     );
-    expect(container.children.length).toBe(0);
+    expect(container.children.length).toBe(1);
   });
 });
