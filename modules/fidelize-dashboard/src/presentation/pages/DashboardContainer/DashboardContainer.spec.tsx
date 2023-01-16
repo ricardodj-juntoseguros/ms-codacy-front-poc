@@ -47,6 +47,10 @@ describe('DashboardContainer', () => {
           tooltip: { labels: [] },
         } as SummaryChartDataDTO;
       });
+    jest.spyOn(OpportunitiesDetailsApi, 'getFiltersContentByModality')
+      .mockImplementationOnce(async () => {
+        return { filters: [] };
+      });
   });
 
   it('Should call SummaryApi to fetch modalities summary', async () => {

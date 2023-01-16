@@ -15,6 +15,10 @@ import OpportunityDetailsList from './OpportunityDetailsList';
 describe('OpportunityDetailsList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(OpportunitiesDetailsApi, 'getFiltersContentByModality')
+    .mockImplementationOnce(async () => {
+      return { filters: [] };
+    });
   });
 
   it('should fetch opportunity details on component mount', async () => {

@@ -31,10 +31,11 @@ describe('ModalitySummaryCharts', () => {
     expect(getByTestId('chart-labor-new-issue-wrapper')).toBeInTheDocument();
   });
 
-  it('Should render nothing for modality CIVEL', () => {
-    const { container } = render(
+  it('Should render all charts for modality CIVEL', () => {
+    const { getByTestId } = render(
       <ModalitySummaryCharts modality={ModalityEnum.CIVIL} />,
     );
-    expect(container.children.length).toBe(1);
+    expect(getByTestId('chart-civil-renewal-wrapper')).toBeInTheDocument();
+    expect(getByTestId('chart-civil-substitution-wrapper')).toBeInTheDocument();
   });
 });

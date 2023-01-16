@@ -19,6 +19,9 @@ export const CHART_TYPES_BY_MODALITY = [
   },
   {
     modality: ModalityEnum.CIVIL,
-    chartTypes: [SummaryChartTypeEnum.SUBSTITUTION],
+    chartTypes: [
+      SummaryChartTypeEnum.SUBSTITUTION,
+      SummaryChartTypeEnum.RENEWAL,
+    ],
   },
 ];
