@@ -127,6 +127,8 @@ jobs:
       environment:
         description: Environment to e2e tests to
         type: string
+    resource_class: gitjmseguradora/k8s-qas
+    #parallelism: 4
     steps:
       - attach_workspace:
           at: /tmp/persist_to_workspace
@@ -134,47 +136,25 @@ jobs:
           name: Instaling packages
           command: |
             apt-get update -qq
-            apt-get install -qq build-essential awscli python3-pip software-properties-common apt-transport-https jq sudo
+            apt-get install -qq build-essential awscli python3-pip software-properties-common apt-transport-https jq sudo libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
             pip3 install --upgrade awscli
-      - run:
-          name: Openning KONG endpoints
-          command: |
-            cp .circleci/scripts/kong-manipulation.sh .
-            chmod +x kong-manipulation.sh
-            ./kong-manipulation.sh << parameters.environment >> open ./e2e/<< parameters.environment >>.json
       - run:
           name: E2E Tests
           command: |
             # Executando Testes
+            # npm install cypress --save
+            # npx cypress open
             ./node_modules/cypress/bin/cypress install
             npm install --no-optional --unsafe-perm
             npm rebuild node-sass
-            yarn nx affected:e2e -c=quality --base=master --head=HEAD
-          no_output_timeout: 20m
+            yarn nx affected:e2e -c=quality --base=master --head=HEAD --parallel=5
+          no_output_timeout: 40m
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:
           path: /tmp/persist_to_workspace/dist/cypress/apps/fidelize-e2e/screenshots
       - store_artifacts:
           path: /tmp/persist_to_workspace/dist/cypress/apps/plataforma-e2e/screenshots
-
-  e2e_close_kong:
-    parameters:
-      environment:
-        description: Environment to e2e tests close kong to
-        type: string
-    working_directory: /tmp/persist_to_workspace
-    docker:
-      - image: juntoseguros/devops:base
-    steps:
-      - attach_workspace:
-          at: /tmp/persist_to_workspace
-      - run:
-          name: Closing KONG endpoints
-          command: |
-            cp .circleci/scripts/kong-manipulation.sh .
-            chmod +x kong-manipulation.sh
-            ./kong-manipulation.sh << parameters.environment >> close ./e2e/<< parameters.environment >>.json
 
   deploy-cf:
     <<: *defaults
@@ -322,17 +302,6 @@ workflows:
             - checkout
             - deploy-cf-qas
 
-      - e2e_close_kong:
-          environment: quality
-          filters:
-            branches: { ignore: 'master' }
-            tags: { ignore: '/.*/' }
-          context: GitJMSeguradora
-          requires:
-            - checkout
-            - e2e_tests
-            - deploy-cf-qas
-
       - approve-stg:
           type: approval
           filters:
@@ -386,3 +355,5 @@ workflows:
           filters:
             branches: { only: 'master' }
             tags: { ignore: '/.*/' }
+
+# VS Code Extension Version: 1.5.1

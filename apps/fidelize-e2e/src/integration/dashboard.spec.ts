@@ -13,7 +13,7 @@ beforeEach(() => {
 
 describe('Dashboard', () => {
   it('Deve validar o dashboard', () => {
-    cy.get(selectors.dashboardSummary.totalCard).should('be.visible');
+    cy.get(selectors.dashboardSummary.totalCard).should('be.visible').wait(6000);
   });
 
   it('Deve validar pesquisa pelo nome do tomador', () => {
