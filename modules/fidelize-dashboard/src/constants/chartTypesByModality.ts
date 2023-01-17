@@ -22,6 +22,7 @@ export const CHART_TYPES_BY_MODALITY = [
     chartTypes: [
       SummaryChartTypeEnum.SUBSTITUTION,
       SummaryChartTypeEnum.RENEWAL,
+      SummaryChartTypeEnum.NEW_ISSUE,
     ],
   },
 ];

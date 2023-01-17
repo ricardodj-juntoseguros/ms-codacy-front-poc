@@ -215,7 +215,7 @@ const SummaryChart: React.FC<SummaryChartProps> = ({ modality, chartType }) => {
     if (!data) return null;
     if (
       chartType === SummaryChartTypeEnum.NEW_ISSUE &&
-      modality === ModalityEnum.FISCAL
+      modality !== ModalityEnum.LABOR
     ) {
       return (
         <>

@@ -454,4 +454,26 @@ describe('SummaryChart', () => {
     expect(container).toBeInTheDocument();
     expect(await findByText('Renovações cíveis')).toBeInTheDocument();
   });
+
+  it('Should render correctly for civil modality and new issue type chart', async () => {
+    jest
+      .spyOn(SummaryChartsApi, 'getChartData')
+      .mockImplementation(async () => {
+        return substitutionMock(ModalityEnum.CIVIL);
+      });
+
+    const { container, findByText } = render(
+      <Provider store={store}>
+        <SummaryChart
+          modality={ModalityEnum.CIVIL}
+          chartType={SummaryChartTypeEnum.NEW_ISSUE}
+        />
+      </Provider>,
+    );
+    expect(container).toBeInTheDocument();
+    expect(await findByText('Novas emissões cíveis')).toBeInTheDocument();
+    expect(
+      await findByText('Tipo de oportunidade em construção'),
+    ).toBeInTheDocument();
+  });
 });

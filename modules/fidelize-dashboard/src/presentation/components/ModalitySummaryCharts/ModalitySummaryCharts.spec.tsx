@@ -37,5 +37,6 @@ describe('ModalitySummaryCharts', () => {
     );
     expect(getByTestId('chart-civil-renewal-wrapper')).toBeInTheDocument();
     expect(getByTestId('chart-civil-substitution-wrapper')).toBeInTheDocument();
+    expect(getByTestId('chart-civil-new-issue-wrapper')).toBeInTheDocument();
   });
 });

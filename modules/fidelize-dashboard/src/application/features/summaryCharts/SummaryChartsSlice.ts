@@ -65,7 +65,14 @@ const initialState: SummaryChartsModel = {
       loading: true,
       error: false,
       data: null
-    }
+    },
+    {
+      modality: ModalityEnum.CIVIL,
+      chartType: SummaryChartTypeEnum.NEW_ISSUE,
+      loading: false,
+      error: false,
+      data: {} as SummaryChartDataDTO,
+    },
   ],
 };
 
