@@ -187,10 +187,10 @@ jobs:
 
             case "${ENV}" in
             quality)
-              yarn affected:build --base=${CIRCLE_BRANCH}~1 --head=$CIRCLE_BRANCH --maxWorkers=1 --memoryLimit=1024
+              yarn affected:build --base=${CIRCLE_BRANCH}~1 --head=$CIRCLE_BRANCH --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
             ;;
             staging)
-              yarn affected:build --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024
+              yarn affected:build --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
             ;;
             production)
               yarn affected:build --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
@@ -355,5 +355,4 @@ workflows:
           filters:
             branches: { only: 'master' }
             tags: { ignore: '/.*/' }
-
 # VS Code Extension Version: 1.5.1

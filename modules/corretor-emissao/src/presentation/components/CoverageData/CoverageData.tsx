@@ -215,7 +215,7 @@ export const CoverageData: React.FC = () => {
               <DateInput
                 label="Selecione o início da vigência"
                 value={startDate}
-                onChange={event => onStartChange(event.target.value)}
+                onChange={(value, valid) => onStartChange(value)}
                 errorMessage={errors.startDate && errors.startDate[0]}
                 onBlur={() => onGenerateQuote()}
                 data-testid="start-date"
@@ -239,7 +239,7 @@ export const CoverageData: React.FC = () => {
               <DateInput
                 label="Selecione o fim da vigência"
                 value={endDate}
-                onChange={event => onEndDateChange(event.target.value)}
+                onChange={(value, valid) => onEndDateChange(value)}
                 errorMessage={errors.endDate && errors.endDate[0]}
                 onBlur={() => onGenerateQuote()}
                 data-testid="end-date"

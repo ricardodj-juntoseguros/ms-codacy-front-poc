@@ -64,6 +64,7 @@ describe('OpportunityDetailsListFilters', () => {
     expect(
       await findByTestId('labor-securityAmount-filter'),
     ).toBeInTheDocument();
+    expect(await findByTestId('labor-mappingDate-filter')).toBeInTheDocument();
   });
 
   it('Should render filters correctly for modality Fiscal', async () => {

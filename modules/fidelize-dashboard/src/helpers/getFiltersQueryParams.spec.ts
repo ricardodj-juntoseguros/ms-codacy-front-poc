@@ -20,7 +20,7 @@ describe('Get Filters Query Params Helper', () => {
     expect(result.relevances).toEqual('1,2,3,4');
   });
 
-  it('Should return correct object for query ith securityAmount filter', () => {
+  it('Should return correct object for query with securityAmount filter', () => {
     const mockFilters: OpportunitiesDetailsFilterModel[] = [
       { key: 'securityAmount', values: { min: 10000, max: 20000 } },
     ];
@@ -29,6 +29,16 @@ describe('Get Filters Query Params Helper', () => {
     expect(result.minSecurityAmount).toBeDefined();
     expect(result.maxSecurityAmount).toEqual(20000);
     expect(result.minSecurityAmount).toEqual(10000);
+  });
+  it('Should return correct object for query with mappingDate filter', () => {
+    const mockFilters: OpportunitiesDetailsFilterModel[] = [
+      { key: 'mappingDate', values: { min: '2023-01-01', max: '2023-12-31' } },
+    ];
+    const result = getFiltersQueryParams(mockFilters);
+    expect(result.startMappingDate).toBeDefined();
+    expect(result.endMappingDate).toBeDefined();
+    expect(result.startMappingDate).toEqual('2023-01-01');
+    expect(result.endMappingDate).toEqual('2023-12-31');
   });
 
   it('Should return empty object for not mapped filternames', () => {

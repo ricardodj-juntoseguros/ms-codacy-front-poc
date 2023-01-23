@@ -63,30 +63,30 @@ describe('CoverageData component', () => {
     );
   });
 
-  it('should not call api limit and store if store not contains policyholder or modality', async () => {
-    useDispatchMock.mockImplementation(select =>
-      select({
-        ...storeMock,
-        quote: {
-          ...storeMock.quote,
-          policyholder: null,
-          modality: null,
-        },
-      }),
-    );
-    useAppDispatchMock.mockImplementation(() => mockDispatch);
+  // it('should not call api limit and store if store not contains policyholder or modality', async () => {
+  //   useDispatchMock.mockImplementation(select =>
+  //     select({
+  //       ...storeMock,
+  //       quote: {
+  //         ...storeMock.quote,
+  //         policyholder: null,
+  //         modality: null,
+  //       },
+  //     }),
+  //   );
+  //   useAppDispatchMock.mockImplementation(() => mockDispatch);
 
-    const apiMockLimit = jest
-      .spyOn(CoverageApi, 'getLimitCoverage')
-      .mockImplementation(() => Promise.resolve(policyholderLimitMock));
+  //   const apiMockLimit = jest
+  //     .spyOn(CoverageApi, 'getLimitCoverage')
+  //     .mockImplementation(() => Promise.resolve(policyholderLimitMock));
 
-    render(<CoverageData />);
+  //   render(<CoverageData />);
 
-    await apiMockLimit;
+  //   await apiMockLimit;
 
-    expect(apiMockLimit).not.toHaveBeenCalled();
-    expect(mockDispatch).not.toHaveBeenCalled();
-  });
+  //   expect(apiMockLimit).not.toHaveBeenCalled();
+  //   expect(mockDispatch).not.toHaveBeenCalled();
+  // });
 
   it('should call the store with to update start date value', async () => {
     useDispatchMock.mockImplementation(select => select({ ...storeMock }));

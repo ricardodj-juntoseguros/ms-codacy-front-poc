@@ -207,7 +207,7 @@ export function ContractData({
           <DateInput
             label="Primeira parcela"
             value={firstInstallment}
-            onChange={event => onChangeFirstInstallment(event.target.value)}
+            onChange={(value, valid) => onChangeFirstInstallment(value)}
           />
         </div>
       </div>

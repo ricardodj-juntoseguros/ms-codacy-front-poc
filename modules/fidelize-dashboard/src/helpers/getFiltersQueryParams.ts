@@ -27,6 +27,17 @@ export const getFiltersQueryParams = (
             query.minSecurityAmount = filterValue.min;
         }
         break;
+      case 'mappingDate':
+        if (filter.values) {
+          const filterValue = filter.values as {
+            min: string | null;
+            max: string | null;
+          };
+          if (filterValue.max !== null) query.endMappingDate = filterValue.max;
+          if (filterValue.min !== null)
+            query.startMappingDate = filterValue.min;
+        }
+        break;
       default:
         break;
     }

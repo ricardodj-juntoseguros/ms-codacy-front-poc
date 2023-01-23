@@ -10,9 +10,10 @@ import {
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
 import OpportunitiesDetailsApi from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsApi';
 import OpportunityDetailsMultiselectFilter from '../OpportunityDetailsMultiselectFilter';
-import styles from './OpportunityDetailsListFilters.module.scss';
-import { hasAppliedAnyFilter } from '../../../helpers';
 import OpportunityDetailsSecurityAmountFilter from '../OpportunityDetailsSecurityAmountFilter';
+import OpportunityDetailsMappingDateFilter from '../OpportunityDetailsMappingDateFilter';
+import { hasAppliedAnyFilter } from '../../../helpers';
+import styles from './OpportunityDetailsListFilters.module.scss';
 
 interface OpportunityDetailsListFiltersProps {
   modality: ModalityEnum;
@@ -32,6 +33,11 @@ const FILTER_LIST = [
   {
     name: 'securityAmount',
     component: OpportunityDetailsSecurityAmountFilter,
+    useOptions: false,
+  },
+  {
+    name: 'mappingDate',
+    component: OpportunityDetailsMappingDateFilter,
     useOptions: false,
   },
 ];
@@ -107,6 +113,9 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
           <div>
             {FILTER_LIST.map(filter => {
               const { name, component: Component, useOptions } = filter;
+              // mapping date filter only for labor
+              if (name === 'mappingDate' && modality !== ModalityEnum.LABOR)
+                return null;
               const props = { filterName: name, modality } as any;
               if (useOptions) {
                 props.options = getFilterOptions(name) || [];
