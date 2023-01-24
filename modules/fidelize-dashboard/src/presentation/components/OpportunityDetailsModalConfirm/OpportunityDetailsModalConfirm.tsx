@@ -17,7 +17,6 @@ interface OpportunityDetailsModalConfirmProps {
   validPolicyholder: 'OK' | 'LOADING' | 'INVALID' | 'ERROR';
   onSubmit: () => void;
   renderError: () => JSX.Element | null;
-  renderDisclaimer: () => JSX.Element;
 }
 
 const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmProps> =
@@ -28,7 +27,6 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
     validPolicyholder,
     onSubmit,
     renderError,
-    renderDisclaimer,
   }) => {
     const getDataToRender = () => {
       const {
@@ -165,7 +163,6 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
             </Button>
           </div>
         )}
-        {renderDisclaimer()}
       </>
     );
   };
