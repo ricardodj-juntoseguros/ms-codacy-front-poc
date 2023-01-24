@@ -187,13 +187,13 @@ jobs:
 
             case "${ENV}" in
             quality)
-              yarn affected:build --base=${CIRCLE_BRANCH}~1 --head=$CIRCLE_BRANCH --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
+              yarn affected:build --configuration=quality --base=${CIRCLE_BRANCH}~1 --head=$CIRCLE_BRANCH --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
             ;;
             staging)
-              yarn affected:build --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
+              yarn affected:build --configuration=production --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
             ;;
             production)
-              yarn affected:build --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
+              yarn affected:build --configuration=production --prod --base=master~1 --head=master --maxWorkers=1 --memoryLimit=1024 --skip-nx-cache
             ;;
             *)
               echo "Invalid Options. Try: quality, staging or production"

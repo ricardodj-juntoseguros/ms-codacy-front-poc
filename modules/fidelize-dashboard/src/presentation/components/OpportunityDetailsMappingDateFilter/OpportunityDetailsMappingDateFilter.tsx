@@ -153,7 +153,7 @@ const MappingDateFilterForm: React.FC<MappingDateFilterFormProps> = ({
       minDate === null ||
       minDate === '' ||
       maxDate === null ||
-      minDate === ''
+      maxDate === ''
     )
       return true;
     const minDateActualValue = minDate.includes('_')

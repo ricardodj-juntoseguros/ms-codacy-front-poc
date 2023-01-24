@@ -84,6 +84,7 @@ describe('OpportunityDetailsListFilters', () => {
     expect(
       await findByTestId('fiscal-securityAmount-filter'),
     ).toBeInTheDocument();
+    expect(await findByTestId('fiscal-mappingDate-filter')).toBeInTheDocument();
   });
 
   it('Should render filters correctly for modality Civil', async () => {
@@ -103,6 +104,7 @@ describe('OpportunityDetailsListFilters', () => {
     expect(
       await findByTestId('civil-securityAmount-filter'),
     ).toBeInTheDocument();
+    expect(await findByTestId('civil-mappingDate-filter')).toBeInTheDocument();
   });
 
   it('Should display clear all button when there is any filter applied', async () => {

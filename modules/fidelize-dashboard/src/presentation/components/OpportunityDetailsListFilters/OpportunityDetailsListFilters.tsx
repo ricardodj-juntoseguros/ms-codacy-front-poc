@@ -52,11 +52,6 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
       OpportunitiesFilterOptionsDTO[]
     >([]);
 
-    const hasFilterApplied = useMemo(
-      () => hasAppliedAnyFilter(filters),
-      [filters],
-    );
-
     useEffect(() => {
       OpportunitiesDetailsApi.getFiltersContentByModality(modality)
         .then(response => {
@@ -65,6 +60,11 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
         })
         .catch(() => setError(true));
     }, [modality]);
+
+    const hasFilterApplied = useMemo(
+      () => hasAppliedAnyFilter(filters),
+      [filters],
+    );
 
     const handleClearAllClick = () => {
       dispatch(opportunitiesDetailsActions.clearFiltersByModality(modality));
@@ -113,9 +113,6 @@ const OpportunityDetailsListFilters: React.FC<OpportunityDetailsListFiltersProps
           <div>
             {FILTER_LIST.map(filter => {
               const { name, component: Component, useOptions } = filter;
-              // mapping date filter only for labor
-              if (name === 'mappingDate' && modality !== ModalityEnum.LABOR)
-                return null;
               const props = { filterName: name, modality } as any;
               if (useOptions) {
                 props.options = getFilterOptions(name) || [];
