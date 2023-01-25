@@ -44,6 +44,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
     mappingDate,
     expired,
     observation,
+    economicGroup,
   } = opportunity;
 
   const isNewIssue = category === OpportunityDetailsCategoryEnum.NEW_ISSUE;
@@ -189,6 +190,14 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
         >
           {policyholder}
         </p>
+        {economicGroup !== null && (
+          <span
+            className={styles['opportunity-details-listitem__label-helper']}
+            title={economicGroup}
+          >
+            {economicGroup}
+          </span>
+        )}
       </div>
       <div className={styles['opportunity-details-listitem__column']}>
         <p className={styles['opportunity-details-listitem__label']}>

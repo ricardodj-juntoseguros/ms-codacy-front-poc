@@ -15,10 +15,11 @@ import OpportunityDetailsList from './OpportunityDetailsList';
 describe('OpportunityDetailsList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(OpportunitiesDetailsApi, 'getFiltersContentByModality')
-    .mockImplementationOnce(async () => {
-      return { filters: [] };
-    });
+    jest
+      .spyOn(OpportunitiesDetailsApi, 'getFiltersContentByModality')
+      .mockImplementationOnce(async () => {
+        return { filters: [] };
+      });
   });
 
   it('should fetch opportunity details on component mount', async () => {
@@ -39,6 +40,7 @@ describe('OpportunityDetailsList', () => {
               policyholder: 'Tomador',
               expired: false,
               observation: 'Com vencimento em 19/03/25',
+              economicGroup: 'Grupo',
             },
           ],
         };
@@ -77,6 +79,7 @@ describe('OpportunityDetailsList', () => {
               policyholder: 'Tomador',
               expired: false,
               observation: 'Com vencimento em 19/03/25',
+              economicGroup: 'Grupo',
             },
           ],
         };
@@ -115,6 +118,7 @@ describe('OpportunityDetailsList', () => {
               policyholder: 'Tomador',
               expired: false,
               observation: 'Com vencimento em 19/03/25',
+              economicGroup: 'Grupo',
             },
           ],
         };
@@ -155,6 +159,7 @@ describe('OpportunityDetailsList', () => {
               policyholder: 'Tomador',
               expired: false,
               observation: 'Com vencimento em 19/03/25',
+              economicGroup: 'Grupo',
             },
           ],
         };
@@ -193,6 +198,7 @@ describe('OpportunityDetailsList', () => {
               policyholder: 'Tomador',
               expired: false,
               observation: 'Com vencimento em 19/03/25',
+              economicGroup: 'Grupo',
             },
           ],
         };
@@ -248,6 +254,7 @@ describe('OpportunityDetailsList', () => {
               policyholder: 'Tomador',
               expired: false,
               observation: 'Com vencimento em 19/03/25',
+              economicGroup: 'Grupo',
             },
             {
               id: 'id2',
@@ -260,6 +267,7 @@ describe('OpportunityDetailsList', () => {
               policyholder: 'Tomador 2',
               expired: false,
               observation: 'Com vencimento em 19/03/25',
+              economicGroup: 'Grupo',
             },
           ],
         };

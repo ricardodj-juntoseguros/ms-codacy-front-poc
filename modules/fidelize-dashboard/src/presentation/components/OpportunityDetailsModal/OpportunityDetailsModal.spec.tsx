@@ -31,6 +31,7 @@ describe('OpportunityDetailsModal', () => {
       securityAmount: 2550650.5,
       expired: false,
       observation: 'Com vencimento em 22/02/2024',
+      economicGroup: 'Teste grupo',
     };
     jest
       .spyOn(
@@ -72,6 +73,7 @@ describe('OpportunityDetailsModal', () => {
       securityAmount: 2550650.5,
       expired: false,
       observation: 'Com vencimento em 22/02/2024',
+      economicGroup: 'Teste grupo',
     };
     jest
       .spyOn(
@@ -131,6 +133,7 @@ describe('OpportunityDetailsModal', () => {
       mappingDate: '2021-01-01T03:00:00.000Z',
       securityAmount: 2550650.5,
       expired: false,
+      economicGroup: 'Teste grupo',
     };
     const { getByTestId, findByText, queryByText, findByTestId } = render(
       <Provider store={store}>
@@ -194,6 +197,7 @@ describe('OpportunityDetailsModal', () => {
       mappingDate: '2021-01-01T03:00:00.000Z',
       securityAmount: 2550650.5,
       expired: false,
+      economicGroup: 'Teste grupo',
     };
     const { getByTestId, findByTestId, queryByText, findByText } = render(
       <Provider store={store}>

@@ -37,9 +37,15 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
         mappingDate,
         relevance,
         expired,
+        economicGroup,
       } = opportunities[0];
       return [
-        { label: 'Tomador', value: policyholder },
+        {
+          label: 'Tomador/Grupo',
+          value: `${policyholder}${
+            economicGroup !== null ? ` - ${economicGroup}` : ''
+          }`,
+        },
         {
           label: 'Tipo/Obs',
           value: `${category} ${

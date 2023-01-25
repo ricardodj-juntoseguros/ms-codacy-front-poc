@@ -27,6 +27,7 @@ describe('Opportunity Details List Item', () => {
       securityAmount: 2550650.5,
       expired: false,
       observation: 'Com vencimento em 01/01/26',
+      economicGroup: 'Teste grupo',
     };
     const { getByText } = render(
       <Provider store={store}>
@@ -43,6 +44,7 @@ describe('Opportunity Details List Item', () => {
     expect(getByText('2.550.650,50')).toBeTruthy();
     expect(getByText('Teste tomador')).toBeTruthy();
     expect(getByText('01/jan/22')).toBeTruthy();
+    expect(getByText('Teste grupo')).toBeTruthy();
   });
 
   it('Should render "Prazo indeterminado" label if expiration is null', () => {
@@ -57,6 +59,7 @@ describe('Opportunity Details List Item', () => {
       securityAmount: 2550650.5,
       expired: false,
       observation: 'Prazo indeterminado',
+      economicGroup: 'Teste grupo',
     };
     const { getByText } = render(
       <Provider store={store}>
@@ -82,6 +85,7 @@ describe('Opportunity Details List Item', () => {
       securityAmount: 2550650.5,
       expired: false,
       observation: 'Com vencimento em 01/02/22',
+      economicGroup: 'Teste grupo',
     };
     const { queryByText } = render(
       <Provider store={store}>
@@ -108,6 +112,7 @@ describe('Opportunity Details List Item', () => {
       securityAmount: 2550650.5,
       expired: true,
       observation: 'Vencida em 01/02/2022',
+      economicGroup: 'Teste grupo',
     };
     const { getByText } = render(
       <Provider store={store}>
@@ -133,6 +138,7 @@ describe('Opportunity Details List Item', () => {
       securityAmount: 2550650.5,
       expired: false,
       observation: 'Com vencimento em 01/01/26',
+      economicGroup: 'Teste grupo',
     };
     const mockCallback = jest.fn();
     const { getByTestId } = render(
@@ -161,6 +167,7 @@ describe('Opportunity Details List Item', () => {
       securityAmount: 2550650.5,
       expired: false,
       observation: 'Com vencimento em 01/01/26',
+      economicGroup: 'Teste grupo',
     };
     const { getByTestId, queryByTestId } = render(
       <Provider store={store}>
@@ -191,6 +198,7 @@ describe('Opportunity Details List Item', () => {
       securityAmount: null,
       expired: false,
       observation: null,
+      economicGroup: 'Teste grupo',
     };
     const { container, getByText } = render(
       <Provider store={store}>
@@ -222,6 +230,7 @@ describe('Opportunity Details List Item', () => {
       securityAmount: 10000,
       expired: false,
       observation: null,
+      economicGroup: 'Teste grupo',
     };
     const { container, getByText } = render(
       <Provider store={store}>
@@ -255,8 +264,9 @@ describe('Opportunity Details List Item', () => {
       securityAmount: 10000,
       expired: false,
       observation: 'Com vencimento em 01/jan/26',
+      economicGroup: 'Teste grupo',
     };
-    const { getByText, getByTestId, queryByText } = render(
+    const { getByText, getByTestId } = render(
       <Provider store={store}>
         <OpportunityDetailsListItem
           opportunity={opportunityMock}

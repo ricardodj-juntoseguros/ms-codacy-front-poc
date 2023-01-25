@@ -31,7 +31,7 @@ describe('Opportunity Details List Header', () => {
     expect(getByText('TIPO/OBS.')).toBeTruthy();
     expect(getByText('RELEVÂNCIA')).toBeTruthy();
     expect(getByText('VALOR IS')).toBeTruthy();
-    expect(getByText('TOMADOR')).toBeTruthy();
+    expect(getByText('TOMADOR/GRUPO')).toBeTruthy();
     expect(getByText('DT MAPEAMENTO')).toBeTruthy();
   });
 
@@ -76,6 +76,7 @@ describe('Opportunity Details List Header', () => {
           expired: false,
           mappingDate: '2021-10-20T00:00:00Z',
           observation: 'Recurso Ordinário',
+          economicGroup: 'GRUPO DEXCO',
         } as OpportunityDetailsItemDTO),
       );
     });
@@ -92,6 +93,7 @@ describe('Opportunity Details List Header', () => {
         expired: false,
         mappingDate: '2021-10-20T00:00:00Z',
         observation: 'Recurso Ordinário',
+        economicGroup: 'GRUPO DEXCO',
       },
       {
         id: 'ff12d784-a782-40dc-8ac7-c44894395be8',
@@ -104,6 +106,7 @@ describe('Opportunity Details List Header', () => {
         expired: false,
         mappingDate: '2021-10-20T00:00:00Z',
         observation: 'Recurso Ordinário',
+        economicGroup: 'GRUPO DEXCO',
       },
       {
         id: 'facec7c7-2397-4713-8862-f3c5bb724eae',
@@ -116,6 +119,7 @@ describe('Opportunity Details List Header', () => {
         expired: false,
         mappingDate: '2021-10-20T00:00:00Z',
         observation: 'Recurso Ordinário',
+        economicGroup: 'GRUPO DEXCO',
       },
       {
         id: 'f7db5efc-aa63-43f6-b845-5a5d6ec7ce6d',
@@ -128,6 +132,7 @@ describe('Opportunity Details List Header', () => {
         expired: false,
         mappingDate: '2021-10-20T00:00:00Z',
         observation: 'Recurso Ordinário',
+        economicGroup: 'GRUPO DEXCO',
       },
       {
         id: 'f1a094e0-adaf-4ff1-a515-cd518980f520',
@@ -140,6 +145,7 @@ describe('Opportunity Details List Header', () => {
         expired: false,
         mappingDate: '2021-10-20T00:00:00Z',
         observation: 'Recurso Ordinário',
+        economicGroup: 'GRUPO DEXCO',
       },
       {
         id: 'ef8e8952-d54c-4ec2-a4c2-51b007444d4e',
@@ -152,6 +158,7 @@ describe('Opportunity Details List Header', () => {
         expired: false,
         mappingDate: '2021-10-20T00:00:00Z',
         observation: 'Recurso Ordinário',
+        economicGroup: 'GRUPO DEXCO',
       },
     ];
 

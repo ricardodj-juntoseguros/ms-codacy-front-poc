@@ -15,4 +15,5 @@ export interface OpportunityDetailsItemDTO {
   mappingDate: string;
   expired: boolean;
   observation: string | null;
+  economicGroup: string | null;
 }

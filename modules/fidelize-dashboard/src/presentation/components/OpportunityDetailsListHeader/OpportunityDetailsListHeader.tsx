@@ -60,7 +60,10 @@ const OpportunityDetailsListHeader: React.FC<OpportunityDetailsListHeaderProps> 
       { title: 'RELEVÂNCIA', value: OpportunityDetailsOrderEnum.RELEVANCE },
       { title: 'TIPO/OBS.', value: OpportunityDetailsOrderEnum.CATEGORY },
       { title: 'VALOR IS', value: OpportunityDetailsOrderEnum.SECURITY_AMOUNT },
-      { title: 'TOMADOR', value: OpportunityDetailsOrderEnum.POLICYHOLDER },
+      {
+        title: 'TOMADOR/GRUPO',
+        value: OpportunityDetailsOrderEnum.POLICYHOLDER,
+      },
       {
         title: 'DT MAPEAMENTO',
         value: OpportunityDetailsOrderEnum.MAPPING_DATE,
