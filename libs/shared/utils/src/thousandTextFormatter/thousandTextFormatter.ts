@@ -12,7 +12,7 @@ export function thousandTextFormatter(
     ' quatrilhões',
     ' quintilhões',
   ];
-  const shortLabels = ['K', 'M', 'B', 'T', 'Qa', 'Qi'];
+  const shortLabels = ['K', 'MM', 'B', 'T', 'Qa', 'Qi'];
   let auxValue = value || 0;
   let thousandCounter = 0;
   while (auxValue / 1000 >= 1) {
