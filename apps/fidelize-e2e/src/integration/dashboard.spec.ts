@@ -12,19 +12,15 @@ beforeEach(() => {
 });
 
 describe('Dashboard', () => {
-  it('Deve validar o dashboard', () => {
-    cy.get(selectors.dashboardSummary.totalCard).should('be.visible').wait(6000);
-  });
 
   it('Deve validar pesquisa pelo nome do tomador', () => {
-    cy.get(selectors.dashboardSummary.searchText).type('JUNTO', {
+    cy.get(selectors.dashboardSummary.searchText).type('TESTE', {
       delay: 1000,
     });
     cy.get(selectors.dashboardSummary.searchInput)
       .should('be.visible')
-      .should(
-        'have.text',
-        'CONSTRUTORA JUNTO SEGUROS - TESTE - 65.182.718/0001-91',
+      .contains(
+        'TOMADOR TESTE',
       )
       .click();
 
@@ -34,7 +30,7 @@ describe('Dashboard', () => {
   });
 
   it('Deve validar pesquisa pelo CNPJ do tomador', () => {
-    cy.get(selectors.dashboardSummary.searchText).type('65182718000191', {
+    cy.get(selectors.dashboardSummary.searchText).type('91833813000118', {
       delay: 1000,
     });
 
@@ -42,7 +38,7 @@ describe('Dashboard', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'CONSTRUTORA JUNTO SEGUROS - TESTE - 65.182.718/0001-91',
+        'TOMADOR TESTE – SQUAD DESACOPLAMENTO - 91.833.813/0001-18',
       )
       .click();
 

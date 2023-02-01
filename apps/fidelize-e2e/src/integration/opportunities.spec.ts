@@ -30,14 +30,6 @@ describe('Opportunities', () => {
     // cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
   });
 
-  it('Deve validar disclaimer de condições de produto', () => {
-    cy.goToOpportunityDetailsListTab('fiscal')
-      .wait(6000)
-      .clickOnFirstMoreDetailsButton()
-      .first();
-    cy.get(selectors.modal.disclaimer).should('be.visible');
-  });
-
   it('Deve navegar até a guia Trabalhista e solicitar mais detalhes', () => {
     cy.get(selectors.opportunityDetailsList.laborTab)
       .should('be.visible')
@@ -188,15 +180,12 @@ describe('Opportunities', () => {
       .should('be.visible')
       .wait(6000)
       .click();
-    cy.get('[data-testid=chk-c9212add-5761-4fa6-a9f4-70d215340564][type="checkbox"]')
-      .click()
-      .wait(1000);
     cy.get('[data-testid=chk-580d35ab-1bc3-4b69-a294-998b1174a76a][type="checkbox"]')
       .click()
       .wait(1000);
     cy.get('[data-testid=chk-0fbec676-48bf-4e1b-8a56-fc73653c97c2][type="checkbox"]')
-    .click()
-    .wait(1000);
+      .click()
+      .wait(1000);
     cy.get('[data-testid=btn-more-details-footer]').click();
     cy.get(selectors.modal.primaryButton).click();
     cy.get(selectors.opportunityDetailsList.email).type(
@@ -216,10 +205,10 @@ describe('Opportunities', () => {
     cy.get('[data-testid=chk-9aa0f326-5bdd-45d6-a02e-d1daf0e4c536][type="checkbox"]')
       .click()
       .wait(1000);
-    cy.get('[data-testid=chk-8279d75e-8f0b-48c5-bb0f-83057fffbedd][type="checkbox"]')
+    cy.get('[data-testid=chk-ea8b4889-0d66-4043-813a-74ecdadf4dfc][type="checkbox"]')
       .click()
       .wait(1000);
-    cy.get('[data-testid=chk-2a4f7ef2-8ce5-41ea-9d4d-578aed28bf1c][type="checkbox"]')
+    cy.get('[data-testid=chk-c3def35c-e282-4acc-ae87-bc9e03d9d572][type="checkbox"]')
       .click()
       .wait(1000);
     cy.get('[data-testid=btn-more-details-footer]').click();

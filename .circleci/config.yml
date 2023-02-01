@@ -128,7 +128,7 @@ jobs:
         description: Environment to e2e tests to
         type: string
     resource_class: gitjmseguradora/k8s-qas
-    #parallelism: 4
+    #parallelism: 5
     steps:
       - attach_workspace:
           at: /tmp/persist_to_workspace
@@ -142,12 +142,10 @@ jobs:
           name: E2E Tests
           command: |
             # Executando Testes
-            # npm install cypress --save
-            # npx cypress open
             ./node_modules/cypress/bin/cypress install
             npm install --no-optional --unsafe-perm
             npm rebuild node-sass
-            yarn nx affected:e2e -c=quality --base=master --head=HEAD --parallel=5
+            yarn nx affected:e2e -c=quality --base=master --head=HEAD
           no_output_timeout: 40m
       - store_artifacts:
           path: cypress/videos

@@ -107,7 +107,7 @@ describe('Filtros', () => {
 
     cy.get('[data-testid=max-security-amount-input]').type('9000');
 
-    cy.get('[data-testid=security-amount-filter-apply-btn]').click().wait(6000);
+    cy.get('[data-testid=security-amount-filter-apply-btn]').click();
 
     cy.get(
       '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
@@ -119,7 +119,7 @@ describe('Filtros', () => {
 
     cy.get('[data-testid=min-security-amount-input]').type('9000');
 
-    cy.get('[data-testid=security-amount-filter-apply-btn]').click().wait(6000);
+    cy.get('[data-testid=security-amount-filter-apply-btn]').click();
 
     cy.get(
       '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
@@ -133,7 +133,7 @@ describe('Filtros', () => {
 
     cy.get('[data-testid=max-security-amount-input]').type('9000');
 
-    cy.get('[data-testid=security-amount-filter-apply-btn]').click().wait(6000);
+    cy.get('[data-testid=security-amount-filter-apply-btn]').click();
 
     cy.get(
       '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
@@ -152,6 +152,60 @@ describe('Filtros', () => {
     cy.get('.InputBase_j-input__error__bFwYb').should(
       'have.text',
       'O valor máximo precisa ser maior que o valor mínimo',
+    );
+  });
+
+  it('Deve filtrar Data de mapeamento, com data inicial preenchida e data final vazia', () => {
+
+    cy.get('[data-testid=civil-mappingDate-filter]').click();
+
+    cy.get('[data-testid=min-mapping-date-input]').type('20102021');
+
+    cy.get('[data-testid=mapping-date-filter-apply-btn]').click();
+
+    cy.get(
+      '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
+    ).should('not.be.empty');
+  });
+
+  it('Deve filtrar Data de mapeamento, com data inicial vazia e data final preenchida', () => {
+    cy.get('[data-testid=civil-mappingDate-filter]').click();
+
+    cy.get('[data-testid=max-mapping-date-input]').type('20102021');
+
+    cy.get('[data-testid=mapping-date-filter-apply-btn]').click();
+
+    cy.get(
+      '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
+    ).should('not.be.empty');
+  });
+
+  it('Deve filtrar Data de mapeamento, com data inicial e final preenchidos', () => {
+    cy.get('[data-testid=civil-mappingDate-filter]').click();
+
+    cy.get('[data-testid=min-mapping-date-input]').type('20102021');
+
+    cy.get('[data-testid=max-mapping-date-input]').type('20102021');
+
+    cy.get('[data-testid=mapping-date-filter-apply-btn]').click();
+
+    cy.get(
+      '.OpportunityDetailsListItem_opportunity-details-listitem__label__2Ieq6',
+    ).should('not.be.empty');
+  });
+
+  it('Deve filtrar Data de mapeamento, com data final maior que data inicial', () => {
+    cy.get('[data-testid=civil-mappingDate-filter]').click();
+
+    cy.get('[data-testid=min-mapping-date-input]').type('20102021');
+
+    cy.get('[data-testid=max-mapping-date-input]').type('19102021');
+
+    cy.get('[data-testid=mapping-date-filter-apply-btn]').click();
+
+    cy.get('.InputBase_j-input__error__bFwYb').should(
+      'have.text',
+      'A data final deve ser posterior a data inicial!',
     );
   });
 });
