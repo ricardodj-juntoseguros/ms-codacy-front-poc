@@ -25,6 +25,9 @@ export class BrokerPlatformAuthService {
   private readonly FIDELIZE_BROKER_FEATURES_COOKIE =
     process.env['NX_GLOBAL_FIDELIZE_BROKER_FEATURES_COOKIE'] || 'fbfc';
 
+  private readonly FIDELIZE_BROKER_LAST_ACCESS_COOKIE =
+    process.env['NX_GLOBAL_FIDELIZE_BROKER_LAST_ACCESS_COOKIE'] || 'fblac';
+
   getUserAccessCookie() {
     const userCookie = Cookies.get(this.USER_ACCESS_COOKIE) || '';
     if (!userCookie) return null;
@@ -44,6 +47,14 @@ export class BrokerPlatformAuthService {
         domain: this.COOKIE_DOMAIN,
       },
     );
+    Cookies.set(
+      this.FIDELIZE_BROKER_LAST_ACCESS_COOKIE,
+      this.getFidelizeBrokerLastAccessCookie() || '',
+      {
+        expires: expirationDate,
+        domain: this.COOKIE_DOMAIN,
+      },
+    );
   }
 
   clearAuthData() {
@@ -54,6 +65,9 @@ export class BrokerPlatformAuthService {
     Cookies.remove(this.USER_CHAT_COOKIE, { domain: this.COOKIE_DOMAIN });
     Cookies.remove(this.USER_SESSION_COOKIE, { domain: this.COOKIE_DOMAIN });
     Cookies.remove(this.FIDELIZE_BROKER_FEATURES_COOKIE, {
+      domain: this.COOKIE_DOMAIN,
+    });
+    Cookies.remove(this.FIDELIZE_BROKER_LAST_ACCESS_COOKIE, {
       domain: this.COOKIE_DOMAIN,
     });
     window.location.assign(
@@ -133,6 +147,23 @@ export class BrokerPlatformAuthService {
     await this.doSessionLogout(token, refreshToken)
       .catch(() => console.error('Error ocurred on session token logout'))
       .finally(() => this.clearAuthData());
+  }
+
+  getFidelizeBrokerLastAccessCookie() {
+    const cookieData =
+      Cookies.get(this.FIDELIZE_BROKER_LAST_ACCESS_COOKIE) || '';
+    return cookieData || null;
+  }
+
+  setFidelizeBrokerLastAccessCookie(lastAccess: string) {
+    const userCookie = this.getUserAccessCookie();
+    if (userCookie !== null) {
+      const { createAt, refreshExpiresIn } = userCookie;
+      Cookies.set(this.FIDELIZE_BROKER_LAST_ACCESS_COOKIE, lastAccess, {
+        domain: this.COOKIE_DOMAIN,
+        expires: new Date(new Date(createAt).getTime() + refreshExpiresIn),
+      });
+    }
   }
 }
 
