@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import TagManager from 'react-gtm-module';
 import { Divider, Skeleton, ToastContainer } from 'junto-design-system';
 import { nanoid } from 'nanoid/non-secure';
 import { thousandSeparator } from '@shared/utils';
 import { NotFoundIllustration } from '@shared/ui';
+import { BrokerPlatformAuthService } from '@services';
 import OpportunityDetailsListHeader from '../OpportunityDetailsListHeader';
 import OpportunityDetailsListItem from '../OpportunityDetailsListItem';
 import OpportunityDetailsListPaging from '../OpportunityDetailsListPaging';
@@ -91,6 +92,13 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
     setTotalCount(undefined);
   }, [modality, filteredPolicyholders, filters]);
 
+  const lastBrokerAccessDate = useMemo(() => {
+    const lastAccessCookieValue =
+      BrokerPlatformAuthService.getFidelizeBrokerLastAccessCookie();
+    if (!lastAccessCookieValue) return null;
+    return new Date(lastAccessCookieValue);
+  }, []);
+
   const handleClickMoreDetailsItem = (
     opportunity: OpportunityDetailsItemDTO,
   ) => {
@@ -168,6 +176,7 @@ const OpportunityDetailsList: React.FC<OpportunityDetailsListProps> = ({
           key={`opportunity-details-listitem-${nanoid(5)}`}
           opportunity={opportunity}
           onMoreDetailsClick={handleClickMoreDetailsItem}
+          lastBrokerAccessDate={lastBrokerAccessDate}
         />
       );
     });

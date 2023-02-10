@@ -34,10 +34,11 @@
   }
 
   & > .opportunity-details-listitem__column:last-child {
-    flex-flow: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 18px 105px 36px;
     & > p {
       align-self: center;
+      width: 117px;
     }
   }
 
@@ -174,6 +175,22 @@
   & i {
     color: color('brand-primary');
     align-self: center;
+  }
+}
+
+.opportunity-details-listitem__new-item {
+  display: inline-flex;
+  height: 6px;
+  width: 6px;
+  border: 2px solid #e1f8f0;
+  background: color('success');
+  border-radius: 50%;
+  align-self: center;
+  margin-right: spacing('s');
+  cursor: pointer;
+
+  &::after {
+    content: '';
   }
 }
 

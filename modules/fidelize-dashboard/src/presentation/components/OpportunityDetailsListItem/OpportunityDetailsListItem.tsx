@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { isAfter, isSameDay, startOfDay } from 'date-fns';
 import { Checkbox, Tooltip } from 'junto-design-system';
 import classNames from 'classnames';
 import { thousandSeparator } from '@shared/utils';
@@ -19,20 +20,25 @@ interface OpportunityDetailsListItemProps {
   opportunity: OpportunityDetailsItemDTO;
   checkable: boolean;
   onMoreDetailsClick: (opportunity: OpportunityDetailsItemDTO) => void;
+  lastBrokerAccessDate: Date | null;
 }
 
 const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
   opportunity,
   checkable,
   onMoreDetailsClick,
+  lastBrokerAccessDate,
 }) => {
   const dispatch = useDispatch();
   const [securityAmountTooltipVisible, setSecurityAmountTooltipVisible] =
     useState(false);
   const [moreDetailsTooltipVisible, setMoreDetailsTooltipVisible] =
     useState(false);
+  const [newOpportunityIconVisible, setNewOpportunityIconVisible] =
+    useState(false);
   const approximateIconRef = useRef<HTMLSpanElement>(null);
   const valueToDefineIconRef = useRef<HTMLSpanElement>(null);
+  const newOpportunityIconRef = useRef<HTMLSpanElement>(null);
   const moreDetailsButtonRef = useRef<HTMLButtonElement>(null);
   const selectedOpportunities = useSelector(selectSelectedOpportunities);
   const {
@@ -113,119 +119,157 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
     );
   };
 
-  return (
-    <div
-      className={classNames(
-        styles['opportunity-details-listitem__wrapper'],
-        {
-          [styles['opportunity-details-listitem__wrapper--expired']]:
-            expired || relevance === OpportunityRelevanceEnum.EXPIRED,
-        },
-        {
-          [styles['opportunity-details-listitem__wrapper--selected']]:
-            isOpportunitySelected,
-        },
-      )}
-    >
-      <div className={styles['opportunity-details-listitem__column']}>
-        {checkable && (
-          <Checkbox
-            id={`chk-${id}`}
-            checked={isOpportunitySelected}
-            title="Selecionar oportunidade"
-            onChange={v => handleItemCheck(v)}
-          />
-        )}
-      </div>
-      <div className={styles['opportunity-details-listitem__column']}>
+  const renderNewOpportunityIcon = () => {
+    let isNewOpportunity = true;
+
+    if (lastBrokerAccessDate !== null) {
+      const opportunityMappedDate = startOfDay(new Date(mappingDate));
+      isNewOpportunity =
+        isSameDay(opportunityMappedDate, lastBrokerAccessDate) ||
+        isAfter(opportunityMappedDate, lastBrokerAccessDate);
+    }
+
+    return isNewOpportunity ? (
+      <>
         <span
-          className={classNames(
-            styles['opportunity-details-listitem__relevance-tag'],
-            getRelevanceTagClassName(relevance),
-          )}
-        >
-          {expired ? 'Expirada' : relevance}
-        </span>
-      </div>
-      <div className={styles['opportunity-details-listitem__column']}>
-        <p className={styles['opportunity-details-listitem__label']}>
-          {category}
-        </p>
-        {observation !== null && (
-          <span
-            className={styles['opportunity-details-listitem__label-helper']}
-            title={
-              category === OpportunityDetailsCategoryEnum.NEW_ISSUE
-                ? observation
-                : ''
-            }
-          >
-            {observation}
-          </span>
+          ref={newOpportunityIconRef}
+          data-testid={`new-opportunity-icon-${id}`}
+          onMouseEnter={() => {
+            setNewOpportunityIconVisible(true);
+          }}
+          onMouseLeave={() => {
+            setNewOpportunityIconVisible(false);
+          }}
+          className={styles['opportunity-details-listitem__new-item']}
+        />
+      </>
+    ) : (
+      <div />
+    );
+  };
+
+  return (
+    <>
+      <div
+        className={classNames(
+          styles['opportunity-details-listitem__wrapper'],
+          {
+            [styles['opportunity-details-listitem__wrapper--expired']]:
+              expired || relevance === OpportunityRelevanceEnum.EXPIRED,
+          },
+          {
+            [styles['opportunity-details-listitem__wrapper--selected']]:
+              isOpportunitySelected,
+          },
         )}
+      >
+        <div className={styles['opportunity-details-listitem__column']}>
+          {checkable && (
+            <Checkbox
+              id={`chk-${id}`}
+              checked={isOpportunitySelected}
+              title="Selecionar oportunidade"
+              onChange={v => handleItemCheck(v)}
+            />
+          )}
+        </div>
+        <div className={styles['opportunity-details-listitem__column']}>
+          <span
+            className={classNames(
+              styles['opportunity-details-listitem__relevance-tag'],
+              getRelevanceTagClassName(relevance),
+            )}
+          >
+            {expired ? 'Expirada' : relevance}
+          </span>
+        </div>
+        <div className={styles['opportunity-details-listitem__column']}>
+          <p className={styles['opportunity-details-listitem__label']}>
+            {category}
+          </p>
+          {observation !== null && (
+            <span
+              className={styles['opportunity-details-listitem__label-helper']}
+              title={
+                category === OpportunityDetailsCategoryEnum.NEW_ISSUE
+                  ? observation
+                  : ''
+              }
+            >
+              {observation}
+            </span>
+          )}
+        </div>
+        <div className={styles['opportunity-details-listitem__column']}>
+          <p className={styles['opportunity-details-listitem__label']}>
+            {renderSecurityAmountColumn()}
+          </p>
+        </div>
+        <div className={styles['opportunity-details-listitem__column']}>
+          <p
+            className={styles['opportunity-details-listitem__label-emphasys']}
+            title={policyholder}
+          >
+            {policyholder}
+          </p>
+          {economicGroup !== null && (
+            <span
+              className={styles['opportunity-details-listitem__label-helper']}
+              title={economicGroup}
+            >
+              {economicGroup}
+            </span>
+          )}
+        </div>
+        <div className={styles['opportunity-details-listitem__column']}>
+          {renderNewOpportunityIcon()}
+          <p className={styles['opportunity-details-listitem__label']}>
+            {formatDateString(mappingDate, 'dd/MMM/yy')}
+          </p>
+          {selectedOpportunities.length === 0 && (
+            <>
+              <button
+                type="button"
+                data-testid="modal-trigger"
+                className={
+                  styles['opportunity-details-listitem__modal-trigger']
+                }
+                ref={moreDetailsButtonRef}
+                onClick={() => onMoreDetailsClick(opportunity)}
+                onMouseEnter={() => handleMoreDetailsButtonHover(true)}
+                onMouseLeave={() => handleMoreDetailsButtonHover(false)}
+              >
+                <i className="icon icon-plus-circle" />
+              </button>
+            </>
+          )}
+        </div>
       </div>
-      <div className={styles['opportunity-details-listitem__column']}>
-        <p className={styles['opportunity-details-listitem__label']}>
-          {renderSecurityAmountColumn()}
-        </p>
-        <Tooltip
-          anchorRef={
-            isValueToDefine ? valueToDefineIconRef : approximateIconRef
-          }
-          text={
-            isValueToDefine
-              ? 'Valor a ser definido de acordo com o valor da sentença na fase de execução do processo.'
-              : `Valor aproximado considerando os valores recursais estipulados para cada tipo de recurso.
+      <Tooltip
+        anchorRef={newOpportunityIconRef}
+        text="Nova oportunidade"
+        visible={newOpportunityIconVisible}
+        position="top"
+      />
+      <Tooltip
+        anchorRef={isValueToDefine ? valueToDefineIconRef : approximateIconRef}
+        text={
+          isValueToDefine
+            ? 'Valor a ser definido de acordo com o valor da sentença na fase de execução do processo.'
+            : `Valor aproximado considerando os valores recursais estipulados para cada tipo de recurso.
                  No entanto, caso o processo já esteja próximo da fase de execução, consideramos o valor
                  da sentença ou da própria execução.`
-          }
-          visible={securityAmountTooltipVisible}
-          position="top"
-        />
-      </div>
-      <div className={styles['opportunity-details-listitem__column']}>
-        <p
-          className={styles['opportunity-details-listitem__label-emphasys']}
-          title={policyholder}
-        >
-          {policyholder}
-        </p>
-        {economicGroup !== null && (
-          <span
-            className={styles['opportunity-details-listitem__label-helper']}
-            title={economicGroup}
-          >
-            {economicGroup}
-          </span>
-        )}
-      </div>
-      <div className={styles['opportunity-details-listitem__column']}>
-        <p className={styles['opportunity-details-listitem__label']}>
-          {formatDateString(mappingDate, 'dd/MMM/yy')}
-        </p>
-        {selectedOpportunities.length === 0 && (
-          <>
-            <button
-              type="button"
-              data-testid="modal-trigger"
-              className={styles['opportunity-details-listitem__modal-trigger']}
-              ref={moreDetailsButtonRef}
-              onClick={() => onMoreDetailsClick(opportunity)}
-              onMouseEnter={() => handleMoreDetailsButtonHover(true)}
-              onMouseLeave={() => handleMoreDetailsButtonHover(false)}
-            >
-              <i className="icon icon-plus-circle" />
-            </button>
-            <Tooltip
-              anchorRef={moreDetailsButtonRef}
-              text="Quero mais detalhes"
-              visible={moreDetailsTooltipVisible}
-              position="top"
-            />
-          </>
-        )}
-      </div>
-    </div>
+        }
+        visible={securityAmountTooltipVisible}
+        position="top"
+      />
+      <Tooltip
+        anchorRef={moreDetailsButtonRef}
+        text="Quero mais detalhes"
+        visible={moreDetailsTooltipVisible}
+        position="top"
+      />
+    </>
   );
 };
 

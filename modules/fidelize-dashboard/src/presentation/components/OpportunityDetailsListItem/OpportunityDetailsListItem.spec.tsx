@@ -35,6 +35,7 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
@@ -67,6 +68,7 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
@@ -93,6 +95,7 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
@@ -120,6 +123,7 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
@@ -147,6 +151,7 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={mockCallback}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
@@ -175,6 +180,7 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
@@ -206,6 +212,7 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
@@ -238,6 +245,7 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
@@ -272,10 +280,42 @@ describe('Opportunity Details List Item', () => {
           opportunity={opportunityMock}
           checkable
           onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={null}
         />
       </Provider>,
     );
     fireEvent.mouseEnter(getByTestId('modal-trigger'));
     expect(getByText('Quero mais detalhes')).toBeInTheDocument();
+  });
+
+  it('Should render new opportunity icon when mapping date is later than broker last access and display tooltip', async () => {
+    const opportunityMock: OpportunityDetailsItemDTO = {
+      category: OpportunityDetailsCategoryEnum.RENEWAL,
+      type: OpportunityDetailsTypeEnum.FISCAL,
+      id: 'id',
+      policyholder: 'Teste tomador',
+      relevance: OpportunityRelevanceEnum.HIGH,
+      expiration: '2026-01-01T10:00:00.000Z',
+      mappingDate: '2023-01-01T10:00:00.000Z',
+      securityAmount: 10000,
+      expired: false,
+      observation: 'Com vencimento em 01/jan/26',
+      economicGroup: 'Teste grupo',
+    };
+    const { getByText, queryByText, getByTestId } = render(
+      <Provider store={store}>
+        <OpportunityDetailsListItem
+          opportunity={opportunityMock}
+          checkable
+          onMoreDetailsClick={jest.fn()}
+          lastBrokerAccessDate={new Date('2022-01-01T10:00:00.000Z')}
+        />
+      </Provider>,
+    );
+    expect(getByTestId('new-opportunity-icon-id')).toBeInTheDocument();
+    fireEvent.mouseEnter(getByTestId('new-opportunity-icon-id'));
+    expect(getByText('Nova oportunidade')).toBeInTheDocument();
+    fireEvent.mouseLeave(getByTestId('new-opportunity-icon-id'));
+    expect(queryByText('Nova oportunidade')).not.toBeInTheDocument();
   });
 });
