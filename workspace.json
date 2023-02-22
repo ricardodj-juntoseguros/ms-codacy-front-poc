@@ -1,6 +1,31 @@
 {
   "version": 2,
   "projects": {
+    "broker-signup": {
+      "root": "modules/broker-signup",
+      "sourceRoot": "modules/broker-signup/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "modules/broker-signup/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/modules/broker-signup"],
+          "options": {
+            "jestConfig": "modules/broker-signup/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+
+    },
     "corretor-emissao": {
       "root": "modules/corretor-emissao",
       "sourceRoot": "modules/corretor-emissao/src",

@@ -91,6 +91,8 @@
     "@nrwl/tao": "13.4.4",
     "@nrwl/web": "13.4.4",
     "@nrwl/workspace": "13.4.4",
+    "@testing-library/react": "12.1.2",
+    "@testing-library/react-hooks": "7.0.2",
     "@types/jest": "26.0.8",
     "@types/js-cookie": "^3.0.1",
     "@types/node": "^15.12.1",

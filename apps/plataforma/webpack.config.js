@@ -36,6 +36,14 @@ module.exports = (config, context) => {
           'corretor-emissao',
           'src',
         ),
+        '@modules/broker-signup': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'modules',
+          'broker-signup',
+          'src',
+        ),
         '@infrastructure/http-client': path.resolve(
           __dirname,
           '..',
