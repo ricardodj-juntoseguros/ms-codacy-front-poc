@@ -16,4 +16,5 @@ export interface OpportunityDetailsItemDTO {
   expired: boolean;
   observation: string | null;
   economicGroup: string | null;
+  lastSolicitationDate: string | null;
 }

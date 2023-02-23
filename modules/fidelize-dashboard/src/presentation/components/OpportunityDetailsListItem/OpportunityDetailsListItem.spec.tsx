@@ -28,6 +28,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: 'Com vencimento em 01/01/26',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { getByText } = render(
       <Provider store={store}>
@@ -61,6 +62,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: 'Prazo indeterminado',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { getByText } = render(
       <Provider store={store}>
@@ -88,6 +90,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: 'Com vencimento em 01/02/22',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { queryByText } = render(
       <Provider store={store}>
@@ -116,6 +119,7 @@ describe('Opportunity Details List Item', () => {
       expired: true,
       observation: 'Vencida em 01/02/2022',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { getByText } = render(
       <Provider store={store}>
@@ -143,6 +147,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: 'Com vencimento em 01/01/26',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const mockCallback = jest.fn();
     const { getByTestId } = render(
@@ -160,7 +165,7 @@ describe('Opportunity Details List Item', () => {
     expect(mockCallback).toHaveBeenCalledWith(opportunityMock);
   });
 
-  it('Should hide the trigger button when item checkbox is checked', () => {
+  it('Should disable the trigger button when item checkbox is checked', () => {
     const opportunityMock: OpportunityDetailsItemDTO = {
       category: OpportunityDetailsCategoryEnum.RENEWAL,
       type: OpportunityDetailsTypeEnum.FISCAL,
@@ -173,6 +178,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: 'Com vencimento em 01/01/26',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { getByTestId, queryByTestId } = render(
       <Provider store={store}>
@@ -187,9 +193,9 @@ describe('Opportunity Details List Item', () => {
 
     const checkbox = getByTestId('chk-id');
     fireEvent.click(checkbox);
-    expect(queryByTestId('modal-trigger')).not.toBeInTheDocument();
+    expect(queryByTestId('modal-trigger')).toBeDisabled();
     fireEvent.click(checkbox);
-    expect(getByTestId('modal-trigger')).toBeInTheDocument();
+    expect(getByTestId('modal-trigger')).not.toBeDisabled();
   });
 
   it('Should display text "Valor a definir" and tooltip if opportunity securityAmount is null', () => {
@@ -205,6 +211,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: null,
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { container, getByText } = render(
       <Provider store={store}>
@@ -238,6 +245,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: null,
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { container, getByText } = render(
       <Provider store={store}>
@@ -273,6 +281,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: 'Com vencimento em 01/jan/26',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { getByText, getByTestId } = render(
       <Provider store={store}>
@@ -301,6 +310,7 @@ describe('Opportunity Details List Item', () => {
       expired: false,
       observation: 'Com vencimento em 01/jan/26',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { getByText, queryByText, getByTestId } = render(
       <Provider store={store}>

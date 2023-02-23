@@ -144,6 +144,30 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
       );
     };
 
+    const renderAlreadySolicitedInfo = () => {
+      if (
+        opportunities.length > 1 ||
+        opportunities[0].lastSolicitationDate === null
+      ) {
+        return null;
+      }
+      const { lastSolicitationDate } = opportunities[0];
+      const formattedDate = formatDateString(lastSolicitationDate, 'dd/MM/yy');
+      return (
+        <div
+          className={
+            styles['opportunity-details-modal-confirm__solicited-info']
+          }
+        >
+          <i className="icon icon-check-circle" />
+          <p>
+            {`Sua corretora já solicitou detalhes desta oportunidade em
+            ${formattedDate}. Ainda assim, você pode solicitar novamente.`}
+          </p>
+        </div>
+      );
+    };
+
     return (
       <>
         {opportunities.length === 1 && (
@@ -169,6 +193,7 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
             </Button>
           </div>
         )}
+        {renderAlreadySolicitedInfo()}
       </>
     );
   };

@@ -41,6 +41,7 @@ describe('OpportunityDetailsList', () => {
               expired: false,
               observation: 'Com vencimento em 19/03/25',
               economicGroup: 'Grupo',
+              lastSolicitationDate: null,
             },
           ],
         };
@@ -80,6 +81,7 @@ describe('OpportunityDetailsList', () => {
               expired: false,
               observation: 'Com vencimento em 19/03/25',
               economicGroup: 'Grupo',
+              lastSolicitationDate: null,
             },
           ],
         };
@@ -119,6 +121,7 @@ describe('OpportunityDetailsList', () => {
               expired: false,
               observation: 'Com vencimento em 19/03/25',
               economicGroup: 'Grupo',
+              lastSolicitationDate: null,
             },
           ],
         };
@@ -160,6 +163,7 @@ describe('OpportunityDetailsList', () => {
               expired: false,
               observation: 'Com vencimento em 19/03/25',
               economicGroup: 'Grupo',
+              lastSolicitationDate: null,
             },
           ],
         };
@@ -199,6 +203,7 @@ describe('OpportunityDetailsList', () => {
               expired: false,
               observation: 'Com vencimento em 19/03/25',
               economicGroup: 'Grupo',
+              lastSolicitationDate: null,
             },
           ],
         };
@@ -255,6 +260,7 @@ describe('OpportunityDetailsList', () => {
               expired: false,
               observation: 'Com vencimento em 19/03/25',
               economicGroup: 'Grupo',
+              lastSolicitationDate: null,
             },
             {
               id: 'id2',
@@ -268,6 +274,7 @@ describe('OpportunityDetailsList', () => {
               expired: false,
               observation: 'Com vencimento em 19/03/25',
               economicGroup: 'Grupo',
+              lastSolicitationDate: null,
             },
           ],
         };

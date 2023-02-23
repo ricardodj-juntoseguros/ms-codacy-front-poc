@@ -27,6 +27,7 @@ describe('OpportunityDetailsListFooter', () => {
         mappingDate: '2021-09-13T03:00:00Z',
         observation: 'Com vencimento em 15/out/24',
         economicGroup: 'Grupo 1',
+        lastSolicitationDate: null,
       },
       {
         id: '0c3e0081-8afc-4c32-b6ca-28acf6b406da',
@@ -40,6 +41,7 @@ describe('OpportunityDetailsListFooter', () => {
         mappingDate: '2022-04-28T03:00:00Z',
         observation: 'Com vencimento em 25/nov/24',
         economicGroup: 'Grupo 2',
+        lastSolicitationDate: null,
       },
     ];
 

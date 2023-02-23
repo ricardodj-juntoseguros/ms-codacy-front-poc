@@ -172,8 +172,17 @@
   cursor: pointer;
   margin-right: spacing('xs');
 
-  & i {
+  &:disabled {
+    pointer-events: none;
+  }
+
+  & i[data-icon='plus'] {
     color: color('brand-primary');
+    align-self: center;
+  }
+
+  & i[data-icon='check'] {
+    color: color('grey-400');
     align-self: center;
   }
 }

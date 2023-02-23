@@ -51,6 +51,7 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
     expired,
     observation,
     economicGroup,
+    lastSolicitationDate,
   } = opportunity;
 
   const isNewIssue = category === OpportunityDetailsCategoryEnum.NEW_ISSUE;
@@ -66,11 +67,6 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
       ? opportunitiesDetailsActions.addOpportunityToSelection
       : opportunitiesDetailsActions.removeOpportunityFromSelection;
     dispatch(action(opportunity));
-  };
-
-  const handleMoreDetailsButtonHover = (mouseEnter: boolean) => {
-    if (window.innerWidth < 768) return;
-    setMoreDetailsTooltipVisible(mouseEnter);
   };
 
   const getRelevanceTagClassName = (relevance: OpportunityRelevanceEnum) => {
@@ -226,23 +222,24 @@ const OpportunityDetailsListItem: React.FC<OpportunityDetailsListItemProps> = ({
           <p className={styles['opportunity-details-listitem__label']}>
             {formatDateString(mappingDate, 'dd/MMM/yy')}
           </p>
-          {selectedOpportunities.length === 0 && (
-            <>
-              <button
-                type="button"
-                data-testid="modal-trigger"
-                className={
-                  styles['opportunity-details-listitem__modal-trigger']
-                }
-                ref={moreDetailsButtonRef}
-                onClick={() => onMoreDetailsClick(opportunity)}
-                onMouseEnter={() => handleMoreDetailsButtonHover(true)}
-                onMouseLeave={() => handleMoreDetailsButtonHover(false)}
-              >
-                <i className="icon icon-plus-circle" />
-              </button>
-            </>
-          )}
+          <button
+            type="button"
+            data-testid="modal-trigger"
+            className={styles['opportunity-details-listitem__modal-trigger']}
+            ref={moreDetailsButtonRef}
+            disabled={selectedOpportunities.length !== 0}
+            onClick={() => onMoreDetailsClick(opportunity)}
+            onMouseEnter={() => setMoreDetailsTooltipVisible(true)}
+            onMouseLeave={() => setMoreDetailsTooltipVisible(false)}
+          >
+            {(!lastSolicitationDate || moreDetailsTooltipVisible) &&
+              selectedOpportunities.length === 0 && (
+                <i data-icon="plus" className="icon icon-plus-circle" />
+              )}
+            {!!lastSolicitationDate && !moreDetailsTooltipVisible && (
+              <i data-icon="check" className="icon icon-check-circle" />
+            )}
+          </button>
         </div>
       </div>
       <Tooltip

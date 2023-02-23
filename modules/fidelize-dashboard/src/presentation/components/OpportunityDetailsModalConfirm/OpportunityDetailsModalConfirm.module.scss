@@ -78,3 +78,17 @@
     }
   }
 }
+
+.opportunity-details-modal-confirm__solicited-info {
+  @include font('xs');
+  display: flex;
+  flex-flow: row;
+  gap: spacing('s') + spacing('xs');
+  color: color('grey-500');
+  margin-top: spacing('xl');
+  align-items: center;
+
+  & > i {
+    color: color('grey-400');
+  }
+}

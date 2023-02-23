@@ -32,6 +32,7 @@ describe('OpportunityDetailsModal', () => {
       expired: false,
       observation: 'Com vencimento em 22/02/2024',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     jest
       .spyOn(
@@ -74,6 +75,7 @@ describe('OpportunityDetailsModal', () => {
       expired: false,
       observation: 'Com vencimento em 22/02/2024',
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     jest
       .spyOn(
@@ -83,6 +85,9 @@ describe('OpportunityDetailsModal', () => {
       .mockImplementationOnce(async () => {
         return { hasLimit: true };
       });
+    store.dispatch(
+      opportunitiesDetailsActions.addOpportunityToSelection(opportunityMock),
+    );
     const { container, getByText, findByText } = render(
       <Provider store={store}>
         <OpportunityDetailsModal
@@ -90,9 +95,6 @@ describe('OpportunityDetailsModal', () => {
           modality={ModalityEnum.LABOR}
         />
       </Provider>,
-    );
-    store.dispatch(
-      opportunitiesDetailsActions.addOpportunityToSelection(opportunityMock),
     );
     expect(container).toBeInTheDocument();
     expect(await findByText('Solicitar detalhes')).toBeInTheDocument();
@@ -134,6 +136,7 @@ describe('OpportunityDetailsModal', () => {
       securityAmount: 2550650.5,
       expired: false,
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { getByTestId, findByText, queryByText, findByTestId } = render(
       <Provider store={store}>
@@ -198,6 +201,7 @@ describe('OpportunityDetailsModal', () => {
       securityAmount: 2550650.5,
       expired: false,
       economicGroup: 'Teste grupo',
+      lastSolicitationDate: null,
     };
     const { getByTestId, findByTestId, queryByText, findByText } = render(
       <Provider store={store}>
@@ -226,5 +230,44 @@ describe('OpportunityDetailsModal', () => {
       ),
     ).toBeInTheDocument();
     expect(queryByText('Agora é só aguardar')).not.toBeInTheDocument();
+  });
+
+  it('Should render message if there is one opportunity and was already solicited', async () => {
+    const opportunityMock: OpportunityDetailsItemDTO = {
+      category: OpportunityDetailsCategoryEnum.RENEWAL,
+      type: OpportunityDetailsTypeEnum.FISCAL,
+      id: 'id',
+      policyholder: 'Teste tomador',
+      relevance: OpportunityRelevanceEnum.HIGH,
+      expiration: '2024-02-02T03:00:00.000Z',
+      observation: 'Com vencimento em 22/02/2024',
+      mappingDate: '2021-01-01T03:00:00.000Z',
+      securityAmount: 2550650.5,
+      expired: false,
+      economicGroup: 'Teste grupo',
+      lastSolicitationDate: '2022-12-20T03:00:00.000Z',
+    };
+    jest
+      .spyOn(
+        OpportunitiesDetailsApi,
+        'getOpportunityCompleteDetailsByModalityAndId',
+      )
+      .mockImplementationOnce(async () => {
+        return { hasLimit: true };
+      });
+    const { findByText } = render(
+      <Provider store={store}>
+        <OpportunityDetailsModal
+          onModalClose={jest.fn()}
+          modality={ModalityEnum.FISCAL}
+          opportunity={opportunityMock}
+        />
+      </Provider>,
+    );
+    expect(
+      await findByText(
+        'Sua corretora já solicitou detalhes desta oportunidade em 20/12/22. Ainda assim, você pode solicitar novamente.',
+      ),
+    ).toBeInTheDocument();
   });
 });
