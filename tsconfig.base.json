@@ -24,8 +24,9 @@
       "@modules/fidelize-dashboard": [
         "modules/fidelize-dashboard/src/index.tsx"
       ],
-      "@modules/broker-signup": [
-        "modules/broker-signup/src/index.tsx"
+      "@modules/broker-signup": ["modules/broker-signup/src/index.tsx"],
+      "@modules/fidelize-mapeamentos-import": [
+        "modules/fidelize-mapeamentos-import/src/index.tsx"
       ],
       "@services": ["libs/services/src/index.ts"],
       "@shared/hooks": ["libs/shared/hooks/src/index.tsx"],

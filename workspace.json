@@ -9,9 +9,7 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "modules/broker-signup/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["modules/broker-signup/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -24,7 +22,6 @@
         }
       },
       "tags": []
-
     },
     "corretor-emissao": {
       "root": "modules/corretor-emissao",
@@ -208,6 +205,116 @@
       },
       "tags": [],
       "implicitDependencies": ["fidelize"]
+    },
+    "fidelize-mapeamentos": {
+      "root": "apps/fidelize-mapeamentos",
+      "sourceRoot": "apps/fidelize-mapeamentos/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/fidelize-mapeamentos",
+            "index": "apps/fidelize-mapeamentos/src/index.html",
+            "main": "apps/fidelize-mapeamentos/src/main.tsx",
+            "polyfills": "apps/fidelize-mapeamentos/src/polyfills.ts",
+            "tsConfig": "apps/fidelize-mapeamentos/tsconfig.app.json",
+            "assets": ["apps/fidelize-mapeamentos/src/favicon.ico"],
+            "scripts": [],
+            "webpackConfig": "apps/fidelize-mapeamentos/webpack.config.js"
+          },
+          "configurations": {
+            "quality": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            },
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "fidelize-mapeamentos:build",
+            "hmr": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "fidelize-mapeamentos:build:production",
+              "hmr": false
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/fidelize-mapeamentos/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/fidelize-mapeamentos"],
+          "options": {
+            "jestConfig": "apps/fidelize-mapeamentos/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "fidelize-mapeamentos-import": {
+      "root": "modules/fidelize-mapeamentos-import",
+      "sourceRoot": "modules/fidelize-mapeamentos-import/src",
+      "projectType": "library",
+      "tags": [],
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "modules/fidelize-mapeamentos-import/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/modules/fidelize-mapeamentos-import"],
+          "options": {
+            "jestConfig": "modules/fidelize-mapeamentos-import/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     },
     "infrastructure-http-client": {
       "root": "libs/infrastructure/http-client",
