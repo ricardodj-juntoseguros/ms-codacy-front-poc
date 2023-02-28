@@ -215,7 +215,7 @@
           "executor": "@nrwl/web:webpack",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/fidelize-mapeamentos",
+            "outputPath": "dist/apps/mapeamentos-fidelize",
             "index": "apps/fidelize-mapeamentos/src/index.html",
             "main": "apps/fidelize-mapeamentos/src/main.tsx",
             "polyfills": "apps/fidelize-mapeamentos/src/polyfills.ts",

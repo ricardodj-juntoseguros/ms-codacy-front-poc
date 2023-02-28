@@ -18,6 +18,15 @@ module.exports = (config, context) => {
           'services',
           'src',
         ),
+        '@infrastructure/http-client': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'infrastructure',
+          'http-client',
+          'src',
+        ),
         '@modules/fidelize-mapeamentos-import': path.resolve(
           __dirname,
           '..',
