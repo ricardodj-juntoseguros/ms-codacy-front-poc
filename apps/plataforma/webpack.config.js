@@ -19,6 +19,15 @@ module.exports = (config, context) => {
           'ui',
           'src',
         ),
+        '@shared/utils': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'libs',
+          'shared',
+          'utils',
+          'src',
+        ),
         '@shared/hooks': path.resolve(
           __dirname,
           '..',

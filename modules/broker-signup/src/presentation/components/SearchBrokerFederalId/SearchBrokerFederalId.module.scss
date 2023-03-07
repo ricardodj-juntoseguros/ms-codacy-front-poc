@@ -1,0 +1,27 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.broker-information_wrapper{
+  margin-top: spacing('l');
+}
+
+.broker-information_label{
+    @include font('xs');
+    color: color('grey-500');
+}
+
+.broker-information_content{
+  @include font('l');
+  color: color('dark');
+  margin: 0;
+  padding-bottom: 12px
+}
+
+.search-broker-federalId-button-finish_wrapper{
+ padding-top: spacing('l');
+ & button {
+ width: 312px;
+ }
+}
+
+
+

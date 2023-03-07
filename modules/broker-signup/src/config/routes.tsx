@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import  CorretorCadastro  from '../presentation/pages/corretorCadastro/CorretorCadastro';
+import  SearchRegistrationContainer  from '../presentation/pages/SearchRegistrationContainer/SearchRegistrationContainer';
 
 const Routes: React.FC = () => (
   <BrowserRouter basename="signup">
     <Switch>
-      <Route path="/" exact component={CorretorCadastro} />
+      <Route path="/" exact component={SearchRegistrationContainer} />
     </Switch>
   </BrowserRouter>
 );
