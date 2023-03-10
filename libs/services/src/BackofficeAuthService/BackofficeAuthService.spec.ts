@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import BackofficeAuthService from './BackofficeAuthService';
 
@@ -145,5 +146,19 @@ describe('Backoffice Auth Service', () => {
   it('getUserIsViewer should return false if user data on storage is not present', async () => {
     const result = BackofficeAuthService.getUserIsViewer();
     expect(result).toBeFalsy();
+  });
+
+  it('saveTokenAndUserFromAccessCookie should read backoffice access cookie and save token and user to localstorage', () => {
+    const cookiesMock = jest
+      .spyOn(Cookies, 'get')
+      .mockReturnValue(
+        '{"token":"test_token","user":{"name":"test_user","role":"commercial","isViewer":false}}' as any,
+      );
+    BackofficeAuthService.saveTokenAndUserFromAccessCookie();
+    expect(cookiesMock).toHaveBeenCalledWith('bac');
+    expect(window.localStorage.getItem('token')).toBe('test_token');
+    expect(window.localStorage.getItem('user')).toBe(
+      '{"name":"test_user","role":"commercial","isViewer":false}',
+    );
   });
 });

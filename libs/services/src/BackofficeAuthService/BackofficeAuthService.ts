@@ -1,5 +1,6 @@
 import { isAfter } from 'date-fns';
 import jwtDecode from 'jwt-decode';
+import Cookies from 'js-cookie';
 import { User } from './types/User';
 import UserToken from './types/UserToken';
 
@@ -9,6 +10,9 @@ export class BackofficeAuthService {
 
   private readonly USER_KEY =
     process.env['NX_GLOBAL_BACKOFFICE_USER_KEY'] || 'user';
+
+  private readonly ACESS_COOKIE =
+    process.env['NX_GLOBAL_BACKOFFICE_ACCESS_COOKIE'] || 'bac';
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem(this.TOKEN_KEY);
@@ -58,6 +62,21 @@ export class BackofficeAuthService {
   getUserIsViewer(): boolean {
     const user = this.getUserData();
     return user !== null ? user.isViewer : false;
+  }
+
+  saveTokenAndUserFromAccessCookie() {
+    const accessCookie = Cookies.get(this.ACESS_COOKIE);
+    if (!accessCookie) return;
+    try {
+      const { token, user } = JSON.parse(accessCookie);
+      if (!token || !user) return;
+      localStorage.setItem(this.TOKEN_KEY, token);
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      Cookies.remove(this.ACESS_COOKIE);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`Error retrieving backoffice access cookie: ${error}`);
+    }
   }
 }
 

@@ -15,7 +15,7 @@
     "start:plataforma:squad5": "cp ./environments/.env.qa.squad5 .env && cp ./apps/plataforma/src/environments/.env.qa.squad5 ./apps/plataforma/.env && nx serve plataforma",
     "start:plataforma:squad6": "cp ./environments/.env.qa.squad6 .env && cp ./apps/plataforma/src/environments/.env.qa.squad6 ./apps/plataforma/.env && nx serve plataforma",
     "start:plataforma:squad7": "cp ./environments/.env.qa.squad7 .env && cp ./apps/plataforma/src/environments/.env.qa.squad7 ./apps/plataforma/.env && nx serve plataforma",
-    "start:fidelize-mapeamentos": "cp ./environments/.env.qa .env && cp ./apps/fidelize/src/environments/.env.qa ./apps/fidelize/.env && nx serve fidelize",
+    "start:fidelize-mapeamentos": "cp ./environments/.env.qa .env && cp ./apps/fidelize-mapeamentos/src/environments/.env.qa ./apps/fidelize-mapeamentos/.env && nx serve fidelize-mapeamentos",
     "start:fidelize-mapeamentos:squad2": "cp ./environments/.env.qa.squad2 .env && cp ./apps/fidelize-mapeamentos/src/environments/.env.qa.squad2 ./apps/fidelize-mapeamentos/.env && nx serve fidelize-mapeamentos",
     "start:fidelize-mapeamentos:squad5": "cp ./environments/.env.qa.squad5 .env && cp ./apps/fidelize-mapeamentos/src/environments/.env.qa.squad5 ./apps/fidelize-mapeamentos/.env && nx serve fidelize-mapeamentos",
     "start:fidelize-mapeamentos:squad6": "cp ./environments/.env.qa.squad6 .env && cp ./apps/fidelize-mapeamentos/src/environments/.env.qa.squad6 ./apps/fidelize-mapeamentos/.env && nx serve fidelize-mapeamentos",
