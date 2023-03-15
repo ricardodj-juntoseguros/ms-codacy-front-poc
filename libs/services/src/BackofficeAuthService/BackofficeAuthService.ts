@@ -78,6 +78,11 @@ export class BackofficeAuthService {
       console.error(`Error retrieving backoffice access cookie: ${error}`);
     }
   }
+
+  getAuthToken(): string | null {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    return token;
+  }
 }
 
 export default new BackofficeAuthService();

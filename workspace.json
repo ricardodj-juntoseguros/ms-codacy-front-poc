@@ -221,6 +221,7 @@
             "polyfills": "apps/fidelize-mapeamentos/src/polyfills.ts",
             "tsConfig": "apps/fidelize-mapeamentos/tsconfig.app.json",
             "assets": ["apps/fidelize-mapeamentos/src/favicon.ico"],
+            "styles": ["apps/fidelize-mapeamentos/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "apps/fidelize-mapeamentos/webpack.config.js"
           },

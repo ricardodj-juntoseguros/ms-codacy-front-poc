@@ -10,6 +10,14 @@ module.exports = (config, context) => {
       extensions: [...config.resolve.extensions, '.scss'],
       alias: {
         ...config.resolve.alias,
+        '@modules/fidelize-mapeamentos-import': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'modules',
+          'fidelize-mapeamentos-import',
+          'src',
+        ),
         '@services': path.resolve(
           __dirname,
           '..',
@@ -27,12 +35,13 @@ module.exports = (config, context) => {
           'http-client',
           'src',
         ),
-        '@modules/fidelize-mapeamentos-import': path.resolve(
+        '@shared/ui': path.resolve(
           __dirname,
           '..',
           '..',
-          'modules',
-          'fidelize-mapeamentos-import',
+          'libs',
+          'shared',
+          'ui',
           'src',
         ),
       },

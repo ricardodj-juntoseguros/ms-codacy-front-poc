@@ -1,0 +1,29 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.uploader__wrapper {
+  width: 936px;
+
+  & h3 {
+    margin-bottom: 16px;
+  }
+
+  & p {
+    margin-bottom: 40px;
+    @include font('sm');
+  }
+  & a {
+    text-decoration: none;
+  }
+}
+
+.uploader__downloader {
+  width: 100%;
+  margin-top: 23px;
+  display: flex;
+  justify-content: center;
+}
+
+.uploader__list {
+  width: 330px;
+  margin-top: -26px;
+}
