@@ -1,3 +1,2 @@
-export * from './SearchRegistrationContainer';
-
+export { default } from './SearchRegistrationContainer';
 

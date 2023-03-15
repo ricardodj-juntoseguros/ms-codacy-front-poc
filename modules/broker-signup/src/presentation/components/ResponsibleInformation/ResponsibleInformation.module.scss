@@ -1,0 +1,21 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.responsible_information_wrapper{
+  margin: 0 auto;
+  & div {
+    padding-top: spacing('m');
+    width: 312px;
+  }
+  & span {
+    text-align: justify;
+  }
+}
+
+.responsible_information_button{
+    padding-top: spacing('xxl');
+    & button{
+      width: 312px;
+    }
+}
+
+

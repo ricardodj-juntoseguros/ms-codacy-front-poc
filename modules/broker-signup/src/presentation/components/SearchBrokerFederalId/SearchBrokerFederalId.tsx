@@ -1,4 +1,5 @@
 import { useState,useEffect,useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { InputBase, Button, Alert } from 'junto-design-system';
 import { federalIdFormatter } from '@shared/utils';
 import styles from './SearchBrokerFederalId.module.scss';
@@ -6,51 +7,67 @@ import LoadingSpinner from '../LoadingSpinner';
 import  SearchBrokerApi   from '../../../application/features/searchBroker/SearchBrokerApi'
 import { RegisterBrokerTypeEnum } from '../../../application/types/model';
 import { SearchRegisterBrokerDTO } from '../../../application/types/dto';
+import { useAppDispatch } from '../../../config/store';
+import { brokerInformationSliceActions,selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
+import { brokerInformationAdapter } from '../../../application/features/brokerInformation/adapters/BrokerInformationAdapter';
 
-export const SearchBrokerFederalId: React.FC = () => {
-  const [brokerFederalId, setBrokerFederalId] = useState("");
-  const [isDisableButtonSignup, setIsDisableButtonSignup] = useState(true);
+
+export interface SearchBrokerFederalIdProps {
+  handleGoNextClick(): void;
+}
+
+export function SearchBrokerFederalId({handleGoNextClick}: SearchBrokerFederalIdProps) {
+  const brokerInformation = useSelector(selectBroker);
+  const [brokerFederalId, setBrokerFederalId] = useState(brokerInformation.information.federalId);
   const [statusBrokerRegistry, setStatusBrokerRegistry] =useState<SearchRegisterBrokerDTO>();
+  const [isDisableButtonSignup, setIsDisableButtonSignup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispatch = useAppDispatch();
+
 
   const fetchStatusBrokerRegistry = useCallback(
     async (brokerFederalIdNotMask) => {
       await SearchBrokerApi.searchRegisterBroker(brokerFederalIdNotMask)
        .then(response => {
+         setIsSubmitting(true)
          setStatusBrokerRegistry(response);
        })
-       .catch(() => console.log(''))
-       .finally(() => setIsDisableButtonSignup(false));
-    },
-    [],
+       .finally(() =>
+       statusBrokerRegistry?.status === RegisterBrokerTypeEnum.INVALID ||
+       statusBrokerRegistry?.status === RegisterBrokerTypeEnum.REGISTERED ? setIsDisableButtonSignup(true) : setIsDisableButtonSignup(false) );
+       setIsSubmitting(false)
+      },
+    [statusBrokerRegistry?.status],
   );
 
   useEffect(() => {
-    const brokerFederalIdNotMask= brokerFederalId.replace(/[./-]/g, '');
-
-    if(brokerFederalIdNotMask.length === 14 ){
-      fetchStatusBrokerRegistry(brokerFederalIdNotMask);
+    if(brokerFederalId.length === 14 ){
+      fetchStatusBrokerRegistry(brokerFederalId);
     }
     else{
       setIsDisableButtonSignup(true)
     }
-  }, [brokerFederalId]);
+  }, [brokerFederalId, fetchStatusBrokerRegistry], );
 
 
 
-  const onSubmit = () => {
-    setIsSubmitting(true)
+  const onSubmit = (value: SearchRegisterBrokerDTO) => {
+    const broker = brokerInformationAdapter(value);
+    dispatch(brokerInformationSliceActions.setBrokerInformationModel(broker));
+    console.log(value)
+    console.log(broker)
+    handleGoNextClick();
   };
 
   const showAlert = () => {
-    if(statusBrokerRegistry?.status  === RegisterBrokerTypeEnum.REGISTERED && brokerFederalId.length === 18) {
+    if(statusBrokerRegistry?.status  === RegisterBrokerTypeEnum.REGISTERED && brokerFederalId.length === 14) {
       return true;
     }
     return false;
   };
 
   const getErrorMessage = () => {
-    return statusBrokerRegistry?.status    === RegisterBrokerTypeEnum.INVALID ? 'Ops, parece que esse CNPJ não existe.' : undefined;
+    return statusBrokerRegistry?.status  === RegisterBrokerTypeEnum.INVALID ? 'Ops, parece que esse CNPJ não existe.' : undefined;
   };
 
   return (
@@ -60,8 +77,8 @@ export const SearchBrokerFederalId: React.FC = () => {
                 data-testid="broker-FederalId"
                 label="CNPJ"
                 placeholder="CNPJ"
-                value={brokerFederalId}
-                onChange={e => setBrokerFederalId(federalIdFormatter(e.target.value))}
+                value={federalIdFormatter(brokerFederalId)}
+                onChange={e => setBrokerFederalId(e.target.value)}
                 errorMessage={getErrorMessage()}
               />
       </div>
@@ -86,7 +103,7 @@ export const SearchBrokerFederalId: React.FC = () => {
       <div className={styles['search-broker-federalId-button-finish_wrapper']}>
             <Button
               data-testid="button-start-broker-registry"
-              onClick={() => onSubmit()}
+              onClick={() => onSubmit(statusBrokerRegistry as SearchRegisterBrokerDTO)}
               disabled={isDisableButtonSignup}
             >
               {isSubmitting

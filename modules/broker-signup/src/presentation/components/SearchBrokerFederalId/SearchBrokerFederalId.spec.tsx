@@ -1,15 +1,27 @@
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
-
+import { Provider } from 'react-redux';
+import { store } from '../../../config/store';
 import { SearchBrokerFederalId} from './SearchBrokerFederalId';
 import SearchBrokerApi from '../../../application/features/searchBroker/SearchBrokerApi';
 import { SearchRegisterBrokerDTO } from '../../../application/types/dto';
 
 describe('SearchBrokerFederalId', () => {
+  const historyMock = jest.fn();
+
+  const props = {
+    handleGoNextClick: {
+      push: historyMock as any,
+    } as any,
+  };
 
   it('should render successfully', () => {
-    const { baseElement } = render(<SearchBrokerFederalId />);
+    const { baseElement } = render(
+    <Provider store={store}>
+        <SearchBrokerFederalId {...props} />
+    </Provider>
+    );
     expect(baseElement).toBeTruthy();
   });
 
@@ -30,12 +42,16 @@ describe('SearchBrokerFederalId', () => {
       Promise.resolve(result)
     );
 
-    const { getByTestId } = render(<SearchBrokerFederalId/>);
+    const { getByTestId } = render(
+       <Provider store={store}>
+         <SearchBrokerFederalId {...props} />
+       </Provider>
+    );
 
     const input = getByTestId('broker-FederalId');
 
     await act(async () => {
-      fireEvent.change(input, { target: { value: '43.759.422/0001-58' } });
+      fireEvent.change(input, { target: { value: '43759422000158' } });
     });
 
     await SearchBrokerMockApi;
@@ -60,12 +76,16 @@ describe('SearchBrokerFederalId', () => {
       Promise.resolve(result),
     );
 
-    const { getByTestId,getByText } = render(<SearchBrokerFederalId/>);
+    const { getByTestId,getByText } = render(
+      <Provider store={store}>
+        <SearchBrokerFederalId {...props} />
+       </Provider>
+    );
 
     const input = getByTestId('broker-FederalId');
 
     await act(async () => {
-      fireEvent.change(input, { target: { value: '99.999.999/0001-99' } });
+      fireEvent.change(input, { target: { value: '99999999000199' } });
     });
 
     await SearchBrokerMockApi;
@@ -76,7 +96,7 @@ describe('SearchBrokerFederalId', () => {
 
   it('should render successfully with button enabled',  async () => {
     const mock= {
-      status:3,
+      status:1,
       description:'mock',
       information:'mock'
     }
@@ -90,17 +110,21 @@ describe('SearchBrokerFederalId', () => {
       Promise.resolve(result),
     );
 
-    const { getByTestId } = render(<SearchBrokerFederalId/>);
+    const { getByTestId } = render(
+    <Provider store={store}>
+      <SearchBrokerFederalId {...props} />
+    </Provider>
+    );
 
     const input = getByTestId('broker-FederalId');
 
     await act(async () => {
-      fireEvent.change(input, { target: { value: '43.759.422/0001-58' } });
+      fireEvent.change(input, { target: { value: '43759422000158' } });
     });
 
     await SearchBrokerMockApi;
 
     expect(SearchBrokerMockApi).toBeCalled();
     expect(getByTestId('button-start-broker-registry')).toBeEnabled();;
-  });
+  })
 });
