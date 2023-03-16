@@ -33,6 +33,20 @@ function UploaderFile() {
     setDataFiles([...dataFiles.filter(file => file.id !== id)]);
   };
 
+  const fetchUploadProcessId = () => {
+    setOnError(false);
+    if (processId === 0) {
+      new ImportMappingApi()
+        .generateUploadProcessId()
+        .then(response => {
+          setProcessId(response.id);
+        })
+        .catch(() => {
+          setOnError(true);
+        });
+    }
+  };
+
   const fetchUploadFile = () => {
     if (!onError) {
       setDataFiles([{ ...dataFiles[0], status: 'loading' }]);
@@ -51,20 +65,6 @@ function UploaderFile() {
             setDataFiles([{ ...dataFiles[0], status: 'success' }]);
             fetchCheckoutUpload();
           }
-        });
-    }
-  };
-
-  const fetchUploadProcessId = () => {
-    setOnError(false);
-    if (processId === 0) {
-      new ImportMappingApi()
-        .generateUploadProcessId()
-        .then(response => {
-          setProcessId(response.id);
-        })
-        .catch(() => {
-          setOnError(true);
         });
     }
   };
