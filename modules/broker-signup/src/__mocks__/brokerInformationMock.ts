@@ -1,4 +1,5 @@
 export const brokerInformationMock = {
+    pathUpdate: '',
     status: 1,
     description: 'CNPJ não está cadastrado',
     information: {
@@ -40,6 +41,17 @@ export const brokerInformationMock = {
         opc_mei: '',
         sit_especial: '',
         data_sit_especial: ''
-    }
+    },
+    bankDetails: {
+      name: '',
+      bankCode: '',
+      accounNumber: '',
+      bankNumber: '',
+      bankDigit: '',
+      accounDigit: ''
+    },
+    susepCode: '',
+    iss: 0,
+    simplesOptant: false
 }
 

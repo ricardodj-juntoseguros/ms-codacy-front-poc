@@ -1,6 +1,4 @@
 import { object, string, } from 'yup';
-import { emailValidator} from '@shared/utils';
-import { VALIDATION_MESSAGES } from '../../../../../../constants/validationMessages';
 
 export const ResponsibleInformationDataSchema = object().shape({
     nameResponsible: string()

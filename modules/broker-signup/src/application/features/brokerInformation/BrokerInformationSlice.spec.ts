@@ -1,6 +1,6 @@
 import {brokerInformationMock}  from 'modules/broker-signup/src/__mocks__';
 import { store } from '../../../config/store';
-import { BrokerInformationModel, ResponsibleInformationModel} from '../../types/model'
+import { BrokerInformationModel } from '../../types/model'
 
 import {
   brokerInformationSliceActions

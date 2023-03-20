@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
 import { BrokerInformationModel, RegisterBrokerTypeEnum } from '../../types/model';
+import { BankDTO } from '../../types/dto';
 
 const initialState: BrokerInformationModel = {
+  pathUpdate: '',
   status: RegisterBrokerTypeEnum.NO_REGISTRY,
   description: '',
   information: {
       federalId: '',
       parentCompany: '',
-      corporateName: '',
+      brokerCompanyName: '',
       fantasyName: '',
       situation: '',
       dateSituation: '',
@@ -26,15 +28,15 @@ const initialState: BrokerInformationModel = {
       neighbourhood: '',
       cep: '',
       uf: '',
-      municipalityCod: '',
-      municipality: '',
+      cityCod: '',
+      city: '',
       ddd1: '',
       phone1: '',
       ddd2: '',
       phone2: '',
       dddfax: '',
       numberFax: '',
-      email: '',
+      emailBroker: '',
       qualifResp: '',
       shareCapital:'',
       size: '',
@@ -44,7 +46,18 @@ const initialState: BrokerInformationModel = {
       opcMei: '',
       specialSituation: '',
       dateSpecialSituation: ''
-  }
+  },
+  bankDetails: {
+    name: '',
+    bankCode: '',
+    accounNumber: '',
+    bankNumber: '',
+    bankDigit: '',
+    accounDigit: ''
+  },
+  susepCode: '',
+  iss: 0,
+  simplesOptant: false
 };
 
 export const brokerInformationSlice = createSlice({
@@ -57,8 +70,39 @@ export const brokerInformationSlice = createSlice({
       state.description = action.payload.description;
       state.information = action.payload.information;
     },
+    setpathUpdate: (state, action: PayloadAction<string>) => {
+      state.pathUpdate = action.payload;
+    },
     setFederalId: (state, action: PayloadAction<string>) => {
       state.information.federalId = action.payload;
+    },
+    setBank: (state, action: PayloadAction<BankDTO>) => {
+      state.bankDetails.name = action.payload.name;
+      state.bankDetails.bankCode = action.payload.bankCode;
+    },
+    setBankName: (state, action: PayloadAction<string>) => {
+      state.bankDetails.name = action.payload;
+    },
+    setAccounNumber: (state, action: PayloadAction<string>) => {
+      state.bankDetails.accounNumber = action.payload;
+    },
+    setBankNumber: (state, action: PayloadAction<string>) => {
+      state.bankDetails.bankNumber = action.payload;
+    },
+    setBankDigit: (state, action: PayloadAction<string>) => {
+      state.bankDetails.bankDigit = action.payload;
+    },
+    setAccounDigit: (state, action: PayloadAction<string>) => {
+      state.bankDetails.accounDigit = action.payload;
+    },
+    setCodSusep: (state, action: PayloadAction<string>) => {
+      state.susepCode = action.payload;
+    },
+    setIss: (state, action: PayloadAction<number>) => {
+      state.iss = action.payload;
+    },
+    setSimplesOptant: (state, action: PayloadAction<boolean>) => {
+      state.simplesOptant = action.payload;
     },
   },
 });

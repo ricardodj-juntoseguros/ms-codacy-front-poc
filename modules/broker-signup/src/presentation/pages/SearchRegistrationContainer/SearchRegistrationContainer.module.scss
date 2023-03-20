@@ -2,78 +2,78 @@
 
 .search_registration_container__wrapper {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   max-width: 1264px;
-  min-height: 98vh;
-  height: 100%;
+  min-height: 100vh;
   width: 90%;
-  padding: spacing('s') 0 0 133px;
+  padding: 0 0 0 133px;
+  margin: auto;
 
   @media screen and (max-width: 680px) {
-    align-items: unset;
+    align-items: baseline;
     padding-left: spacing('l');
   }
 
-  @media screen and (min-height: 700px) {
-    align-items: center;
+  & > img{
+    padding-left: 259px;
+
+  @media screen and (max-width: 680px) {
+      display: none;
   }
+
+  }
+
 }
 
 .search_registration_container__illustration{
-  padding: 30px 0 20px 0 ;
-  width: 80px;
-  height: 35px;
-  top: 72px;
+  min-height:352px ;
+
+  @media screen and (max-width: 680px) {
+    min-height:0 ;
+  }
+
+  & > svg{
+    padding-top: spacing('xxl-5');
+  }
+
+  & > h1 {
+    color: color('dark');
+    @include font('xl-2-emphasys');
+    margin: 0;
+    padding-top: spacing('xxl-4');
+
+    @media screen and (max-width: 680px) {
+      @include font('xl-emphasys');
+      padding-top: spacing('xl');
+    }
+    }
+
+    & > h2 {
+      color: color('dark');
+      @include font('base');
+      margin: spacing('l') 0 ;
+    }
 }
 
 .search_registration_container__section{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
   width: 312px;
-
-
-  & > h1 {
-  color: color('dark');
-  @include font('xl-2-emphasys');
-  margin: 0;
-  padding-top: spacing('xxl-4');
+  margin: auto 0 ;
 
   @media screen and (max-width: 680px) {
-    @include font('xl-emphasys');
-    padding-top: spacing('xl');
-  }
-
-
-
-  }
-  & > h2 {
-    color: color('dark');
-    @include font('base');
-
-    margin-bottom: spacing('l');
+    margin:0 ;
   }
 }
 .search_registration_container__helper{
-  padding: 50px 0 10px 0 ;
+  padding: 50px 0 45px 0 ;
 
 
   & > p{
     @include font('xs-emphasys');
     color: color('dark');
+    margin-bottom:  spacing('xs');
   }
 }
-
-.search_registration_container__image{
-
-  @media screen and (max-width: 680px) {
-    display: none;
-  }
-
-  padding-left: 259px;
-  width: 90vh;
-  height: 98vh;
-
-  & > img{
-    width: 90vh;
-    height: 98vh;
-  }
-}
-

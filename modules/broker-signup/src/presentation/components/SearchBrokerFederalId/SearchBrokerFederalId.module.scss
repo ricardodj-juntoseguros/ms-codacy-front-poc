@@ -7,13 +7,14 @@
 .broker-information_label{
     @include font('xs');
     color: color('grey-500');
+    margin-top: spacing('l');
 }
 
 .broker-information_content{
   @include font('l');
   color: color('dark');
   margin: 0;
-  padding-bottom: 12px
+  padding: spacing('xs')0 12px 0;
 }
 
 .search-broker-federalId-button-finish_wrapper{

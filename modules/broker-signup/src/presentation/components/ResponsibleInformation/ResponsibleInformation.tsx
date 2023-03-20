@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { InputBase, Button } from 'junto-design-system';
+import { InputBase, Button,Checkbox,LinkButton,Modal } from 'junto-design-system';
 import { cpfFormatter, phoneFormatter } from '@shared/utils';
 import { ValidationModel } from 'modules/broker-signup/src/application/types/model';
 import styles from './ResponsibleInformation.module.scss';
@@ -10,25 +10,32 @@ import { useAppDispatch } from '../../../config/store';
 import { responsibleInformationSliceActions, selectResponsibleInformation } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
 import { validationActions, selectValidation,validateForm } from '../../../application/features/validation/ValidationSlice';
 import {  ResponsibleInformationDataSchema } from '../../../application/features/validations/schemas/componentSchemas';
+import { TERMS_RESPONSIBILITY } from '../../../constants/termsResponsibility'
 
-export const ResponsibleInformation: React.FC = () => {
+export interface ResponsibleInformationProps {
+  onSubmit: () => void;
+}
+
+export function ResponsibleInformation({
+  onSubmit,
+}: ResponsibleInformationProps) {
   const [isDisableGoNextStep, setIsDisableGoNextStep] = useState(true);
   const dispatch = useAppDispatch();
   const responsabileInformation = useSelector(selectResponsibleInformation);
   const { errors } = useSelector(selectValidation);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const {nameResponsable, cpfResponsable, phoneNumberResponsable, emailBroker} = responsabileInformation;
 
   useEffect(() => {
-    const hasNotInputEmpty = responsabileInformation.name !== '' && responsabileInformation.email !== ''
-    && responsabileInformation.cpf !== '' && responsabileInformation.phone !== ''
+    const hasNotInputEmpty = nameResponsable !== '' && emailBroker !== ''&& cpfResponsable !== '' && phoneNumberResponsable !== ''
     const hasInputError = Object.values(errors).length
-    if(hasNotInputEmpty && hasInputError === 0){
+    if(hasNotInputEmpty && hasInputError === 0 && responsabileInformation.termsResponsibility){
      setIsDisableGoNextStep(false);
     }
-  }, [responsabileInformation.name,
-      responsabileInformation.email,
-      responsabileInformation.cpf,
-      responsabileInformation.phone,
-      errors]);
+    if(!responsabileInformation.termsResponsibility){
+      setIsDisableGoNextStep(true);
+    }
+  }, [errors, responsabileInformation.termsResponsibility, nameResponsable, emailBroker, cpfResponsable, phoneNumberResponsable]);
 
   const handleNameChange = (value: string) => {
     dispatch(responsibleInformationSliceActions.setName(value));
@@ -47,9 +54,8 @@ export const ResponsibleInformation: React.FC = () => {
     dispatch(validationActions.removeErrorMessage('email'));
   };
 
-
-  const onSubmit = () => {
-    return '';
+  const handleCheckboxStatus = (value: boolean) => {
+    dispatch(responsibleInformationSliceActions.setTermsResponsibility(value));
   };
 
   const showFormError = (input: string, error: string) => {
@@ -67,10 +73,10 @@ export const ResponsibleInformation: React.FC = () => {
         schema: ResponsibleInformationDataSchema,
         data:
         {
-          nameResponsible: responsabileInformation.name,
-          documentNumber: responsabileInformation.cpf,
-          phone: responsabileInformation.phone,
-          email: responsabileInformation.email
+          nameResponsible: nameResponsable,
+          documentNumber: cpfResponsable,
+          phone: phoneNumberResponsable,
+          email: emailBroker
         },
       }),
     );
@@ -81,14 +87,17 @@ export const ResponsibleInformation: React.FC = () => {
     }
 
   }
-
+  const templateModal = {
+    title: { value: TERMS_RESPONSIBILITY.title},
+    text:  { value: TERMS_RESPONSIBILITY.text},
+  }
   return (
     <div className={styles['responsible_information_wrapper']}>
               <InputBase
                 data-testid="responsible-name"
                 label="Nome completo do responsável"
                 placeholder="Nome completo do responsável"
-                value={responsabileInformation.name}
+                value={nameResponsable}
                 onChange={e => {handleNameChange(responsibleFormatterName(e.target.value))}}
                 onBlur={() => validate('name','nameResponsible')}
                 errorMessage={errors.name && errors.name[0]}
@@ -98,7 +107,7 @@ export const ResponsibleInformation: React.FC = () => {
                data-testid="responsible-cpf"
                 label="CPF"
                 placeholder="CPF"
-                value={responsabileInformation.cpf}
+                value={cpfResponsable}
                 onChange={e => {handleCpfChange(cpfFormatter(e.target.value))}}
                 onBlur={() => validate('cpf','documentNumber')}
                 errorMessage={errors.cpf && errors.cpf[0]}
@@ -107,7 +116,7 @@ export const ResponsibleInformation: React.FC = () => {
                data-testid="responsible-phone"
                 label="Telefone"
                 placeholder="Telefone"
-                value={responsabileInformation.phone}
+                value={phoneNumberResponsable}
                 onChange={e => {handlePhoneNumberChange(phoneFormatter(e.target.value))}}
                 onBlur={() => validate('phone','phone')}
                 errorMessage={errors.phone && errors.phone[0]}
@@ -116,15 +125,34 @@ export const ResponsibleInformation: React.FC = () => {
                data-testid="responsible-email"
                 label="E-mail"
                 placeholder="E-mail"
-                value={responsabileInformation.email}
+                value={emailBroker}
                 onChange={e => {handleEmailChange(e.target.value)}}
                 onBlur={() => validate('email','email')}
                 errorMessage={errors.email && errors.email[0]}
               />
+              <div className={styles['responsible_information_terms']}>
+                <Checkbox
+                id="chk-select-all"
+                checked={responsabileInformation.termsResponsibility}
+                onChange={checked => handleCheckboxStatus(checked)}
+                />
+                <span className={styles['span_terms']}>Li e aceito o&nbsp;</span>
+                <LinkButton
+                  onClick={() => setIsOpen(true)}
+                  label="termo de responsabilidade"
+                />
+              </div>
+              <Modal
+                size="large"
+                open={isOpen}
+                template={templateModal}
+                onBackdropClick={() =>  setIsOpen(false)}
+                onClose={() => setIsOpen(false)}
+              />
               <div className={styles['responsible_information_button']}>
                 <Button
                   data-testid="button-responsible-information-registry"
-                  onClick={() => onSubmit()}
+                  onClick={onSubmit}
                   disabled={isDisableGoNextStep}
                   >
                   Avançar

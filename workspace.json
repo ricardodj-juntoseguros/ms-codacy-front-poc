@@ -353,7 +353,7 @@
             "main": "apps/plataforma/src/main.tsx",
             "polyfills": "apps/plataforma/src/polyfills.ts",
             "tsConfig": "apps/plataforma/tsconfig.app.json",
-            "assets": ["apps/plataforma/src/assets"],
+            "assets": ["apps/plataforma/src/favicon.ico"],
             "styles": ["apps/plataforma/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "apps/plataforma/webpack.config.js"

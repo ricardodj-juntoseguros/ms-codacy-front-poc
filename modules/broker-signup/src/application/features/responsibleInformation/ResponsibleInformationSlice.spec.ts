@@ -31,9 +31,9 @@ describe('ModalitySelectionSlice', () => {
   it('should be able reset the slice', async () => {
     const { responsibleInformation } = store.getState();
 
-    expect(responsibleInformation.name).toEqual('');
-    expect(responsibleInformation.cpf).toEqual('');
-    expect(responsibleInformation.email).toEqual('');
-    expect(responsibleInformation.phone).toEqual('');
+    expect(responsibleInformation.nameResponsable).toEqual('');
+    expect(responsibleInformation.cpfResponsable).toEqual('');
+    expect(responsibleInformation.emailBroker).toEqual('');
+    expect(responsibleInformation.phoneNumberResponsable).toEqual('');
   });
 });

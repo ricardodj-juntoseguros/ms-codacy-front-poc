@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AnyObjectSchema } from 'yup';
 import { RootState } from '../../../config/store';
 import { ValidationErrorModel, ValidationModel } from '../../types/model';
-import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
 import { validate } from '../../features/validations';
 
 export interface ValidateFormModel {

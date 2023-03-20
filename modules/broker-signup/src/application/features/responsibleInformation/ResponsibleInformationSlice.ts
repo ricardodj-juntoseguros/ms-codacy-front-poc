@@ -3,10 +3,11 @@ import { RootState } from '../../../config/store';
 import { ResponsibleInformationModel } from '../../types/model';
 
 const initialState: ResponsibleInformationModel = {
-  name: '',
-  cpf: '',
-  phone: '',
-  email: '',
+  nameResponsable: '',
+  cpfResponsable: '',
+  phoneNumberResponsable: '',
+  emailBroker: '',
+  termsResponsibility: false
 };
 
 export const responsibleInformationSlice = createSlice({
@@ -15,16 +16,19 @@ export const responsibleInformationSlice = createSlice({
   reducers: {
     resetResponsibleInformationSlice: () => initialState,
     setName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
+      state.nameResponsable = action.payload;
     },
     setCpf: (state, action: PayloadAction<string>) => {
-      state.cpf = action.payload;
+      state.cpfResponsable = action.payload;
     },
     setPhone: (state, action: PayloadAction<string>) => {
-      state.phone = action.payload;
+      state.phoneNumberResponsable = action.payload;
     },
     setEmail: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
+      state.emailBroker = action.payload;
+    },
+    setTermsResponsibility: (state, action: PayloadAction<boolean>) => {
+      state.termsResponsibility = action.payload;
     },
   },
 });

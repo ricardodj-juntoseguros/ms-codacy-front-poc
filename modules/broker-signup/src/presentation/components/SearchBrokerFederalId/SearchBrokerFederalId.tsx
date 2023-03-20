@@ -9,8 +9,9 @@ import { RegisterBrokerTypeEnum } from '../../../application/types/model';
 import { SearchRegisterBrokerDTO } from '../../../application/types/dto';
 import { useAppDispatch } from '../../../config/store';
 import { brokerInformationSliceActions,selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
-import { brokerInformationAdapter } from '../../../application/features/brokerInformation/adapters/BrokerInformationAdapter';
-
+import { brokerInformationAdapter } from '../../../application/features/brokerInformation/adapters';
+import { registerBrokerAdapter } from '../../../application/features/RegisterBroker/adapters/RegisterBrokerAdapter';
+import  RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi'
 
 export interface SearchBrokerFederalIdProps {
   handleGoNextClick(): void;
@@ -27,11 +28,12 @@ export function SearchBrokerFederalId({handleGoNextClick}: SearchBrokerFederalId
 
   const fetchStatusBrokerRegistry = useCallback(
     async (brokerFederalIdNotMask) => {
+      setIsSubmitting(true);
       await SearchBrokerApi.searchRegisterBroker(brokerFederalIdNotMask)
        .then(response => {
-         setIsSubmitting(true)
          setStatusBrokerRegistry(response);
        })
+       .catch(() => setIsDisableButtonSignup(false) )
        .finally(() =>
        statusBrokerRegistry?.status === RegisterBrokerTypeEnum.INVALID ||
        statusBrokerRegistry?.status === RegisterBrokerTypeEnum.REGISTERED ? setIsDisableButtonSignup(true) : setIsDisableButtonSignup(false) );
@@ -49,13 +51,21 @@ export function SearchBrokerFederalId({handleGoNextClick}: SearchBrokerFederalId
     }
   }, [brokerFederalId, fetchStatusBrokerRegistry], );
 
+  const fetchRegisterBroker = useCallback(
+    async (broker) => {
+      await  RegisterBrokerApi.registerBroker(broker)
+      .then(response => { dispatch(brokerInformationSliceActions.setpathUpdate(response));})
+      .catch(() => setIsDisableButtonSignup(true))
+    },
+    [dispatch],
+  );
+
 
 
   const onSubmit = (value: SearchRegisterBrokerDTO) => {
     const broker = brokerInformationAdapter(value);
     dispatch(brokerInformationSliceActions.setBrokerInformationModel(broker));
-    console.log(value)
-    console.log(broker)
+    fetchRegisterBroker(registerBrokerAdapter(broker));
     handleGoNextClick();
   };
 

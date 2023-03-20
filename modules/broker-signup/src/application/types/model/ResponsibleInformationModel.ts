@@ -1,6 +1,7 @@
 export interface ResponsibleInformationModel {
-  name: string;
-  cpf: string,
-  phone: string;
-  email: string
+  nameResponsable: string,
+  cpfResponsable: string,
+  phoneNumberResponsable: string,
+  emailBroker: string,
+  termsResponsibility: boolean
 }

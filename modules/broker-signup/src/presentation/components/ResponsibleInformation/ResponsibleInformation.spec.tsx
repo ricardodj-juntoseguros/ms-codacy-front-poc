@@ -10,7 +10,14 @@ import {
 } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
 
 
-describe('SearchBrokerFederalId', () => {
+describe('ResponsibleInformation', () => {
+  const historyMock = jest.fn();
+
+  const props = {
+    onSubmit: {
+      push: historyMock as any,
+    } as any,
+  };
 
   afterEach(() => {
     store.dispatch(responsibleInformationSliceActions.resetResponsibleInformationSlice());
@@ -19,7 +26,7 @@ describe('SearchBrokerFederalId', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <Provider store={store}>
-        <ResponsibleInformation/>
+        <ResponsibleInformation {...props} />
       </Provider>
     );
     expect(baseElement).toBeTruthy();
@@ -28,7 +35,7 @@ describe('SearchBrokerFederalId', () => {
   it('should render successfully and change inputs',  async () => {
     const { getByTestId } = render(
        <Provider store={store}>
-         <ResponsibleInformation/>
+          <ResponsibleInformation {...props} />
        </Provider>
     );
 
@@ -36,6 +43,7 @@ describe('SearchBrokerFederalId', () => {
     const inputCpf = getByTestId('responsible-cpf');
     const inputPhone = getByTestId('responsible-phone');
     const inputEmail = getByTestId('responsible-email');
+    const check = getByTestId('chk-select-all');
     const button = getByTestId('button-responsible-information-registry')
 
     await act(async () => {
@@ -43,6 +51,7 @@ describe('SearchBrokerFederalId', () => {
       fireEvent.change(inputCpf, { target: { value: '9999999999' } });
       fireEvent.change(inputPhone, { target: { value: '4199999999' } });
       fireEvent.change(inputEmail, { target: { value: 'teste@teste.com' } });
+      fireEvent.click(check);
     });
 
     expect(inputName).toHaveValue('teste teste');
@@ -55,7 +64,7 @@ describe('SearchBrokerFederalId', () => {
   it('should render successfully with error invalid errors',  async () => {
     const { getByTestId,getByText } = render(
       <Provider store={store}>
-        <ResponsibleInformation/>
+        <ResponsibleInformation {...props} />
       </Provider>
    );
 

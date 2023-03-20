@@ -9,12 +9,13 @@ export const brokerInformationAdapter = (broker: SearchRegisterBrokerDTO): Broke
   } = broker;
 
   return {
+    pathUpdate: '',
     status,
     description,
     information: {
         federalId: information.cnpj,
         parentCompany: information.matriz_filial,
-        corporateName: information.razao_social,
+        brokerCompanyName: information.razao_social,
         fantasyName: information.nome_fantasia,
         situation: information.situacao,
         dateSituation: information.data_situacao,
@@ -32,15 +33,15 @@ export const brokerInformationAdapter = (broker: SearchRegisterBrokerDTO): Broke
         neighbourhood: information.bairro,
         cep: information.cep,
         uf: information.uf,
-        municipalityCod: information.cod_municipio,
-        municipality: information.municipio,
+        cityCod: information.cod_municipio,
+        city: information.municipio,
         ddd1: information.ddd_1,
         phone1: information.telefone_1,
         ddd2: information.ddd_2,
         phone2: information.telefone_2,
         dddfax: information.ddd_fax,
         numberFax: information.num_fax,
-        email: information.email,
+        emailBroker: information.email,
         qualifResp: information.qualif_resp,
         shareCapital: information.capital_social,
         size: information.porte,
@@ -50,6 +51,17 @@ export const brokerInformationAdapter = (broker: SearchRegisterBrokerDTO): Broke
         opcMei: information.opc_mei,
         specialSituation: information.sit_especial,
         dateSpecialSituation: information.data_situacao,
-    }
+    },
+    bankDetails: {
+      name: '',
+      bankCode: '',
+      accounNumber: '',
+      bankNumber: '',
+      bankDigit: '',
+      accounDigit: ''
+    },
+    susepCode: '',
+    iss: 0,
+    simplesOptant: false
   };
 };
