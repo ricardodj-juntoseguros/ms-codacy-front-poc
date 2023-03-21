@@ -1,12 +1,15 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
 .side-menu__wrapper {
-  position: absolute;
-  height: -webkit-fill-available;
+  position: relative;
   background-color: #ffffff;
   padding: spacing('l') spacing('m');
   border-right: 1px solid #e0e7ec;
-  z-index: 1;
+  width: 32px;
+  display: flex;
+  flex: 1 1 auto;
+  min-height: calc(100vh - 136px);
+  z-index: 2;
 }
 
 .side-menu__items-wrapper {

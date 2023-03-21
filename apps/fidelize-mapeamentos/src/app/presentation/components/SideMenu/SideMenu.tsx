@@ -9,6 +9,7 @@ const SideMenu: React.FC = () => {
     const { id } = item;
     if (id === 'mapeamentos-fidelize') {
       history.push('/');
+      window.location.reload();
       return;
     }
     window.location.assign(

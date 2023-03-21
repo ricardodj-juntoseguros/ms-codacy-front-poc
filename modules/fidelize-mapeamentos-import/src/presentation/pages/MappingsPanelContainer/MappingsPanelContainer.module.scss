@@ -1,0 +1,37 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.mappings-panel__container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.mappings-panel__wrapper {
+  margin-top: 76px;
+  margin-left: 65px;
+  width: 1200px;
+  z-index: 1;
+
+  & h3 {
+    color: color('dark');
+    font-weight: 600;
+    width: 344px;
+    margin: 0;
+    line-height: 26px;
+    font-size: 20px;
+    align-self: flex-start;
+  }
+}
+
+.mappings-panel__header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mappings-panel__tabs-wrapper {
+  margin-top: 54px;
+}

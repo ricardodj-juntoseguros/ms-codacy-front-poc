@@ -1,25 +1,20 @@
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import FidelizeMapeamentosImport from '@modules/fidelize-mapeamentos-import';
 import Header from '../presentation/components/Header';
 import SideMenu from '../presentation/components/SideMenu';
 import ProtectedRoute from '../presentation/components/ProtectedRoute';
+import ComponentsWrapper from '../presentation/components/ComponentsWrapper/ComponentsWrapper';
 
 export default function Routes() {
   return (
     <BrowserRouter>
       <Header />
-      <SideMenu />
-      <Switch>
-        <ProtectedRoute
-          exact
-          path="/"
-          component={() => <Redirect to="/solicitar" />}
-        />
-        <ProtectedRoute
-          path="/solicitar"
-          component={FidelizeMapeamentosImport}
-        />
-      </Switch>
+      <ComponentsWrapper>
+        <SideMenu />
+        <Switch>
+          <ProtectedRoute path="/" component={FidelizeMapeamentosImport} />
+        </Switch>
+      </ComponentsWrapper>
     </BrowserRouter>
   );
 }

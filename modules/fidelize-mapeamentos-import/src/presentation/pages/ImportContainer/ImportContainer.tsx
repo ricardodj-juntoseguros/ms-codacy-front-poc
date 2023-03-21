@@ -1,5 +1,5 @@
 import { RouteComponentProps } from 'react-router';
-import UploaderFile from '../../componentes/UploaderFile';
+import UploaderFile from '../../components/UploaderFile';
 import styles from './ImportContainer.module.scss';
 
 function ImportContainer({ history }: RouteComponentProps) {

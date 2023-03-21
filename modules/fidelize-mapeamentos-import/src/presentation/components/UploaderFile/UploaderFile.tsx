@@ -107,7 +107,7 @@ function UploaderFile() {
         value: 'Ok',
       },
       buttons: {
-        primary: <Button onClick={() => onCloseModal()}>Ok</Button>,
+        primary: <Button onClick={() => handleGoToHome()}>Ok</Button>,
         secondary: (
           <Button onClick={() => onCloseModal()} variant="secondary">
             Nova solicitação
@@ -130,9 +130,9 @@ function UploaderFile() {
         size="default"
         open={isOpen}
         template={getModalTemplate()}
-        onBackdropClick={() => onCloseModal()}
-        onCloseButtonClick={() => onCloseModal()}
-        onClose={() => onCloseModal()}
+        onBackdropClick={() => handleGoToHome()}
+        onCloseButtonClick={() => handleGoToHome()}
+        onClose={() => handleGoToHome()}
       />
 
       <Upload

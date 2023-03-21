@@ -21,23 +21,32 @@ jest.mock('react-router-dom', () => ({
 describe('SideMenu', () => {
   it('Should render without crashing', () => {
     const { getByTestId } = render(<SideMenu />);
+
     expect(getByTestId('menuitem-home')).toBeInTheDocument();
     expect(getByTestId('menuitem-mapeamentos-fidelize')).toBeInTheDocument();
   });
 
   it('Should redirect to backoffice platform if clicked item is home', () => {
     const { getByTestId } = render(<SideMenu />);
+
     fireEvent.click(getByTestId('menuitem-home'));
+
     expect(window.location.assign).toHaveBeenCalledWith('backofficeurl/home');
   });
 
   it('Should go to root route if clicked item is fidelize-mapeamentos', () => {
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { reload: jest.fn() },
+    });
     const { getByTestId } = render(
       <MemoryRouter>
         <SideMenu />
       </MemoryRouter>,
     );
+
     fireEvent.click(getByTestId('menuitem-mapeamentos-fidelize'));
+
     expect(mockHistoryPush).toHaveBeenCalledWith('/');
   });
 });
