@@ -3,7 +3,7 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import FidelizeImportMapeamentosBaseApi from '../FidelizeMapeamentosImportBaseApi';
-import { UploadProcessIdDTO } from '../../types/dto/UploadProcessIdDTO';
+import { UploadProcessIdDTO } from '../../types/dto';
 
 class ImportMappingApi {
   private instance: AxiosHttpClient;

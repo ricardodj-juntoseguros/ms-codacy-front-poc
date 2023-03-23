@@ -1,7 +1,7 @@
 import { RouteComponentProps } from 'react-router';
 import { Tabs, Tab, Button } from 'junto-design-system';
-import { useState } from 'react';
-import { ModalityTabsSkeleton } from 'modules/fidelize-dashboard/src/presentation/components/Skeletons';
+import { useEffect, useState } from 'react';
+import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import { MappingStatusEnum } from '../../../application/types/model/MappingStatusEnum';
 import styles from './MappingsPanelContainer.module.scss';
 import ListingUnderConstruction from '../../components/ListingUnderConstruction/ListingUnderConstruction';
@@ -13,6 +13,19 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
   const goToSolicitation = () => {
     history.push('/solicitar');
   };
+
+  const fetchListngMapping = () => {
+    new ListingMappingApi().getListingMapping(1, 10, 'BLOCKED');
+  };
+
+  const fetchMappingSummary = () => {
+    new ListingMappingApi().getMappingSummary();
+  };
+
+  useEffect(() => {
+    fetchListngMapping();
+    fetchMappingSummary();
+  }, []);
 
   const renderMappingsStatus = (label: string, status: MappingStatusEnum) => {
     let content = () => (
