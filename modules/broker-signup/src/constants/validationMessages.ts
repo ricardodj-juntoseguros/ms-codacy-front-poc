@@ -4,4 +4,5 @@ export const VALIDATION_MESSAGES = {
   nameResponsible: 'Por favor digite um nome completo.',
   documentNumber:'Por favor digite um CPF válido.',
   email: 'Por favor digite um E-mail válido.',
+  typeDocument: 'Formato inválido. Utilize arquivos .jpg, .jpeg, .pdf, .png, .doc ou .docx'
 };

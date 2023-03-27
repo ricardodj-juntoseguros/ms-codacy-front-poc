@@ -1,0 +1,53 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.finish_signup_container__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.finish_signup_box{
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  height: 90vh;
+  width: 100%;
+}
+
+.finish_signup_container__title{
+  width: 504px;
+  margin: 0 auto;
+
+  & span{
+    @include font('xl-emphasys');
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 312px;
+    & span{
+      @include font('l-emphasys');
+    }
+  }
+}
+
+.finish_signup_container__information{
+  width: 416px;;
+  margin: 0 auto;
+  padding: spacing('l') 0 0 0;
+  & span{
+    @include font('base');
+    color: #85909A;
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 312px;
+    & span{
+      color: #85909A;
+    }
+  }
+}

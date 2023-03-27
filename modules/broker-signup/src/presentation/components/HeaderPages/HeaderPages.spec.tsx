@@ -12,7 +12,7 @@ describe('headerPages', () => {
   };
 
   it('Should render without crashing', () => {
-    const { getByTestId } = render(<HeaderPages {...props} />);
+    const { getByTestId } = render(<HeaderPages showLinkButton {...props} />);
 
     expect(getByTestId('go-back-btn')).toBeInTheDocument();
   });

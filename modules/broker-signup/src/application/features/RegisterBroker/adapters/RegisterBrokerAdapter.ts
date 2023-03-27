@@ -9,6 +9,7 @@ export const registerBrokerAdapter = (broker: BrokerInformationModel)  => {
     brokerCompanyName,
     address,
     complement,
+    zipCode: information.cep,
     city,
     bankName: name,
     bankNumber: parseInt(bankNumber, 10) || 0,

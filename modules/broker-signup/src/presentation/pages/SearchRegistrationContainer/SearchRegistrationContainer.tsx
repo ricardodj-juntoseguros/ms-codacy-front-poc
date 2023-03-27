@@ -1,4 +1,5 @@
 import { RouteComponentProps } from 'react-router';
+import { useSelector } from 'react-redux';
 import { LinkButton } from 'junto-design-system';
 import styles from './SearchRegistrationContainer.module.scss';
 import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';

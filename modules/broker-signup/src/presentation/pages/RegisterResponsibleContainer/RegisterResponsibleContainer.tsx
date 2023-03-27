@@ -1,5 +1,5 @@
 import { RouteComponentProps } from 'react-router';
-import { useCallback } from 'react';
+import { useCallback,useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './RegisterResponsibleContainer.module.scss';
 import ResponsibleInformation from '../../components/ResponsibleInformation';
@@ -12,6 +12,13 @@ import { selectResponsibleInformation } from '../../../application/features/resp
 const RegisterResponsibleContainer= ({ history }: RouteComponentProps) => {
   const responsibleInformation = useSelector(selectResponsibleInformation);
   const broker = useSelector(selectBroker);
+  const brokerInformation = useSelector(selectBroker);
+
+  useEffect(() => {
+    if(brokerInformation.information.federalId === ''){
+      history.push('/');
+    }
+    },[brokerInformation.information.federalId]);
 
   const handleGoBackClick = () => {
     history.push('/');
@@ -53,7 +60,7 @@ const RegisterResponsibleContainer= ({ history }: RouteComponentProps) => {
 
   return (
     <div className={styles['register_responsible_container__wrapper']}>
-       <HeaderPages handleGoBackClick={handleGoBackClick}/>
+       <HeaderPages showLinkButton handleGoBackClick={handleGoBackClick}/>
       <div className={styles['register_responsible_container__title']}><span>Para começar, precisamos de alguns dados do responsável da corretora</span></div>
       <ResponsibleInformation onSubmit={onSubmit}/>
     </div>

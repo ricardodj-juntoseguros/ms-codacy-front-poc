@@ -24,6 +24,12 @@ const BrokerDetailsContainer= ({ history }: RouteComponentProps) => {
   const { name,accounDigit,accounNumber,bankNumber } = bankDetails
 
   useEffect(() => {
+    if(brokerInformation.information.federalId === ''){
+      history.push('/');
+    }
+    },[brokerInformation.information.federalId]);
+
+  useEffect(() => {
     const hasBankDetailsNotInputEmpty = name !== '' && bankNumber && accounNumber && accounDigit !== ''
 
     const hasInputError = Object.values(errors).length
@@ -70,19 +76,13 @@ const BrokerDetailsContainer= ({ history }: RouteComponentProps) => {
         },
         {
           op: "replace",
-          path: "/digitalAgencyNumber",
-          value:  broker.bankDetails.bankDigit
-        },
-
-        {
-          op: "replace",
           path: "/digitalContactNumber",
           value: broker.bankDetails.accounDigit
         },
         {
           op: "replace",
           path: "/susepCode",
-          value: broker.susepCode
+          value: parseInt(broker.susepCode.replaceAll(/[./-]/g, ''), 10)
         },
         {
           op: "replace",
@@ -95,9 +95,22 @@ const BrokerDetailsContainer= ({ history }: RouteComponentProps) => {
           value: broker.simplesOptant
         },
       ]
-      await  RegisterBrokerApi.updateRegisterBroker(payload, pathUpdate)
+      let updateBankDigit: { op: string; path: string; value: any; }[] = [];
+      if(broker.bankDetails.bankDigit !== ''){
+        updateBankDigit = [
+          {
+            op: "replace",
+            path: "/digitalAgencyNumber",
+            value:  broker.bankDetails.bankDigit
+          },
+        ]
+      }
+      await  RegisterBrokerApi.updateRegisterBroker([...payload,...updateBankDigit], pathUpdate)
+      .then(() =>{
+        history.push('/upload-documents');
+      })
     },
-    [],
+    [history],
   );
 
   useEffect(() => {
@@ -108,7 +121,6 @@ const BrokerDetailsContainer= ({ history }: RouteComponentProps) => {
 
   const onSubmit = () => {
     fetchRegisterResponsibleBroker(brokerInformation, brokerInformation.pathUpdate);
-    return '';
   };
 
   const handleGoBackClick = () => {
@@ -122,7 +134,7 @@ const BrokerDetailsContainer= ({ history }: RouteComponentProps) => {
 
   return (
     <div className={styles['broker_details_container__wrapper']}>
-      <HeaderPages handleGoBackClick={handleGoBackClick}/>
+      <HeaderPages showLinkButton handleGoBackClick={handleGoBackClick}/>
       <div className={styles['broker_details_container__title']}><span>Agora, revise e nos informe os demais dados da corretora</span></div>
       <BrokerAddress/>
       <BankDetails
