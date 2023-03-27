@@ -7,3 +7,4 @@ export * from './mailIllustration';
 export * from './notFoundIllustration';
 export * from './alertIllustration';
 export * from './underConstructionIllustration';
+export * from './cogsAndChartsIllustration';

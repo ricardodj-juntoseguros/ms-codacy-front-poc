@@ -5,6 +5,7 @@ import ListingMappingApi from '../../../application/features/listingMapping/List
 import { MappingStatusEnum } from '../../../application/types/model/MappingStatusEnum';
 import styles from './MappingsPanelContainer.module.scss';
 import ListingUnderConstruction from '../../components/ListingUnderConstruction/ListingUnderConstruction';
+import MappingRequests from '../../components/MappingRequests';
 
 function MappingsPanelContainer({ history }: RouteComponentProps) {
   const [activeTab, setActiveTab] = useState<string>(
@@ -28,11 +29,7 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
   }, []);
 
   const renderMappingsStatus = (label: string, status: MappingStatusEnum) => {
-    let content = () => (
-      <>
-        <div style={{ padding: '30px' }}>Componente na fila</div>
-      </>
-    );
+    let content = () => <MappingRequests mappingStatus={status} />;
     if (status !== MappingStatusEnum.ON_QUEUE) {
       content = () => <ListingUnderConstruction />;
     }

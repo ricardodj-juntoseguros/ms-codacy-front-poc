@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '../../../config/testUtils';
 import MapppingsPanelContainer from './MappingsPanelContainer';
 
 describe('Mapping Panel Container', () => {

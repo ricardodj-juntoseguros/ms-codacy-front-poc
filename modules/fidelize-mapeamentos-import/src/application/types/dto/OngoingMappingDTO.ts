@@ -17,7 +17,7 @@ export interface OngoingMappingRecord {
   category: string;
   createdAt: string;
   isPriority: boolean;
-  statusId: number;
+  statusId: number | null;
   statusDescription: string;
   queueTypes: QueueType[];
   rowsCount: number;

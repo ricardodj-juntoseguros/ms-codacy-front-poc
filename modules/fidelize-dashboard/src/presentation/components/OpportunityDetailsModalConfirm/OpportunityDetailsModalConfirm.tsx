@@ -1,8 +1,8 @@
 import { Alert, Button } from 'junto-design-system';
 import { nanoid } from 'nanoid/non-secure';
 import classNames from 'classnames';
-import { thousandSeparator } from '@shared/utils';
-import { formatDateString, getLabelByModality } from '../../../helpers';
+import { thousandSeparator, formatDateString } from '@shared/utils';
+import { getLabelByModality } from '../../../helpers';
 import { OpportunityDetailsItemDTO } from '../../../application/types/dto';
 import {
   ModalityEnum,

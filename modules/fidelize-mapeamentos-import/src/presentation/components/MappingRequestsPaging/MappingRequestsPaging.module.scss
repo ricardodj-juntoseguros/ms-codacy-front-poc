@@ -1,0 +1,57 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.mapping-requests-paging__size-selector {
+  & > p {
+    @include font('base');
+    color: color('grey-500');
+    display: inline;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    margin-bottom: spacing('l');
+    justify-content: flex-end;
+  }
+
+  & > div {
+    width: 82px;
+    display: inline-block;
+    margin-left: spacing('m');
+
+    & > div:last-child {
+      top: spacing('xxl-2');
+    }
+
+    & input {
+      padding: 0px;
+      padding-left: spacing('m');
+    }
+
+    & i {
+      padding: spacing('xs');
+    }
+  }
+}
+
+.mapping-requests-paging__container {
+  margin-top: spacing('l');
+  margin-bottom: spacing('xxl-5');
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+
+  & > div:last-child {
+    display: flex;
+    justify-self: flex-end;
+  }
+
+  @media screen and (max-width: 768px) {
+    margin-top: spacing('l');
+    display: flex;
+    flex-flow: column;
+
+    & > div:last-child {
+      display: flex;
+      align-self: center;
+    }
+  }
+}

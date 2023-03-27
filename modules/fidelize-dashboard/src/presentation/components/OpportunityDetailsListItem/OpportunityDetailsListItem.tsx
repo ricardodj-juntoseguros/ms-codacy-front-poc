@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isAfter, isSameDay, startOfDay } from 'date-fns';
 import { Checkbox, Tooltip } from 'junto-design-system';
 import classNames from 'classnames';
-import { thousandSeparator } from '@shared/utils';
+import { thousandSeparator, formatDateString } from '@shared/utils';
 import {
   OpportunityDetailsCategoryEnum,
   OpportunityRelevanceEnum,
@@ -13,7 +13,6 @@ import {
   opportunitiesDetailsActions,
   selectSelectedOpportunities,
 } from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
-import { formatDateString } from '../../../helpers';
 import styles from './OpportunityDetailsListItem.module.scss';
 
 interface OpportunityDetailsListItemProps {

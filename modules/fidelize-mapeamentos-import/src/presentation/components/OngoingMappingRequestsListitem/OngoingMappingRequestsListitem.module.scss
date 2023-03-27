@@ -1,0 +1,103 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.ongoing-mapping-requests-listitem__wrapper {
+  padding: spacing('l');
+  border-bottom: 1px solid color('grey-200');
+  display: grid;
+  grid-template-columns: 64px 162px 154px 66px 66px 66px 34px 34px auto;
+  gap: spacing('xl');
+  box-sizing: border-box;
+  height: 82px;
+
+  &:hover {
+    background-color: rgba(241, 245, 247, 0.7);
+    transition: 200ms linear;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.ongoing-mapping-requests-listitem__column {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  height: 34px;
+
+  &:nth-child(2) {
+    padding-left: spacing('s');
+  }
+}
+
+.ongoing-mapping-requests-listitem__label {
+  @include font('sm');
+  color: color('dark');
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  margin: 0px;
+
+  &--emphasys {
+    @include font('sm-emphasys');
+  }
+}
+
+.ongoing-mapping-requests-listitem__label-helper {
+  @include font('xs');
+  color: color('grey-500');
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}
+
+.ongoing-mapping-requests-listitem__queue {
+  display: flex;
+  flex-direction: row;
+}
+
+.ongoing-mapping-requests-listitem__queue-badge {
+  height: 8px;
+  width: 8px;
+  background: color('grey-300');
+  border-radius: 50%;
+  align-self: center;
+  margin-right: spacing('s');
+
+  &--requested {
+    background: color('brand-primary');
+  }
+
+  &::after {
+    content: '';
+  }
+}
+
+.ongoing-mapping-requests-listitem__statuses {
+  display: flex;
+  flex-flow: row;
+  gap: spacing('s');
+}
+
+.ongoing-mapping-requests-listitem__started-tag {
+  @include font('xs-emphasys');
+  border-radius: spacing('xs');
+  padding: spacing('0') spacing('xs');
+  height: spacing('m');
+  display: inline-flex;
+  width: fit-content;
+  background-color: rgba(225, 248, 240, 1);
+  color: color('success');
+}
+
+.ongoing-mapping-requests-listitem__priority-tag {
+  @include font('xs-emphasys');
+  border-radius: spacing('xs');
+  padding: spacing('0') spacing('xs');
+  height: spacing('m');
+  display: inline-flex;
+  width: fit-content;
+  background-color: color('grey-100');
+  color: color('grey-500');
+}

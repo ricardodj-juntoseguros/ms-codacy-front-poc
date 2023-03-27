@@ -6,4 +6,4 @@ export * from './emailValidator';
 export * from './codSusepFormatter';
 export * from './cpfFormatter';
 export * from './phoneFormatter';
-
+export * from './formatDateString';
