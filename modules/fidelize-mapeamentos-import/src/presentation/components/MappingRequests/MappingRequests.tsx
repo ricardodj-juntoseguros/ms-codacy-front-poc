@@ -17,7 +17,7 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({ mappingStatus }) => {
   const { activePage, pageSize } = useSelector(
     selectSettingsByMappingStatus(mappingStatus),
   ) || { activePage: 1, pageSize: 10 };
-  const [requestsData, setRequestsData] = useState<OngoingMappingRecord[]>([]);
+  const [requestsData, setRequestsData] = useState<OngoingMappingRecord[] | null>([]);
   const [totalRequests, setTotalRequests] = useState<number>();
   const [loadingRequests, setLoadingRequests] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -45,7 +45,7 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({ mappingStatus }) => {
         <OngoingMappingRequestsList
           mappingStatus={mappingStatus}
           loading={loadingRequests}
-          requests={requestsData}
+          requests={requestsData || []}
         />
       );
     }

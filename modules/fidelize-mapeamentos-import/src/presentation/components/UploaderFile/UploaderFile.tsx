@@ -25,13 +25,17 @@ function UploaderFile() {
 
   const history = useHistory();
 
-  function handleGoToHome() {
+  const handleGoToHome = () => {
     history.push('/');
-  }
+  } 
 
   const handleRemoveFile = (id: string) => {
     setDataFiles([...dataFiles.filter(file => file.id !== id)]);
   };
+
+  const handleUploadFile = () => {
+  if( processId !== 0 && dataFiles.length > 0 )fetchUploadFile()
+  }
 
   const fetchUploadProcessId = () => {
     setOnError(false);
@@ -109,7 +113,7 @@ function UploaderFile() {
       buttons: {
         primary: <Button onClick={() => handleGoToHome()}>Ok</Button>,
         secondary: (
-          <Button onClick={() => onCloseModal()} variant="secondary">
+          <Button data-testid="new-request-btn" onClick={() => onCloseModal()} variant="secondary">
             Nova solicitação
           </Button>
         ),
@@ -172,9 +176,7 @@ function UploaderFile() {
             disabled={
               isOpen || dataFiles[0].status !== 'success' || processId === 0
             }
-            onClick={() =>
-              processId !== 0 && dataFiles.length > 0 ? fetchUploadFile() : ''
-            }
+            onClick={() =>handleUploadFile()}
           >
             Solicitar
           </Button>
