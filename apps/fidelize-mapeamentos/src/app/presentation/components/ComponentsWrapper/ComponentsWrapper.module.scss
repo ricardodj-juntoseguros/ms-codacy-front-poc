@@ -1,3 +1,5 @@
 .components-wrapper__content {
   display: flex;
+  position: relative;
+  z-index: 5;
 }
