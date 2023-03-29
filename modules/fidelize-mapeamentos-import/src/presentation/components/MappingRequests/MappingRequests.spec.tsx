@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { MappingStatusEnum } from 'modules/fidelize-mapeamentos-import/src/application/types/model';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
-import { render, act } from '../../../config/testUtils';
+import { render } from '../../../config/testUtils';
 import MappingRequests from './MappingRequests';
 
 describe('MappingRequests', () => {

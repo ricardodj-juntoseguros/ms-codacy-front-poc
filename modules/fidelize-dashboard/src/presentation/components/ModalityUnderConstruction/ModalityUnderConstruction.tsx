@@ -1,10 +1,10 @@
+import { UnderConstructionIllustration } from '@shared/ui';
 import styles from './ModalityUnderConstruction.module.scss';
-import { ReactComponent as Illustration } from '../../assets/under-construction.svg';
 
 const ModalityUnderConstruction: React.FC = () => {
   return (
     <div className={styles['modality-under-construction__wrapper']}>
-      <Illustration />
+      <UnderConstructionIllustration />
       <h2 className={styles['modality-under-construction__title']}>
         Modalidade em construção
       </h2>

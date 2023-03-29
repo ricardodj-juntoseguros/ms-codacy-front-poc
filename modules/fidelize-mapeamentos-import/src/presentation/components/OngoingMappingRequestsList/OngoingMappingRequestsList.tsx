@@ -7,6 +7,7 @@ import OngoingMappingRequestsListitem from '../OngoingMappingRequestsListitem/On
 import styles from './OngoingMappingRequestsList.module.scss';
 import { MappingStatusEnum } from '../../../application/types/model';
 import { OngoingRequestsListitemSkeleton } from '../Skeletons';
+import EmptyRequestsListing from '../EmptyRequestsListing';
 
 interface OngoingMappingRequestsListProps {
   mappingStatus: MappingStatusEnum;
@@ -44,6 +45,8 @@ const OngoingMappingRequestsList: React.FC<OngoingMappingRequestsListProps> = ({
     ));
   };
 
+  if (!loading && requests.length === 0)
+    return <EmptyRequestsListing mappingStatus={mappingStatus} />;
   return (
     <div
       className={styles['ongoing-mapping-requests-list__wrapper']}

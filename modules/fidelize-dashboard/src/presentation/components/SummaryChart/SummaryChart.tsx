@@ -4,6 +4,7 @@ import { Tooltip } from 'junto-design-system';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 import { renderToString } from 'react-dom/server';
+import { UnderConstructionIllustration } from '@shared/ui';
 import { thousandSeparator, thousandTextFormatter } from '@shared/utils';
 import classNames from 'classnames';
 import {
@@ -21,7 +22,6 @@ import { SummaryChartSkeleton } from '../Skeletons';
 import { getLabelByModality } from '../../../helpers';
 import SummaryChartCustomTooltip from '../SummaryChartCustomTooltip';
 import { ReactComponent as EmptyIllustration } from './assets/empty-chart.svg';
-import { ReactComponent as UnderConstructionIllustration } from '../../assets/under-construction.svg';
 import styles from './SummaryChart.module.scss';
 
 interface SummaryChartProps {

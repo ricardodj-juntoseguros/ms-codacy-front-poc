@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import ListingMappingApi from 'modules/fidelize-mapeamentos-import/src/application/features/listingMapping/ListingMappingApi';
 import { fireEvent, render } from '../../../config/testUtils';
 import MapppingsPanelContainer from './MappingsPanelContainer';
 
@@ -12,6 +13,30 @@ describe('Mapping Panel Container', () => {
     location: {} as any,
     match: {} as any,
   };
+
+  beforeAll(() => {
+    jest
+      .spyOn(ListingMappingApi.prototype, 'getMappingSummary')
+      .mockImplementation(async () => {
+        return [
+          { status: 'ON_QUEUE', total: 20 },
+          { status: 'BLOCKED', total: 10 },
+          { status: 'DONE', total: 30 },
+        ];
+      });
+    jest
+      .spyOn(ListingMappingApi.prototype, 'getListingMapping')
+      .mockImplementation(async () => {
+        return {
+          hasMore: false,
+          hasPrevious: false,
+          numberOfRecords: 0,
+          pageNumber: 1,
+          pageSize: 10,
+          records: [],
+        };
+      });
+  });
 
   it('should render successfully', () => {
     const { baseElement, getByText } = render(

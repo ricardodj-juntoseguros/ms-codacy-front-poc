@@ -8,6 +8,7 @@ import OngoingMappingRequestsList from '../OngoingMappingRequestsList';
 import styles from './MappingRequests.module.scss';
 import { selectSettingsByMappingStatus } from '../../../application/features/mappingRequestsList/MappingRequestsListSlice';
 import ListingUnavailable from '../ListingUnavailable';
+import EmptyRequestsListing from '../EmptyRequestsListing';
 
 interface MappingRequestsProps {
   mappingStatus: MappingStatusEnum;
@@ -17,7 +18,9 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({ mappingStatus }) => {
   const { activePage, pageSize } = useSelector(
     selectSettingsByMappingStatus(mappingStatus),
   ) || { activePage: 1, pageSize: 10 };
-  const [requestsData, setRequestsData] = useState<OngoingMappingRecord[] | null>([]);
+  const [requestsData, setRequestsData] = useState<
+    OngoingMappingRecord[] | null
+  >([]);
   const [totalRequests, setTotalRequests] = useState<number>();
   const [loadingRequests, setLoadingRequests] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -53,14 +56,15 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({ mappingStatus }) => {
   };
 
   if (error) return <ListingUnavailable />;
-
   return (
     <div className={styles['mapping-requests__wrapper']}>
       {renderList()}
-      <MappingRequestPaging
-        mappingStatus={mappingStatus}
-        totalRequests={totalRequests || 0}
-      />
+      {!!requestsData && requestsData.length !== 0 && (
+        <MappingRequestPaging
+          mappingStatus={mappingStatus}
+          totalRequests={totalRequests || 0}
+        />
+      )}
     </div>
   );
 };

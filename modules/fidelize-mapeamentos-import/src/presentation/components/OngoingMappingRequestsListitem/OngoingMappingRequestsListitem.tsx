@@ -38,6 +38,7 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
           opportunityCount = null;
         }
       }
+      const opportunityCountString = thousandSeparator(opportunityCount) || '-';
       return (
         <div className={styles['ongoing-mapping-requests-listitem__queue']}>
           <span
@@ -53,8 +54,11 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
               hasRequestedQueue ? 'requested' : 'not-requested'
             }`}
           />
-          <p className={styles['ongoing-mapping-requests-listitem__label']}>
-            {thousandSeparator(opportunityCount) || '-'}
+          <p
+            title={`${opportunityCountString}`}
+            className={styles['ongoing-mapping-requests-listitem__label']}
+          >
+            {opportunityCountString}
           </p>
         </div>
       );

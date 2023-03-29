@@ -52,6 +52,10 @@
   text-align: center;
   width: 100%;
   animation: fade-in 300ms linear;
+
+  & > svg {
+    margin-bottom: spacing('xxl');
+  }
 }
 
 .modality-summary__no-ops-title {
@@ -66,10 +70,6 @@
   color: color('dark');
   margin: auto;
   max-width: 576px;
-}
-
-.modality-summary__no-ops-illustration {
-  margin-bottom: spacing('xxl');
 }
 
 .modality-summary__error {

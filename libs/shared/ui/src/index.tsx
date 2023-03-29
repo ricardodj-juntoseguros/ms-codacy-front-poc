@@ -8,3 +8,4 @@ export * from './notFoundIllustration';
 export * from './alertIllustration';
 export * from './underConstructionIllustration';
 export * from './cogsAndChartsIllustration';
+export * from './filesCircleIllustration';

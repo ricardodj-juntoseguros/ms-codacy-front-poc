@@ -1,10 +1,10 @@
+import { CogsAndChartsIllustration } from '@shared/ui';
 import styles from './ModalityNotAvailable.module.scss';
-import { ReactComponent as Illustration } from './assets/modality-not-available.svg';
 
 const ModalityNotAvailable: React.FC = () => {
   return (
     <div className={styles['modality-not-available__wrapper']}>
-      <Illustration />
+      <CogsAndChartsIllustration />
       <h2 className={styles['modality-not-available__title']}>
         Modalidade indisponível
       </h2>

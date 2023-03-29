@@ -1,0 +1,58 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.empty-requests-listing__wrapper {
+  width: 100%;
+  height: 261px;
+  border: 1px solid color('grey-200');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  margin: 49px 0 20px;
+  padding: spacing('xxl-4') 0px;
+
+  animation: fade-in 300ms linear;
+
+  & > svg {
+    margin-bottom: spacing('xxl');
+  }
+}
+
+.empty-requests-listing__title {
+  @include font('l-emphasys');
+  color: color('dark');
+  margin-bottom: spacing('s');
+  margin-top: 0px;
+}
+
+.empty-requests-listing__text {
+  @include font('base');
+  color: color('dark');
+  margin: auto;
+  max-width: 576px;
+}
+
+@media screen and (max-width: 768px) {
+  .empty-requests-listing__wrapper {
+    padding: spacing('xxl-2') 0px;
+
+    & > svg {
+      max-width: 120px;
+      height: 96px;
+    }
+  }
+
+  .empty-requests-listing__text {
+    max-width: 100%;
+  }
+}

@@ -137,21 +137,18 @@ function DashboardContainer() {
 
   const renderModalityTab = (modality: ModalityEnum) => {
     let content = () => (
-        <>
-          {renderModalitySummary(modality)}
-          {!loadingModalitySummary && (
-            <>
-              {getDataToRender(modality).totalOpportunities > 0 && (
-                <ModalitySummaryCharts modality={modality} />
-              )}
-              <OpportunityDetailsList
-                modality={modality}
-                multipleSelection
-              />
-            </>
-          )}
-        </>
-      );
+      <>
+        {renderModalitySummary(modality)}
+        {!loadingModalitySummary && (
+          <>
+            {getDataToRender(modality).totalOpportunities > 0 && (
+              <ModalitySummaryCharts modality={modality} />
+            )}
+            <OpportunityDetailsList modality={modality} multipleSelection />
+          </>
+        )}
+      </>
+    );
     if (
       modality === ModalityEnum.LABOR &&
       hasAccessToLaborModality !== null &&

@@ -1,7 +1,7 @@
 import { thousandSeparator, thousandTextFormatter } from '@shared/utils';
+import { FilesCircleIllustration } from '@shared/ui';
 import { ModalityEnum } from '../../../application/types/model';
 import { getLabelByModality } from '../../../helpers';
-import { ReactComponent as NoOpportunitiesIllustration } from './assets/no-opportunities.svg';
 import styles from './ModalitySummary.module.scss';
 
 interface ModalitySummaryProps {
@@ -58,9 +58,7 @@ const ModalitySummary: React.FC<ModalitySummaryProps> = ({
   const renderNoOpportunitiesFound = () => {
     return (
       <div className={styles['modality-summary__no-ops-wrapper']}>
-        <NoOpportunitiesIllustration
-          className={styles['modality-summary__no-ops-illustration']}
-        />
+        <FilesCircleIllustration />
         <h2 className={styles['modality-summary__no-ops-title']}>
           Não há oportunidades {getLabelByModality(modality, '', true)} ativas
         </h2>
