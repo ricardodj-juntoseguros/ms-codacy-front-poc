@@ -1,11 +1,13 @@
 import { fireEvent, render } from '@testing-library/react';
+import { brokerDTOMock,checkSusepMock }  from 'modules/broker-signup/src/__mocks__';
 import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { store } from '../../../config/store';
 import { SearchBrokerFederalId} from './SearchBrokerFederalId';
 import SearchBrokerApi from '../../../application/features/searchBroker/SearchBrokerApi';
-import { SearchRegisterBrokerDTO } from '../../../application/types/dto';
+import CheckSusepApi from '../../../application/features/Susep/CheckSusep';
+import { SearchRegisterBrokerDTO,StatusSusepDTO } from '../../../application/types/dto';
 
 describe('SearchBrokerFederalId', () => {
   const historyMock = jest.fn();
@@ -36,11 +38,20 @@ describe('SearchBrokerFederalId', () => {
 
     const result = mock as unknown as SearchRegisterBrokerDTO;
 
+    const resultSusep = mock as unknown as StatusSusepDTO;
+
+    const CheckSusepMockApi = jest
+    .spyOn(CheckSusepApi, 'getStatusSusep')
+    .mockImplementation(() =>
+      Promise.resolve(resultSusep)
+    );
+
     const SearchBrokerMockApi = jest
     .spyOn(SearchBrokerApi, 'searchRegisterBroker')
     .mockImplementation(() =>
       Promise.resolve(result)
     );
+
 
     const { getByTestId } = render(
        <Provider store={store}>
@@ -53,6 +64,8 @@ describe('SearchBrokerFederalId', () => {
     await act(async () => {
       fireEvent.change(input, { target: { value: '43759422000158' } });
     });
+
+    await CheckSusepMockApi;
 
     await SearchBrokerMockApi;
 
@@ -95,19 +108,22 @@ describe('SearchBrokerFederalId', () => {
   });
 
   it('should render successfully with button enabled',  async () => {
-    const mock= {
-      status:1,
-      description:'mock',
-      information:'mock'
-    }
 
-    const result = mock as unknown as SearchRegisterBrokerDTO;
 
+    const result = brokerDTOMock
 
     const SearchBrokerMockApi = jest
     .spyOn(SearchBrokerApi, 'searchRegisterBroker')
     .mockImplementation(() =>
       Promise.resolve(result),
+    );
+
+    const resultSusep = checkSusepMock;
+
+    const CheckSusepMockApi = jest
+    .spyOn(CheckSusepApi, 'getStatusSusep')
+    .mockImplementation(() =>
+      Promise.resolve(resultSusep)
     );
 
     const { getByTestId } = render(
@@ -119,10 +135,11 @@ describe('SearchBrokerFederalId', () => {
     const input = getByTestId('broker-FederalId');
 
     await act(async () => {
-      fireEvent.change(input, { target: { value: '43759422000158' } });
+      fireEvent.change(input, { target: { value: '28648993000121' } });
     });
 
     await SearchBrokerMockApi;
+    await CheckSusepMockApi
 
     expect(SearchBrokerMockApi).toBeCalled();
     expect(getByTestId('button-start-broker-registry')).toBeEnabled();;
