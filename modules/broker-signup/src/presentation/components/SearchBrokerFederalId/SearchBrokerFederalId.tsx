@@ -66,6 +66,7 @@ export function SearchBrokerFederalId({handleGoNextClick}: SearchBrokerFederalId
     setAlertTextActionLabel('Encontre-a aqui!')
     setShowAlert(true);
     setHasSusepError(true);
+    setIsDisableButtonSignup(true)
     setUrlAlert(`${process.env['NX_GLOBAL_SITE_JUNTO']}/contato`)
   };
 

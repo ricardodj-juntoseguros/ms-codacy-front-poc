@@ -1,4 +1,4 @@
-import { useMemo,useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { InputBase, SearchInput } from 'junto-design-system';
 import { useOptionsMapper } from '@shared/hooks';
