@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Upload,
@@ -8,13 +6,14 @@ import {
   UploadListFiles,
   Button,
 } from 'junto-design-system';
-import { it } from 'date-fns/locale';
 import styles from './UploadDocuments.module.scss';
 import  BrokerUploadDocumentApi from '../../../application/features/BrokerUploadDocument/BrokerUploadDocumentApi'
 import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 import { FOLDERS_UPLOAD_DOCUMENTS } from '../../../constants/foldersUploadDocuments';
 import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
 import LoadingSpinner from '../LoadingSpinner';
+import  RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi'
+
 
 export interface UploadDocumentsProps {
   handleGoNextClick(): void;
@@ -38,7 +37,9 @@ export function UploadDocuments({handleGoNextClick}: UploadDocumentsProps) {
   const [isDisableGoNextStep, setIsDisableGoNextStep] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const brokerInformation = useSelector(selectBroker);
-
+  const [fileNameProofBankDetails, setfileNameProofBankDetails] = useState<string>();
+  const [fileNameProofAddress, setfileNameProofAddress] = useState<string>();
+  const [fileNameContractSocial, setfileNameContractSocial] = useState<string>();
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -54,7 +55,6 @@ export function UploadDocuments({handleGoNextClick}: UploadDocumentsProps) {
     }
   }, [contractSocial.length, proofAddress.length, proofBankDetails.length]);
 
-
   const handleRemoveFileContractSocial =  (id: string) => {
     setContractSocial([...contractSocial.filter(file => file.id !== id)]);
   };
@@ -68,64 +68,91 @@ export function UploadDocuments({handleGoNextClick}: UploadDocumentsProps) {
   };
 
   const handleUploadContractSocial = (items: UploadFile[]) => {
-    setContractSocial([...contractSocial.concat(items)]);
+    setContractSocial(items);
   };
 
 
   const handleUploadProofAddress = (items: UploadFile[]) => {
-    setProofAddress([...proofAddress.concat(items)]);
+    setProofAddress(items);
   };
 
   const handleUploadProofBankDetails = (items: UploadFile[]) => {
-    setProofBankDetails([...proofBankDetails.concat(items)]);
-
+    setProofBankDetails(items);
   };
 
-  const fetchUploadFileContractSocial = async (items: UploadFile[]) => {
-    items.map(async item => {
-          await BrokerUploadDocumentApi.sendUploadFile(FOLDERS_UPLOAD_DOCUMENTS.contractSocial,brokerInformation.pathUpdate,item.file)
-          .then(() =>{
-            if(items[items.length -1] === item){
-              fetchUploadFileProofAddress(proofAddress)
-            }
-          })
-          .catch(() => setIsSubmitting(false))
-     })
+  const fetchUploadDocumentContractSocial = async (item: File) => {
+        await BrokerUploadDocumentApi.sendUploadFile(FOLDERS_UPLOAD_DOCUMENTS.contractSocial,brokerInformation.pathUpdate,item)
+        .then(async response => {
+          const fileName = response.urlLocation.split('/')
+          setfileNameContractSocial(fileName[4]);
+        })
+        .catch(() => setIsSubmitting(false))
+        .finally(() => fetchUploadDocumentProofAddress(proofAddress[0].file));
   };
 
-  const fetchUploadFileProofAddress = async (items: UploadFile[]) => {
-    items.map(async item => {
-          await BrokerUploadDocumentApi.sendUploadFile(FOLDERS_UPLOAD_DOCUMENTS.proofAddress ,brokerInformation.pathUpdate,item.file)
-          .then(() =>{
-            if(items[items.length -1] === item){
-              fetchUploadFileProofBankDetails(proofBankDetails)
-            }
-          })
-          .catch(() => setIsSubmitting(false))
-     })
+  const fetchUploadDocumentProofAddress = async (item: File) => {
+    await BrokerUploadDocumentApi.sendUploadFile(FOLDERS_UPLOAD_DOCUMENTS.proofAddress,brokerInformation.pathUpdate,item)
+    .then(response => {
+      const fileName = response.urlLocation.split('/')
+      setfileNameProofAddress(fileName[4]);
+    })
+    .catch(() => setIsSubmitting(false))
+    .finally(() => fetchUploadDocumentProofBankDetails(proofBankDetails[0].file));
+};
+
+const fetchUploadDocumentProofBankDetails = async (item: File) => {
+  await BrokerUploadDocumentApi.sendUploadFile(FOLDERS_UPLOAD_DOCUMENTS.proofBankDetails,brokerInformation.pathUpdate,item)
+  .then(response => {
+    const fileName = response.urlLocation.split('/')
+    setfileNameProofBankDetails(fileName[4]);
+  })
+  .catch(() => setIsSubmitting(false))
+};
+
+useEffect(() => {
+  if(fileNameContractSocial && fileNameProofAddress && fileNameProofBankDetails){
+    fetchRegisterResponsibleBroker();
+  }
+},[fileNameContractSocial, fileNameProofAddress, fileNameProofBankDetails]);
+
+  const fetchRegisterResponsibleBroker = async () => {
+      const payload = [
+        {
+          op: "replace",
+          path: "/socialDocumentation",
+          value: fileNameContractSocial
+        },
+        {
+          op: "replace",
+          path: "/addressDocumentation",
+          value: fileNameProofAddress
+        },
+        {
+          op: "replace",
+          path: "/bankDocumentation",
+          value:  fileNameProofBankDetails
+        },
+      ]
+      await  RegisterBrokerApi.updateRegisterBroker([...payload], brokerInformation.pathUpdate)
+      .finally(() => fetchRegisterResponsibleBrokerGv())
+    };
+
+
+
+  const fetchRegisterResponsibleBrokerGv = async () => {
+    await  RegisterBrokerApi.registerBrokerGV(brokerInformation.pathUpdate)
+    .catch(() => setIsSubmitting(false))
+    .finally(() => {
+        setIsSubmitting(false);
+        setIsDisableGoNextStep(false);
+        handleGoNextClick();
+      });
   };
-
-
-  const fetchUploadFileProofBankDetails = async (items: UploadFile[]) => {
-    items.map(async item => {
-          await BrokerUploadDocumentApi.sendUploadFile(FOLDERS_UPLOAD_DOCUMENTS.proofBankDetails,brokerInformation.pathUpdate,item.file)
-          .then(() =>{
-            if(items[items.length -1] === item){
-              setIsSubmitting(false);
-              setIsDisableGoNextStep(false);
-              handleGoNextClick();
-            }
-          })
-          .catch(() => setIsSubmitting(false))
-     })
-  };
-
-
 
   const handleSubmit = async () => {
    setIsSubmitting(true);
    setIsDisableGoNextStep(true);
-   await fetchUploadFileContractSocial(contractSocial)
+   await fetchUploadDocumentContractSocial(contractSocial[0].file)
   };
 
   return (

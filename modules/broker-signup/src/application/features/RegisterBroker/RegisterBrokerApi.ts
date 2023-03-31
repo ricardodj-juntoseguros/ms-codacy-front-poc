@@ -29,6 +29,14 @@ class RegisterBrokerApi {
 
     return await this.instance.patch<string>(params);
   }
+
+  async registerBrokerGV(path: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/brokers/signup/create?id=${path}`,
+    };
+
+    return await this.instance.post<string>(params);
+  }
 }
 
 const registerBrokerApi = new RegisterBrokerApi();
