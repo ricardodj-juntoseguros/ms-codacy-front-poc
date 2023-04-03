@@ -2,7 +2,7 @@ import { BrokerInformationModel } from '../../../types/model';
 
 export const registerBrokerAdapter = (broker: BrokerInformationModel)  => {
   const { information,bankDetails } = broker;
-  const { federalId, brokerCompanyName,address,complement,city } = information;
+  const { federalId, brokerCompanyName,address,complement,city,uf  } = information;
   const { name, bankNumber,accounNumber,bankDigit,accounDigit } = bankDetails;
   return {
     federalId,
@@ -10,6 +10,7 @@ export const registerBrokerAdapter = (broker: BrokerInformationModel)  => {
     address,
     complement,
     zipCode: information.cep,
+    state: uf,
     city,
     bankName: name,
     bankNumber: parseInt(bankNumber, 10) || 0,
