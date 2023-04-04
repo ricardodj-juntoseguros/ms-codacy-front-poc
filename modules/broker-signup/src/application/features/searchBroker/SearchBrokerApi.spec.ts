@@ -24,6 +24,7 @@ describe('SearchBrokerApi', () => {
     const result = await SearchBrokerApi.searchRegisterBroker('43759422000158');
 
     expect(mockGet).toHaveBeenCalledWith({
+      headers: {},
       url: '/signup/broker/43759422000158',
     });
     expect(result).toBe(mockData);
