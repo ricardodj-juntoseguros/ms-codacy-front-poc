@@ -13,7 +13,7 @@ export default function Routes() {
           component={() => <Redirect to="/emissao" />}
         />
         <ProtectedRoute path="/emissao" component={CorretorEmissao} />
-        <Route path="/signup" component={BrokerSignup} />
+        <ProtectedRoute path="/signup" component={BrokerSignup} />
       </Switch>
     </BrowserRouter>
   );
