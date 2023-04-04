@@ -4,7 +4,11 @@ import { MappingRequestsListModel, MappingStatusEnum } from '../../types/model';
 
 const initialState: MappingRequestsListModel = {
   settings: [
-    { mappingStatus: MappingStatusEnum.ON_QUEUE, activePage: 1, pageSize: 10 },
+    {
+      mappingStatus: MappingStatusEnum.ON_QUEUE,
+      activePage: 1,
+      pageSize: 10,
+    },
   ],
 };
 

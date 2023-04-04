@@ -51,9 +51,14 @@ describe('OngoingMappingRequestsListitem', () => {
     ],
   };
 
+  const mockCallback = jest.fn();
+
   it('Should render request date, policyholder and broker columns correctly', () => {
     const { getByText } = render(
-      <OngoingMappingRequestsListitem mappingRequest={requestMock} />,
+      <OngoingMappingRequestsListitem
+        mappingRequest={requestMock}
+        onRemoveCallback={mockCallback()}
+      />,
     );
     expect(getByText('01/01/23')).toBeInTheDocument();
     expect(getByText('Teste tomador')).toBeInTheDocument();
@@ -64,7 +69,10 @@ describe('OngoingMappingRequestsListitem', () => {
 
   it('Should render all queue columns correctly', () => {
     const { getByText, getAllByText, getByTestId } = render(
-      <OngoingMappingRequestsListitem mappingRequest={requestMock} />,
+      <OngoingMappingRequestsListitem
+        mappingRequest={requestMock}
+        onRemoveCallback={mockCallback()}
+      />,
     );
     expect(getByTestId('1-queue-3-requested')).toBeInTheDocument();
     expect(getByTestId('1-queue-4-not-requested')).toBeInTheDocument();
@@ -80,7 +88,10 @@ describe('OngoingMappingRequestsListitem', () => {
   it('Should render priority tag if isPriority field is true', () => {
     const requestMockAux = { ...requestMock, isPriority: true };
     const { getByText } = render(
-      <OngoingMappingRequestsListitem mappingRequest={requestMockAux} />,
+      <OngoingMappingRequestsListitem
+        mappingRequest={requestMockAux}
+        onRemoveCallback={mockCallback}
+      />,
     );
     expect(getByText('Urgente')).toBeInTheDocument();
   });
@@ -88,7 +99,10 @@ describe('OngoingMappingRequestsListitem', () => {
   it('Should render started tag if statusId field is not null', () => {
     const requestMockAux = { ...requestMock, statusId: 1 };
     const { getByText } = render(
-      <OngoingMappingRequestsListitem mappingRequest={requestMockAux} />,
+      <OngoingMappingRequestsListitem
+        mappingRequest={requestMockAux}
+        onRemoveCallback={mockCallback}
+      />,
     );
     expect(getByText('Iniciado')).toBeInTheDocument();
   });

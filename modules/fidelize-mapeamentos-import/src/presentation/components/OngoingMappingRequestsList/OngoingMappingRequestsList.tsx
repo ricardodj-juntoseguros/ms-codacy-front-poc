@@ -13,12 +13,14 @@ interface OngoingMappingRequestsListProps {
   mappingStatus: MappingStatusEnum;
   requests: OngoingMappingRecord[];
   loading: boolean;
+  onRemoveCallback: () => void;
 }
 
 const OngoingMappingRequestsList: React.FC<OngoingMappingRequestsListProps> = ({
   mappingStatus,
   requests,
   loading,
+  onRemoveCallback,
 }) => {
   const { pageSize } = useSelector(
     selectSettingsByMappingStatus(mappingStatus),
@@ -32,6 +34,7 @@ const OngoingMappingRequestsList: React.FC<OngoingMappingRequestsListProps> = ({
             <OngoingMappingRequestsListitem
               key={nanoid(5)}
               mappingRequest={request}
+              onRemoveCallback={() => onRemoveCallback()}
             />
           ))}
         </div>

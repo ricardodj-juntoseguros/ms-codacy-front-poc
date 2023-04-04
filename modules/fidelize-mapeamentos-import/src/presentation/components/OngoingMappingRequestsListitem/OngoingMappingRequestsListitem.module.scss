@@ -4,7 +4,7 @@
   padding: spacing('l');
   border-bottom: 1px solid color('grey-200');
   display: grid;
-  grid-template-columns: 64px 170px 162px 82px 74px 74px 34px 42px auto;
+  grid-template-columns: 65px 170px 162px 82px 74px 74px 34px 42px 42px auto;
   gap: spacing('l');
   box-sizing: border-box;
   height: 82px;
@@ -65,6 +65,7 @@
 }
 
 .ongoing-mapping-requests-listitem__queue-badge {
+  display: flex;
   height: 8px;
   width: 8px;
   background: color('grey-300');

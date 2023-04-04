@@ -32,6 +32,14 @@ class ListingMappingApi {
 
     return await this.instance.get<MappingSummaryDTO[]>(params);
   }
+
+  async deleteMappingItem(id: number): Promise<any> {
+    const params: IHttpClientRequestParameters = {
+      url: `/backoffice/opportunityrequest/${id}`,
+    };
+
+    return await this.instance.delete<any>(params);
+  }
 }
 
 export default ListingMappingApi;

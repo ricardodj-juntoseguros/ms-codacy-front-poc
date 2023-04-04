@@ -99,4 +99,19 @@ describe('ListingMappingApi', () => {
     });
     expect(result).not.toBe(null);
   });
+
+  it('deleteMappingItem should call api to remove a solicitation by id', async () => {
+    const mockPost = jest
+      .spyOn(AxiosHttpClient.prototype, 'delete')
+      .mockImplementation(async () => {
+        return Promise.resolve();
+      });
+
+    const result = await new ListingMappingApi().deleteMappingItem(1234);
+
+    expect(mockPost).toHaveBeenCalledWith({
+      url: '/backoffice/opportunityrequest/1234',
+    });
+    expect(result).not.toBe(null);
+  });
 });

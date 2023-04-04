@@ -1,15 +1,20 @@
 import { formatDateString, thousandSeparator } from '@shared/utils';
 import classNames from 'classnames';
 import { OngoingMappingRecord } from '../../../application/types/dto';
-import { QueueTypesEnum } from '../../../application/types/model';
+import {
+  QueueTypesEnum,
+  MappingStatusEnum,
+} from '../../../application/types/model';
 import styles from './OngoingMappingRequestsListitem.module.scss';
+import MappingRequestsListitemMenu from '../MappingRequestsListitemMenu/MappingRequestsListitemMenu';
 
 interface OngoingMappingRequestsListitemProps {
   mappingRequest: OngoingMappingRecord;
+  onRemoveCallback: () => void;
 }
 
 const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemProps> =
-  ({ mappingRequest }) => {
+  ({ mappingRequest, onRemoveCallback }) => {
     const {
       id,
       createdAt,
@@ -39,6 +44,7 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
         }
       }
       const opportunityCountString = thousandSeparator(opportunityCount) || '-';
+
       return (
         <div className={styles['ongoing-mapping-requests-listitem__queue']}>
           <span
@@ -146,6 +152,18 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
             )}
           </div>
         </div>
+        {statusId === 1 ||
+          (statusId === null && (
+            <div
+              className={styles['ongoing-mapping-requests-listitem__column']}
+            >
+              <MappingRequestsListitemMenu
+                policyholderName={policyholderName}
+                mappingId={id}
+                onRemoveCallback={() => onRemoveCallback()}
+              />
+            </div>
+          ))}
       </div>
     );
   };

@@ -1,5 +1,11 @@
 import { RouteComponentProps } from 'react-router';
-import { Tabs, Tab, Button, ToastContainer, makeToast } from 'junto-design-system';
+import {
+  Tabs,
+  Tab,
+  Button,
+  ToastContainer,
+  makeToast,
+} from 'junto-design-system';
 import { useEffect, useState } from 'react';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import { MappingStatusEnum } from '../../../application/types/model/MappingStatusEnum';
@@ -36,13 +42,14 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
       });
   };
 
-  useEffect(() => {
-    fetchMappingSummary();
-  }, []);
-
   const renderMappingsStatus = (label: string, status: MappingStatusEnum) => {
     let itemStatus: any;
-    let content = () => <MappingRequests mappingStatus={status} />;
+    let content = () => (
+      <MappingRequests
+        mappingStatus={status}
+        onRemoveCallback={() => fetchMappingSummary()}
+      />
+    );
     if (status !== MappingStatusEnum.ON_QUEUE) {
       content = () => <ListingUnderConstruction />;
     }

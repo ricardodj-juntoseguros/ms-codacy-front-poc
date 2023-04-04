@@ -27,15 +27,15 @@ function UploaderFile() {
 
   const handleGoToHome = () => {
     history.push('/');
-  } 
+  };
 
   const handleRemoveFile = (id: string) => {
     setDataFiles([...dataFiles.filter(file => file.id !== id)]);
   };
 
   const handleUploadFile = () => {
-  if( processId !== 0 && dataFiles.length > 0 )fetchUploadFile()
-  }
+    if (processId !== 0 && dataFiles.length > 0) fetchUploadFile();
+  };
 
   const fetchUploadProcessId = () => {
     setOnError(false);
@@ -107,13 +107,14 @@ function UploaderFile() {
           'Isso pode demorar alguns minutos. Enviaremos um e-mail quando o processo terminar.',
         align: 'center' as any,
       },
-      button: {
-        value: 'Ok',
-      },
       buttons: {
         primary: <Button onClick={() => handleGoToHome()}>Ok</Button>,
         secondary: (
-          <Button data-testid="new-request-btn" onClick={() => onCloseModal()} variant="secondary">
+          <Button
+            data-testid="new-request-btn"
+            onClick={() => onCloseModal()}
+            variant="secondary"
+          >
             Nova solicitação
           </Button>
         ),
@@ -176,7 +177,7 @@ function UploaderFile() {
             disabled={
               isOpen || dataFiles[0].status !== 'success' || processId === 0
             }
-            onClick={() =>handleUploadFile()}
+            onClick={() => handleUploadFile()}
           >
             Solicitar
           </Button>

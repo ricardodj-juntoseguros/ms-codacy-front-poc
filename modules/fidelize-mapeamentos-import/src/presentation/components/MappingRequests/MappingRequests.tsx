@@ -1,20 +1,27 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { OngoingMappingRecord } from '../../../application/types/dto';
 import { MappingStatusEnum } from '../../../application/types/model';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import MappingRequestPaging from '../MappingRequestsPaging';
 import OngoingMappingRequestsList from '../OngoingMappingRequestsList';
 import styles from './MappingRequests.module.scss';
-import { selectSettingsByMappingStatus } from '../../../application/features/mappingRequestsList/MappingRequestsListSlice';
+import {
+  selectSettingsByMappingStatus,
+  mappingRequestsListSliceActions,
+} from '../../../application/features/mappingRequestsList/MappingRequestsListSlice';
 import ListingUnavailable from '../ListingUnavailable';
-import EmptyRequestsListing from '../EmptyRequestsListing';
 
 interface MappingRequestsProps {
   mappingStatus: MappingStatusEnum;
+  onRemoveCallback: () => void;
 }
 
-const MappingRequests: React.FC<MappingRequestsProps> = ({ mappingStatus }) => {
+const MappingRequests: React.FC<MappingRequestsProps> = ({
+  mappingStatus,
+  onRemoveCallback,
+}) => {
+  const dispatch = useDispatch();
   const { activePage, pageSize } = useSelector(
     selectSettingsByMappingStatus(mappingStatus),
   ) || { activePage: 1, pageSize: 10 };
@@ -25,19 +32,33 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({ mappingStatus }) => {
   const [loadingRequests, setLoadingRequests] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchMappingRequests = () => {
-      new ListingMappingApi()
-        .getListingMapping(activePage, pageSize, mappingStatus)
-        .then(response => {
-          setError(false);
-          setRequestsData(response.records);
-          setTotalRequests(response.numberOfRecords);
-        })
-        .catch(() => setError(true))
-        .finally(() => setLoadingRequests(false));
-    };
+  const handleRemoveRequest = () => {
+    if (requestsData?.length === 1) {
+      dispatch(
+        mappingRequestsListSliceActions.setActivePage({
+          status: mappingStatus,
+          page: activePage !== 1 ? activePage - 1 : 1,
+        }),
+      );
+    }
+    setLoadingRequests(true);
+    fetchMappingRequests();
+    onRemoveCallback();
+  };
 
+  const fetchMappingRequests = () => {
+    new ListingMappingApi()
+      .getListingMapping(activePage, pageSize, mappingStatus)
+      .then(response => {
+        setError(false);
+        setRequestsData(response.records);
+        setTotalRequests(response.numberOfRecords);
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoadingRequests(false));
+  };
+
+  useEffect(() => {
     setLoadingRequests(true);
     fetchMappingRequests();
   }, [activePage, pageSize, mappingStatus]);
@@ -49,6 +70,9 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({ mappingStatus }) => {
           mappingStatus={mappingStatus}
           loading={loadingRequests}
           requests={requestsData || []}
+          onRemoveCallback={() => {
+            handleRemoveRequest();
+          }}
         />
       );
     }

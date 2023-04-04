@@ -50,10 +50,15 @@ describe('MappingRequests', () => {
       });
   };
 
+  const mockCallback = jest.fn();
+
   it('Should render correct list when provided mapping status is ON_QUEUE', async () => {
     mockSuccess();
     const { findByTestId } = render(
-      <MappingRequests mappingStatus={MappingStatusEnum.ON_QUEUE} />,
+      <MappingRequests
+        mappingStatus={MappingStatusEnum.ON_QUEUE}
+        onRemoveCallback={mockCallback}
+      />,
     );
     expect(
       await findByTestId('ongoing-mapping-requests-list'),
@@ -63,7 +68,10 @@ describe('MappingRequests', () => {
   it('Should call api method to fetch requests on component mount', async () => {
     mockSuccess();
     const { findByTestId } = render(
-      <MappingRequests mappingStatus={MappingStatusEnum.ON_QUEUE} />,
+      <MappingRequests
+        mappingStatus={MappingStatusEnum.ON_QUEUE}
+        onRemoveCallback={mockCallback}
+      />,
     );
     expect(
       await findByTestId('ongoing-mapping-requests-list'),
@@ -76,7 +84,10 @@ describe('MappingRequests', () => {
   it('Should render error feedback if listing request fails', async () => {
     mockError();
     const { findByText } = render(
-      <MappingRequests mappingStatus={MappingStatusEnum.ON_QUEUE} />,
+      <MappingRequests
+        mappingStatus={MappingStatusEnum.ON_QUEUE}
+        onRemoveCallback={mockCallback}
+      />,
     );
     expect(await findByText('Lista indisponível')).toBeInTheDocument();
   });
