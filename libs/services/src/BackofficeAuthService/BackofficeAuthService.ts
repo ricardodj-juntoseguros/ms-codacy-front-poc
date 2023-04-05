@@ -64,6 +64,11 @@ export class BackofficeAuthService {
     return user !== null ? user.isViewer : false;
   }
 
+  getUserHasOpportunityRequest(): boolean {
+    const user = this.getUserData();
+    return user !== null ? user.hasOpportunityRequest : false;
+  }
+
   saveTokenAndUserFromAccessCookie() {
     const accessCookie = Cookies.get(this.ACESS_COOKIE);
     if (!accessCookie) return;

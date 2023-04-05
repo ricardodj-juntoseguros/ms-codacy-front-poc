@@ -27,8 +27,8 @@ describe('Fidelize Mapeamentos Protected Route', () => {
       .spyOn(BackofficeAuthService, 'isAuthenticated')
       .mockImplementation(() => false);
     jest
-      .spyOn(BackofficeAuthService, 'getUserIsViewer')
-      .mockImplementation(() => false);
+      .spyOn(BackofficeAuthService, 'getUserHasOpportunityRequest')
+      .mockImplementation(() => true);
     const componentToRender = () => <h1>Teste 123</h1>;
 
     renderComponent(componentToRender);
@@ -36,13 +36,13 @@ describe('Fidelize Mapeamentos Protected Route', () => {
     expect(window.location.assign).toHaveBeenCalledWith('/backofficeurl');
   });
 
-  it('Should redirect to backoffice processes if user is authenticated but is viewer', () => {
+  it('Should redirect to backoffice processes if user is authenticated but hasOpportunityRequest flag is false', () => {
     jest
       .spyOn(BackofficeAuthService, 'isAuthenticated')
       .mockImplementation(() => true);
     jest
-      .spyOn(BackofficeAuthService, 'getUserIsViewer')
-      .mockImplementation(() => true);
+      .spyOn(BackofficeAuthService, 'getUserHasOpportunityRequest')
+      .mockImplementation(() => false);
     const componentToRender = () => <h1>Teste 123</h1>;
 
     renderComponent(componentToRender);
@@ -55,8 +55,8 @@ describe('Fidelize Mapeamentos Protected Route', () => {
       .spyOn(BackofficeAuthService, 'isAuthenticated')
       .mockImplementation(() => true);
     jest
-      .spyOn(BackofficeAuthService, 'getUserIsViewer')
-      .mockImplementation(() => false);
+      .spyOn(BackofficeAuthService, 'getUserHasOpportunityRequest')
+      .mockImplementation(() => true);
     const componentToRender = () => <h1>Teste 123</h1>;
 
     const component = renderComponent(componentToRender);

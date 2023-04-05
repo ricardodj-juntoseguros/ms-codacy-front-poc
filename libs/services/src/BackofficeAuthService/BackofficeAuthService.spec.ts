@@ -53,7 +53,7 @@ const mockTokenDataExpired = {
   amr: ['pwd'],
 };
 
-const mockUserData = `{"name": "painel_backoffice_qa","role": "commercial", "isViewer": true}`;
+const mockUserData = `{"name": "painel_backoffice_qa","role": "commercial", "isViewer": true, "hasOpportunityRequest": true}`;
 jest.mock('jwt-decode', () => jest.fn());
 
 describe('Backoffice Auth Service', () => {
@@ -145,6 +145,17 @@ describe('Backoffice Auth Service', () => {
 
   it('getUserIsViewer should return false if user data on storage is not present', async () => {
     const result = BackofficeAuthService.getUserIsViewer();
+    expect(result).toBeFalsy();
+  });
+
+  it('getUserHasOpportunityRequest should read user data on storage and return if user hasOpportunityRequest access', async () => {
+    window.localStorage.setItem('user', mockUserData);
+    const result = BackofficeAuthService.getUserHasOpportunityRequest();
+    expect(result).toBeTruthy();
+  });
+
+  it('getUserHasOpportunityRequest should return false if user data on storage is not present', async () => {
+    const result = BackofficeAuthService.getUserHasOpportunityRequest();
     expect(result).toBeFalsy();
   });
 

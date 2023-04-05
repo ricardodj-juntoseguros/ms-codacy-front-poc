@@ -17,12 +17,13 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
       {...rest}
       render={renderProps => {
         const isAuthenticated = BackofficeAuthService.isAuthenticated();
-        const isViewer = BackofficeAuthService.getUserIsViewer();
+        const hasOpportunityRequest =
+          BackofficeAuthService.getUserHasOpportunityRequest();
         if (!isAuthenticated) {
           window.location.assign(`${backofficeLoginUrl}`);
           return null;
         }
-        if (isViewer) {
+        if (!hasOpportunityRequest) {
           window.location.assign(backofficeHomeUrl);
           return null;
         }
