@@ -13,7 +13,10 @@ class SearchBrokerApi {
   }
 
   async searchRegisterBroker(brokerFederalId: string):Promise<SearchRegisterBrokerDTO> {
+    const headers = {};
+
     const params: IHttpClientRequestParameters = {
+      headers,
       url: `/signup/broker/${brokerFederalId}`,
     };
     return await this.instance.get<SearchRegisterBrokerDTO>(params);
