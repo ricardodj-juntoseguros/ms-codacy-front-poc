@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, LinkButton, Modal } from 'junto-design-system';
 import { AlertIllustration, SuccessIllustration } from '@shared/ui';
 import styles from './MappingRequestsListitemMenu.module.scss';
@@ -20,6 +20,22 @@ const MappingRequestsListitemMenu: React.FC<MappingRequestsListitemMenuProps> =
     const [showMenu, setShowMenu] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState<ModalFlowStep>('CONFIRM');
+
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const btnRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+      if (!wrapperRef || !wrapperRef.current || !btnRef || !btnRef.current)
+        return;
+      const hideContent = (event: MouseEvent) => {
+        if (!wrapperRef?.current?.contains(event.target as Node)) {
+          setShowMenu(false);
+        }
+      };
+      document.addEventListener('mousedown', hideContent);
+      /* eslint-disable-next-line consistent-return */
+      return () => document.removeEventListener('mousedown', hideContent);
+    }, [wrapperRef, btnRef, showMenu]);
 
     const onCloseModal = () => {
       setIsOpen(false);
@@ -133,8 +149,18 @@ const MappingRequestsListitemMenu: React.FC<MappingRequestsListitemMenuProps> =
           onBackdropClick={() => onCloseModal()}
           onCloseButtonClick={() => onCloseModal()}
         />
-        <div className={styles['mapping-request-listitem-menu__wrapper']}>
+        <div
+          ref={wrapperRef}
+          className={classNames(
+            styles['mapping-request-listitem-menu__wrapper'],
+            {
+              [styles['mapping-request-listitem-menu__wrapper--open']]:
+                showMenu,
+            },
+          )}
+        >
           <LinkButton
+            ref={btnRef}
             data-testid="show-menu-btn"
             onClick={() => setShowMenu(!showMenu)}
             label=""
@@ -143,7 +169,6 @@ const MappingRequestsListitemMenu: React.FC<MappingRequestsListitemMenuProps> =
 
           <div
             data-testid="list-menu"
-            onMouseLeave={() => setShowMenu(false)}
             className={
               styles['mapping-request-listitem-menu-options__container']
             }
