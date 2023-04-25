@@ -85,6 +85,29 @@ describe('ListingMappingApi', () => {
     expect(result).not.toBe(null);
   });
 
+  it('getListingMapping should call api with correct params and  status done', async () => {
+    const pagenumber = 1;
+    const pagesize = 2;
+    const status = 'DONE';
+    const mockPost = jest
+      .spyOn(AxiosHttpClient.prototype, 'get')
+      .mockImplementation(async () => {
+        return Promise.resolve(dataMockOpportunityRequest);
+      });
+
+    const result = await new ListingMappingApi().getListingMapping(
+      pagenumber,
+      pagesize,
+      status,
+    );
+
+    expect(mockPost).toHaveBeenCalledWith({
+      url: '/backoffice/opportunityrequest',
+      params: { pagenumber, pagesize, status },
+    });
+    expect(result).not.toBe(null);
+  });
+
   it('getMappingSummary should call api to return a totalized list by status', async () => {
     const mockPost = jest
       .spyOn(AxiosHttpClient.prototype, 'get')

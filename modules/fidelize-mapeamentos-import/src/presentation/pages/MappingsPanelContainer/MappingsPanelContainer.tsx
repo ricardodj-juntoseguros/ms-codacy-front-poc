@@ -50,7 +50,7 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
         onRemoveCallback={() => fetchMappingSummary()}
       />
     );
-    if (status !== MappingStatusEnum.ON_QUEUE) {
+    if (status === MappingStatusEnum.BLOCKED) {
       content = () => <ListingUnderConstruction />;
     }
 

@@ -1,0 +1,17 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.done-mapping-request-listheader__wrapper {
+  padding: spacing('l') 0px;
+  display: grid;
+  grid-template-columns: 127px 186px 236px 194px 194px 127px auto;
+
+  & > div {
+    box-sizing: border-box;
+
+    & span {
+      @include font('xs-emphasys');
+      color: color('grey-500');
+      text-transform: uppercase;
+    }
+  }
+}

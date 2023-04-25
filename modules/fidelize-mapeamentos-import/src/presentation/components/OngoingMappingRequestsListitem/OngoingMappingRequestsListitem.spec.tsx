@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { render } from '../../../config/testUtils';
-import { OngoingMappingRecord } from '../../../application/types/dto';
+import { RequestMappingRecord } from '../../../application/types/dto';
 import OngoingMappingRequestsListitem from './OngoingMappingRequestsListitem';
 
 describe('OngoingMappingRequestsListitem', () => {
-  const requestMock: OngoingMappingRecord = {
+  const requestMock: RequestMappingRecord = {
     id: 1,
     createdAt: '2023-01-01T12:00:00.00000',
     policyholderFederalId: '11111111111111',

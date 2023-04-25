@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 import { nanoid } from 'nanoid/non-secure';
-import { OngoingMappingRecord } from '../../../application/types/dto';
+import { RequestMappingRecord } from '../../../application/types/dto';
 import { selectSettingsByMappingStatus } from '../../../application/features/mappingRequestsList/MappingRequestsListSlice';
 import OngoingMappingRequestsListHeader from '../OngoingMappingRequestsListHeader';
-import OngoingMappingRequestsListitem from '../OngoingMappingRequestsListitem/OngoingMappingRequestsListitem';
+import OngoingMappingRequestsListitem from '../OngoingMappingRequestsListitem';
 import styles from './OngoingMappingRequestsList.module.scss';
 import { MappingStatusEnum } from '../../../application/types/model';
 import { OngoingRequestsListitemSkeleton } from '../Skeletons';
@@ -11,7 +11,7 @@ import EmptyRequestsListing from '../EmptyRequestsListing';
 
 interface OngoingMappingRequestsListProps {
   mappingStatus: MappingStatusEnum;
-  requests: OngoingMappingRecord[];
+  requests: RequestMappingRecord[];
   loading: boolean;
   onRemoveCallback: () => void;
 }

@@ -1,6 +1,6 @@
 import { formatDateString, thousandSeparator } from '@shared/utils';
 import classNames from 'classnames';
-import { OngoingMappingRecord } from '../../../application/types/dto';
+import { RequestMappingRecord } from '../../../application/types/dto';
 import {
   QueueTypesEnum,
   MappingStatusEnum,
@@ -9,7 +9,7 @@ import styles from './OngoingMappingRequestsListitem.module.scss';
 import MappingRequestsListitemMenu from '../MappingRequestsListitemMenu/MappingRequestsListitemMenu';
 
 interface OngoingMappingRequestsListitemProps {
-  mappingRequest: OngoingMappingRecord;
+  mappingRequest: RequestMappingRecord;
   onRemoveCallback: () => void;
 }
 

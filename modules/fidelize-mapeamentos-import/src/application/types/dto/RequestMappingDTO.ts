@@ -1,13 +1,13 @@
-export interface OngoingMappingDTO {
+export interface RequestMappingDTO {
   numberOfRecords: number;
   hasMore: boolean;
   hasPrevious: boolean;
   pageNumber: number;
   pageSize: number;
-  records: OngoingMappingRecord[];
+  records: RequestMappingRecord[] | DoneMappingRecord[];
 }
 
-export interface OngoingMappingRecord {
+export interface RequestMappingRecord {
   id: number;
   policyholderFederalId: string;
   policyholderName: string;
@@ -28,4 +28,17 @@ export interface QueueType {
   name: string;
   quantity: number;
   requested: boolean;
+}
+
+export interface DoneMappingRecord extends RequestMappingRecord {
+  mappedAt: string | null;
+  totalProcesses: number;
+  totalOpenProcesses: number;
+  totalOpportunities: number;
+  blocks: DoneMappingBlock[];
+}
+
+export interface DoneMappingBlock {
+  id: number;
+  description: string;
 }

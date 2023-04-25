@@ -1,0 +1,23 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.done-request-listitem-skeleton__wrapper {
+  padding: spacing('l');
+  border-bottom: 1px solid color('grey-200');
+  display: grid;
+  grid-template-columns: 65px 160px 200px 165px 160px 120px auto;
+  gap: spacing('xl');
+  box-sizing: border-box;
+  height: 82px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.done-request-listitem-skeleton__column {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  height: 34px;
+  gap: spacing('xs');
+}

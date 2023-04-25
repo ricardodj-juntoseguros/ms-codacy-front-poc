@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { OngoingMappingRecord } from '../../../application/types/dto';
 import { MappingStatusEnum } from '../../../application/types/model';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import MappingRequestPaging from '../MappingRequestsPaging';
@@ -11,10 +10,11 @@ import {
   mappingRequestsListSliceActions,
 } from '../../../application/features/mappingRequestsList/MappingRequestsListSlice';
 import ListingUnavailable from '../ListingUnavailable';
+import DoneMappingRequestsList from '../DoneMappingRequestsList/DoneMappingRequestsList';
 
 interface MappingRequestsProps {
   mappingStatus: MappingStatusEnum;
-  onRemoveCallback: () => void;
+  onRemoveCallback?: () => void;
 }
 
 const MappingRequests: React.FC<MappingRequestsProps> = ({
@@ -25,9 +25,7 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({
   const { activePage, pageSize } = useSelector(
     selectSettingsByMappingStatus(mappingStatus),
   ) || { activePage: 1, pageSize: 10 };
-  const [requestsData, setRequestsData] = useState<
-    OngoingMappingRecord[] | null
-  >([]);
+  const [requestsData, setRequestsData] = useState<any[]>([]);
   const [totalRequests, setTotalRequests] = useState<number>();
   const [loadingRequests, setLoadingRequests] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -43,7 +41,7 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({
     }
     setLoadingRequests(true);
     fetchMappingRequests();
-    onRemoveCallback();
+    onRemoveCallback ? onRemoveCallback() : '';
   };
 
   const fetchMappingRequests = () => {
@@ -73,6 +71,15 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({
           onRemoveCallback={() => {
             handleRemoveRequest();
           }}
+        />
+      );
+    }
+    if (mappingStatus === MappingStatusEnum.DONE) {
+      return (
+        <DoneMappingRequestsList
+          mappingStatus={mappingStatus}
+          loading={loadingRequests}
+          requests={requestsData || []}
         />
       );
     }

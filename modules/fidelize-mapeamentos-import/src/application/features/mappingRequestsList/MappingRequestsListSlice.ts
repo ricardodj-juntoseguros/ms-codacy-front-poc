@@ -9,6 +9,16 @@ const initialState: MappingRequestsListModel = {
       activePage: 1,
       pageSize: 10,
     },
+    {
+      mappingStatus: MappingStatusEnum.DONE,
+      activePage: 1,
+      pageSize: 10,
+    },
+    {
+      mappingStatus: MappingStatusEnum.BLOCKED,
+      activePage: 1,
+      pageSize: 10,
+    },
   ],
 };
 
