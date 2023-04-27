@@ -2,6 +2,7 @@
   "ENV": "quality",
   "SQUAD": "squad7/",
   "HOSTS": {
+    "LOGIN": "https://plataforma-qas.juntoseguros.com/",
     "PLATAFORMA": "https://corretor-qas-7.juntoseguros.com/",
     "FIDELIZE": "https://fidelize-qas-7.juntoseguros.com/"
   },

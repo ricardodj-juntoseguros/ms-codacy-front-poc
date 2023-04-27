@@ -20,6 +20,11 @@
     "start:fidelize-mapeamentos:squad5": "cp ./environments/.env.qa.squad5 .env && cp ./apps/fidelize-mapeamentos/src/environments/.env.qa.squad5 ./apps/fidelize-mapeamentos/.env && nx serve fidelize-mapeamentos",
     "start:fidelize-mapeamentos:squad6": "cp ./environments/.env.qa.squad6 .env && cp ./apps/fidelize-mapeamentos/src/environments/.env.qa.squad6 ./apps/fidelize-mapeamentos/.env && nx serve fidelize-mapeamentos",
     "start:fidelize-mapeamentos:squad7": "cp ./environments/.env.qa.squad7 .env && cp ./apps/fidelize-mapeamentos/src/environments/.env.qa.squad7 ./apps/fidelize-mapeamentos/.env && nx serve fidelize-mapeamentos",
+    "start:vendors": "cp ./environments/.env.qa .env && cp ./apps/vendors/src/environments/.env.qa ./apps/vendors/.env && nx serve vendors",
+    "start:vendors:squad2": "cp ./environments/.env.qa.squad2 .env && cp ./apps/vendors/src/environments/.env.qa.squad2 ./apps/vendors/.env && nx serve vendors",
+    "start:vendors:squad5": "cp ./environments/.env.qa.squad5 .env && cp ./apps/vendors/src/environments/.env.qa.squad5 ./apps/vendors/.env && nx serve vendors",
+    "start:vendors:squad6": "cp ./environments/.env.qa.squad6 .env && cp ./apps/vendors/src/environments/.env.qa.squad6 ./apps/vendors/.env && nx serve vendors",
+    "start:vendors:squad7": "cp ./environments/.env.qa.squad7 .env && cp ./apps/vendors/src/environments/.env.qa.squad7 ./apps/vendors/.env && nx serve vendors",
     "build": "nx build",
     "test": "nx test",
     "lint": "eslint apps libs modules",
@@ -156,6 +161,7 @@
     "terser": "^4.8.1",
     "yaml": "2.2.2 ",
     "ws": ">=5.2.3 <6.0.0 || >=6.2.2 <7.0.0 || >=7.4.6",
-    "webpack": ">=5.76.0"
+    "webpack": ">=5.76.0",
+    "yaml": ">=2.2.2"
   }
 }

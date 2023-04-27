@@ -1,0 +1,21 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.example-container__wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.example-container__title {
+  @include font('xl-2');
+  color: color('brand-primary');
+  margin: 0;
+}
+
+.example-container__url {
+  @include font('m');
+  color: color('grey-500')
+}

@@ -5,9 +5,9 @@ set -o errexit
 
 # Use the error status of the first failure, rather than that of the last item in a pipeline.
 set -o pipefail
-# CircleCI requirements 
+# CircleCI requirements
 apt-get update
-apt-get install -y vim build-essential awscli python3-pip software-properties-common apt-transport-https jq 
+apt-get install -y vim build-essential awscli python3-pip software-properties-common apt-transport-https jq
 pip3 install --upgrade awscli
 
 
@@ -59,7 +59,7 @@ function deploy_cf_qas () {
 
     cd ${PATH_APPS}/${i}
     aws s3 sync . s3://$AWS_S3/$APP --delete
-    
+
     echo "Creating invalidations in CloudFront"
     aws configure set preview.cloudfront true
     aws cloudfront create-invalidation --distribution-id ${CF_ID} --paths "/*"
@@ -98,7 +98,7 @@ function deploy_cf_stg () {
 
     cd ${PATH_APPS}/${i}
     aws s3 sync . s3://$AWS_S3/$APP --delete
-    
+
     echo "Creating invalidations in CloudFront"
     aws configure set preview.cloudfront true
     aws cloudfront create-invalidation --distribution-id ${CF_ID} --paths "/*"
@@ -137,7 +137,7 @@ function deploy_cf_prd () {
 
     cd ${PATH_APPS}/${i}
     aws s3 sync . s3://$AWS_S3/$APP --delete
-    
+
     echo "Creating invalidations in CloudFront"
     aws configure set preview.cloudfront true
     aws cloudfront create-invalidation --distribution-id ${CF_ID} --paths "/*"
@@ -189,6 +189,8 @@ quality)
         #APP="${i}"
         if [ "$i" == "plataforma" ]; then
         APP="corretor"
+        elif [ "$i" == "vendors" ]; then
+        APP="project-preview"
         else
         APP="${i}"
         fi
@@ -204,7 +206,7 @@ quality)
     echo "Please check your chances!"
     exit 1
   fi
-  
+
   check_deploy
 ;;
 
@@ -217,9 +219,11 @@ staging)
         #APP="${i}"
         if [ "$i" == "plataforma" ]; then
         APP="corretor"
+        elif [ "$i" == "vendors" ]; then
+        APP="project-preview"
         else
         APP="${i}"
-        fi      
+        fi
         echo "Initing deploy app ${APP}..."
         APP_DEPLOY="${APP}-stg.juntoseguros.com"
         deploy_cf_stg
@@ -229,7 +233,7 @@ staging)
     echo "Please check your chances!"
     exit 1
   fi
-  
+
   check_deploy
 ;;
 
@@ -242,6 +246,8 @@ production)
         #APP="${i}"
         if [ "$i" == "plataforma" ]; then
         APP="corretor"
+        elif [ "$i" == "vendors" ]; then
+        APP="project-preview"
         else
         APP="${i}"
         fi
@@ -254,7 +260,7 @@ production)
     echo "Please check your chances!"
     exit 1
   fi
-  
+
   check_deploy
 ;;
 

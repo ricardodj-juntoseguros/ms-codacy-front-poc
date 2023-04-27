@@ -12,5 +12,6 @@ module.exports = {
     '<rootDir>/libs/shared/ui',
     '<rootDir>/libs/shared/utils',
     '<rootDir>/libs/services',
+    '<rootDir>/apps/vendors',
   ],
 };

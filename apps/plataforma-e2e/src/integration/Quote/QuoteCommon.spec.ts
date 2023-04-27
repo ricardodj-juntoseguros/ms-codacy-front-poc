@@ -5,11 +5,13 @@ import { HOSTS } from '../../../../../e2e/quality.json';
 const { user } = loadData();
 
 beforeEach(() => {
-  cy.visit(HOSTS.PLATAFORMA);
+  cy.visit(HOSTS.LOGIN);
   cy.login(user.username, user.password);
   cy.get(selectors.login.submitButton)
     .should('be.visible')
-    .click({ force: true });
+    .click({ force: true })
+    .wait(12000);
+  cy.visit(HOSTS.PLATAFORMA);
 });
 
 describe('Plataforma - corretor-emissão - Quote Common', () => {
@@ -18,13 +20,13 @@ describe('Plataforma - corretor-emissão - Quote Common', () => {
   });
 
   it('should perform the quote flow correctly', () => {
-    cy.get(selectors.search.policyholderSearchText).type('squad');
+    cy.get(selectors.search.policyholderSearchText).type('squad', { delay: 200 }).wait(2000);
 
     cy.get(selectors.search.policyholderSearchInput)
       .should('be.visible')
       .should(
         'have.text',
-        'TOMADOR TESTE – SQUAD DESACOPLAMENTO - 91833813000118',
+        'TOMADOR TESTE – SQUAD DESACOPLAMENTO%.% - 91833813000118',
       )
       .click({ force: true });
 
@@ -87,7 +89,7 @@ describe('Plataforma - corretor-emissão - Quote Common', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'TOMADOR TESTE – SQUAD DESACOPLAMENTO - 91833813000118',
+        'TOMADOR TESTE – SQUAD DESACOPLAMENTO%.% - 91833813000118',
       )
       .click({ force: true });
 
@@ -165,7 +167,7 @@ describe('Plataforma - corretor-emissão - Quote Common', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'TOMADOR TESTE – SQUAD DESACOPLAMENTO - 91833813000118',
+        'TOMADOR TESTE – SQUAD DESACOPLAMENTO%.% - 91833813000118',
       )
       .click({ force: true });
 
@@ -247,7 +249,7 @@ describe('Plataforma - corretor-emissão - Quote Common', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'TOMADOR TESTE – SQUAD DESACOPLAMENTO - 91833813000118',
+        'TOMADOR TESTE – SQUAD DESACOPLAMENTO%.% - 91833813000118',
       )
       .click({ force: true });
 
@@ -334,7 +336,7 @@ describe('Plataforma - corretor-emissão - Quote Common', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'TOMADOR TESTE – SQUAD DESACOPLAMENTO - 91833813000118',
+        'TOMADOR TESTE – SQUAD DESACOPLAMENTO%.% - 91833813000118',
       )
       .click({ force: true });
 

@@ -561,6 +561,124 @@
         }
       },
       "tags": []
+    },
+    "vendors": {
+      "root": "apps/vendors",
+      "sourceRoot": "apps/vendors/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/vendors",
+            "index": "apps/vendors/src/index.html",
+            "main": "apps/vendors/src/main.tsx",
+            "polyfills": "apps/vendors/src/polyfills.ts",
+            "tsConfig": "apps/vendors/tsconfig.app.json",
+            "assets": ["apps/vendors/src/favicon.ico"],
+            "styles": ["apps/vendors/src/styles.scss"],
+            "scripts": [],
+            "webpackConfig": "apps/vendors/webpack.config.js"
+          },
+          "configurations": {
+            "quality": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            },
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/vendors/src/environments/environment.ts",
+                  "with": "apps/vendors/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "vendors:build",
+            "hmr": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "vendors:build:production",
+              "hmr": false
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/vendors/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/vendors"],
+          "options": {
+            "jestConfig": "apps/vendors/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "vendors-e2e": {
+      "root": "apps/vendors-e2e",
+      "sourceRoot": "apps/vendors-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/vendors-e2e/cypress.json",
+            "devServerTarget": "vendors:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "vendors:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/vendors-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["vendors"]
     }
   }
 }

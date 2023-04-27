@@ -1,0 +1,105 @@
+version: "2"         # required to adjust maintainability checks
+checks:
+  argument-count:
+    enabled: true
+    config:
+      threshold: 4
+  complex-logic:
+    enabled: true
+    config:
+      threshold: 4
+  file-lines:
+    enabled: true
+    config:
+      threshold: 250
+  method-complexity:
+    enabled: true
+    config:
+      threshold: 5
+  method-count:
+    enabled: true
+    config:
+      threshold: 20
+  method-lines:
+    enabled: false
+  nested-control-flow:
+    enabled: true
+    config:
+      threshold: 4
+  return-statements:
+    enabled: true
+    config:
+      threshold: 4
+  similar-code:
+    enabled: true
+    config:
+      threshold: #language-specific defaults. overrides affect all languages.
+  identical-code:
+    enabled: true
+    config:
+      threshold: #language-specific defaults. overrides affect all languages.
+
+plugins:
+  eslint:
+    enabled: true
+    channel: "eslint-7"
+
+exclude_patterns:
+- "cypress/"
+- ".vscode/"
+- ".circleci/"
+- "__mocks__/"
+- "e2e/"
+- "docs/"
+- "dist/"
+- "environments/"
+- "apps/**/webpack.config.js"
+- "apps/*-e2e/**"
+- "tools/"
+- ".editorconfig"
+- ".eslintignore"
+- ".eslintrc.js"
+- "**/**/.eslintrc.json"
+- ".gitignore"
+- ".huskyrc.json"
+- ".lintstagedrc.json"
+- ".prettierignore"
+- "**/**/babel.config.json"
+- "cypress.json"
+- "declarations.d.ts"
+- "**/**/jest.config.js"
+- "**/**/jest.preset.js"
+- "nx.json"
+- "package-lock.json"
+- "package.json"
+- "prettier.config.js"
+- "**/README.md"
+- "**/tsconfig.base.json"
+- "**/tsconfig.lib.json"
+- "**/tsconfig.spec.json"
+- "**/tsconfig.json"
+- "**/.babelrc"
+- "workspace.json"
+- "yarn.lock"
+- "**/src/config"
+- "**/src/constants"
+- "**/src/*.svg"
+- "**/src/*.module.scss"
+- "**/src/index.ts"
+- "**/src/index.tsx"
+- "**/src/application/features/types/"
+- "**/src/**/*.spec.ts"
+- "**/src/**/*.spec.tsx"
+- "**/*Illustration.tsx"
+- "**/src/presentation/components/Skeletons/**"
+- "libs/shared/ui/src/skeletonStepContainer/"
+
+- "dist/"
+- "**/node_modules/"
+- "**/spec/"
+- "**/test/"
+- "**/tests/"
+- "Tests/"
+- "**/vendor/"
+- "**/*_test.go"
+- "**/*.d.ts"
