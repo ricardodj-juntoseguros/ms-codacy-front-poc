@@ -7,6 +7,16 @@ export interface RequestMappingDTO {
   records: RequestMappingRecord[] | DoneMappingRecord[];
 }
 
+// export interface MappingDoneDetailsDTO {
+//   id: number;
+//   policyholderFederalId: string;
+//   createdAt: string;
+//   createdBy: string;
+//   isPriority: boolean;
+//   blocks: DoneMappingBlock[];
+//   queueTypes: DoneDetailsQueueType[];
+// }
+
 export interface RequestMappingRecord {
   id: number;
   policyholderFederalId: string;
@@ -30,6 +40,18 @@ export interface QueueType {
   requested: boolean;
 }
 
+// export interface DoneDetailsQueueType {
+//   id: number;
+//   name: string;
+//   mappedAt: string | null;
+//   requested: boolean;
+//   totalProcesses: number;
+//   totalOpenProcesses: number;
+//   totalOpportunities: number;
+//   statusId: number;
+//   statusDescription: string;
+// }
+
 export interface DoneMappingRecord extends RequestMappingRecord {
   mappedAt: string | null;
   totalProcesses: number;
@@ -42,3 +64,14 @@ export interface DoneMappingBlock {
   id: number;
   description: string;
 }
+
+// export interface DetailsErrorRequest {
+//   success: boolean;
+//   data: null;
+//   errors: DetailsErrors[];
+// }
+
+// export interface DetailsErrors {
+//   code: string;
+//   message: string;
+// }

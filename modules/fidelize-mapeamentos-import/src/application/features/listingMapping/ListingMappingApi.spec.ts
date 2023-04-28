@@ -137,4 +137,19 @@ describe('ListingMappingApi', () => {
     });
     expect(result).not.toBe(null);
   });
+
+  it('getDetailListingMapping should call api using id', async () => {
+    const mockPost = jest
+      .spyOn(AxiosHttpClient.prototype, 'get')
+      .mockImplementation(async () => {
+        return Promise.resolve();
+      });
+
+    const result = await new ListingMappingApi().getDetailsListingMapping(5501);
+
+    expect(mockPost).toHaveBeenCalledWith({
+      url: '/backoffice/opportunityrequest/5501',
+    });
+    expect(result).not.toBe(null);
+  });
 });

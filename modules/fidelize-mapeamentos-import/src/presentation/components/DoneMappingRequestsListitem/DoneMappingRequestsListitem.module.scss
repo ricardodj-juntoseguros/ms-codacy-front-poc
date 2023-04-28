@@ -86,6 +86,9 @@
 
   &--open {
     background-color: rgba(241, 245, 247, 0.7);
+    &:first-child {
+      border-bottom: none;
+    }
   }
 
   &:hover {

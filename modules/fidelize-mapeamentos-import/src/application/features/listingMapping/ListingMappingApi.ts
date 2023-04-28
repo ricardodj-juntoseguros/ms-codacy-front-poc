@@ -3,7 +3,12 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import FidelizeImportMapeamentosBaseApi from '../FidelizeMapeamentosImportBaseApi';
-import { RequestMappingDTO, MappingSummaryDTO } from '../../types/dto';
+import {
+  RequestMappingDTO,
+  MappingSummaryDTO,
+  MappingDoneDetailsDTO,
+  DetailsErrorRequest,
+} from '../../types/dto';
 
 class ListingMappingApi {
   private instance: AxiosHttpClient;
@@ -23,6 +28,16 @@ class ListingMappingApi {
     };
 
     return await this.instance.get<RequestMappingDTO>(params);
+  }
+
+  async getDetailsListingMapping(id: number): Promise<any> {
+    const params: IHttpClientRequestParameters = {
+      url: `/backoffice/opportunityrequest/${id}`,
+    };
+
+    return await this.instance.get<MappingDoneDetailsDTO | DetailsErrorRequest>(
+      params,
+    );
   }
 
   async getMappingSummary(): Promise<MappingSummaryDTO[]> {

@@ -1,14 +1,47 @@
 import '@testing-library/jest-dom';
-import {
-  findByText,
-  fireEvent,
-  render,
-  waitFor,
-} from '../../../config/testUtils';
+import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import { DoneMappingRecord } from '../../../application/types/dto';
 import DoneMappingRequestsListitem from './DoneMappingRequestsListitem';
+import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 
 describe('DoneMappingRequestsListitem', () => {
+  const mockSuccess = () => {
+    jest
+      .spyOn(ListingMappingApi.prototype, 'getDetailsListingMapping')
+      .mockImplementation(async () => {
+        return requestMock;
+      });
+  };
+  const mockError = () => {
+    jest
+      .spyOn(ListingMappingApi.prototype, 'getDetailsListingMapping')
+      .mockImplementation(async () => {
+        return new Promise((resolve, reject) => {
+          return reject();
+        });
+      });
+  };
+
+  const mockNotFound = () => {
+    jest
+      .spyOn(ListingMappingApi.prototype, 'getDetailsListingMapping')
+      .mockImplementation(async () => {
+        return new Promise(() => {
+          return requestNotFound;
+        });
+      });
+  };
+
+  const requestNotFound = {
+    success: false,
+    data: null,
+    errors: [
+      {
+        code: '0',
+        message: 'Oportunidade não localizada',
+      },
+    ],
+  };
   const requestMock: DoneMappingRecord = {
     id: 67,
     policyholderFederalId: '62173620000180',
@@ -50,31 +83,31 @@ describe('DoneMappingRequestsListitem', () => {
     queueTypes: [
       {
         id: 3,
-        name: 'Esteira Trabalhista',
+        name: 'Trabalhista',
         quantity: 134810,
         requested: true,
       },
       {
         id: 4,
-        name: 'Esteira Federal',
+        name: 'Federal',
         quantity: 15990,
         requested: true,
       },
       {
         id: 5,
-        name: 'Esteira Estadual',
+        name: 'Estadual',
         quantity: 353380,
         requested: true,
       },
       {
         id: 6,
-        name: 'Esteira CARF',
+        name: 'CARF',
         quantity: 0,
         requested: true,
       },
       {
         id: 7,
-        name: 'Esteira Divida Ativa',
+        name: 'Divida Ativa',
         quantity: 0,
         requested: true,
       },
@@ -83,7 +116,7 @@ describe('DoneMappingRequestsListitem', () => {
   };
 
   it('Should render request date, policyholder and broker columns correctly', () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <DoneMappingRequestsListitem mappingRequest={requestMock} />,
     );
     expect(getByText('Iniciado')).toBeInTheDocument();
@@ -123,6 +156,53 @@ describe('DoneMappingRequestsListitem', () => {
     waitFor(async () => {
       const popupMenu = await getByTestId('pop-up-menu');
       expect(popupMenu).toBeInTheDocument();
+    });
+  });
+
+  it('Should render details on success call details', async () => {
+    mockSuccess();
+    const { getByTestId, findByText } = render(
+      <DoneMappingRequestsListitem mappingRequest={requestMock} />,
+    );
+
+    const btnDetails = getByTestId('show-details-btn');
+
+    fireEvent.click(btnDetails);
+    waitFor(async () => {
+      const itemList = await findByText('Solicitação criada em');
+      expect(itemList).toBeInTheDocument();
+    });
+  });
+
+  it('Should render an alert message when call details with fail', async () => {
+    mockError();
+    const { getByTestId, findByText } = render(
+      <DoneMappingRequestsListitem mappingRequest={requestMock} />,
+    );
+
+    const btnDetails = getByTestId('show-details-btn');
+
+    fireEvent.click(btnDetails);
+    waitFor(async () => {
+      const alertMsg = await findByText(
+        'Os detalhes desta solicitação não estão disponíveis no momento. Tente novamente mais tarde.',
+      );
+      expect(alertMsg).toBeInTheDocument();
+    });
+  });
+
+  it('Should render an alert message when call with id not founded', async () => {
+    mockNotFound();
+    const { getByTestId, findByText } = render(
+      <DoneMappingRequestsListitem mappingRequest={requestMock} />,
+    );
+
+    const btnDetails = getByTestId('show-details-btn');
+
+    fireEvent.click(btnDetails);
+    waitFor(async () => {
+      const alertMsg = await findByText('Oportunidade não localizada');
+      expect(alertMsg).toBeInTheDocument();
     });
   });
 });
