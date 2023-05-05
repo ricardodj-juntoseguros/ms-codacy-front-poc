@@ -1,19 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
 .done-mapping-requests-listitem-actions__container {
-  position: absolute;
-  margin-left: -104px;
-  margin-bottom: 44px;
-  cursor: default;
-  height: 20px;
-  pointer-events: none;
-  width: 20px;
-  display: flex;
-  flex-direction: column-reverse;
-
-  @media (max-width: 1366px) {
-    margin-left: -164px;
-  }
 }
 
 .mapping-request-listitem-pop-up-options__wrapper {
@@ -55,10 +42,6 @@
     border: 1px solid color('grey-300');
     border-right: 0;
     border-top: 0;
-
-    @media (max-width: 1366px) {
-      right: 60px;
-    }
   }
 
   &--open {

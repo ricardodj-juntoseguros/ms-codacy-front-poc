@@ -1,5 +1,10 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, waitFor } from '../../../config/testUtils';
+import {
+  findByText,
+  fireEvent,
+  render,
+  waitFor,
+} from '../../../config/testUtils';
 import { DoneMappingRecord } from '../../../application/types/dto';
 import DoneMappingRequestsListitem from './DoneMappingRequestsListitem';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
@@ -128,34 +133,27 @@ describe('DoneMappingRequestsListitem', () => {
     expect(getByText('122')).toBeInTheDocument();
   });
 
-  it('Should render all blocks correctly', () => {
-    const { getByText } = render(
-      <DoneMappingRequestsListitem mappingRequest={requestMock} />,
-    );
-    expect(
-      getByText('Tomador ou Majoritária com Bloqueio;'),
-    ).toBeInTheDocument();
-    expect(
-      getByText('Tomador ou Majoritária de porte inválido;'),
-    ).toBeInTheDocument();
-    expect(getByText('Tomador sem limite trabalhista;')).toBeInTheDocument();
-    expect(
-      getByText('Tomador sem capacidade de Resseguro;'),
-    ).toBeInTheDocument();
-    expect(getByText('Tomador sem limite financeiro.')).toBeInTheDocument();
-  });
-
-  it('Should render popup menu', async () => {
-    const { getByTestId } = render(
+  it('Should render tooltip with blocks', async () => {
+    const { getByTestId, findByText } = render(
       <DoneMappingRequestsListitem mappingRequest={requestMock} />,
     );
 
-    const showPopup = getByTestId('show-menu-pop-up');
+    const showTooltip = getByTestId('show-tooltip');
 
-    fireEvent.mouseOver(showPopup);
+    fireEvent.mouseOver(showTooltip);
+
     waitFor(async () => {
-      const popupMenu = await getByTestId('pop-up-menu');
-      expect(popupMenu).toBeInTheDocument();
+      expect(
+        findByText('Tomador ou Majoritária com Bloqueio;'),
+      ).toBeInTheDocument();
+      expect(
+        findByText('Tomador ou Majoritária de porte inválido;'),
+      ).toBeInTheDocument();
+      expect(findByText('Tomador sem limite trabalhista;')).toBeInTheDocument();
+      expect(
+        findByText('Tomador sem capacidade de Resseguro;'),
+      ).toBeInTheDocument();
+      expect(findByText('Tomador sem limite financeiro.')).toBeInTheDocument();
     });
   });
 

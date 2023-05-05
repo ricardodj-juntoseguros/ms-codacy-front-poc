@@ -109,3 +109,19 @@
   background-color: color('grey-100');
   color: color('grey-500');
 }
+
+.ongoing-mapping-requests-listitem-actions__wrapper {
+  display: flex;
+  align-self: flex-end;
+  gap: spacing('m');
+  color: color('grey-500');
+  height: 20px;
+  padding-right: 4px;
+}
+
+.ongoing-mapping-requests-listitem-actions__show-tooltip {
+  cursor: pointer;
+  &:hover {
+    color: color('brand-primary');
+  }
+}

@@ -1,5 +1,7 @@
 import { formatDateString, thousandSeparator } from '@shared/utils';
 import classNames from 'classnames';
+import { Tooltip } from 'junto-design-system';
+import { useRef, useState } from 'react';
 import { RequestMappingRecord } from '../../../application/types/dto';
 import {
   QueueTypesEnum,
@@ -25,7 +27,11 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
       queueTypes,
       statusId,
       isPriority,
+      blocks,
     } = mappingRequest;
+
+    const blockDivRef = useRef<HTMLDivElement>(null);
+    const [showBlocks, setShowBlocks] = useState(false);
 
     const renderQueueColumn = (queueType: QueueTypesEnum) => {
       const queueData = queueTypes.find(qType => qType.id === queueType);
@@ -68,6 +74,17 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
           </p>
         </div>
       );
+    };
+
+    const handleTextBlocks = () => {
+      let fullText = '';
+      blocks?.forEach((block, index) => {
+        fullText =
+          fullText +
+          block.description +
+          (index < blocks.length - 1 ? '; ' : '.');
+      });
+      return fullText;
     };
 
     return (
@@ -152,18 +169,48 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
             )}
           </div>
         </div>
-        {statusId === 1 ||
-          (statusId === null && (
-            <div
-              className={styles['ongoing-mapping-requests-listitem__column']}
-            >
-              <MappingRequestsListitemMenu
-                policyholderName={policyholderName}
-                mappingId={id}
-                onRemoveCallback={() => onRemoveCallback()}
-              />
-            </div>
-          ))}
+
+        <div className={styles['ongoing-mapping-requests-listitem__column']}>
+          <div
+            className={
+              styles['ongoing-mapping-requests-listitem-actions__wrapper']
+            }
+          >
+            {blocks?.length > 0 && (
+              <div
+                className={
+                  styles[
+                    'ongoing-mapping-requests-listitem-actions__show-tooltip'
+                  ]
+                }
+                ref={blockDivRef}
+              >
+                <i
+                  data-testid="show-tooltip"
+                  onMouseEnter={() => setShowBlocks(true)}
+                  onMouseLeave={() => setShowBlocks(false)}
+                  className="icon-alert-circle"
+                />
+              </div>
+            )}
+
+            {statusId === 1 ||
+              (statusId === null && (
+                <MappingRequestsListitemMenu
+                  policyholderName={policyholderName}
+                  mappingId={id}
+                  onRemoveCallback={() => onRemoveCallback()}
+                />
+              ))}
+          </div>
+
+          <Tooltip
+            anchorRef={blockDivRef}
+            text={handleTextBlocks()}
+            visible={showBlocks}
+            position="top"
+          />
+        </div>
       </div>
     );
   };

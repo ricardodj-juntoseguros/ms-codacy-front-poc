@@ -230,7 +230,7 @@ const DoneMappingRequestsListitemDetails: React.FC<DoneMappingRequestsListitemPr
             </div>
           </div>
         ))}
-        {blocks && blocks.length > 0 ? (
+        {blocks?.length > 0 ? (
           <div
             className={
               styles['done-mapping-requests-listitem-on-blocks__wrapper']

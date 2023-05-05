@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render } from '../../../config/testUtils';
+import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import { RequestMappingRecord } from '../../../application/types/dto';
 import OngoingMappingRequestsListitem from './OngoingMappingRequestsListitem';
 
@@ -17,6 +17,24 @@ describe('OngoingMappingRequestsListitem', () => {
     statusId: null,
     statusDescription: '',
     rowsCount: 1,
+    blocks: [
+      {
+        id: 1,
+        description: 'Bloqueado por motivo 1',
+      },
+      {
+        id: 2,
+        description: 'Bloqueado por motivo 2',
+      },
+      {
+        id: 3,
+        description: 'Bloqueado por motivo 3',
+      },
+      {
+        id: 4,
+        description: 'Bloqueado por motivo 4',
+      },
+    ],
     queueTypes: [
       {
         id: 3,
@@ -105,5 +123,24 @@ describe('OngoingMappingRequestsListitem', () => {
       />,
     );
     expect(getByText('Iniciado')).toBeInTheDocument();
+  });
+
+  it('Should render all blocks correctly', () => {
+    const { findByText, getByTestId } = render(
+      <OngoingMappingRequestsListitem
+        mappingRequest={requestMock}
+        onRemoveCallback={mockCallback}
+      />,
+    );
+
+    const showTooltip = getByTestId('show-tooltip');
+    fireEvent.mouseOver(showTooltip);
+    waitFor(async () => {
+      expect(
+        findByText(
+          'Bloqueado por motivo 1; Bloqueado por motivo 2; Bloqueado por motivo 3; Bloqueado por motivo 4.',
+        ),
+      ).toBeInTheDocument();
+    });
   });
 });

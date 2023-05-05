@@ -32,6 +32,7 @@ describe('MappingRequests', () => {
               isPriority: true,
               statusId: 1,
               statusDescription: 'teste',
+              blocks: [],
               queueTypes: [],
               rowsCount: 1,
             },

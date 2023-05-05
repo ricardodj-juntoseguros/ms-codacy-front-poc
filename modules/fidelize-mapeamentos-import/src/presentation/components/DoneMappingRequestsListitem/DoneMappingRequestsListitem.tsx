@@ -1,8 +1,8 @@
 /* eslint-disable react/button-has-type */
 import { formatDateString } from '@shared/utils';
 import classNames from 'classnames';
-import { useState } from 'react';
-import { makeToast } from 'junto-design-system';
+import { useRef, useState } from 'react';
+import { Tooltip, makeToast } from 'junto-design-system';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import { DoneMappingRecord } from '../../../application/types/dto';
 import DoneMappingRequestsListitemDetails from '../DoneMappingRequestLisitemDetails';
@@ -31,6 +31,7 @@ const DoneMappingRequestsListitem: React.FC<DoneMappingRequestsListitemProps> =
     const [showDetails, setShowDetails] = useState(false);
     const [onHover, setOnHover] = useState(false);
     const [details, setDetails] = useState<any>([]);
+    const blockDivRef = useRef<HTMLDivElement>(null);
 
     const fetchDetailsMappingRequest = () => {
       !showDetails
@@ -51,6 +52,17 @@ const DoneMappingRequestsListitem: React.FC<DoneMappingRequestsListitemProps> =
               ),
             )
         : setShowDetails(false);
+    };
+
+    const handleTextBlocks = () => {
+      let fullText = '';
+      blocks.forEach((block, index) => {
+        fullText =
+          fullText +
+          block.description +
+          (index < blocks.length - 1 ? '; ' : '.');
+      });
+      return fullText;
     };
 
     return (
@@ -121,40 +133,12 @@ const DoneMappingRequestsListitem: React.FC<DoneMappingRequestsListitemProps> =
           <div className={styles['done-mapping-requests-listitem__column']}>
             <div
               className={
-                styles['done-mapping-requests-listitem-actions__container']
-              }
-            >
-              <ul
-                data-testid="pop-up-menu"
-                className={classNames(
-                  styles['mapping-request-listitem-pop-up-options__wrapper'],
-                  {
-                    [styles[
-                      'mapping-request-listitem-pop-up-options__wrapper--open'
-                    ]]: onHover,
-                  },
-                )}
-              >
-                {blocks?.map((block, index) => (
-                  <li
-                    key={block.id}
-                    className={
-                      styles['mapping-request-listitem-pop-up__option']
-                    }
-                  >
-                    {block.description}
-                    {index < blocks.length - 1 ? ';' : '.'}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div
-              className={
                 styles['done-mapping-requests-listitem-actions__wrapper']
               }
             >
-              {blocks.length > 0 && (
+              {blocks?.length > 0 && (
                 <div
+                  ref={blockDivRef}
                   className={
                     styles[
                       'done-mapping-requests-listitem-actions__show-pop-up'
@@ -162,7 +146,7 @@ const DoneMappingRequestsListitem: React.FC<DoneMappingRequestsListitemProps> =
                   }
                 >
                   <i
-                    data-testid="show-menu-pop-up"
+                    data-testid="show-tooltip"
                     onMouseEnter={() => setOnHover(true)}
                     onMouseLeave={() => setOnHover(false)}
                     className="icon-alert-circle"
@@ -193,6 +177,13 @@ const DoneMappingRequestsListitem: React.FC<DoneMappingRequestsListitemProps> =
         {showDetails && (
           <DoneMappingRequestsListitemDetails mappingRequest={details} />
         )}
+
+        <Tooltip
+          anchorRef={blockDivRef}
+          text={handleTextBlocks()}
+          visible={onHover}
+          position="top"
+        />
       </>
     );
   };
