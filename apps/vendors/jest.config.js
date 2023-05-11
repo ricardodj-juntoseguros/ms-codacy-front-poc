@@ -14,6 +14,7 @@ module.exports = {
     'index.tsx',
     'polyfills.ts',
     'main.tsx',
+    '/src/app/constants'
   ],
   transformIgnorePatterns: ['node_modules/(?!junto-design-system/.*)'],
   moduleNameMapper: {

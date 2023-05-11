@@ -70,7 +70,7 @@
     "framer-motion": "6.5.1",
     "jest-environment-jsdom": "29.3.1",
     "js-cookie": "^3.0.1",
-    "junto-design-system": "1.22.1",
+    "junto-design-system": "2.0.1",
     "jwt-decode": "^3.1.2",
     "logrocket": "^4.0.0",
     "logrocket-react": "^5.0.1",
@@ -159,9 +159,8 @@
     "qs": "6.10.3",
     "tmpl": ">=1.0.5",
     "terser": "^4.8.1",
-    "yaml": "2.2.2 ",
+    "yaml": ">=2.2.2",
     "ws": ">=5.2.3 <6.0.0 || >=6.2.2 <7.0.0 || >=7.4.6",
-    "webpack": ">=5.76.0",
-    "yaml": ">=2.2.2"
+    "webpack": ">=5.76.0"
   }
 }

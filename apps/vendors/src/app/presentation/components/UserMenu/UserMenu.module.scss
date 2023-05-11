@@ -1,0 +1,134 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.usermenu {
+  position: relative;
+}
+
+.usermenu__button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  padding: 0;
+  @include border(1, 'solid', 'grey-200');
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.usermenu__name {
+  @include font('xs-emphasys');
+  @include color('color', 'dark');
+  margin-left: spacing('m');
+
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.usermenu__avatar {
+  @include font('sm-emphasys');
+  @include color('background-color', 'grey-100');
+  @include color('color', 'brand-primary');
+
+  overflow: hidden;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  height: spacing('xl');
+  width: spacing('xl');
+}
+
+.usermenu__avatar {
+  @include margin('xs', 'xs', 'xs', 's')
+}
+
+.usermenu__nav {
+  width: 17.5rem;
+  position: absolute;
+  right: 0;
+  top: 50px;
+
+  padding: spacing('l');
+  box-sizing: border-box;
+  @include color('background-color', 'white');
+  box-shadow: 0px 4px 16px 0 rgba(0,0,0, 0.15);
+  opacity: 0;
+  transform: translateY(-20%);
+  transition: all 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  pointer-events: none;
+
+  &--open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+    z-index: 1;
+  }
+}
+
+.nav__info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.nav__name {
+  @include font('sm-emphasys');
+  @include color('color', 'dark');
+  margin-bottom: spacing('xs')
+}
+
+.nav__email {
+  @include font('xs');
+  @include color('color', 'grey-500');
+  margin-bottom: spacing('l');
+}
+
+.nav__list {
+  list-style: none;
+  padding: 0;
+}
+
+.nav__item {
+  margin-top: spacing('l');
+
+  & button {
+    width: 100%;
+    background-color: transparent;
+    border: 0;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  &:nth-last-child(3) {
+    margin-bottom: spacing('l');
+  }
+}
+
+.nav__link {
+  @include font('sm');
+  @include color('color', 'dark');
+  text-decoration: none;
+
+  &:hover {
+    @include font('sm-emphasys');
+    @include color('color', 'brand-primary');
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .usermenu__button {
+    border: 0;
+  }
+
+  .usermenu__avatar {
+    margin-left: spacing('xs');
+  }
+}
+
+
+
+

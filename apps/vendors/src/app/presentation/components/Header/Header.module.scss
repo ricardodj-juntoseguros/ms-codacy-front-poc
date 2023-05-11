@@ -1,0 +1,49 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  box-sizing: border-box;
+  padding: spacing('l') spacing('xl');
+}
+
+.header__logo {
+  width: 11.25rem;
+  height: 1.18rem;
+}
+
+.header__navbar {
+  display: flex;
+  align-items: center;
+}
+
+.header__list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.header__item {
+  list-style-type: none;
+  padding: 0 spacing('xxl') 0 0;
+}
+
+.header__link {
+  @include font('sm-emphasys');
+  @include color('color', 'dark');
+  text-decoration: none;
+
+  &:hover {
+    @include color('color', 'brand-primary');
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .header {
+    padding: spacing('l') spacing('l');
+  }
+}
