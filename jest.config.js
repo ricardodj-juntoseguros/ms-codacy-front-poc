@@ -13,5 +13,6 @@ module.exports = {
     '<rootDir>/libs/shared/utils',
     '<rootDir>/libs/services',
     '<rootDir>/apps/vendors',
+    '<rootDir>/modules/vendors-proposal',
   ],
 };

@@ -679,6 +679,31 @@
       },
       "tags": [],
       "implicitDependencies": ["vendors"]
+    },
+    "vendors-proposal": {
+      "root": "modules/vendors-proposal",
+      "sourceRoot": "modules/vendors-proposal/src",
+      "projectType": "library",
+      "tags": [],
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "modules/vendors-proposal/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/modules/vendors-proposal"],
+          "options": {
+            "jestConfig": "modules/vendors-proposal/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

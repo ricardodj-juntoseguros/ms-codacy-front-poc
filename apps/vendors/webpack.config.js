@@ -10,6 +10,14 @@ module.exports = (config, context) => {
       extensions: [...config.resolve.extensions, '.scss'],
       alias: {
         ...config.resolve.alias,
+        '@modules/vendors-proposal': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'modules',
+          'vendors-proposal',
+          'src',
+        ),
         '@shared/utils': path.resolve(
           __dirname,
           '..',
