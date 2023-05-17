@@ -21,6 +21,7 @@ export interface RequestMappingRecord {
   blocks: MappingBlocks[];
   queueTypes: QueueType[];
   rowsCount: number;
+  canUnlock?: boolean;
 }
 
 export interface QueueType {

@@ -55,6 +55,14 @@ class ListingMappingApi {
 
     return await this.instance.delete<any>(params);
   }
+
+  async patchMappingItem(id: number): Promise<any> {
+    const params: IHttpClientRequestParameters = {
+      url: `/backoffice/opportunityrequest/${id}`,
+    };
+
+    return await this.instance.patch<any>(params);
+  }
 }
 
 export default ListingMappingApi;

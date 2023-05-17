@@ -109,7 +109,7 @@ describe('ListingMappingApi', () => {
   });
 
   it('getMappingSummary should call api to return a totalized list by status', async () => {
-    const mockPost = jest
+    const mockGetSummary = jest
       .spyOn(AxiosHttpClient.prototype, 'get')
       .mockImplementation(async () => {
         return Promise.resolve(dataMockSummaryOpportunity);
@@ -117,14 +117,14 @@ describe('ListingMappingApi', () => {
 
     const result = await new ListingMappingApi().getMappingSummary();
 
-    expect(mockPost).toHaveBeenCalledWith({
+    expect(mockGetSummary).toHaveBeenCalledWith({
       url: '/backoffice/opportunityrequest/summary',
     });
     expect(result).not.toBe(null);
   });
 
   it('deleteMappingItem should call api to remove a solicitation by id', async () => {
-    const mockPost = jest
+    const mockDelete = jest
       .spyOn(AxiosHttpClient.prototype, 'delete')
       .mockImplementation(async () => {
         return Promise.resolve();
@@ -132,14 +132,29 @@ describe('ListingMappingApi', () => {
 
     const result = await new ListingMappingApi().deleteMappingItem(1234);
 
-    expect(mockPost).toHaveBeenCalledWith({
+    expect(mockDelete).toHaveBeenCalledWith({
+      url: '/backoffice/opportunityrequest/1234',
+    });
+    expect(result).not.toBe(null);
+  });
+
+  it('patchMappingItem should call api to remove a solicitation by id', async () => {
+    const mockPatch = jest
+      .spyOn(AxiosHttpClient.prototype, 'patch')
+      .mockImplementation(async () => {
+        return Promise.resolve();
+      });
+
+    const result = await new ListingMappingApi().patchMappingItem(1234);
+
+    expect(mockPatch).toHaveBeenCalledWith({
       url: '/backoffice/opportunityrequest/1234',
     });
     expect(result).not.toBe(null);
   });
 
   it('getDetailListingMapping should call api using id', async () => {
-    const mockPost = jest
+    const mockGet = jest
       .spyOn(AxiosHttpClient.prototype, 'get')
       .mockImplementation(async () => {
         return Promise.resolve();
@@ -147,7 +162,7 @@ describe('ListingMappingApi', () => {
 
     const result = await new ListingMappingApi().getDetailsListingMapping(5501);
 
-    expect(mockPost).toHaveBeenCalledWith({
+    expect(mockGet).toHaveBeenCalledWith({
       url: '/backoffice/opportunityrequest/5501',
     });
     expect(result).not.toBe(null);

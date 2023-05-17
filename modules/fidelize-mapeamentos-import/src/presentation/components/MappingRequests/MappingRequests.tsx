@@ -11,6 +11,7 @@ import {
 } from '../../../application/features/mappingRequestsList/MappingRequestsListSlice';
 import ListingUnavailable from '../ListingUnavailable';
 import DoneMappingRequestsList from '../DoneMappingRequestsList/DoneMappingRequestsList';
+import BlockedMappingRequestsList from '../BlockedMappingRequestsList/BlockedMappingRequestsList';
 
 interface MappingRequestsProps {
   mappingStatus: MappingStatusEnum;
@@ -74,6 +75,20 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({
         />
       );
     }
+
+    if (mappingStatus === MappingStatusEnum.BLOCKED) {
+      return (
+        <BlockedMappingRequestsList
+          mappingStatus={mappingStatus}
+          loading={loadingRequests}
+          requests={requestsData || []}
+          onRemoveCallback={() => {
+            handleRemoveRequest();
+          }}
+        />
+      );
+    }
+
     if (mappingStatus === MappingStatusEnum.DONE) {
       return (
         <DoneMappingRequestsList

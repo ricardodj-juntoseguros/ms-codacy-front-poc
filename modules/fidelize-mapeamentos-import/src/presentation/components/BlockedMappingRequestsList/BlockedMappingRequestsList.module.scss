@@ -1,0 +1,16 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.blocked-mapping-requests-list__wrapper {
+  margin-top: 26px;
+}
+
+.blocked-mapping-requests-list__box {
+  width: 100%;
+  border: 1px solid color('grey-200');
+  border-radius: spacing('xs');
+}
+
+.blocked-mapping-requests-list__items {
+  overflow-x: auto;
+  width: 100%;
+}

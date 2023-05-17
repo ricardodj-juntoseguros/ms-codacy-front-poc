@@ -128,6 +128,22 @@ describe('MappingRequests', () => {
     );
   });
 
+  it('Should call api method to fetch requests on component blokcked mount', async () => {
+    mockOngoingSuccess();
+    const { findByTestId } = render(
+      <MappingRequests
+        mappingStatus={MappingStatusEnum.BLOCKED}
+        onRemoveCallback={mockCallback}
+      />,
+    );
+    expect(
+      await findByTestId('blocked-mapping-requests-list'),
+    ).toBeInTheDocument();
+    expect(ListingMappingApi.prototype.getListingMapping).toHaveBeenCalledTimes(
+      1,
+    );
+  });
+
   it('Should call api method to fetch requests on component done mount', async () => {
     mockDoneSuccess();
     const { findByTestId } = render(

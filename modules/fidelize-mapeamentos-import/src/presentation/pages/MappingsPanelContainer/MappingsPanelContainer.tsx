@@ -44,19 +44,16 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
 
   const renderMappingsStatus = (label: string, status: MappingStatusEnum) => {
     let itemStatus: any;
-    let content = () => (
+    const content = () => (
       <MappingRequests
         mappingStatus={status}
         onRemoveCallback={() => fetchMappingSummary()}
       />
     );
-    if (status === MappingStatusEnum.BLOCKED) {
-      content = () => <ListingUnderConstruction />;
-    }
 
-    if (summary.length > 0) {
-      itemStatus = summary.find(item => item.status === status);
-    }
+    summary.length > 0
+      ? (itemStatus = summary.find(item => item.status === status))
+      : '';
 
     return (
       <Tab
@@ -91,7 +88,7 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
             withDivider={false}
           >
             {renderMappingsStatus('Na fila', MappingStatusEnum.ON_QUEUE)}
-            {renderMappingsStatus('Bloqueados', MappingStatusEnum.BLOCKED)}
+            {renderMappingsStatus('Para análise', MappingStatusEnum.BLOCKED)}
             {renderMappingsStatus('Concluídos', MappingStatusEnum.DONE)}
           </Tabs>
         </div>

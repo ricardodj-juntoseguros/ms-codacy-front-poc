@@ -65,7 +65,7 @@ const MappingRequestsListitemMenu: React.FC<MappingRequestsListitemMenuProps> =
               fontWeight: 'bold' as any,
             },
             text: {
-              value: `Esta solicitação do tomador ${policyholderName} sairá da lista de mapeamento.`,
+              value: `Esta solicitação do tomador ${policyholderName} será removida da lista.`,
               align: 'center' as any,
             },
             buttons: {
@@ -130,7 +130,7 @@ const MappingRequestsListitemMenu: React.FC<MappingRequestsListitemMenuProps> =
             },
             text: {
               value:
-                'Lembrando que você ainda pode solicitar mapeamento deste tomador em um próximo momento.',
+                'O tomador foi removido da lista, mas se houver entendimento de que ele possa ser mapeado num futuro próximo, você poderá fazer uma nova solicitação.',
               align: 'center' as any,
             },
             icon: <SuccessIllustration />,
