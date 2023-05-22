@@ -1,0 +1,23 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.contract-data__wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: spacing('m');
+}
+
+.contract-data__upload-container {
+  margin: spacing('m') 0 spacing('l') 0;
+  min-width: 100%;
+}
+
+.contract-data__upload-container div:nth-child(3){
+  min-width: 100%;
+}
+
+.contract-data__upload-message {
+  @include font('base');
+  @include color('color', 'grey-600');
+  margin: 0 0 spacing('m') 0;
+}

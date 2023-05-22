@@ -3,9 +3,6 @@ import { StepStatusEnum } from '../../types/model';
 import { flowActions } from './FlowSlice';
 
 describe('FlowSlice', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
   const stepsMock = [
     {
       name: 'ComponentA',
@@ -26,6 +23,7 @@ describe('FlowSlice', () => {
   ];
 
   beforeEach(async () => {
+    jest.clearAllMocks();
     await store.dispatch(flowActions.setSteps(stepsMock));
   });
 

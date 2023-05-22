@@ -4,9 +4,16 @@ import { render, RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 import { store } from './store';
+import { FileProvider } from './filesContext';
 
 const AllTheProviders: FC = ({ children }) => {
-  return <Provider store={store}>{children}</Provider>;
+  return (
+    <Provider store={store}>
+      <FileProvider>
+        {children}
+      </FileProvider>
+    </Provider>
+  );
 };
 
 const customRender = (

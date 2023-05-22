@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
+import { FileProvider } from '../../../config/filesContext';
 import { StepStatusEnum } from '../../../application/types/model';
 import styles from './FlowContainer.module.scss';
 import { flowActions, selectFlow } from '../../../application/features/flow/FlowSlice';
@@ -28,9 +29,11 @@ function FlowContainer() {
   };
 
   return (
-    <section className={styles['flow-container__wrapper']}>
-      {renderSteps()}
-    </section>
+    <FileProvider>
+      <section className={styles['flow-container__wrapper']}>
+        {renderSteps()}
+      </section>
+    </FileProvider>
   );
 }
 

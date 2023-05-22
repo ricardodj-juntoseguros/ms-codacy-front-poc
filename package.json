@@ -70,7 +70,7 @@
     "framer-motion": "6.5.1",
     "jest-environment-jsdom": "29.3.1",
     "js-cookie": "^3.0.1",
-    "junto-design-system": "2.0.1",
+    "junto-design-system": "^2.1.0",
     "jwt-decode": "^3.1.2",
     "logrocket": "^4.0.0",
     "logrocket-react": "^5.0.1",

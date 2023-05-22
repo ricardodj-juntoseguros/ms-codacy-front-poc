@@ -22,4 +22,8 @@ export const storeMock = {
       },
     ],
   },
+  proposal: {
+    contractNumber: '',
+    contractValue: 0,
+  },
 };
