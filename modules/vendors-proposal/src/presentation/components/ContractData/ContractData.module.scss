@@ -21,3 +21,29 @@
   @include color('color', 'grey-600');
   margin: 0 0 spacing('m') 0;
 }
+
+.contract-data__has-project-container {
+  display: flex;
+  align-items: center;
+  justify-items: flex-start;
+  margin: spacing('m') 0 spacing('m') 0;
+
+  & > div {
+    width: auto;
+  }
+}
+
+.contract-data__tooltip-button {
+  background-color: transparent;
+  height: 18px;
+  width: 18px;
+  border: none;
+  cursor: pointer;
+  padding: 0px;
+
+  & > i {
+    @include color('color', 'grey-500');
+    height: 18px;
+    width: 18px;
+  }
+}

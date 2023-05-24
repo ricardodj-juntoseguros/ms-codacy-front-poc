@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { AxiosHttpClient } from '@infrastructure/http-client';
 
 class VendorsProposalBaseApi {
@@ -20,10 +20,24 @@ class VendorsProposalBaseApi {
       this.headers,
       this.timeout,
     );
+    this.instance.setRequestInterceptors(this.handleRequestSuccess);
     this.instance.setResponseInterceptors(
       this.handleSuccess,
       this.handleErrors,
     );
+  }
+
+  async handleRequestSuccess(config: AxiosRequestConfig) {
+    const tokenResponse = await axios.request({
+      method: 'POST',
+      url: `${process.env.NX_GLOBAL_VENDORS_BFF_URL}/api/v1/login`,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: `username=adm_brk&password=Parana.123`,
+    });
+    const token = `Bearer ${tokenResponse.data.access_token}`;
+    return { ...config, headers: { ...config.headers, Authorization: token } };
   }
 
   handleSuccess(value: AxiosResponse<any>) {

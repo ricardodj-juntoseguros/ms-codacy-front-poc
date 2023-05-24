@@ -25,5 +25,24 @@ export const storeMock = {
   proposal: {
     contractNumber: '',
     contractValue: 0,
+    hasProject: true,
+    project: null,
+  },
+  projectSelection: {
+    projectSearchValue: '',
+    projectOptions: [
+      {
+        id: 1,
+        name: 'Lorem',
+      },
+    ],
+    projectOptionsMapped: [
+      {
+        id: 1,
+        name: 'Lorem',
+        label: 'Lorem',
+        value: '1',
+      },
+    ],
   },
 };

@@ -2,6 +2,7 @@
 import React, { FC, ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'junto-design-system';
 
 import { store } from './store';
 import { FileProvider } from './filesContext';
@@ -11,6 +12,7 @@ const AllTheProviders: FC = ({ children }) => {
     <Provider store={store}>
       <FileProvider>
         {children}
+        <ToastContainer />
       </FileProvider>
     </Provider>
   );

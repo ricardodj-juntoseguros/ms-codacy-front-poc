@@ -6,7 +6,7 @@ import axios, {
   Method,
 } from 'axios';
 import { IHttpClient } from '../IHttpClient';
-import {IHttpClientRequestParameters} from '../types/IHttpClientRequestParameters';
+import { IHttpClientRequestParameters } from '../types/IHttpClientRequestParameters';
 
 export class AxiosHttpClient implements IHttpClient {
   readonly instance: AxiosInstance;
@@ -49,7 +49,9 @@ export class AxiosHttpClient implements IHttpClient {
   }
 
   public setRequestInterceptors(
-    successHandler?: (config: AxiosRequestConfig) => AxiosRequestConfig,
+    successHandler?: (
+      config: AxiosRequestConfig,
+    ) => AxiosRequestConfig | Promise<AxiosRequestConfig>,
     errorHandler?: (error: any) => Promise<any>,
   ) {
     this.instance.interceptors.request.use(successHandler, errorHandler);
