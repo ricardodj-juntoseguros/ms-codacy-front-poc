@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { LinkButton, ThemeContext } from "junto-design-system";
 import className from 'classnames';
 import { useDispatch } from "react-redux";
@@ -41,7 +41,7 @@ const StepContainer: React.FC<StepContainerProps> = ({ name, status, index, titl
     const step = ALL_PROPOSAL_STEPS.find(step => step.name === name);
     if (!step || !step.component) return null;
 
-    return <step.component handleNextStep={handleNextStep} />;
+    return <step.component handleNextStep={handleNextStep} updateTitle={updateTitle}/>;
   };
 
   const renderIdentificationStep = () => {
@@ -79,9 +79,13 @@ const StepContainer: React.FC<StepContainerProps> = ({ name, status, index, titl
   }
 
   const handleNextStep = (text = '') => {
-  dispatch(flowActions.setInfoText({name, text}));
+    dispatch(flowActions.setInfoText({name, text}));
     dispatch(flowActions.advanceStep())
   };
+
+  const updateTitle = useCallback((text: string, boldWords: string[]) => {
+    dispatch(flowActions.setTitle({name, text, boldWords}))
+  }, [dispatch, name]);
 
   const handleEditableStep = () => {
     dispatch(flowActions.setEditableStep(name));

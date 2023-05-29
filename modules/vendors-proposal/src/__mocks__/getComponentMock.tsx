@@ -5,6 +5,7 @@ const Component = (props: any) => {
     <>
       <h1>Component</h1>
       <Button onClick={() => props.handleNextStep('Component')}>next</Button>
+      <Button onClick={() => props.updateTitle('title %STRONG%', ['bold'])}>title</Button>
     </>
   );
 };

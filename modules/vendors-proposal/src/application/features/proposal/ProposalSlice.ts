@@ -1,13 +1,18 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { SearchOptions } from 'junto-design-system';
 import { RootState } from '../../../config/store';
-import { ProposalModel } from '../../types/model';
+import { PolicyholderContactModel, ProposalModel } from '../../types/model';
 
 const initialState: ProposalModel = {
   contractNumber: '',
   contractValue: 0,
   hasProject: true,
   project: null,
+  policyholderContact: {
+    id: 0,
+    name: '',
+    email: '',
+  },
 };
 
 export const proposalSlice = createSlice({
@@ -25,6 +30,12 @@ export const proposalSlice = createSlice({
     },
     setProject: (state, action: PayloadAction<SearchOptions | null>) => {
       state.project = action.payload;
+    },
+    setPolicyholderContact: (
+      state,
+      action: PayloadAction<PolicyholderContactModel>,
+    ) => {
+      state.policyholderContact = action.payload;
     },
   },
 });

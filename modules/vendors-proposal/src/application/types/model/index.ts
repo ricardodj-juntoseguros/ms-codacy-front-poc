@@ -5,3 +5,4 @@ export * from './GenericComponentProps';
 export * from './ProposalModel';
 export * from './ValidationModel';
 export * from './ProjectSelectionModel';
+export * from './PolicyholderContactModel';

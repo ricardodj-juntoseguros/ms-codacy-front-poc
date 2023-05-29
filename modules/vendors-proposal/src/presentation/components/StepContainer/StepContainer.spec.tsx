@@ -79,6 +79,38 @@ describe('StepContainer', () => {
     expect(mockDispatch).toHaveBeenCalledWith(flowActions.advanceStep());
   });
 
+  it('should call the update title function', async () => {
+    const updatedStoreMock = {
+      ...storeMock,
+      proposal: {
+        ...storeMock.proposal,
+        policyholderContact: {
+          id: 1,
+          name: 'John Doe',
+          email: 'john@doe.com',
+        },
+      }
+    }
+    useSelectorMock.mockImplementation(select => select({ ...updatedStoreMock }));
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const step = storeMock.flow.steps[0];
+    const stepIndex = 1;
+
+    const { getByText } = render(<StepContainer {...step} index={stepIndex}/>);
+    const button = getByText('title');
+    await act(async () => {
+      await fireEvent.click(button);
+    });
+
+    expect(mockDispatch).toHaveBeenCalledWith(
+      flowActions.setTitle({
+        name: step.name,
+        text: 'title %STRONG%',
+        boldWords: ['bold']
+      })
+    );
+  });
+
   it('should call handle EditableStep function when click on edit button', async () => {
     useSelectorMock.mockImplementation(select => select({ ...storeMock }));
     useDispatchMock.mockImplementation(() => mockDispatch);

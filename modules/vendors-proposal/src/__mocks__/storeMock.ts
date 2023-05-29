@@ -27,6 +27,11 @@ export const storeMock = {
     contractValue: 0,
     hasProject: true,
     project: null,
+    policyholderContact: {
+      id: 0,
+      name: '',
+      email: '',
+    },
   },
   projectSelection: {
     projectSearchValue: '',

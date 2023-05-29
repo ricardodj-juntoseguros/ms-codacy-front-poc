@@ -12,8 +12,8 @@ const AllTheProviders: FC = ({ children }) => {
     <Provider store={store}>
       <FileProvider>
         {children}
-        <ToastContainer />
       </FileProvider>
+      <ToastContainer />
     </Provider>
   );
 };

@@ -35,4 +35,16 @@ describe('ProposalSlice', () => {
 
     expect(proposal.project).toEqual(valueMock);
   });
+
+  it('should set the policyholder contact correctly', async () => {
+    const contact = {
+      id: 1,
+      name: 'John Doe',
+      email: 'john@doe.com',
+    };
+    await store.dispatch(proposalActions.setPolicyholderContact(contact));
+    const { proposal } = store.getState();
+
+    expect(proposal.policyholderContact).toEqual(contact);
+  });
 });

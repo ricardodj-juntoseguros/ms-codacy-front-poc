@@ -168,7 +168,7 @@ describe('ContractData', () => {
     const storeMockUpdated = {
       ...storeMock,
       proposal: {
-        ...storeMock,
+        ...storeMock.proposal,
         contractNumber: '12345',
         contractValue: 12345,
         hasProject: false,
