@@ -29,6 +29,7 @@
         "modules/fidelize-mapeamentos-import/src/index.tsx"
       ],
       "@modules/vendors-proposal": ["modules/vendors-proposal/src/index.tsx"],
+      "@modules/vendors-authentication": ["modules/vendors-authentication/src/index.tsx"],
       "@services": ["libs/services/src/index.ts"],
       "@shared/hooks": ["libs/shared/hooks/src/index.tsx"],
       "@shared/ui": ["libs/shared/ui/src/index.tsx"],

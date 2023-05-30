@@ -800,6 +800,35 @@
           }
         }
       }
+    },
+    "vendors-authentication": {
+      "root": "modules/vendors-authentication",
+      "sourceRoot": "modules/vendors-authentication/src",
+      "projectType": "library",
+      "tags": [],
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
+          ],
+          "options": {
+            "lintFilePatterns": [
+              "modules/vendors-authentication/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/modules/vendors-authentication"
+          ],
+          "options": {
+            "jestConfig": "modules/vendors-authentication/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

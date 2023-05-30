@@ -1,0 +1,26 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.login__wrapper{
+  margin: auto;
+  width: 380px;
+  padding-top: spacing('xxl-2');
+}
+.login_title{
+  @include font('xl-emphasys');
+  font-family: 'Noto Sans';
+  padding-bottom: spacing('xxl');
+}
+
+.login__form{
+  margin: auto;
+  width: 312px;
+  display: flex;
+  flex-direction: column;
+  gap: spacing('m');
+}
+
+.forgot_passowrd_redirect{
+  margin: auto;
+  padding-bottom: spacing('m');
+}
+

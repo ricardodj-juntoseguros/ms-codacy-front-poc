@@ -9,6 +9,7 @@ module.exports = {
     '<rootDir>/modules/fidelize-dashboard',
     '<rootDir>/modules/fidelize-mapeamentos-import',
     '<rootDir>/modules/vendors-proposal',
+    '<rootDir>/modules/vendors-authentication',
     '<rootDir>/libs/infrastructure/http-client',
     '<rootDir>/libs/shared/hooks',
     '<rootDir>/libs/shared/ui',

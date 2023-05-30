@@ -4,7 +4,8 @@ import { AxiosHttpClient } from '@infrastructure/http-client';
 import { BrokerPlatformAuthService } from '@services';
 
 class BrokerSignupBaseApi {
-  private readonly BASE_URL =  process.env.NX_GLOBAL_BROKER_PLATFORM_BFF_URL || '';
+  private readonly BASE_URL =
+    process.env.NX_GLOBAL_BROKER_PLATFORM_BFF_URL || '';
 
   private headers = {};
 

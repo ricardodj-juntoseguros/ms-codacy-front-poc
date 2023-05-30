@@ -18,6 +18,14 @@ module.exports = (config, context) => {
           'vendors-proposal',
           'src',
         ),
+        '@modules/vendors-authentication': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'modules',
+          'vendors-authentication',
+          'src',
+        ),
         '@shared/utils': path.resolve(
           __dirname,
           '..',

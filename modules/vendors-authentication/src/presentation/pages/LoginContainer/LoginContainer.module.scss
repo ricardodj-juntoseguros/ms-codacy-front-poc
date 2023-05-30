@@ -1,0 +1,16 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.login_container__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding-top: spacing('xxl-2');
+
+  & svg{
+    margin: auto;
+  }
+}
+
+
