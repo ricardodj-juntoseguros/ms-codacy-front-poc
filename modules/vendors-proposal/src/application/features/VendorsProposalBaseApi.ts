@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { AxiosHttpClient } from '@infrastructure/http-client';
 
 class VendorsProposalBaseApi {
@@ -27,7 +27,9 @@ class VendorsProposalBaseApi {
     );
   }
 
-  async handleRequestSuccess(config: AxiosRequestConfig) {
+  async handleRequestSuccess(
+    config: AxiosRequestConfig,
+  ): Promise<AxiosRequestConfig> {
     const tokenResponse = await axios.request({
       method: 'POST',
       url: `${process.env.NX_GLOBAL_VENDORS_BFF_URL}/api/v1/login`,

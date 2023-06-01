@@ -4,5 +4,7 @@ export * from './StepModel';
 export * from './GenericComponentProps';
 export * from './ProposalModel';
 export * from './ValidationModel';
+export * from './InsuredAndPolicyholderSelectionModel';
+export * from './ProposalPolicyholderModel';
 export * from './ProjectSelectionModel';
 export * from './PolicyholderContactModel';

@@ -7,3 +7,4 @@ export * from './codSusepFormatter';
 export * from './cpfFormatter';
 export * from './phoneFormatter';
 export * from './formatDateString';
+export * from './federalIdValidator';

@@ -1,0 +1,43 @@
+import { PolicyholderAffiliateDTO } from '../application/types/dto';
+
+export const policyholderAffiliatesMock = [
+  {
+    id: 906,
+    policyholdersId: 1254,
+    name: 'CONSTRUTORA JUNTO SEGUROS - TESTE',
+    federalId: '65.182.718/0001-91',
+    address: 'Avenida de Nacar',
+    complement: 'Centro',
+    number: 1441,
+    city: 'Curitiba',
+    state: 'PR',
+    country: 'Brasil',
+    cep: '80410-201',
+  },
+  {
+    id: 907,
+    policyholdersId: 1254,
+    name: 'CONSTRUTORA JUNTO SEGUROS - TESTE',
+    federalId: '65.182.718/0002-91',
+    address: 'Nacar de Visconde',
+    complement: 'Centro',
+    number: 1439,
+    city: 'Colombo',
+    state: 'PR',
+    country: 'Brasil',
+    cep: '80410-210',
+  },
+  {
+    id: 908,
+    policyholdersId: 1254,
+    name: 'CONSTRUTORA JUNTO SEGUROS - TESTE',
+    federalId: '65.182.718/0003-91',
+    address: 'Av. Sete de Setembro',
+    complement: 'Centro',
+    number: 290,
+    city: 'Curitiba',
+    state: 'PR',
+    country: 'Brasil',
+    cep: '83324-230',
+  },
+] as PolicyholderAffiliateDTO[];

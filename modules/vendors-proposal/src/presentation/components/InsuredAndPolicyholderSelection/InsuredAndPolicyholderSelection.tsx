@@ -1,0 +1,107 @@
+import { useContext, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Button, ThemeContext } from 'junto-design-system';
+import { federalIdFormatter } from '@shared/utils';
+import { GenericComponentProps } from '../../../application/types/model';
+import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
+import { selectInsuredAndPolicyholderSelection } from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionSlice';
+import { InsuredAndPolicyholderSelectionSkeleton } from '../Skeletons';
+import InsuredSelector from '../InsuredSelector';
+import InsuredAddressSelector from '../InsuredAddressSelector';
+import PolicyholderSelector from '../PolicyholderSelector';
+import styles from './InsuredAndPolicyholderSelection.module.scss';
+import PolicyholderAffiliateSelector from '../PolicyholderAffiliateSelector';
+
+const InsuredAndPolicyholderSelection: React.FC<GenericComponentProps> = ({
+  handleNextStep,
+}) => {
+  const theme = useContext(ThemeContext);
+  const { insuredAddressId, insuredFederalId, insuredName, policyholder } =
+    useSelector(selectProposal);
+  const {
+    isValidFederalId,
+    loadingPolicyholders,
+    policyholderInputValue,
+    policyholderAffiliateResults,
+  } = useSelector(selectInsuredAndPolicyholderSelection);
+  const [displaySkeleton, setDisplaySkeleton] = useState<boolean>(true);
+
+  const shouldEnableNextButton = useMemo(() => {
+    const hasSelectedInsuredAndAddress =
+      insuredFederalId !== '' && insuredAddressId !== 0;
+    const hasSelectedPolicyholder = !!policyholder.federalId;
+    return (
+      !loadingPolicyholders &&
+      hasSelectedInsuredAndAddress &&
+      (hasSelectedPolicyholder || isValidFederalId)
+    );
+  }, [
+    insuredAddressId,
+    insuredFederalId,
+    loadingPolicyholders,
+    isValidFederalId,
+    policyholder.federalId,
+  ]);
+
+  const handleNextButtonClick = () => {
+    if (policyholder.corporateName) {
+      handleNextStep(`${insuredName} e ${policyholder.corporateName}`);
+      return;
+    }
+    const formattedFederalId = federalIdFormatter(
+      policyholderInputValue.replace(/[^\d]+/g, ''),
+    );
+    handleNextStep(`${insuredName} e ${formattedFederalId}`);
+  };
+
+  return (
+    <div className={styles['insured-policyholder-selection__wrapper']}>
+      {displaySkeleton && <InsuredAndPolicyholderSelectionSkeleton />}
+      <div
+        className={
+          styles[
+            `insured-policyholder-selection__form${
+              displaySkeleton ? '--hidden' : ''
+            }`
+          ]
+        }
+      >
+        <div>
+          <p className={styles[theme]}>Empresa contratante</p>
+          <div className={styles['insured-policyholder-selection__field']}>
+            <InsuredSelector
+              onLoadedInsureds={() => setDisplaySkeleton(false)}
+            />
+          </div>
+          <div className={styles['insured-policyholder-selection__field']}>
+            <InsuredAddressSelector />
+          </div>
+        </div>
+        <div>
+          <p className={styles[theme]}>Empresa contratada</p>
+          <div className={styles['insured-policyholder-selection__field']}>
+            <PolicyholderSelector />
+          </div>
+          {policyholderAffiliateResults &&
+            policyholderAffiliateResults.length > 0 && (
+              <div className={styles['insured-policyholder-selection__field']}>
+                <PolicyholderAffiliateSelector />
+              </div>
+            )}
+        </div>
+      </div>
+      <div className={styles['insured-policyholder-selection__submit']}>
+        <Button
+          data-testid="insuredPolicyholderSelection-button-submit"
+          fullWidth
+          disabled={!shouldEnableNextButton}
+          onClick={() => handleNextButtonClick()}
+        >
+          Avançar
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default InsuredAndPolicyholderSelection;

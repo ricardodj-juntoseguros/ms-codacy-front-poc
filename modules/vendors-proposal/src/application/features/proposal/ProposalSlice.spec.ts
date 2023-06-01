@@ -16,6 +16,36 @@ describe('ProposalSlice', () => {
     expect(proposal.contractValue).toEqual(12345);
   });
 
+  it('should set insured values correctly', async () => {
+    await store.dispatch(
+      proposalActions.setInsuredValues({
+        federalId: '11223344556677',
+        name: 'Teste Segurado',
+      }),
+    );
+    const { proposal } = store.getState();
+    expect(proposal.insuredFederalId).toEqual('11223344556677');
+    expect(proposal.insuredName).toEqual('Teste Segurado');
+    expect(proposal.insuredAddressId).toEqual(0);
+  });
+
+  it('should set the insured address id value correctly', async () => {
+    await store.dispatch(proposalActions.setInsuredAddressId(12345));
+    const { proposal } = store.getState();
+    expect(proposal.insuredAddressId).toEqual(12345);
+  });
+
+  it('should set the policyholder object correctly', async () => {
+    const mockPolicyholder = {
+      externalId: 123,
+      federalId: '07184122000124',
+      corporateName: 'Teste Tomador Mock',
+    };
+    await store.dispatch(proposalActions.setPolicyholder(mockPolicyholder));
+    const { proposal } = store.getState();
+    expect(proposal.policyholder).toStrictEqual(mockPolicyholder);
+  });
+
   it('should set the hasProject value correctly', async () => {
     await store.dispatch(proposalActions.setHasProject(true));
     const { proposal } = store.getState();
