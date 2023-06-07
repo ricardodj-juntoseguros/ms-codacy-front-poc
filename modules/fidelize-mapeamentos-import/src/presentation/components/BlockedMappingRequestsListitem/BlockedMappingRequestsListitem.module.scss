@@ -4,6 +4,7 @@
   padding: spacing('l');
   border-bottom: 1px solid color('grey-200');
   display: grid;
+  grid-template-columns: 65px 170px 170px auto;
   grid-template-columns: 65px 170px 162px 82px 74px 74px 34px 42px 42px auto;
   gap: spacing('l');
   box-sizing: border-box;
@@ -110,6 +111,26 @@
   color: color('grey-500');
 }
 
+.blocked-mapping-requests-listitem-edit-actions__wrapper {
+  display: flex;
+  margin-left: spacing('m');
+  gap: spacing('m');
+
+  & > div:first-child {
+    width: 110px;
+  }
+  button {
+    padding: 0 10px;
+    width: 60px;
+    box-shadow: none;
+  }
+
+  button:last-child {
+    padding: 0 5px;
+    width: 63px;
+  }
+}
+
 .blocked-mapping-requests-listitem-actions__wrapper {
   display: flex;
   align-self: flex-end;
@@ -124,7 +145,7 @@
     color: color('grey-500');
 
     &:hover {
-      color: color('grey-500');
+      color: color('brand-primary');
     }
   }
 }

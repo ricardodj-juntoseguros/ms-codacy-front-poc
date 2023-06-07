@@ -24,6 +24,11 @@ export interface RequestMappingRecord {
   canUnlock?: boolean;
 }
 
+export interface RequestMappingUpdate {
+  Priority: boolean;
+  QueueType: number[];
+}
+
 export interface QueueType {
   id: number;
   name: string;

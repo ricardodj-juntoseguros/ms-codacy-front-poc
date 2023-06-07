@@ -6,26 +6,43 @@ import {
   ToastContainer,
   makeToast,
 } from 'junto-design-system';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import { MappingStatusEnum } from '../../../application/types/model/MappingStatusEnum';
 import styles from './MappingsPanelContainer.module.scss';
-import ListingUnderConstruction from '../../components/ListingUnderConstruction/ListingUnderConstruction';
 import MappingRequests from '../../components/MappingRequests';
 import { MappingSummaryDTO } from '../../../application/types/dto';
+import { renderMappingEditionLossModal } from '../../../helpers/renderMappingEditionLossModal';
+import {
+  selectModalEdition,
+  setEditorId,
+} from '../../../application/features/modalMapping/ModalMappingSlice';
 
 function MappingsPanelContainer({ history }: RouteComponentProps) {
   const [summary, setSummary] = useState<MappingSummaryDTO[]>([]);
   const [activeTab, setActiveTab] = useState<string>(
     MappingStatusEnum.ON_QUEUE,
   );
-
+  const editionLossModalRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+  const { editorId } = useSelector(selectModalEdition);
   const goToSolicitation = () => {
-    history.push('/solicitar');
+    editorId === 0
+      ? history.push('/solicitar')
+      : renderMappingEditionLossModal(
+          editionLossModalRef.current,
+          () => {
+            dispatch(setEditorId([0]));
+            history.push('/solicitar');
+          },
+          true,
+        );
   };
 
   useEffect(() => {
     fetchMappingSummary();
+    dispatch(setEditorId([0]));
   }, []);
 
   const fetchMappingSummary = () => {
@@ -84,7 +101,18 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
         <div className={styles['mappings-panel__tabs-wrapper']}>
           <Tabs
             activeTab={activeTab}
-            onSelectTab={tab => setActiveTab(tab)}
+            onSelectTab={tab =>
+              editorId === 0
+                ? setActiveTab(tab)
+                : renderMappingEditionLossModal(
+                    editionLossModalRef.current,
+                    () => {
+                      dispatch(setEditorId([0]));
+                      setActiveTab(tab);
+                    },
+                    true,
+                  )
+            }
             withDivider={false}
           >
             {renderMappingsStatus('Na fila', MappingStatusEnum.ON_QUEUE)}
@@ -94,6 +122,7 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
         </div>
       </div>
       <ToastContainer duration={2000} />
+      <div ref={editionLossModalRef} />
     </div>
   );
 }

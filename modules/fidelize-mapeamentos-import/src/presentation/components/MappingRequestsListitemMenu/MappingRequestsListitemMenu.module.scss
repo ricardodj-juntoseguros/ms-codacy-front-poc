@@ -75,12 +75,43 @@
 
   &:first-child * {
     color: color('grey-300');
+  }
+
+  &--can-edit {
+    background-color: color('withe');
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    height: 40px;
+    align-items: center;
+    width: 198px;
+    cursor: pointer;
+
+    &:first-child * {
+      color: color('dark');
+      padding: 10px 0;
+
+      i {
+        color: color('brand-primary');
+      }
+    }
+
+    span {
+      text-decoration: none !important;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+      color: color('dark');
+    }
+
     &:hover {
-      color: color('grey-300') !important;
+      color: color('dark') !important;
+      background-color: rgba(241, 245, 247, 0.7);
     }
   }
 
   &:nth-child(2) {
+    padding: 10px 0;
     &:hover {
       background-color: rgba(241, 245, 247, 0.7);
     }

@@ -1,13 +1,20 @@
 import { formatDateString, thousandSeparator } from '@shared/utils';
 import classNames from 'classnames';
-import { Button, Modal, Tooltip } from 'junto-design-system';
 import { useRef, useState } from 'react';
+import { Button, Modal, Tooltip } from 'junto-design-system';
+import { useSelector, useDispatch } from 'react-redux';
 import { AlertIllustration, SuccessIllustration } from '@shared/ui';
+import { renderMappingEditionLossModal } from '../../../helpers/renderMappingEditionLossModal';
 import { RequestMappingRecord } from '../../../application/types/dto';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import { QueueTypesEnum } from '../../../application/types/model';
 import styles from './BlockedMappingRequestsListitem.module.scss';
 import MappingRequestsListitemMenu from '../MappingRequestsListitemMenu/MappingRequestsListitemMenu';
+import EditorMappingRequestListitem from '../EditorMappingRequestListitem/EditorMappingRequestListitem';
+import {
+  selectModalEdition,
+  setEditorId,
+} from '../../../application/features/modalMapping/ModalMappingSlice';
 
 interface BlockedMappingRequestsListitemProps {
   mappingRequest: RequestMappingRecord;
@@ -31,6 +38,9 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
       canUnlock,
     } = mappingRequest;
 
+    const dispatch = useDispatch();
+    const { editorId } = useSelector(selectModalEdition);
+    const editionLossModalRef = useRef<HTMLDivElement>(null);
     const blockDivRef = useRef<HTMLDivElement>(null);
     const sendButtonRef = useRef<HTMLButtonElement>(null);
     const [showBlocks, setShowBlocks] = useState(false);
@@ -47,13 +57,29 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
       }
     };
 
+    const handleOnClick = () => {
+      if (editorId === 0 && canUnlock) {
+        setIsOpen(true);
+      } else {
+        canUnlock
+          ? renderMappingEditionLossModal(
+              editionLossModalRef.current,
+              () => setIsOpen(true),
+              true,
+            )
+          : setShowMessage(true);
+      }
+    };
+
     const patchDeleteMappingItem = () => {
       new ListingMappingApi()
         .patchMappingItem(id)
         .then(() => {
+          dispatch(setEditorId([0]));
           setCurrentStep('SUCCESS');
         })
         .catch(() => {
+          dispatch(setEditorId([0]));
           setCurrentStep('ONERROR');
         });
     };
@@ -125,7 +151,7 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
           ref={sendButtonRef}
           size="small"
           onClick={() => {
-            canUnlock ? setIsOpen(true) : setShowMessage(true);
+            handleOnClick();
           }}
           onMouseLeave={() => (canUnlock ? '' : setShowMessage(false))}
         >
@@ -223,145 +249,180 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
           return undefined;
       }
     };
-
     return (
-      <div className={styles['blocked-mapping-requests-listitem__wrapper']}>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          <p className={styles['blocked-mapping-requests-listitem__label']}>
-            {formatDateString(createdAt, 'dd/MM/yy')}
-          </p>
-        </div>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          <p
-            className={classNames(
-              styles['blocked-mapping-requests-listitem__label'],
-              styles['blocked-mapping-requests-listitem__label--emphasys'],
+      <>
+        <div className={styles['blocked-mapping-requests-listitem__wrapper']}>
+          <div className={styles['blocked-mapping-requests-listitem__column']}>
+            <p className={styles['blocked-mapping-requests-listitem__label']}>
+              {formatDateString(createdAt, 'dd/MM/yy')}
+            </p>
+          </div>
+          <div className={styles['blocked-mapping-requests-listitem__column']}>
+            <p
+              className={classNames(
+                styles['blocked-mapping-requests-listitem__label'],
+                styles['blocked-mapping-requests-listitem__label--emphasys'],
+              )}
+              title={policyholderName}
+            >
+              {policyholderName}
+            </p>
+            {!!policyholderEconomicGroupName && (
+              <span
+                className={
+                  styles['blocked-mapping-requests-listitem__label-helper']
+                }
+                title={policyholderEconomicGroupName}
+              >
+                {policyholderEconomicGroupName}
+              </span>
             )}
-            title={policyholderName}
-          >
-            {policyholderName}
-          </p>
-          {!!policyholderEconomicGroupName && (
+          </div>
+          <div className={styles['blocked-mapping-requests-listitem__column']}>
+            <p
+              className={styles['blocked-mapping-requests-listitem__label']}
+              title={brokerName}
+            >
+              {brokerName}
+            </p>
             <span
               className={
                 styles['blocked-mapping-requests-listitem__label-helper']
               }
-              title={policyholderEconomicGroupName}
             >
-              {policyholderEconomicGroupName}
+              {category}
             </span>
-          )}
-        </div>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          <p
-            className={styles['blocked-mapping-requests-listitem__label']}
-            title={brokerName}
-          >
-            {brokerName}
-          </p>
-          <span
-            className={
-              styles['blocked-mapping-requests-listitem__label-helper']
-            }
-          >
-            {category}
-          </span>
-        </div>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.LABOR)}
-        </div>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.FEDERAL)}
-        </div>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.STATE)}
-        </div>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.CARF)}
-        </div>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.ACTIVE_DEBT)}
-        </div>
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          <div
-            className={styles['blocked-mapping-requests-listitem__statuses']}
-          >
-            {isPriority && (
-              <span
-                className={
-                  styles['blocked-mapping-requests-listitem__priority-tag']
-                }
-              >
-                Urgente
-              </span>
-            )}
           </div>
-        </div>
-
-        <div className={styles['blocked-mapping-requests-listitem__column']}>
-          <div
-            className={classNames(
-              styles['blocked-mapping-requests-listitem-actions__wrapper'],
-              {
-                [styles[
-                  'blocked-mapping-requests-listitem-actions__wrapper-cant-unblock'
-                ]]: !canUnlock,
-              },
-            )}
-          >
-            {switchButtons()}
-            {blocks?.length > 0 && (
+          {editorId !== id ? (
+            <>
               <div
-                className={classNames(
-                  styles[
-                    'blocked-mapping-requests-listitem-actions__show-tooltip'
-                  ],
-                  {
-                    [styles[
-                      'blocked-mapping-requests-listitem-actions__show-tooltip--warn'
-                    ]]: !canUnlock,
-                  },
-                )}
-                ref={blockDivRef}
+                className={styles['blocked-mapping-requests-listitem__column']}
               >
-                <i
-                  data-testid="show-tooltip"
-                  onMouseEnter={() => setShowBlocks(true)}
-                  onMouseLeave={() => setShowBlocks(false)}
-                  className="icon-alert-circle"
+                {renderQueueColumn(QueueTypesEnum.LABOR)}
+              </div>
+              <div
+                className={styles['blocked-mapping-requests-listitem__column']}
+              >
+                {renderQueueColumn(QueueTypesEnum.FEDERAL)}
+              </div>
+              <div
+                className={styles['blocked-mapping-requests-listitem__column']}
+              >
+                {renderQueueColumn(QueueTypesEnum.STATE)}
+              </div>
+              <div
+                className={styles['blocked-mapping-requests-listitem__column']}
+              >
+                {renderQueueColumn(QueueTypesEnum.CARF)}
+              </div>
+              <div
+                className={styles['blocked-mapping-requests-listitem__column']}
+              >
+                {renderQueueColumn(QueueTypesEnum.ACTIVE_DEBT)}
+              </div>
+              <div
+                className={styles['blocked-mapping-requests-listitem__column']}
+              >
+                <div
+                  className={
+                    styles['blocked-mapping-requests-listitem__statuses']
+                  }
+                >
+                  {isPriority && (
+                    <span
+                      className={
+                        styles[
+                          'blocked-mapping-requests-listitem__priority-tag'
+                        ]
+                      }
+                    >
+                      Urgente
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div
+                className={styles['blocked-mapping-requests-listitem__column']}
+              >
+                <div
+                  className={classNames(
+                    styles[
+                      'blocked-mapping-requests-listitem-actions__wrapper'
+                    ],
+                    {
+                      [styles[
+                        'blocked-mapping-requests-listitem-actions__wrapper-cant-unblock'
+                      ]]: !canUnlock,
+                    },
+                  )}
+                >
+                  {switchButtons()}
+                  {blocks?.length > 0 && (
+                    <div
+                      className={classNames(
+                        styles[
+                          'blocked-mapping-requests-listitem-actions__show-tooltip'
+                        ],
+                        {
+                          [styles[
+                            'blocked-mapping-requests-listitem-actions__show-tooltip--warn'
+                          ]]: !canUnlock,
+                        },
+                      )}
+                      ref={blockDivRef}
+                    >
+                      <i
+                        data-testid="show-tooltip"
+                        onMouseEnter={() => setShowBlocks(true)}
+                        onMouseLeave={() => setShowBlocks(false)}
+                        className="icon-alert-circle"
+                      />
+                    </div>
+                  )}
+
+                  <MappingRequestsListitemMenu
+                    policyholderName={policyholderName}
+                    canEdit={canUnlock}
+                    mappingId={id}
+                    onRemoveCallback={() => onRemoveCallback()}
+                  />
+                </div>
+                <Modal
+                  size="default"
+                  open={isOpen}
+                  template={getModalTemplate()}
+                  onBackdropClick={() => onCloseModal()}
+                  onCloseButtonClick={() => onCloseModal()}
+                />
+
+                <Tooltip
+                  anchorRef={blockDivRef}
+                  text={handleTextBlocks(!canUnlock)}
+                  visible={showBlocks}
+                  position="top"
+                />
+
+                <Tooltip
+                  anchorRef={sendButtonRef}
+                  text={blockedMessage}
+                  visible={showMessage}
+                  position="top"
                 />
               </div>
-            )}
-
-            <MappingRequestsListitemMenu
+            </>
+          ) : (
+            <EditorMappingRequestListitem
+              id={id}
+              isPriority={isPriority}
+              queueTypes={queueTypes}
+              onRemoveCallback={onRemoveCallback}
               policyholderName={policyholderName}
-              mappingId={id}
-              onRemoveCallback={() => onRemoveCallback()}
             />
-          </div>
-          <Modal
-            size="default"
-            open={isOpen}
-            template={getModalTemplate()}
-            onBackdropClick={() => onCloseModal()}
-            onCloseButtonClick={() => onCloseModal()}
-          />
-
-          <Tooltip
-            anchorRef={blockDivRef}
-            text={handleTextBlocks(!canUnlock)}
-            visible={showBlocks}
-            position="top"
-          />
-
-          <Tooltip
-            anchorRef={sendButtonRef}
-            text={blockedMessage}
-            visible={showMessage}
-            position="top"
-          />
+          )}
         </div>
-      </div>
+        <div ref={editionLossModalRef} />
+      </>
     );
   };
 

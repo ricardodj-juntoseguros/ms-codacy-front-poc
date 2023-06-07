@@ -63,6 +63,15 @@ class ListingMappingApi {
 
     return await this.instance.patch<any>(params);
   }
+
+  async putMappingItem(id: number, data: any): Promise<any> {
+    const params: IHttpClientRequestParameters = {
+      url: `/backoffice/opportunityrequest/${id}`,
+      payload: data,
+    };
+
+    return await this.instance.put<any>(params);
+  }
 }
 
 export default ListingMappingApi;
