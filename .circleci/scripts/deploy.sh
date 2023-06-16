@@ -190,7 +190,7 @@ quality)
         if [ "$i" == "plataforma" ]; then
         APP="corretor"
         elif [ "$i" == "vendors" ]; then
-        APP="project-preview"
+        APP="vendors"
         else
         APP="${i}"
         fi
@@ -220,7 +220,7 @@ staging)
         if [ "$i" == "plataforma" ]; then
         APP="corretor"
         elif [ "$i" == "vendors" ]; then
-        APP="project-preview"
+        APP="vendors"
         else
         APP="${i}"
         fi
@@ -247,7 +247,7 @@ production)
         if [ "$i" == "plataforma" ]; then
         APP="corretor"
         elif [ "$i" == "vendors" ]; then
-        APP="project-preview"
+        APP="vendors"
         else
         APP="${i}"
         fi
