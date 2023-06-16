@@ -1,0 +1,59 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.first_access_wrapper{
+  margin: auto;
+  width: 380px;
+  padding-top: 50px
+}
+
+.first_access_title{
+  @include font('xl-emphasys');
+  padding-bottom: 40px;
+  font-family: "Noto Sans";
+  text-align: center;
+}
+
+.first_access_form{
+  margin: auto;
+  width: 312px;
+  display: flex;
+  flex-direction: column;
+  gap: spacing('m');
+}
+
+.first_access_terms{
+  margin: auto;
+  padding-bottom: 16px;
+
+  & span {
+    @include font('sm');
+    align-self: flex-end;
+    }
+  .span_terms{
+    font-family: "Noto Sans";
+    color: color('grey-500');
+  }
+}
+
+.first_access_validation_password{
+  width: 100%;
+  padding: 0 16px;
+  z-index: 100;
+  border-radius: 4px;
+  box-sizing: border-box;
+
+}
+
+.first_access_validation_password_rule{
+  display: flex;
+  flex-direction: column;
+  gap: spacing('xs');
+  align-items: flex-start
+
+}
+
+.first_access_validation_password_rule_text{
+  @include font('xs');
+  font-family: "Noto Sans";
+  padding-left: spacing('s');
+}

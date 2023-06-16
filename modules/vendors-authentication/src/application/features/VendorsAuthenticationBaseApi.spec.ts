@@ -1,5 +1,6 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import { AxiosResponse, AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 import VendorsAuthenticationBaseApi from './VendorsAuthenticationBaseApi';
 
 describe('VendorsAuthenticationBaseApi', () => {
@@ -58,5 +59,13 @@ describe('VendorsAuthenticationBaseApi', () => {
       });
 
     expect(err.status).toBe(404);
+  });
+
+  it('getAuthorizationHeader should get access token from cookie', async () => {
+    const mockCookie = `{"token": "any_token", "refreshToken": "refresh_token", "useRefreshToken": true }`;
+
+    jest.spyOn(Cookies, 'get').mockReturnValue(mockCookie as any);
+    const result = new VendorsAuthenticationBaseApi().getHeaders();
+    expect(result).toStrictEqual({ authorization: `Bearer any_token` });
   });
 });

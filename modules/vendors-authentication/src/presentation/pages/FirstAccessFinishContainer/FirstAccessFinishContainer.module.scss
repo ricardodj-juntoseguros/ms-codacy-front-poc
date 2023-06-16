@@ -1,0 +1,52 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+
+.first_Access_finish_container__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  height: 100vh;
+  background-color: #002C77;
+
+  & svg {
+    padding-top: 30px;
+    margin: auto;
+  }
+}
+
+
+
+.first_Access_finish_logo{
+  margin: auto;
+  padding: spacing('xxl-2');
+}
+.first_Access_finish_box{
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  height: 90vh;
+  width: 100%;
+}
+
+.first_Access_finish_container__information{
+  width: 512px;
+  margin: 0 auto;
+  padding: spacing('l') 0 0 0;
+  & span{
+    @include font('xl-emphasys');
+    color: color('white');;
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 312px;
+    & span{
+      color: color('white');;
+    }
+  }
+}
+

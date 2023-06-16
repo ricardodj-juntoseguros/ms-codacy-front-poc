@@ -1,14 +1,18 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.login_container__wrapper {
+.first_Access__wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
-  text-align: center;
-  padding-top: spacing('xxl-2');
-
-  & svg{
-    margin: auto;
-  }
+  padding-top: 45px;
 }
+
+.first_Access__logo{
+  margin: auto;
+}
+
+
+
+
+

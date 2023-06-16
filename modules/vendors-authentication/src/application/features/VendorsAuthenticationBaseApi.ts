@@ -69,6 +69,8 @@ class VendorsAuthenticationBaseApi {
             const cookieExpiresIn = new Date(
               new Date().getTime() + (refresh_expires_in || expires_in) * 1000,
             );
+            const userType = VendorsAuthService.getUserType(access_token);
+
             VendorsAuthService.setUserAccessCookie(
               {
                 ...userCookie,
@@ -77,6 +79,8 @@ class VendorsAuthenticationBaseApi {
                 expiresIn: expires_in * 1000,
                 refreshExpiresIn: refresh_expires_in * 1000,
                 createAt: new Date().toISOString(),
+                userType,
+                isMaster: VendorsAuthService.isUserMaster(access_token),
               },
               cookieExpiresIn,
             );

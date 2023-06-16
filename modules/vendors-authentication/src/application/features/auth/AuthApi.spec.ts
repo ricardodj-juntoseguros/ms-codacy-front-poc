@@ -41,4 +41,26 @@ describe('AuthApi', () => {
 
     expect(mock).toBeCalled();
   });
+  it('resetPassword should call bff service correctly', async () => {
+    const hashMock = 'HAUSA29EI9JAD9AU9V9J9JF,EOKFK';
+    const tokendMock = 'ZAWERFGVBNJKLRTYHGNM';
+    const passwordMock = 'mock';
+
+    const mockPut = jest
+      .spyOn(AxiosHttpClient.prototype, 'put')
+      .mockImplementation(async () => {
+        return UserTokenMock;
+      });
+
+    await AuthApi.resetPassword(hashMock, tokendMock, passwordMock);
+
+    expect(mockPut).toHaveBeenCalledWith({
+      url: '/api/v1/user/password',
+      payload: {
+        hash: hashMock,
+        token: tokendMock,
+        value: passwordMock,
+      },
+    });
+  });
 });

@@ -2,6 +2,7 @@
 import Cookies from 'js-cookie';
 import { addMilliseconds, isBefore } from 'date-fns';
 import { AxiosHttpClient } from '@infrastructure/http-client';
+import jwtDecode from 'jwt-decode';
 
 export class VendorsAuthService {
   private readonly USER_ACCESS_COOKIE =
@@ -15,6 +16,19 @@ export class VendorsAuthService {
 
   private readonly PLATAFORMA_VENDORS_URL =
     process.env['NX_GLOBAL_VENDORS_BFF_URL'] || '';
+
+  private readonly USER_TYPES = {
+    policyholder: 'policyholder',
+    insured: 'insured',
+    broker: 'broker',
+    master: 'master',
+  };
+
+  private readonly REDIRECT_PAGES_AFTER_LOGIN = {
+    policyholder: `${process.env.NX_GLOBAL_VENDORS_PLATFORM_URL}/proposal`,
+    insured: `${process.env.NX_GLOBAL_VENDORS_PLATFORM_URL}/proposal`,
+    broker: `${process.env.NX_GLOBAL_VENDORS_PLATFORM_URL}/proposal`,
+  };
 
   getUserAccessCookie() {
     const userCookie = Cookies.get(this.USER_ACCESS_COOKIE) || '';
@@ -88,6 +102,49 @@ export class VendorsAuthService {
     await this.doSessionLogout(token, refreshToken)
       .catch(() => console.error('Error ocurred on session token logout'))
       .finally(() => this.clearAuthData());
+  }
+
+  redirectLogin() {
+    let urlRedirect = '';
+
+    const userCookie = this.getUserAccessCookie();
+    if (!userCookie) return;
+
+    const { userType } = this.getUserAccessCookie();
+
+    if (userType.includes(this.USER_TYPES.policyholder)) {
+      urlRedirect = this.REDIRECT_PAGES_AFTER_LOGIN.policyholder;
+    }
+    if (userType.includes(this.USER_TYPES.insured)) {
+      urlRedirect = this.REDIRECT_PAGES_AFTER_LOGIN.insured;
+    }
+    if (userType.includes(this.USER_TYPES.broker)) {
+      urlRedirect = this.REDIRECT_PAGES_AFTER_LOGIN.broker;
+    }
+
+    window.location.assign(urlRedirect);
+  }
+
+  // eslint-disable-next-line camelcase
+  getUserType(access_token: string) {
+    const tokenData = jwtDecode<any>(access_token);
+
+    if (tokenData.realm_access.roles.includes(this.USER_TYPES.policyholder)) {
+      return this.USER_TYPES.policyholder;
+    }
+    if (tokenData.realm_access.roles.includes(this.USER_TYPES.insured)) {
+      return this.USER_TYPES.insured;
+    }
+    if (tokenData.realm_access.roles.includes(this.USER_TYPES.broker)) {
+      return this.USER_TYPES.broker;
+    }
+    return '';
+  }
+
+  // eslint-disable-next-line camelcase
+  isUserMaster(access_token: string) {
+    const tokenData = jwtDecode<any>(access_token);
+    return tokenData.realm_access.roles.includes(this.USER_TYPES.master);
   }
 }
 

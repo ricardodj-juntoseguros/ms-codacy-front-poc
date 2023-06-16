@@ -3,17 +3,30 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import { VendorsAuthService } from '@services';
-import jwtDecode from 'jwt-decode';
 import VendorsAuthenticationBaseApi from '../VendorsAuthenticationBaseApi';
-import { AuthenticationDTO, UserTokenDTO } from '../../types/dto';
-import { USER_TYPES } from '../../../constants/userTypes';
-import { REDIRECT_PAGES_AFTER_LOGIN } from '../../../constants/redirectPagesAfterLogin';
+import { AuthenticationDTO } from '../../types/dto';
 
 class AuthApi {
   private instance: AxiosHttpClient;
 
   public constructor() {
     this.instance = new VendorsAuthenticationBaseApi().getInstance();
+  }
+
+  async resetPassword(
+    hash: string,
+    token: string,
+    password: string,
+  ): Promise<AuthenticationDTO> {
+    const params: IHttpClientRequestParameters = {
+      url: `/api/v1/user/password`,
+      payload: {
+        hash,
+        token,
+        value: password,
+      },
+    };
+    return await this.instance.put<AuthenticationDTO>(params);
   }
 
   async postAuth(login: string, password: string): Promise<AuthenticationDTO> {
@@ -33,22 +46,9 @@ class AuthApi {
         (userAcessToken.refresh_expires_in || userAcessToken.expires_in) * 1000,
     );
 
-    const tokenData = jwtDecode<UserTokenDTO>(userAcessToken.access_token);
-    let userType;
-    let urlRedirect = '';
-
-    if (tokenData.realm_access.roles.includes(USER_TYPES.policyholder)) {
-      userType = USER_TYPES.policyholder;
-      urlRedirect = REDIRECT_PAGES_AFTER_LOGIN.policyholder;
-    }
-    if (tokenData.realm_access.roles.includes(USER_TYPES.insured)) {
-      userType = USER_TYPES.insured;
-      urlRedirect = REDIRECT_PAGES_AFTER_LOGIN.insured;
-    }
-    if (tokenData.realm_access.roles.includes(USER_TYPES.broker)) {
-      userType = USER_TYPES.broker;
-      urlRedirect = REDIRECT_PAGES_AFTER_LOGIN.broker;
-    }
+    const userType = VendorsAuthService.getUserType(
+      userAcessToken.access_token,
+    );
 
     VendorsAuthService.setUserAccessCookie(
       {
@@ -58,12 +58,12 @@ class AuthApi {
         refreshExpiresIn: userAcessToken.refresh_expires_in * 1000,
         createAt: new Date().toISOString(),
         userType,
-        isMaster: tokenData.realm_access.roles.includes(USER_TYPES.master),
+        isMaster: VendorsAuthService.isUserMaster(userAcessToken.access_token),
       },
       cookieExpiresIn,
     );
 
-    window.location.assign(urlRedirect);
+    VendorsAuthService.redirectLogin();
   }
 }
 
