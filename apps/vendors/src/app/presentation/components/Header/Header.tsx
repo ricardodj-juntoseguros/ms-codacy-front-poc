@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LinkButton, ThemeContext } from 'junto-design-system';
+import { VendorsAuthService } from '@services';
 import { nanoid } from 'nanoid/non-secure';
 import className from 'classnames';
 import LogoMarsh from '../../../assets/logo-marsh.svg';
@@ -14,7 +15,10 @@ export interface HeaderProps {
   backButton?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ showMenuItems = true, backButton }) => {
+const Header: React.FC<HeaderProps> = ({
+  showMenuItems = true,
+  backButton,
+}) => {
   const theme = useContext(ThemeContext);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
@@ -22,12 +26,12 @@ const Header: React.FC<HeaderProps> = ({ showMenuItems = true, backButton }) => 
   });
 
   useEffect(() => {
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     });
 
     return () => {
-      window.removeEventListener("resize", () => {
+      window.removeEventListener('resize', () => {
         setWindowSize({ width: window.innerWidth, height: window.innerHeight });
       });
     };
@@ -38,23 +42,32 @@ const Header: React.FC<HeaderProps> = ({ showMenuItems = true, backButton }) => 
       <ul className={styles['header__list']}>
         {MENU_ITEMS.map(item => (
           <li className={styles['header__item']} key={nanoid(5)}>
-            <Link data-testid={`header-anchor-${item.redirect}`} className={className(
-              styles['header__link'],
-              styles[theme]
-            )} to={item.redirect}>
+            <Link
+              data-testid={`header-anchor-${item.redirect}`}
+              className={className(styles['header__link'], styles[theme])}
+              to={item.redirect}
+            >
               {item.label}
             </Link>
           </li>
         ))}
       </ul>
     );
-  }
+  };
 
   const renderBackButton = () => {
     if (!backButton) {
       return (
-        <Link data-testid="header-logo-back" to='/' className={styles['header__logo']}>
-          <img src={LogoMarsh} className={styles['header__img']} alt="Logo da plataforma Marsh vendors" />
+        <Link
+          data-testid="header-logo-back"
+          to="/"
+          className={styles['header__logo']}
+        >
+          <img
+            src={LogoMarsh}
+            className={styles['header__img']}
+            alt="Logo da plataforma Marsh vendors"
+          />
         </Link>
       );
     }
@@ -64,10 +77,10 @@ const Header: React.FC<HeaderProps> = ({ showMenuItems = true, backButton }) => 
         data-testid="header-button-back"
         label={windowSize.width > 576 ? 'Voltar' : ''}
         onClick={backButton}
-        icon='arrow-left'
+        icon="arrow-left"
       />
-    )
-  }
+    );
+  };
 
   return (
     <header className={styles.header}>
@@ -77,8 +90,8 @@ const Header: React.FC<HeaderProps> = ({ showMenuItems = true, backButton }) => 
         {showMenuItems && renderNavMenu()}
         <UserMenu
           isMobile={windowSize.width <= 576}
-          username='Ana Paula Antunes'
-          userEmail='ana_antunes@marsh.com'
+          username={VendorsAuthService.getUsername() || ''}
+          userEmail={VendorsAuthService.getUserEmail() || ''}
           userMenuItems={USER_MENU_ITEMS}
         />
       </nav>

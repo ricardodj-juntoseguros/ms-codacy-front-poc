@@ -66,23 +66,11 @@ class VendorsAuthenticationBaseApi {
               refresh_token,
             } = response as any;
 
-            const cookieExpiresIn = new Date(
-              new Date().getTime() + (refresh_expires_in || expires_in) * 1000,
-            );
-            const userType = VendorsAuthService.getUserType(access_token);
-
             VendorsAuthService.setUserAccessCookie(
-              {
-                ...userCookie,
-                token: access_token,
-                refreshToken: refresh_token,
-                expiresIn: expires_in * 1000,
-                refreshExpiresIn: refresh_expires_in * 1000,
-                createAt: new Date().toISOString(),
-                userType,
-                isMaster: VendorsAuthService.isUserMaster(access_token),
-              },
-              cookieExpiresIn,
+              access_token,
+              refresh_token,
+              expires_in,
+              refresh_expires_in,
             );
             originalRequest.headers.authorization = `bearer ${access_token}`;
             resolve(axios.request(originalRequest));

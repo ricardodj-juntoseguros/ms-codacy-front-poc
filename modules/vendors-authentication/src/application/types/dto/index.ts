@@ -1,3 +1,2 @@
-export * from './AuthemticationDTO';
-export * from './UserTokenDTO';
+export * from './AuthenticationDTO';
 export * from './TermsDTO';

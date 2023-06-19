@@ -2,7 +2,6 @@ import {
   AxiosHttpClient,
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
-import { VendorsAuthService } from '@services';
 import VendorsAuthenticationBaseApi from '../VendorsAuthenticationBaseApi';
 import { AuthenticationDTO } from '../../types/dto';
 
@@ -38,32 +37,6 @@ class AuthApi {
       },
     };
     return await this.instance.post<AuthenticationDTO>(params);
-  }
-
-  async setUserAccessCookie(userAcessToken: AuthenticationDTO): Promise<void> {
-    const cookieExpiresIn = new Date(
-      new Date().getTime() +
-        (userAcessToken.refresh_expires_in || userAcessToken.expires_in) * 1000,
-    );
-
-    const userType = VendorsAuthService.getUserType(
-      userAcessToken.access_token,
-    );
-
-    VendorsAuthService.setUserAccessCookie(
-      {
-        token: userAcessToken.access_token,
-        refreshToken: userAcessToken.refresh_token,
-        expiresIn: userAcessToken.expires_in * 1000,
-        refreshExpiresIn: userAcessToken.refresh_expires_in * 1000,
-        createAt: new Date().toISOString(),
-        userType,
-        isMaster: VendorsAuthService.isUserMaster(userAcessToken.access_token),
-      },
-      cookieExpiresIn,
-    );
-
-    VendorsAuthService.redirectLogin();
   }
 }
 

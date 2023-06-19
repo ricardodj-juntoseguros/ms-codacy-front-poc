@@ -5,10 +5,11 @@ interface UserAccessTokenRealmAccess {
   roles: string[];
 }
 
-export interface UserTokenDTO extends JwtPayload {
+export interface UserToken extends JwtPayload {
   realm_access: UserAccessTokenRealmAccess;
   email: string;
   name: string;
+  preferred_username: string;
 }
 
-export default UserTokenDTO;
+export default UserToken;

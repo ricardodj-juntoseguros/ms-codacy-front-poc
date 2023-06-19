@@ -1,5 +1,6 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
-import { AxiosResponse, AxiosError } from 'axios';
+import { VendorsAuthService } from '@services';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import VendorsProposalBaseApi from './VendorsProposalBaseApi';
 
 describe('FidelizeImportMapeamentosBaseApi', () => {
@@ -54,5 +55,58 @@ describe('FidelizeImportMapeamentosBaseApi', () => {
     });
 
     expect(err.status).toBe(404);
+  });
+
+  it('handleErrors should call refresh token and update user cookie and instance headers', async () => {
+    jest.mock('axios');
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
+    const mockError = {
+      response: {
+        status: 401,
+      },
+      config: {
+        baseURL: 'test_url',
+        method: 'GET',
+        headers: { authorization: 'bearer any_token' },
+      },
+    } as AxiosError;
+    jest
+      .spyOn(VendorsAuthService, 'getUserAccessCookie')
+      .mockImplementation(() => {
+        return {
+          refreshToken: 'any_refresh_token',
+        };
+      });
+    jest
+      .spyOn(VendorsAuthService, 'setUserAccessCookie')
+      .mockImplementation(() => {
+        return true;
+      });
+    jest
+      .spyOn(VendorsAuthService, 'doRefreshToken')
+      .mockImplementation(async () => {
+        return {
+          access_token: 'new_token',
+          refresh_token: 'new_refresh_token',
+          expires_in: 900,
+          refresh_expires_in: 1800,
+        };
+      });
+    jest.spyOn(axios, 'request').mockImplementation(async () => {
+      return { success: true };
+    });
+    const testInstance = new VendorsProposalBaseApi();
+    await testInstance.handleErrors(mockError);
+    expect(VendorsAuthService.getUserAccessCookie).toHaveBeenCalled();
+    expect(VendorsAuthService.doRefreshToken).toHaveBeenCalled();
+    expect(VendorsAuthService.setUserAccessCookie).toHaveBeenCalledWith(
+      'new_token',
+      'new_refresh_token',
+      900,
+      1800,
+    );
+    expect(
+      testInstance.getInstance().instance.defaults.headers.Authorization,
+    ).toBe('bearer new_token');
   });
 });

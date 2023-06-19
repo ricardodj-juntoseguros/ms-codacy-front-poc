@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
-import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { VendorsAuthService } from '@services';
 import { AxiosHttpClient } from '@infrastructure/http-client';
 
 class VendorsProposalBaseApi {
@@ -14,44 +15,65 @@ class VendorsProposalBaseApi {
   public constructor() {
     this.headers = {
       'Content-Type': 'application/json',
+      Authorization: this.getAuthorizationHeader(),
     };
     this.instance = new AxiosHttpClient(
       this.BASE_URL,
       this.headers,
       this.timeout,
     );
-    this.instance.setRequestInterceptors(this.handleRequestSuccess);
     this.instance.setResponseInterceptors(
-      this.handleSuccess,
-      this.handleErrors,
+      this.handleSuccess.bind(this),
+      this.handleErrors.bind(this),
     );
   }
 
-  async handleRequestSuccess(
-    config: AxiosRequestConfig,
-  ): Promise<AxiosRequestConfig> {
-    const tokenResponse = await axios.request({
-      method: 'POST',
-      url: `${process.env.NX_GLOBAL_VENDORS_BFF_URL}/api/v1/login`,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      data: `username=adm_brk&password=Parana.123`,
-    });
-    const token = `Bearer ${tokenResponse.data.access_token}`;
-    return { ...config, headers: { ...config.headers, Authorization: token } };
+  private getAuthorizationHeader(): string {
+    const userCookie = VendorsAuthService.getUserAccessCookie();
+    if (!userCookie) return '';
+    const { token } = userCookie;
+    return `Bearer ${token}`;
   }
 
   handleSuccess(value: AxiosResponse<any>) {
     return value;
   }
 
-  handleErrors(error: AxiosError) {
+  async handleErrors(error: AxiosError) {
+    const { config: originalRequest } = error;
+    if (error.response && error.response.status === 401) {
+      // handle unauthorized error, try to refresh the user tokens
+      const userCookie = VendorsAuthService.getUserAccessCookie();
+      const vendorsLoginUrl = process.env.NX_GLOBAL_VENDORS_PLATFORM_URL || '';
+      if (!userCookie || !userCookie.refreshToken) {
+        window.location.assign(vendorsLoginUrl);
+        return null;
+      }
+      try {
+        const refreshResponse =
+          (await VendorsAuthService.doRefreshToken()) as any;
+        const { refresh_expires_in, expires_in, access_token, refresh_token } =
+          refreshResponse;
+        VendorsAuthService.setUserAccessCookie(
+          access_token,
+          refresh_token,
+          expires_in,
+          refresh_expires_in,
+        );
+        originalRequest.headers.Authorization = `bearer ${access_token}`;
+        this.headers = {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${access_token}`,
+        };
+        this.instance.instance.defaults.headers = this.headers;
+        return Promise.resolve(axios.request(originalRequest));
+      } catch (err) {
+        VendorsAuthService.clearAuthData();
+        window.location.assign(vendorsLoginUrl);
+        return Promise.reject(err);
+      }
+    }
     return Promise.reject(error.response || error);
-  }
-
-  public getHeaders() {
-    return this.headers;
   }
 
   public getInstance(): AxiosHttpClient {

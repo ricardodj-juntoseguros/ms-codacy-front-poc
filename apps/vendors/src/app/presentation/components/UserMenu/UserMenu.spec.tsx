@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom';
-import { act, fireEvent, render } from "@testing-library/react"
+import { VendorsAuthService } from '@services';
+import { act, fireEvent, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import UserMenu from "./UserMenu"
-import { USER_MENU_ITEMS } from "../../../constants";
+import UserMenu from './UserMenu';
+import { USER_MENU_ITEMS } from '../../../constants';
 
 describe('UserMenu', () => {
   it('should render with the received information correctly', () => {
@@ -14,14 +15,13 @@ describe('UserMenu', () => {
           userEmail="lorem@lorem.com"
           userMenuItems={USER_MENU_ITEMS}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const name = getAllByText('lorem');
 
     expect(baseElement).toBeInTheDocument();
     expect(name[0]).toBeInTheDocument();
-
 
     const userMenuButton = getByTestId('userMenu-button-open-menu');
     fireEvent.click(userMenuButton);
@@ -39,22 +39,41 @@ describe('UserMenu', () => {
           userEmail="lorem@lorem.com"
           userMenuItems={USER_MENU_ITEMS}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const userMenuButton = getByTestId('userMenu-button-open-menu');
     await act(async () => {
       fireEvent.click(userMenuButton);
-    })
+    });
 
+    const logoutLink = getByText('Sair da plataforma');
+    expect(logoutLink).toBeInTheDocument();
+  });
 
-    const preferencesLink = getByText('Preferências');
-    const usersLink = getByText('Administrar usuários');
+  it('should call logout on auth service on logout link click', async () => {
+    jest.spyOn(VendorsAuthService, 'logout').mockImplementation(async () => {
+      console.log('Mocked logout');
+    });
+    const { getByTestId, getByText } = render(
+      <MemoryRouter>
+        <UserMenu
+          isMobile={false}
+          username="lorem"
+          userEmail="lorem@lorem.com"
+          userMenuItems={USER_MENU_ITEMS}
+        />
+      </MemoryRouter>,
+    );
 
-    expect(preferencesLink).toBeInTheDocument();
-    expect(usersLink).toBeInTheDocument();
-    expect(preferencesLink).toBeInTheDocument();
-    expect(usersLink).toBeInTheDocument();
+    const userMenuButton = getByTestId('userMenu-button-open-menu');
+    await act(async () => {
+      fireEvent.click(userMenuButton);
+    });
+
+    const logoutLink = getByText('Sair da plataforma');
+    fireEvent.click(logoutLink);
+    expect(VendorsAuthService.logout).toHaveBeenCalled();
   });
 
   it('should hide username when on mobile', async () => {
@@ -66,11 +85,11 @@ describe('UserMenu', () => {
           userEmail="lorem@lorem.com"
           userMenuItems={USER_MENU_ITEMS}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const username = await queryAllByText('lorem');
 
     expect(username.length).toEqual(1);
   });
-})
+});

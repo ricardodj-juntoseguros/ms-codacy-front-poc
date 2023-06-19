@@ -1,8 +1,6 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
-import { VendorsAuthService } from '@services';
 import { UserTokenMock } from '../../../__mocks__/index';
 import AuthApi from './AuthApi';
-import { AuthenticationDTO } from '../../types/dto';
 
 describe('AuthApi', () => {
   beforeAll(() => {
@@ -32,15 +30,6 @@ describe('AuthApi', () => {
     expect(result).toBe(UserTokenMock);
   });
 
-  it('AuthApi should call bff service correctly', async () => {
-    const mock = jest
-      .spyOn(VendorsAuthService, 'setUserAccessCookie')
-      .mockImplementation();
-
-    await AuthApi.setUserAccessCookie(UserTokenMock as AuthenticationDTO);
-
-    expect(mock).toBeCalled();
-  });
   it('resetPassword should call bff service correctly', async () => {
     const hashMock = 'HAUSA29EI9JAD9AU9V9J9JF,EOKFK';
     const tokendMock = 'ZAWERFGVBNJKLRTYHGNM';
