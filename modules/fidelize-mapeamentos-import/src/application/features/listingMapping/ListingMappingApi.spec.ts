@@ -57,6 +57,10 @@ describe('ListingMappingApi', () => {
     { total: 24, status: 'BLOCKED' },
     { total: 63, status: 'ON_QUEUE' },
   ];
+  const putMockEditData = {
+    Priority: true,
+    QueueType: [3, 4],
+  };
 
   beforeAll(() => {
     process.env.NX_GLOBAL_GATEWAY_URL = 'any_url';
@@ -164,6 +168,25 @@ describe('ListingMappingApi', () => {
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/backoffice/opportunityrequest/5501',
+    });
+    expect(result).not.toBe(null);
+  });
+
+  it('puthMappingItem should call api to update a solicitation by id', async () => {
+    const mockPatch = jest
+      .spyOn(AxiosHttpClient.prototype, 'put')
+      .mockImplementation(async () => {
+        return Promise.resolve();
+      });
+
+    const result = await new ListingMappingApi().putMappingItem(
+      1234,
+      putMockEditData,
+    );
+
+    expect(mockPatch).toHaveBeenCalledWith({
+      url: '/backoffice/opportunityrequest/1234',
+      payload: putMockEditData,
     });
     expect(result).not.toBe(null);
   });

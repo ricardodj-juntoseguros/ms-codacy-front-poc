@@ -75,7 +75,7 @@ describe('OngoingMappingRequestsListitem', () => {
     const { getByText } = render(
       <OngoingMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback()}
+        onChangeCallback={mockCallback()}
       />,
     );
     expect(getByText('01/01/23')).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe('OngoingMappingRequestsListitem', () => {
     const { getByText, getAllByText, getByTestId } = render(
       <OngoingMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback()}
+        onChangeCallback={mockCallback()}
       />,
     );
     expect(getByTestId('1-queue-3-requested')).toBeInTheDocument();
@@ -108,7 +108,7 @@ describe('OngoingMappingRequestsListitem', () => {
     const { getByText } = render(
       <OngoingMappingRequestsListitem
         mappingRequest={requestMockAux}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     expect(getByText('Urgente')).toBeInTheDocument();
@@ -119,7 +119,7 @@ describe('OngoingMappingRequestsListitem', () => {
     const { getByText } = render(
       <OngoingMappingRequestsListitem
         mappingRequest={requestMockAux}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     expect(getByText('Iniciado')).toBeInTheDocument();
@@ -129,7 +129,7 @@ describe('OngoingMappingRequestsListitem', () => {
     const { findByText, getByTestId } = render(
       <OngoingMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
 

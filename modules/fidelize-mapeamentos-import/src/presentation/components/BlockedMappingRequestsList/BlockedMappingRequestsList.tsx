@@ -13,14 +13,14 @@ interface BlockedMappingRequestsListProps {
   mappingStatus: MappingStatusEnum;
   requests: RequestMappingRecord[];
   loading: boolean;
-  onRemoveCallback: () => void;
+  onChangeCallback: () => void;
 }
 
 const BlockedMappingRequestsList: React.FC<BlockedMappingRequestsListProps> = ({
   mappingStatus,
   requests,
   loading,
-  onRemoveCallback,
+  onChangeCallback,
 }) => {
   const { pageSize } = useSelector(
     selectSettingsByMappingStatus(mappingStatus),
@@ -34,7 +34,7 @@ const BlockedMappingRequestsList: React.FC<BlockedMappingRequestsListProps> = ({
             <BlockedMappingRequestsListitem
               key={nanoid(5)}
               mappingRequest={request}
-              onRemoveCallback={() => onRemoveCallback()}
+              onChangeCallback={() => onChangeCallback()}
             />
           ))}
         </div>

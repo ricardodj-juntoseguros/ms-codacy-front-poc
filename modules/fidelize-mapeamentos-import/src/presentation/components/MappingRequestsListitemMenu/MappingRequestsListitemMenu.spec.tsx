@@ -1,7 +1,7 @@
 import { fireEvent, render, cleanup, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { store } from 'modules/fidelize-mapeamentos-import/src/config/store';
-import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
+import { store } from '../../../config/store';
+import { setEditorId } from '../../../application/features/modalMapping/ModalMappingSlice';
 import MappingRequestsListitemMenu from './MappingRequestsListitemMenu';
 
 const mockCallback = jest.fn();
@@ -10,70 +10,18 @@ beforeEach(() => {
   cleanup();
 });
 describe('MappingRequestsListitemMenu', () => {
-  const mockSuccess = () => {
-    jest
-      .spyOn(ListingMappingApi.prototype, 'deleteMappingItem')
-      .mockImplementation(async () => {
-        return { success: true };
-      });
-  };
-  const mockError = () => {
-    jest
-      .spyOn(ListingMappingApi.prototype, 'deleteMappingItem')
-      .mockImplementation(async () => {
-        return new Promise((resolve, reject) => {
-          return reject();
-        });
-      });
-  };
   it('Should render component successfully', async () => {
     const { baseElement } = render(
-      <Provider store={store}>
-        <Provider store={store}>
-          <MappingRequestsListitemMenu
-            policyholderName="Teste"
-            mappingId={1}
-            onRemoveCallback={mockCallback}
-          />
-        </Provider>
-        ,
-      </Provider>,
-    );
-
-    expect(baseElement).toBeTruthy();
-  });
-
-  it('Should performs the complete exclusion flow', async () => {
-    mockSuccess();
-    const { getByTestId, findByText, findByTestId } = render(
       <Provider store={store}>
         <MappingRequestsListitemMenu
           policyholderName="Teste"
           mappingId={1}
-          onRemoveCallback={mockCallback}
-          canEdit
+          onChangeCallback={mockCallback}
         />
-        ,
       </Provider>,
     );
 
-    const btnLink = getByTestId('show-menu-btn');
-
-    fireEvent.click(btnLink);
-    const btnRemove = await findByTestId('remove-item-btn');
-
-    fireEvent.click(btnRemove);
-    const modalTitle = await findByText(
-      'Tem certeza que deseja excluir esta solicitação?',
-    );
-    expect(modalTitle).toBeTruthy();
-
-    const btnConfirm = await findByTestId('confirm-exclusion-btn');
-    expect(btnConfirm).toBeTruthy();
-
-    fireEvent.click(btnConfirm);
-
-    expect(await findByText('Solicitação excluída!')).toBeTruthy();
+    expect(baseElement).toBeTruthy();
   });
 
   it('Should call and show opportunity editor ', async () => {
@@ -82,7 +30,7 @@ describe('MappingRequestsListitemMenu', () => {
         <MappingRequestsListitemMenu
           policyholderName="Teste"
           mappingId={1}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           canEdit
         />
         ,
@@ -107,7 +55,7 @@ describe('MappingRequestsListitemMenu', () => {
         <MappingRequestsListitemMenu
           policyholderName="Teste"
           mappingId={1}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           canEdit
         />
         ,
@@ -128,94 +76,14 @@ describe('MappingRequestsListitemMenu', () => {
     });
   });
 
-  it('Should show a retry modal when on error is called', async () => {
-    mockError();
-    const { getByTestId, findByText, findByTestId } = render(
-      <Provider store={store}>
-        <MappingRequestsListitemMenu
-          policyholderName="Teste"
-          mappingId={1}
-          onRemoveCallback={mockCallback}
-          canEdit
-        />
-        ,
-      </Provider>,
-    );
-
-    const btnLink = getByTestId('show-menu-btn');
-
-    fireEvent.click(btnLink);
-    const btnRemove = await findByTestId('remove-item-btn');
-
-    fireEvent.click(btnRemove);
-    waitFor(async () => {
-      const modalTitle = await findByText(
-        'Tem certeza que deseja excluir esta solicitação?',
-      );
-      expect(modalTitle).toBeTruthy();
-
-      const btnConfirm = await findByTestId('confirm-exclusion-btn');
-      expect(btnConfirm).toBeTruthy();
-
-      fireEvent.click(btnConfirm);
-
-      expect(
-        await findByText('Não foi possível excluir a solicitação'),
-      ).toBeTruthy();
-    });
-  });
-
-  it('Should retry exclusion when modal error is showed', async () => {
-    const { getByTestId, findByText, findByTestId } = render(
-      <Provider store={store}>
-        <MappingRequestsListitemMenu
-          policyholderName="Teste"
-          mappingId={1}
-          onRemoveCallback={mockCallback}
-          canEdit
-        />
-        ,
-      </Provider>,
-    );
-
-    const btnLink = getByTestId('show-menu-btn');
-
-    fireEvent.click(btnLink);
-    const btnRemove = await findByTestId('remove-item-btn');
-
-    fireEvent.click(btnRemove);
-
-    waitFor(async () => {
-      const modalTitle = await findByText(
-        'Tem certeza que deseja excluir esta solicitação?',
-      );
-      expect(modalTitle).toBeTruthy();
-
-      const btnConfirm = await findByTestId('confirm-exclusion-btn');
-      expect(btnConfirm).toBeTruthy();
-
-      fireEvent.click(btnConfirm);
-      mockError();
-
-      expect(
-        await findByText('Não foi possível excluir a solicitação'),
-      ).toBeTruthy();
-
-      const btnRetry = await findByTestId('retry-exclusion-btn');
-      expect(btnRetry).toBeTruthy();
-
-      fireEvent.click(btnConfirm);
-      waitFor(() => expect(modalTitle).not.toBeTruthy());
-    });
-  });
-
   it('Should performs the cancel exclusion flow using cancel button', async () => {
+    store.dispatch(setEditorId([0]));
     const { getByTestId, findByText, findByTestId } = render(
       <Provider store={store}>
         <MappingRequestsListitemMenu
           policyholderName="Teste"
           mappingId={1}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           canEdit
         />
         ,
@@ -240,13 +108,77 @@ describe('MappingRequestsListitemMenu', () => {
     });
   });
 
+  it('Should performs to loss actual edition on try delete another opportunity', async () => {
+    store.dispatch(setEditorId([1]));
+    const { getByTestId, findByText, findByTestId } = render(
+      <Provider store={store}>
+        <MappingRequestsListitemMenu
+          policyholderName="Teste"
+          mappingId={1}
+          onChangeCallback={mockCallback}
+          canEdit
+        />
+        ,
+      </Provider>,
+    );
+
+    const btnLink = getByTestId('show-menu-btn');
+    fireEvent.click(btnLink);
+
+    const btnRemove = await findByTestId('remove-item-btn');
+    fireEvent.click(btnRemove);
+
+    waitFor(async () => {
+      const modalTitle = await findByText(
+        'A edição de uma solicitação será perdida',
+      );
+      const btnContinue = await findByTestId('btn-keep-selection');
+      expect(btnContinue).toBeTruthy();
+
+      fireEvent.click(btnContinue);
+      expect(modalTitle).not.toBeTruthy();
+    });
+  });
+
+  it('Should performs to loss actual edition on try edit another opportunity', async () => {
+    store.dispatch(setEditorId([1]));
+    const { getByTestId, findByText, findByTestId } = render(
+      <Provider store={store}>
+        <MappingRequestsListitemMenu
+          policyholderName="Teste"
+          mappingId={1}
+          onChangeCallback={mockCallback}
+          canEdit
+        />
+        ,
+      </Provider>,
+    );
+
+    const btnLink = getByTestId('show-menu-btn');
+    fireEvent.click(btnLink);
+
+    const btnEdit = await findByTestId('edit-item-btn');
+    fireEvent.click(btnEdit);
+
+    waitFor(async () => {
+      const modalTitle = await findByText(
+        'A edição de uma solicitação será perdida',
+      );
+      const btnContinue = await findByTestId('btn-keep-selection');
+      expect(btnContinue).toBeTruthy();
+
+      fireEvent.click(btnContinue);
+      expect(modalTitle).not.toBeTruthy();
+    });
+  });
+
   it('Should performs the cancel exclusion flow using close modal button', async () => {
     const { getByTestId, findByText, findByTestId } = render(
       <Provider store={store}>
         <MappingRequestsListitemMenu
           policyholderName="Teste"
           mappingId={1}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           canEdit
         />
         ,
@@ -277,7 +209,7 @@ describe('MappingRequestsListitemMenu', () => {
         <MappingRequestsListitemMenu
           policyholderName="Teste"
           mappingId={1}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           canEdit
         />
         ,
@@ -308,7 +240,7 @@ describe('MappingRequestsListitemMenu', () => {
         <MappingRequestsListitemMenu
           policyholderName="Teste"
           mappingId={1}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           canEdit
         />
         ,
@@ -330,7 +262,7 @@ describe('MappingRequestsListitemMenu', () => {
         <MappingRequestsListitemMenu
           policyholderName="Teste"
           mappingId={1}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           canEdit
         />
         ,

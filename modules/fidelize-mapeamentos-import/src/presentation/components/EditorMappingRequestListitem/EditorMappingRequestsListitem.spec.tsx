@@ -1,4 +1,10 @@
-import { fireEvent, render, cleanup, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  cleanup,
+  waitFor,
+  findAllByTestId,
+} from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from 'modules/fidelize-mapeamentos-import/src/config/store';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
@@ -42,16 +48,32 @@ beforeEach(() => {
   cleanup();
 });
 describe('EditorMappingRequestListitem', () => {
-  const mockSuccess = () => {
+  const mockPutSuccess = () => {
     jest
       .spyOn(ListingMappingApi.prototype, 'putMappingItem')
       .mockImplementation(async () => {
         return { success: true };
       });
   };
-  const mockError = () => {
+  const mockPutError = () => {
     jest
       .spyOn(ListingMappingApi.prototype, 'putMappingItem')
+      .mockImplementation(async () => {
+        return new Promise((resolve, reject) => {
+          return reject();
+        });
+      });
+  };
+  const mockDeleteSuccess = () => {
+    jest
+      .spyOn(ListingMappingApi.prototype, 'deleteMappingItem')
+      .mockImplementation(async () => {
+        return { success: true };
+      });
+  };
+  const mockDeleteError = () => {
+    jest
+      .spyOn(ListingMappingApi.prototype, 'deleteMappingItem')
       .mockImplementation(async () => {
         return new Promise((resolve, reject) => {
           return reject();
@@ -66,7 +88,7 @@ describe('EditorMappingRequestListitem', () => {
             id={1}
             isPriority
             queueTypes={mockQueTypes}
-            onRemoveCallback={mockCallback}
+            onChangeCallback={mockCallback}
             policyholderName="Empresa Teste"
           />
         </Provider>
@@ -78,14 +100,14 @@ describe('EditorMappingRequestListitem', () => {
   });
 
   it('Should performs the complete save flow', async () => {
-    mockSuccess();
-    const { getByTestId, findByTestId } = render(
+    mockPutSuccess();
+    const { getByTestId } = render(
       <Provider store={store}>
         <EditorMappingRequestListitem
           id={1}
           isPriority
           queueTypes={mockQueTypes}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           policyholderName="Empresa Teste"
         />
         ,
@@ -99,15 +121,15 @@ describe('EditorMappingRequestListitem', () => {
     });
   });
 
-  it('Should performs the complete save flow', async () => {
-    mockSuccess();
+  it('Should performs to show delete modal if try set all requests to false on edit', async () => {
+    mockDeleteSuccess();
     const { getAllByTestId, findByText } = render(
       <Provider store={store}>
         <EditorMappingRequestListitem
           id={1}
           isPriority
           queueTypes={mockQueTypes}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           policyholderName="Empresa Teste"
         />
         ,
@@ -124,14 +146,14 @@ describe('EditorMappingRequestListitem', () => {
   });
 
   it('Should hide opportunity editor', async () => {
-    mockSuccess();
+    mockPutSuccess();
     const { getByTestId } = render(
       <Provider store={store}>
         <EditorMappingRequestListitem
           id={1}
           isPriority
           queueTypes={mockQueTypes}
-          onRemoveCallback={mockCallback}
+          onChangeCallback={mockCallback}
           policyholderName="Empresa Teste"
         />
         ,
@@ -142,6 +164,53 @@ describe('EditorMappingRequestListitem', () => {
     fireEvent.click(btnCancel);
     waitFor(() => {
       expect(btnCancel).not.toBeTruthy();
+    });
+  });
+
+  it('Should switch priority', async () => {
+    mockPutSuccess();
+    const { getByTestId, findByText } = render(
+      <Provider store={store}>
+        <EditorMappingRequestListitem
+          id={1}
+          isPriority
+          queueTypes={mockQueTypes}
+          onChangeCallback={mockCallback}
+          policyholderName="Empresa Teste"
+        />
+        ,
+      </Provider>,
+    );
+
+    const switchPriority = getByTestId('toggle-status-edit');
+    fireEvent.click(switchPriority);
+    waitFor(async () => {
+      expect(await findByText('Normal')).toBeTruthy();
+    });
+  });
+
+  it('Should show message error on error', async () => {
+    mockPutError();
+    const { getByTestId, findByText } = render(
+      <Provider store={store}>
+        <EditorMappingRequestListitem
+          id={1}
+          isPriority
+          queueTypes={mockQueTypes}
+          onChangeCallback={mockCallback}
+          policyholderName="Empresa Teste"
+        />
+        ,
+      </Provider>,
+    );
+
+    const btnSave = getByTestId('confirm-update-btn');
+    fireEvent.click(btnSave);
+    waitFor(() => {
+      const warnMessage = findByText(
+        'Ops, não conseguimos salvar suas alterações. Por favor, tente novamente.',
+      );
+      expect(warnMessage).toBeTruthy();
     });
   });
 });

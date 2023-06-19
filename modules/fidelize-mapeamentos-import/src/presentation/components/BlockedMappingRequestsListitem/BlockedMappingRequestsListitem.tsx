@@ -18,13 +18,13 @@ import {
 
 interface BlockedMappingRequestsListitemProps {
   mappingRequest: RequestMappingRecord;
-  onRemoveCallback: () => void;
+  onChangeCallback: () => void;
 }
 
 type ModalFlowStep = 'CONFIRM' | 'SUCCESS' | 'ONERROR';
 
 const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemProps> =
-  ({ mappingRequest, onRemoveCallback }) => {
+  ({ mappingRequest, onChangeCallback }) => {
     const {
       id,
       createdAt,
@@ -53,7 +53,7 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
     const onCloseModal = () => {
       setIsOpen(false);
       if (currentStep === 'SUCCESS') {
-        onRemoveCallback();
+        onChangeCallback();
       }
     };
 
@@ -385,7 +385,7 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
                     policyholderName={policyholderName}
                     canEdit={canUnlock}
                     mappingId={id}
-                    onRemoveCallback={() => onRemoveCallback()}
+                    onChangeCallback={() => onChangeCallback()}
                   />
                 </div>
                 <Modal
@@ -416,7 +416,7 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
               id={id}
               isPriority={isPriority}
               queueTypes={queueTypes}
-              onRemoveCallback={onRemoveCallback}
+              onChangeCallback={onChangeCallback}
               policyholderName={policyholderName}
             />
           )}

@@ -12,11 +12,11 @@ import MappingRequestsListitemMenu from '../MappingRequestsListitemMenu/MappingR
 
 interface OngoingMappingRequestsListitemProps {
   mappingRequest: RequestMappingRecord;
-  onRemoveCallback: () => void;
+  onChangeCallback: () => void;
 }
 
 const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemProps> =
-  ({ mappingRequest, onRemoveCallback }) => {
+  ({ mappingRequest, onChangeCallback }) => {
     const {
       id,
       createdAt,
@@ -199,7 +199,7 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
                 <MappingRequestsListitemMenu
                   policyholderName={policyholderName}
                   mappingId={id}
-                  onRemoveCallback={() => onRemoveCallback()}
+                  onChangeCallback={() => onChangeCallback()}
                 />
               ))}
           </div>

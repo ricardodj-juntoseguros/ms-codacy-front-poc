@@ -15,12 +15,12 @@ import BlockedMappingRequestsList from '../BlockedMappingRequestsList/BlockedMap
 
 interface MappingRequestsProps {
   mappingStatus: MappingStatusEnum;
-  onRemoveCallback?: () => void;
+  onChangeCallback?: () => void;
 }
 
 const MappingRequests: React.FC<MappingRequestsProps> = ({
   mappingStatus,
-  onRemoveCallback,
+  onChangeCallback,
 }) => {
   const dispatch = useDispatch();
   const { activePage, pageSize } = useSelector(
@@ -42,7 +42,7 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({
     }
     setLoadingRequests(true);
     fetchMappingRequests();
-    onRemoveCallback ? onRemoveCallback() : '';
+    onChangeCallback ? onChangeCallback() : '';
   };
 
   const fetchMappingRequests = () => {
@@ -69,7 +69,7 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({
           mappingStatus={mappingStatus}
           loading={loadingRequests}
           requests={requestsData || []}
-          onRemoveCallback={() => {
+          onChangeCallback={() => {
             handleRemoveRequest();
           }}
         />
@@ -82,7 +82,7 @@ const MappingRequests: React.FC<MappingRequestsProps> = ({
           mappingStatus={mappingStatus}
           loading={loadingRequests}
           requests={requestsData || []}
-          onRemoveCallback={() => {
+          onChangeCallback={() => {
             handleRemoveRequest();
           }}
         />

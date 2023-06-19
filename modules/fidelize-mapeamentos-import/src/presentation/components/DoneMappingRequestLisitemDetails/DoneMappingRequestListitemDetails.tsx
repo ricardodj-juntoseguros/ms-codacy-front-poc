@@ -6,7 +6,7 @@ import {
   thousandSeparator,
 } from '@shared/utils';
 
-import { Alert } from 'junto-design-system';
+import { Alert, LinkButton } from 'junto-design-system';
 import {
   DoneDetailsQueueType,
   MappingDoneDetailsDTO,
@@ -20,6 +20,7 @@ interface DoneMappingRequestsListitemProps {
 const DoneMappingRequestsListitemDetails: React.FC<DoneMappingRequestsListitemProps> =
   ({ mappingRequest }) => {
     const {
+      id,
       isPriority,
       policyholderFederalId,
       createdBy,
@@ -27,6 +28,13 @@ const DoneMappingRequestsListitemDetails: React.FC<DoneMappingRequestsListitemPr
       blocks,
       queueTypes,
     } = mappingRequest;
+
+    const handleBackButtonClick = (type: number) => {
+      const opportunityDownloadUrl =
+        `${process.env.NX_GLOBAL_OPPORTUNITY_MAPPING}/${id}/queue-type/${type}/download` ||
+        '';
+      window.open(opportunityDownloadUrl, '_blank');
+    };
 
     const showDescriptionOrValue = (queue: any, type: string) => {
       const result =
@@ -226,7 +234,16 @@ const DoneMappingRequestsListitemDetails: React.FC<DoneMappingRequestsListitemPr
                 styles['done-mapping-requests-listitem-details__column']
               }
             >
-              {/* next step <i data-testid="download-opportunity" className="icon-download" /> */}
+              {queue.mappedAt &&
+                queue.id === 3 &&
+                queue.totalOpportunities > 0 && (
+                  <LinkButton
+                    data-testid="donwload-opportunity-btn"
+                    label=""
+                    icon="download"
+                    onClick={() => handleBackButtonClick(queue.id)}
+                  />
+                )}
             </div>
           </div>
         ))}

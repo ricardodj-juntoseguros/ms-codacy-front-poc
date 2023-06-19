@@ -64,7 +64,7 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
     const content = () => (
       <MappingRequests
         mappingStatus={status}
-        onRemoveCallback={() => fetchMappingSummary()}
+        onChangeCallback={() => fetchMappingSummary()}
       />
     );
 

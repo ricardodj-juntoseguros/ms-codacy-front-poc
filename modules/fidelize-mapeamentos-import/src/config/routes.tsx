@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import ImportContainer from '../presentation/pages/ImportContainer';
 import MappingsPanelContainer from '../presentation/pages/MappingsPanelContainer';
 
@@ -8,6 +8,7 @@ const Routes: React.FC = () => (
     <Switch>
       <Route path="/" exact component={MappingsPanelContainer} />
       <Route path="/solicitar" exact component={ImportContainer} />
+      <Redirect to="/" />
     </Switch>
   </BrowserRouter>
 );

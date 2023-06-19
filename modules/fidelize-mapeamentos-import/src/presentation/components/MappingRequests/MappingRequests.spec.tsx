@@ -94,7 +94,7 @@ describe('MappingRequests', () => {
     const { findByTestId } = render(
       <MappingRequests
         mappingStatus={MappingStatusEnum.ON_QUEUE}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     expect(
@@ -117,7 +117,7 @@ describe('MappingRequests', () => {
     const { findByTestId } = render(
       <MappingRequests
         mappingStatus={MappingStatusEnum.ON_QUEUE}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     expect(
@@ -133,7 +133,7 @@ describe('MappingRequests', () => {
     const { findByTestId } = render(
       <MappingRequests
         mappingStatus={MappingStatusEnum.BLOCKED}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     expect(
@@ -162,7 +162,7 @@ describe('MappingRequests', () => {
     const { findByText } = render(
       <MappingRequests
         mappingStatus={MappingStatusEnum.ON_QUEUE}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     expect(await findByText('Lista indisponível')).toBeInTheDocument();

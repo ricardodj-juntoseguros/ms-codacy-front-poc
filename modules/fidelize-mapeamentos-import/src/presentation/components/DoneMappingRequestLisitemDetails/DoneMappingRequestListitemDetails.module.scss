@@ -162,3 +162,13 @@
   background-color: color('grey-100');
   color: color('grey-500');
 }
+
+.done-mapping-requests-listitem-details__download {
+  background: none;
+  border: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

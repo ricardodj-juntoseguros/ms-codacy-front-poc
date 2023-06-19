@@ -97,7 +97,7 @@ describe('BlockedMappingRequestsListitem', () => {
     const { getByText } = render(
       <BlockedMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback()}
+        onChangeCallback={mockCallback()}
       />,
     );
     expect(getByText('01/01/23')).toBeInTheDocument();
@@ -111,7 +111,7 @@ describe('BlockedMappingRequestsListitem', () => {
     const { getByText, getAllByText, getByTestId } = render(
       <BlockedMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback()}
+        onChangeCallback={mockCallback()}
       />,
     );
     expect(getByTestId('1-queue-3-requested')).toBeInTheDocument();
@@ -130,7 +130,7 @@ describe('BlockedMappingRequestsListitem', () => {
     const { getByText } = render(
       <BlockedMappingRequestsListitem
         mappingRequest={requestMockAux}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     expect(getByText('Urgente')).toBeInTheDocument();
@@ -140,7 +140,7 @@ describe('BlockedMappingRequestsListitem', () => {
     const { findByText, getByTestId } = render(
       <BlockedMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     const showTooltip = getByTestId('show-tooltip');
@@ -160,7 +160,7 @@ describe('BlockedMappingRequestsListitem', () => {
     const { getByTestId, findByText, findByTestId } = render(
       <BlockedMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     const btnLink = getByTestId('show-modal-btn');
@@ -181,7 +181,7 @@ describe('BlockedMappingRequestsListitem', () => {
     const { getByTestId, findByText } = render(
       <BlockedMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
     const btnLink = getByTestId('show-modal-btn');
@@ -203,7 +203,7 @@ describe('BlockedMappingRequestsListitem', () => {
     const { getByTestId, findByText, findByTestId } = render(
       <BlockedMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
 
@@ -227,7 +227,7 @@ describe('BlockedMappingRequestsListitem', () => {
     const { getByTestId, findByText, findByTestId } = render(
       <BlockedMappingRequestsListitem
         mappingRequest={requestMock}
-        onRemoveCallback={mockCallback}
+        onChangeCallback={mockCallback}
       />,
     );
 

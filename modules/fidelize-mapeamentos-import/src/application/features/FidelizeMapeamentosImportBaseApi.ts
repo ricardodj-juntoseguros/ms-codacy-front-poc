@@ -30,11 +30,8 @@ class FidelizeImportMapeamentosBaseApi {
 
   private getAuthorizationHeader(): string {
     const userToken = BackofficeAuthService.getAuthToken();
-
     if (!userToken) return '';
-
-    const token = userToken;
-    return `Bearer ${token}`;
+    return `Bearer ${userToken}`;
   }
 
   handleSuccess(value: AxiosResponse<any>) {

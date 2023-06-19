@@ -1,7 +1,10 @@
 import '@testing-library/jest-dom';
 import ListingMappingApi from 'modules/fidelize-mapeamentos-import/src/application/features/listingMapping/ListingMappingApi';
+import { Provider } from 'react-redux';
 import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import MapppingsPanelContainer from './MappingsPanelContainer';
+import { store } from '../../../config/store';
+import { setEditorId } from '../../../application/features/modalMapping/ModalMappingSlice';
 
 describe('Mapping Panel Container', () => {
   beforeAll(() => {
@@ -56,7 +59,9 @@ describe('Mapping Panel Container', () => {
 
   it('should render successfully', () => {
     const { baseElement, getByText } = render(
-      <MapppingsPanelContainer {...props} />,
+      <Provider store={store}>
+        <MapppingsPanelContainer {...props} />,
+      </Provider>,
     );
 
     expect(baseElement).toBeTruthy();
@@ -72,18 +77,42 @@ describe('Mapping Panel Container', () => {
     const component = render(<MapppingsPanelContainer {...props} />);
     const goToSolicitation = component.getByTestId('btn-goto-solicitation');
 
+    store.dispatch(setEditorId([0]));
+
     fireEvent.click(goToSolicitation);
 
     expect(goToSolicitation).toHaveTextContent('Nova solicitação');
     expect(historyMock).toHaveBeenCalledWith('/solicitar');
   });
 
-  it('Should render summary with mocked summary values', () => {
+  it('Should show alert modal to avoid loss data ', () => {
+    const component = render(<MapppingsPanelContainer {...props} />);
+    const goToSolicitation = component.getByTestId('btn-goto-solicitation');
+
+    store.dispatch(setEditorId([1]));
+
+    fireEvent.click(goToSolicitation);
+
+    waitFor(async () => {
+      const titleModal = await component.findByText(
+        'A edição de uma solicitação será perdida',
+      );
+      expect(titleModal).toBeTruthy();
+
+      const discardBtn = component.getByTestId('btn-keep-selection');
+      fireEvent.click(discardBtn);
+      expect(
+        component.queryByText('A edição de uma solicitação será perdida'),
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it('Should render summary with mocked summary values', async () => {
     mockSummarySuccess();
     const component = render(<MapppingsPanelContainer {...props} />);
-    const tabOnRow = component.getByTestId('tab-ON_QUEUE');
-    const tabBlocked = component.getByTestId('tab-BLOCKED');
-    const tabDone = component.getByTestId('tab-DONE');
+    const tabOnRow = await component.findByTestId('tab-ON_QUEUE');
+    const tabBlocked = await component.findByTestId('tab-BLOCKED');
+    const tabDone = await component.findByTestId('tab-DONE');
 
     waitFor(() => {
       expect(tabOnRow).toHaveTextContent('5');

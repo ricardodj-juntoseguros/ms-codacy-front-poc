@@ -1,16 +1,10 @@
-import {
-  Button,
-  Checkbox,
-  Modal,
-  Toggle,
-  makeToast,
-} from 'junto-design-system';
+import { Button, Checkbox, Toggle, makeToast } from 'junto-design-system';
 import { useState, useRef, useMemo, memo } from 'react';
 import { thousandSeparator } from '@shared/utils';
 import classNames from 'classnames';
 import { nanoid } from 'nanoid/non-secure';
 import { useDispatch } from 'react-redux';
-import { AlertIllustration, SuccessIllustration } from '@shared/ui';
+
 import { setEditorId } from '../../../application/features/modalMapping/ModalMappingSlice';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import {
@@ -20,24 +14,22 @@ import {
 import { QueueTypesEnum } from '../../../application/types/model';
 import styles from './EditorMappingRequestListitem.module.scss';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import DeleteMappingRequestItem from '../DeleteMappingRequestItem/DeleteMappingRequestItem';
 
 interface EditorMappingRequestListitemProps {
   queueTypes: QueueType[];
   isPriority: boolean;
   policyholderName: string;
   id: number;
-  onRemoveCallback: () => void;
+  onChangeCallback: () => void;
 }
 
-type ModalFlowStep = 'CONFIRM' | 'SUCCESS' | 'ONERROR';
-
 const EditorMappingRequestListitem: React.FC<EditorMappingRequestListitemProps> =
-  ({ id, queueTypes, isPriority, policyholderName, onRemoveCallback }) => {
+  ({ id, queueTypes, isPriority, policyholderName, onChangeCallback }) => {
     const wrapperEditRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [currentStep, setCurrentStep] = useState<ModalFlowStep>('CONFIRM');
     const [priority, setPriority] = useState<boolean>(isPriority);
     const [checkers, setCheckers] = useState({
       'queue-4': queueTypes.find(qType => qType.id === 4)?.requested,
@@ -57,17 +49,6 @@ const EditorMappingRequestListitem: React.FC<EditorMappingRequestListitemProps> 
       QueueType: [],
     };
 
-    const fetchDeleteMappingItem = () => {
-      new ListingMappingApi()
-        .deleteMappingItem(id)
-        .then(() => {
-          setCurrentStep('SUCCESS');
-        })
-        .catch(() => {
-          setCurrentStep('ONERROR');
-        });
-    };
-
     const fetchPutMappingItem = () => {
       setIsSubmitting(true);
       updateData.Priority = priority;
@@ -82,7 +63,7 @@ const EditorMappingRequestListitem: React.FC<EditorMappingRequestListitemProps> 
         .then(() => {
           setIsSubmitting(false);
           dispatch(setEditorId([0]));
-          onRemoveCallback();
+          onChangeCallback();
         })
         .catch(() => {
           makeToast(
@@ -104,97 +85,6 @@ const EditorMappingRequestListitem: React.FC<EditorMappingRequestListitemProps> 
             [id]: checked,
           }))
         : setIsOpen(true);
-    };
-
-    const onCloseModal = () => {
-      setIsOpen(false);
-      if (currentStep === 'SUCCESS') {
-        onRemoveCallback();
-      }
-    };
-    const getModalTemplate = () => {
-      switch (currentStep) {
-        case 'CONFIRM':
-          return {
-            title: {
-              value: 'Tem certeza que deseja excluir esta solicitação?',
-              align: 'center' as any,
-              fontWeight: 'bold' as any,
-            },
-            text: {
-              value: `Esta solicitação do tomador ${policyholderName} será removida da lista.`,
-              align: 'center' as any,
-            },
-            buttons: {
-              primary: (
-                <Button
-                  data-testid="confirm-exclusion-btn"
-                  onClick={() => fetchDeleteMappingItem()}
-                >
-                  Excluir solicitação
-                </Button>
-              ),
-              secondary: (
-                <Button
-                  data-testid="cancel-exclusion-btn"
-                  onClick={() => onCloseModal()}
-                  variant="secondary"
-                >
-                  Cancelar
-                </Button>
-              ),
-            },
-          };
-        case 'ONERROR':
-          return {
-            title: {
-              value: 'Não foi possível excluir a solicitação',
-              align: 'center' as any,
-              fontWeight: 'bold' as any,
-            },
-            text: {
-              value:
-                'No momento o sistema não conseguiu concluir a operação. Tente novamente em instantes.',
-              align: 'center' as any,
-            },
-            buttons: {
-              primary: (
-                <Button
-                  data-testid="retry-exclusion-btn"
-                  onClick={() => fetchDeleteMappingItem()}
-                >
-                  Tentar novamente
-                </Button>
-              ),
-              secondary: (
-                <Button
-                  data-testid="cancel-exclusion-btn"
-                  onClick={() => onCloseModal()}
-                  variant="secondary"
-                >
-                  Continuar sem excluir
-                </Button>
-              ),
-            },
-            icon: <AlertIllustration />,
-          };
-        case 'SUCCESS':
-          return {
-            title: {
-              value: 'Solicitação excluída!',
-              align: 'center' as any,
-              fontWeight: 'bold' as any,
-            },
-            text: {
-              value:
-                'O tomador foi removido da lista, mas se houver entendimento de que ele possa ser mapeado num futuro próximo, você poderá fazer uma nova solicitação.',
-              align: 'center' as any,
-            },
-            icon: <SuccessIllustration />,
-          };
-        default:
-          return undefined;
-      }
     };
 
     const renderQueueColumn = (queueType: QueueTypesEnum) => {
@@ -276,6 +166,7 @@ const EditorMappingRequestListitem: React.FC<EditorMappingRequestListitemProps> 
           >
             <Toggle
               id="toggle-status-edit"
+              data-testid="toggle-status-edit"
               name="toggle-status-edit"
               checked={priority}
               onChange={() => {
@@ -306,13 +197,13 @@ const EditorMappingRequestListitem: React.FC<EditorMappingRequestListitemProps> 
             </Button>
           </div>
         </div>
-        <Modal
-          size="default"
-          open={isOpen}
-          template={getModalTemplate()}
-          onBackdropClick={() => onCloseModal()}
-          onCloseButtonClick={() => onCloseModal()}
-        />
+        {isOpen && (
+          <DeleteMappingRequestItem
+            mappingId={id}
+            policyholderName={policyholderName}
+            onChangeCallback={onChangeCallback}
+          />
+        )}
       </>
     );
   };
