@@ -5,6 +5,7 @@ import { RootState } from '../../../config/store';
 import { InsuredAndPolicyholderSelectionModel } from '../../types/model';
 import { PolicyholderAffiliateDTO, PolicyholderDTO } from '../../types/dto';
 import InsuredAndPolicyholderSelectionApi from './InsuredAndPolicyholderSelectionApi';
+import { NO_AFFILIATE_OPTION } from '../../../constants';
 
 const initialState: InsuredAndPolicyholderSelectionModel = {
   policyholderInputValue: '',
@@ -26,8 +27,10 @@ export const searchPolicyholders = createAsyncThunk<
       ? inputtedValue.replace(/[^\d]+/g, '')
       : undefined;
     const corporateName = isFederalId ? undefined : inputtedValue;
-    return new InsuredAndPolicyholderSelectionApi()
-      .getPolicyholders(federalId, corporateName)
+    return InsuredAndPolicyholderSelectionApi.getPolicyholders(
+      federalId,
+      corporateName,
+    )
       .then(response => response)
       .catch(error => rejectWithValue(error.data.data.message));
   },
@@ -40,8 +43,9 @@ export const getPolicyholderAffiliates = createAsyncThunk<
 >(
   'insuredAndPolicyholderSelection/getPolicyholderAffiliates',
   async (policyholderFederalId: string, { rejectWithValue }) => {
-    return new InsuredAndPolicyholderSelectionApi()
-      .getPolicyholderAffiliates(policyholderFederalId)
+    return InsuredAndPolicyholderSelectionApi.getPolicyholderAffiliates(
+      policyholderFederalId,
+    )
       .then(response => response)
       .catch(error => rejectWithValue(error.data.data.message));
   },
@@ -97,7 +101,10 @@ export const insuredAndPolicyholderSelectionSlice = createSlice({
         if (action.payload) makeToast('error', action.payload);
       })
       .addCase(getPolicyholderAffiliates.fulfilled, (state, action) => {
-        state.policyholderAffiliateResults = action.payload;
+        state.policyholderAffiliateResults = [
+          ...action.payload,
+          NO_AFFILIATE_OPTION,
+        ];
         state.loadingPolicyholders = false;
       }),
 });

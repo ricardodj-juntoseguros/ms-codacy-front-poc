@@ -77,6 +77,8 @@ export const flowSlice = createSlice({
       const currentStepIndex = state.steps.findIndex(
         step => step.name === action.payload,
       );
+      if (currentStepIndex === -1) return;
+
       state.steps = state.steps.map((step, index) => {
         if (index > currentStepIndex) {
           step.status = StepStatusEnum.HIDDEN;

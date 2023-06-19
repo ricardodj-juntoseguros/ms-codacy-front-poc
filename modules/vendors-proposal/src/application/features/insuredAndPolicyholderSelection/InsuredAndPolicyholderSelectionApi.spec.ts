@@ -17,8 +17,7 @@ describe('InsuredAndPolicyholderSelectionApi', () => {
       .spyOn(AxiosHttpClient.prototype, 'get')
       .mockImplementationOnce(async () => insuredListMock);
 
-    const result =
-      await new InsuredAndPolicyholderSelectionApi().getInsuredList();
+    const result = await InsuredAndPolicyholderSelectionApi.getInsuredList();
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/api/v1/insured',
@@ -32,10 +31,9 @@ describe('InsuredAndPolicyholderSelectionApi', () => {
       .spyOn(AxiosHttpClient.prototype, 'get')
       .mockImplementationOnce(async () => insuredAddressesMock);
 
-    const result =
-      await new InsuredAndPolicyholderSelectionApi().getInsuredAddresses(
-        '11223344556677',
-      );
+    const result = await InsuredAndPolicyholderSelectionApi.getInsuredAddresses(
+      '11223344556677',
+    );
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/api/v1/insured/addresses',
@@ -51,11 +49,10 @@ describe('InsuredAndPolicyholderSelectionApi', () => {
       .spyOn(AxiosHttpClient.prototype, 'get')
       .mockImplementationOnce(async () => policyholdersMock);
 
-    const result =
-      await new InsuredAndPolicyholderSelectionApi().getPolicyholders(
-        '11223344556677',
-        'Teste tomador',
-      );
+    const result = await InsuredAndPolicyholderSelectionApi.getPolicyholders(
+      '11223344556677',
+      'Teste tomador',
+    );
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/api/v1/policyholder',
@@ -73,7 +70,7 @@ describe('InsuredAndPolicyholderSelectionApi', () => {
       .mockImplementationOnce(async () => policyholderAffiliatesMock);
 
     const result =
-      await new InsuredAndPolicyholderSelectionApi().getPolicyholderAffiliates(
+      await InsuredAndPolicyholderSelectionApi.getPolicyholderAffiliates(
         '11223344556677',
       );
 

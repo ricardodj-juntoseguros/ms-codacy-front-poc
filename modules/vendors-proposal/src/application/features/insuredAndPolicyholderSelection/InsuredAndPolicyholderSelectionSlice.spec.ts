@@ -1,4 +1,5 @@
 import { waitFor } from '@testing-library/react';
+import { NO_AFFILIATE_OPTION } from 'modules/vendors-proposal/src/constants';
 import { store } from '../../../config/store';
 import {
   insuredAndPolicyholderSelectionActions,
@@ -59,7 +60,7 @@ describe('InsuredAndPolicyholderSelectionSlice', () => {
 
   it('searchPolicyholders thunk should call api and set state correctly on success', async () => {
     const apiMock = jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getPolicyholders')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders')
       .mockImplementation(async () => {
         return policyholdersMock;
       });
@@ -79,7 +80,7 @@ describe('InsuredAndPolicyholderSelectionSlice', () => {
       ),
     );
     jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getPolicyholders')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders')
       .mockImplementation(async () => {
         // eslint-disable-next-line prefer-promise-reject-errors
         return Promise.reject({ data: { data: { message: 'Erro' } } });
@@ -105,10 +106,7 @@ describe('InsuredAndPolicyholderSelectionSlice', () => {
 
   it('getPolicyholderAffiliates thunk should call api and set state correctly on success', async () => {
     const apiMock = jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getPolicyholderAffiliates',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholderAffiliates')
       .mockImplementation(async () => {
         return policyholderAffiliatesMock;
       });
@@ -121,7 +119,10 @@ describe('InsuredAndPolicyholderSelectionSlice', () => {
     const expectedState =
       store.getState().insuredAndPolicyholderSelection
         .policyholderAffiliateResults;
-    expect(expectedState).toStrictEqual(policyholderAffiliatesMock);
+    expect(expectedState).toStrictEqual([
+      ...policyholderAffiliatesMock,
+      NO_AFFILIATE_OPTION,
+    ]);
   });
 
   it('getPolicyholderAffiliates thunk should clear policyholder affiliate results if api call fails', async () => {
@@ -131,10 +132,7 @@ describe('InsuredAndPolicyholderSelectionSlice', () => {
       ),
     );
     jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getPolicyholderAffiliates',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholderAffiliates')
       .mockImplementation(async () => {
         // eslint-disable-next-line prefer-promise-reject-errors
         return Promise.reject({ data: { data: { message: 'Erro' } } });

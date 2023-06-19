@@ -1,0 +1,18 @@
+
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.warranty-data-coverage-value__wrapper  {
+  margin-top: spacing('l');
+}
+
+.warranty-data-coverage-value__label {
+  @include font('xs');
+  @include color('color', 'grey-500');
+
+  margin-bottom: spacing('xs');
+}
+
+.warranty-data-coverage-value__total {
+  @include font('l');
+  @include color('color', 'dark');
+}

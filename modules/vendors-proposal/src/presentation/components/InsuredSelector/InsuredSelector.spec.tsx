@@ -12,7 +12,7 @@ describe('InsuredSelector', () => {
 
   it('Should fetch insured list on mount and display readonly text input if only one is returned', async () => {
     const apiMock = jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getInsuredList')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredList')
       .mockImplementationOnce(async () => insuredListMock.slice(0, 1));
     const { findByTestId } = render(
       <InsuredSelector onLoadedInsureds={jest.fn()} />,
@@ -28,7 +28,7 @@ describe('InsuredSelector', () => {
 
   it('Should fetch insured list on mount and display dropdown if more than one is returned', async () => {
     const apiMock = jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getInsuredList')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredList')
       .mockImplementationOnce(async () => insuredListMock);
     const { findByTestId } = render(
       <InsuredSelector onLoadedInsureds={jest.fn()} />,
@@ -41,7 +41,7 @@ describe('InsuredSelector', () => {
 
   it('Should send selected insured  data to store on dropdown selection', async () => {
     jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getInsuredList')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredList')
       .mockImplementationOnce(async () => insuredListMock);
     const { findByTestId, getByTestId, findByText } = render(
       <InsuredSelector onLoadedInsureds={jest.fn()} />,

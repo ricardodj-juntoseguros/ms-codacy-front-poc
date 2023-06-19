@@ -1,21 +1,18 @@
 import '@testing-library/jest-dom';
 import * as reactRedux from 'react-redux';
-import { prettyDOM, render } from '../../../config/testUtils';
+import { render } from '../../../config/testUtils';
 import { storeMock } from '../../../__mocks__/storeMock';
-import { constantsMock } from '../../../__mocks__';
 import FlowContainer from './FlowContainer';
-
-jest.mock('../../../constants', () => (constantsMock));
 
 describe('FlowContainer', () => {
   const mockDispatch = jest.fn();
-  const useSelectorMock = jest.spyOn(reactRedux, 'useSelector')
+  const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
 
   beforeEach(() => {
-    useSelectorMock.mockClear()
-    useDispatchMock.mockClear()
-  })
+    useSelectorMock.mockClear();
+    useDispatchMock.mockClear();
+  });
 
   afterEach(() => {
     jest.clearAllMocks();

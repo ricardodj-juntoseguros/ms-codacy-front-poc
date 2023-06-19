@@ -1,8 +1,11 @@
 import { SearchOptions } from 'junto-design-system';
 import { ProposalPolicyholderModel } from './ProposalPolicyholderModel';
 import { PolicyholderContactModel } from './PolicyholderContactModel';
+import { ModalityModel } from './ModalityModel';
+import { ProposalResultDTO } from '../dto/ProposalResultDTO';
 
 export interface ProposalModel {
+  identification: ProposalResultDTO | null;
   contractNumber: string;
   contractValue: number;
   insuredFederalId: string;
@@ -12,4 +15,11 @@ export interface ProposalModel {
   hasProject: boolean;
   project: SearchOptions | null;
   policyholderContact: PolicyholderContactModel;
+  initialValidity: string;
+  endValidity: string;
+  validityInDays: number;
+  warrantyPercentage: number;
+  modality: ModalityModel;
+  additionalCoverageLabor: boolean;
+  createProposalLoading: boolean;
 }

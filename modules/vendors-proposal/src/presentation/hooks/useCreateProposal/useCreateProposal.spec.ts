@@ -1,0 +1,164 @@
+/* eslint-disable prefer-promise-reject-errors */
+import '@testing-library/jest-dom';
+import { renderHook } from '@testing-library/react-hooks';
+import * as reactRedux from 'react-redux';
+import { format } from 'date-fns';
+import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
+import InsuredAndPolicyholderSelectionApi from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionApi';
+import { storeMock, policyholdersMock } from '../../../__mocks__';
+import { useCreateProposal } from './useCreateProposal';
+
+const mockValidate = jest.fn(
+  () => new Promise((resolve, reject) => resolve(true)),
+);
+
+jest.mock('../useValidate', () => {
+  const rest = jest.requireActual('../useValidate');
+  return {
+    ...rest,
+    useValidate: () => mockValidate,
+  };
+});
+
+describe('useValidate', () => {
+  const mockDispatch = jest.fn();
+  const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
+  const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
+  let InsuredAndPolicyholderSelectionApiMock: any = null;
+  const updatedStoreMock = {
+    ...storeMock,
+    proposal: {
+      ...storeMock.proposal,
+      identification: {
+        proposalId: 12345,
+        policyId: 12345,
+      },
+      createProposalLoading: false,
+      contractNumber: '1234',
+      contractValue: 1000,
+      insuredName: 'Lorem',
+      insuredFederalId: '91833813000118',
+      insuredAddressId: 21,
+      policyholder: {
+        externalPolicyholderId: 1,
+        federalId: '33768864000107',
+        corporateName: 'TOMADOR 1',
+      },
+      hasProject: true,
+      project: null,
+      policyholderContact: {
+        id: 1,
+        name: 'Jonh Doe',
+        email: 'jonh@doe.com',
+      },
+      initialValidity: format(new Date(), 'dd/MM/yyyy'),
+      endValidity: '',
+      validityInDays: 360,
+      warrantyPercentage: 100,
+      modality: {
+        modalityId: 96,
+        externalDescription: 'Executante construtor',
+        allowsAdditionalCoverageLabor: true,
+        submodalities: [
+          {
+            subModalityId: 90,
+            externalDescription: 'Convencional',
+          },
+        ],
+        label: 'Executante construtor',
+        value: '96',
+      },
+      additionalCoverageLabor: true,
+    },
+  };
+
+  beforeEach(() => {
+    useSelectorMock.mockClear();
+    useDispatchMock.mockClear();
+
+    InsuredAndPolicyholderSelectionApiMock = jest
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders')
+      .mockImplementation(async () => Promise.resolve(policyholdersMock));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should validate correctly create a proposal and upload the documents', async () => {
+    useSelectorMock.mockImplementation(select =>
+      select({ ...updatedStoreMock }),
+    );
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const { result } = renderHook(() => useCreateProposal());
+    const createProposalResult = await result.current();
+
+    expect(createProposalResult).toEqual({ success: true, errors: {} });
+    expect(InsuredAndPolicyholderSelectionApiMock).toHaveBeenCalledWith(
+      '33768864000107',
+    );
+    expect(mockDispatch).toHaveBeenCalledWith(
+      proposalActions.setPolicyholder(policyholdersMock[0]),
+    );
+  });
+
+  it('should return error and not continue the process if there is a failure when looking for the policyholder', async () => {
+    useSelectorMock.mockImplementation(select =>
+      select({ ...updatedStoreMock }),
+    );
+    useDispatchMock.mockImplementation(() => mockDispatch);
+
+    InsuredAndPolicyholderSelectionApiMock = jest
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders')
+      .mockImplementation(async () =>
+        Promise.reject({
+          data: {
+            data: [
+              { message: 'Ops, houve um problema ao cadastrar o fornecedor.' },
+            ],
+          },
+        }),
+      );
+
+    const { result } = renderHook(() => useCreateProposal());
+    const createProposalResult = await result.current();
+
+    expect(createProposalResult).toEqual({
+      success: false,
+      errors: {
+        policyholderInputValue:
+          'Ops, houve um problema ao cadastrar o fornecedor.',
+      },
+    });
+    expect(InsuredAndPolicyholderSelectionApiMock).toHaveBeenCalledWith(
+      '33768864000107',
+    );
+    expect(mockDispatch).not.toHaveBeenCalledWith(
+      proposalActions.setPolicyholder(policyholdersMock[0]),
+    );
+  });
+
+  it('should return an error and not continue the process if there is a failure to include the proposal', async () => {
+    useSelectorMock.mockImplementation(select =>
+      select({
+        ...updatedStoreMock,
+        proposal: { ...updatedStoreMock.proposal, identification: null },
+      }),
+    );
+    useDispatchMock.mockImplementation(() => mockDispatch);
+
+    const { result } = renderHook(() => useCreateProposal());
+    const createProposalResult = await result.current();
+
+    expect(createProposalResult).toEqual({
+      success: false,
+      errors: {},
+    });
+    expect(InsuredAndPolicyholderSelectionApiMock).toHaveBeenCalledWith(
+      '33768864000107',
+    );
+    expect(mockDispatch).toHaveBeenCalledWith(
+      proposalActions.setPolicyholder(policyholdersMock[0]),
+    );
+  });
+});

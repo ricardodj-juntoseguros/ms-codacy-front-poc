@@ -24,7 +24,7 @@ const InsuredAddressSelector: React.FC = () => {
     if (insuredFederalId !== '') {
       const fetchAddresses = () => {
         setLoadingAddresses(true);
-        new InsuredAndPolicyholderSelectionApi()
+        InsuredAndPolicyholderSelectionApi
           .getInsuredAddresses(insuredFederalId)
           .then(data => {
             if (data.length === 1) {

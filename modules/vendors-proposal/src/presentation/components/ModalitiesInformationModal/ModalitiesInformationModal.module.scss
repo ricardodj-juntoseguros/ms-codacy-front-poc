@@ -1,0 +1,64 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.modality-information-modal__wrapper {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding-right: spacing('l');
+  scrollbar-width: thin;
+
+  @include color('border-color', 'grey-300', '::-webkit-scrollbar');
+  &::-webkit-scrollbar {
+    width: 12px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+      width: 12px;
+  }
+
+  @include color('background-color', 'grey-400', '::-webkit-scrollbar-thumb');
+  &::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 7px;
+    background-clip: content-box;
+  }
+}
+
+.modality-information-modal__title {
+  @include font('l-emphasys');
+  @include color('color', 'dark');
+
+  margin: 0 0 spacing('xl') 0;
+}
+
+.modality-information-modal__description {
+  @include font('base');
+  @include color('color', 'dark');
+  margin: 0 0 spacing('l') 0;
+}
+
+.modality-information-modal__list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.modality-information-modal__item {
+  &:not(:last-child) {
+    margin-bottom: spacing('l');
+  }
+}
+
+.modality-information-modal__item-title {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+
+  margin: 0 0 spacing('s') 0;
+}
+
+.modality-information-modal__item-text {
+  @include font('base');
+  @include color('color', 'dark');
+}

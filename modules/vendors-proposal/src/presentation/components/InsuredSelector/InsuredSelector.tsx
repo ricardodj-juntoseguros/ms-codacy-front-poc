@@ -27,7 +27,7 @@ const InsuredSelector: React.FC<InsuredSelectorProps> = ({
 
   useEffect(() => {
     const fetchInsureds = () => {
-      new InsuredAndPolicyholderSelectionApi()
+      InsuredAndPolicyholderSelectionApi
         .getInsuredList()
         .then(data => {
           if (data.length === 1) {

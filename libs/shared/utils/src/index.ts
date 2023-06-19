@@ -8,3 +8,4 @@ export * from './cpfFormatter';
 export * from './phoneFormatter';
 export * from './formatDateString';
 export * from './federalIdValidator';
+export * from './parseStringToDate';

@@ -12,30 +12,24 @@ describe('PolicyholderSelector', () => {
   jest.useFakeTimers();
 
   it('should not dispatch searchPolicyholders thunk if inputted search value is less than 3 chars length', async () => {
-    jest.spyOn(
-      InsuredAndPolicyholderSelectionApi.prototype,
-      'getPolicyholders',
-    );
+    jest.spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders');
     const { getByTestId } = render(<PolicyholderSelector />);
     const input = getByTestId('policyholderSelector-search-input');
     fireEvent.change(input, { target: { value: 'te' } });
     jest.runAllTimers();
     expect(
-      InsuredAndPolicyholderSelectionApi.prototype.getPolicyholders,
+      InsuredAndPolicyholderSelectionApi.getPolicyholders,
     ).toHaveBeenCalledTimes(0);
   });
 
   it('Should search policyholders, set store values and dispatch getPolicyholderAffiliates on policyholder option select', async () => {
     const policyholderApiMock = jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getPolicyholders')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders')
       .mockImplementation(async () => {
         return policyholdersMock;
       });
     const policyholderAffiliateApiMock = jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getPolicyholderAffiliates',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholderAffiliates')
       .mockImplementation(async () => {
         return policyholderAffiliatesMock;
       });
@@ -62,7 +56,7 @@ describe('PolicyholderSelector', () => {
 
   it('Should display correct message if there is no results on search and inputted value is not a federalId', async () => {
     const policyholderApiMock = jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getPolicyholders')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders')
       .mockImplementation(async () => {
         return [];
       });
@@ -85,7 +79,7 @@ describe('PolicyholderSelector', () => {
 
   it('Should display correct message if there is no results on search and inputted value is a valid federalId', async () => {
     const policyholderApiMock = jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getPolicyholders')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders')
       .mockImplementation(async () => {
         return [];
       });
@@ -106,7 +100,7 @@ describe('PolicyholderSelector', () => {
 
   it('Should display correct message if there is no results on search and inputted value is a invalid federalId', async () => {
     const policyholderApiMock = jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getPolicyholders')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getPolicyholders')
       .mockImplementation(async () => {
         return [];
       });

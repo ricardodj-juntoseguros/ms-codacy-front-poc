@@ -1,0 +1,13 @@
+
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.validity-fields__wrapper {
+  display: flex;
+  gap: spacing('m');
+}
+
+@media screen and (max-width: 768px) {
+  .validity-fields__wrapper {
+    flex-direction: column;
+  }
+}

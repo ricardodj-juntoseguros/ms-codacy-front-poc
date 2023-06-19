@@ -1,0 +1,7 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.loading-spinner__wrapper {
+  & > div > svg {
+    @include color('stroke', 'white');
+  }
+}

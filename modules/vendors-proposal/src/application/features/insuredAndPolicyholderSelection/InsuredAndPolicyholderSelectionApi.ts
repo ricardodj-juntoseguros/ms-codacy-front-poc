@@ -65,4 +65,4 @@ class InsuredAndPolicyholderSelectionApi {
   }
 }
 
-export default InsuredAndPolicyholderSelectionApi;
+export default new InsuredAndPolicyholderSelectionApi();

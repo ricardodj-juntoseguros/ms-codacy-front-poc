@@ -1,4 +1,6 @@
+import { format } from 'date-fns';
 import { StepStatusEnum } from '../application/types/model';
+import { modalityListMock } from './modalityListMock';
 
 export const storeMock = {
   flow: {
@@ -25,6 +27,10 @@ export const storeMock = {
   proposal: {
     contractNumber: '',
     contractValue: 0,
+    insuredName: '',
+    insuredFederalId: '',
+    insuredAddressId: 0,
+    policyholder: {},
     hasProject: true,
     project: null,
     policyholderContact: {
@@ -32,6 +38,12 @@ export const storeMock = {
       name: '',
       email: '',
     },
+    initialValidity: format(new Date(), 'dd/MM/yyyy'),
+    endValidity: '',
+    validityInDays: NaN,
+    warrantyPercentage: NaN,
+    modality: null,
+    additionalCoverageLabor: false,
   },
   projectSelection: {
     projectSearchValue: '',
@@ -49,5 +61,42 @@ export const storeMock = {
         value: '1',
       },
     ],
+  },
+  validation: {
+    isValidating: false,
+    isValidForm: true,
+    errors: {},
+  },
+  modalitySelection: {
+    modalityOptions: modalityListMock,
+    modalityOptionsMapped: [
+      {
+        modalityId: 96,
+        externalDescription: 'Executante construtor',
+        allowsAdditionalCoverageLabor: true,
+        submodalities: [
+          {
+            subModalityId: 90,
+            externalDescription: 'Convencional',
+          },
+        ],
+        label: 'Executante construtor',
+        value: '96',
+      },
+      {
+        modalityId: 73,
+        externalDescription: 'Adiantamento de pagamento',
+        allowsAdditionalCoverageLabor: false,
+        submodalities: [
+          {
+            subModalityId: 1,
+            externalDescription: 'Convencional',
+          },
+        ],
+        label: 'Adiantamento de pagamento',
+        value: '73',
+      },
+    ],
+    modalityOptionsLoading: false,
   },
 };

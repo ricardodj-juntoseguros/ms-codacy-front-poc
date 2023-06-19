@@ -1,0 +1,67 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.warranty-data__wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: spacing('m');
+
+  & > button:last-child {
+    margin-top: spacing('xl');
+  }
+}
+
+.warranty-data__coverage-labor {
+  max-width: 395px;
+  position: relative;
+  margin: spacing('l') 0 0 0;
+}
+
+.warranty-data__tooltip-button {
+  background-color: transparent;
+  height: 18px;
+  width: 18px;
+  border: none;
+  cursor: pointer;
+  padding: 0px;
+  position: absolute;
+  top: 48%;
+  left: 62%;
+
+  & > i {
+    @include color('color', 'grey-500');
+    @include color('color', 'brand-primary', ':hover');
+    height: 18px;
+    width: 18px;
+  }
+}
+
+
+@media screen and (max-width: 441px) {
+  .warranty-data__tooltip-button {
+    left: 81%;
+  }
+}
+
+@media screen and (max-width: 424px) {
+  .warranty-data__tooltip-button {
+    left: 86%;
+  }
+}
+
+@media screen and (max-width: 409px) {
+  .warranty-data__tooltip-button {
+    left: 91%;
+  }
+}
+
+@media screen and (max-width: 375px) {
+.warranty-data__coverage-labor {
+  max-width: 325px;
+}
+  .warranty-data__tooltip-button {
+    top: 64%;
+    left: 50%;
+  }
+}
+

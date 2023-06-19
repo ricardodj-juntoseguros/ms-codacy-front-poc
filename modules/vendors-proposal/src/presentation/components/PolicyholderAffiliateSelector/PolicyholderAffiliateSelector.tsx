@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, DropdownOptions } from 'junto-design-system';
 import { federalIdFormatter } from '@shared/utils';
+import { NO_AFFILIATE_OPTION } from '../../../constants';
 import {
   selectProposal,
   proposalActions,
@@ -11,7 +12,7 @@ import { selectInsuredAndPolicyholderSelection } from '../../../application/feat
 const PolicyholderAffiliateSelector: React.FC = () => {
   const dispatch = useDispatch();
   const {
-    policyholder: { affiliateId },
+    policyholder: { affiliateId, affiliateFederalId },
   } = useSelector(selectProposal);
   const { policyholderAffiliateResults } = useSelector(
     selectInsuredAndPolicyholderSelection,
@@ -19,6 +20,10 @@ const PolicyholderAffiliateSelector: React.FC = () => {
 
   const formatAffiliateLabel = (affiliate?: PolicyholderAffiliateDTO) => {
     if (!affiliate) return '';
+    if (affiliate.federalId === NO_AFFILIATE_OPTION.federalId) {
+      return NO_AFFILIATE_OPTION.federalId;
+    }
+
     const { city, state, federalId } = affiliate;
     return `${city} - ${state} - CNPJ: ${federalIdFormatter(
       federalId.replace(/[^\d]+/g, ''),
@@ -30,11 +35,16 @@ const PolicyholderAffiliateSelector: React.FC = () => {
     const affiliate = policyholderAffiliateResults?.find(
       aff => aff.id === Number.parseInt(value, 10),
     );
+    const formatedAffiliateFederalId =
+      affiliate?.id === 0
+        ? affiliate?.federalId
+        : affiliate?.federalId.replace(/[^\d]+/g, '');
+
     if (affiliate)
       dispatch(
         proposalActions.setPolicyholderAffiliateValues({
           id: affiliate.id,
-          federalId: affiliate.federalId.replace(/[^\d]+/g, ''),
+          federalId: formatedAffiliateFederalId || '',
         }),
       );
   };
@@ -54,7 +64,7 @@ const PolicyholderAffiliateSelector: React.FC = () => {
       placeholder="Selecione uma opção"
       options={getDropdownOptions()}
       value={
-        affiliateId
+        affiliateId || affiliateFederalId === NO_AFFILIATE_OPTION.federalId
           ? {
               value: `${affiliateId}`,
               label: formatAffiliateLabel(

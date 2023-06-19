@@ -83,7 +83,7 @@ const InsuredAndPolicyholderSelection: React.FC<GenericComponentProps> = ({
             <PolicyholderSelector />
           </div>
           {policyholderAffiliateResults &&
-            policyholderAffiliateResults.length > 0 && (
+            policyholderAffiliateResults.length > 1 && (
               <div className={styles['insured-policyholder-selection__field']}>
                 <PolicyholderAffiliateSelector />
               </div>

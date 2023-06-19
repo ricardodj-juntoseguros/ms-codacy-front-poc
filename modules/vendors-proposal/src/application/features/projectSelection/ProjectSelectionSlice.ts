@@ -31,6 +31,11 @@ export const projectSelectionSlice = createSlice({
   reducers: {
     setProjectSearchValue: (state, action: PayloadAction<string>) => {
       state.projectSearchValue = action.payload;
+
+      if (action.payload.length <= 0) {
+        state.projectOptions = [];
+        state.projectOptionsMapped = [];
+      }
     },
   },
   extraReducers: builder => {

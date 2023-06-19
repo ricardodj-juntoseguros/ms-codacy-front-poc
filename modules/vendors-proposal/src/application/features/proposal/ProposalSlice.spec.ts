@@ -1,5 +1,10 @@
+/* eslint-disable no-var */
+/* eslint-disable prefer-promise-reject-errors */
+import { add, format } from 'date-fns';
+import { modalityListMock, proposalMock } from '../../../__mocks__';
 import { store } from '../../../config/store';
-import { proposalActions } from './ProposalSlice';
+import { createProposal, proposalActions } from './ProposalSlice';
+import ProposalAPI from './ProposalAPI';
 
 describe('ProposalSlice', () => {
   it('should set the contract number correctly', async () => {
@@ -76,5 +81,106 @@ describe('ProposalSlice', () => {
     const { proposal } = store.getState();
 
     expect(proposal.policyholderContact).toEqual(contact);
+  });
+
+  it('should set the policyholder contact correctly', async () => {
+    const contact = {
+      id: 1,
+      name: 'John Doe',
+      email: 'john@doe.com',
+    };
+    await store.dispatch(proposalActions.setPolicyholderContact(contact));
+    const { proposal } = store.getState();
+
+    expect(proposal.policyholderContact).toEqual(contact);
+  });
+
+  it('should set the initial validity correctly', async () => {
+    const date = {
+      value: format(new Date(), 'dd/MM/yyyy'),
+      isValid: true,
+    };
+    await store.dispatch(proposalActions.setInitialValidity(date));
+    const { proposal } = store.getState();
+
+    expect(proposal.initialValidity).toEqual(date.value);
+  });
+
+  it('should set the end validity correctly', async () => {
+    const date = {
+      value: format(add(new Date(), { days: 180 }), 'dd/MM/yyyy'),
+      isValid: true,
+    };
+    await store.dispatch(proposalActions.setEndValidity(date));
+    const { proposal } = store.getState();
+
+    expect(proposal.endValidity).toEqual(date.value);
+    expect(proposal.validityInDays).toEqual(180);
+  });
+
+  it('should set the validity in days correctly', async () => {
+    await store.dispatch(proposalActions.setValidityInDays(360));
+    const { proposal } = store.getState();
+
+    expect(proposal.validityInDays).toEqual(360);
+    expect(proposal.endValidity).toEqual(
+      format(add(new Date(), { days: 360 }), 'dd/MM/yyyy'),
+    );
+  });
+
+  it('should set the warranty percentage correctly', async () => {
+    await store.dispatch(proposalActions.setWarrantyPercentage(80));
+    const { proposal } = store.getState();
+
+    expect(proposal.warrantyPercentage).toEqual(80);
+  });
+
+  it('should set the modality correctly', async () => {
+    const modalityMock = {
+      ...modalityListMock[0],
+      label: modalityListMock[0].externalDescription,
+      value: modalityListMock[0].modalityId.toString(),
+    };
+
+    await store.dispatch(proposalActions.setModality(modalityMock));
+    const { proposal } = store.getState();
+
+    expect(proposal.modality).toEqual(modalityMock);
+  });
+
+  it('should set the additional coverage labor correctly', async () => {
+    await store.dispatch(proposalActions.setAdditionalCoverageLabor(true));
+    const { proposal } = store.getState();
+
+    expect(proposal.additionalCoverageLabor).toEqual(true);
+  });
+
+  it('should call the create proposal correctly', async () => {
+    const createProposalAPIMock = jest
+      .spyOn(ProposalAPI, 'createProposal')
+      .mockImplementation(() =>
+        Promise.resolve({ proposalId: 12345, policyId: 12345 }),
+      );
+
+    await store.dispatch(createProposal(proposalMock));
+    const { proposal } = store.getState();
+
+    expect(createProposalAPIMock).toHaveBeenCalledWith(proposalMock);
+    expect(proposal.identification?.proposalId).toEqual(12345);
+    expect(proposal.identification?.policyId).toEqual(12345);
+  });
+
+  it('should call the create proposal correctly and return error', async () => {
+    const createProposalAPIMock = jest
+      .spyOn(ProposalAPI, 'createProposal')
+      .mockImplementation(() =>
+        Promise.reject({ data: { data: { message: 'error' } } }),
+      );
+
+    await store.dispatch(createProposal(proposalMock));
+    const { proposal } = store.getState();
+
+    expect(createProposalAPIMock).toHaveBeenCalledWith(proposalMock);
+    expect(proposal.createProposalLoading).toEqual(false);
   });
 });

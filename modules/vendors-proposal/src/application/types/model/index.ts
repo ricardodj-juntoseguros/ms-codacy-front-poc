@@ -8,3 +8,6 @@ export * from './InsuredAndPolicyholderSelectionModel';
 export * from './ProposalPolicyholderModel';
 export * from './ProjectSelectionModel';
 export * from './PolicyholderContactModel';
+export * from './ValidationTypesEnum';
+export * from './ModalityModel';
+export * from './ModalitySelectionModel';

@@ -43,6 +43,7 @@
 
   & > i {
     @include color('color', 'grey-500');
+    @include color('color', 'brand-primary', ':hover');
     height: 18px;
     width: 18px;
   }

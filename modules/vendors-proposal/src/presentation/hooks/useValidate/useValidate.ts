@@ -1,22 +1,42 @@
 import { AnyObjectSchema, ValidationError } from 'yup';
+import { useDispatch } from 'react-redux';
+import { validationActions } from '../../../application/features/validation/ValidationSlice';
 import {
   ValidationErrorModel,
-  ValidationModel,
+  ValidationTypesEnum,
 } from '../../../application/types/model';
 import { VALIDATION_MESSAGES } from '../../../constants';
 
 export function useValidate() {
+  const dispatch = useDispatch();
+
   const validate = async <T>(
     validationSchema: AnyObjectSchema,
     data: T,
-  ): Promise<ValidationModel> => {
-    const response = await validationSchema
+    validationType = ValidationTypesEnum.full,
+    validationFields?: string[],
+    showRequiredError = true,
+  ): Promise<boolean> => {
+    let schema = validationSchema;
+    const isPartial =
+      validationType === ValidationTypesEnum.partial && validationFields;
+    if (isPartial) {
+      schema = validationSchema.pick(validationFields);
+    }
+    let result = false;
+
+    await schema
       .validate(data, { abortEarly: false })
       .then(() => {
-        return {
-          isValidForm: true,
-          errors: {},
-        };
+        if (isPartial) {
+          validationFields.forEach(field =>
+            dispatch(validationActions.removeErrorMessage(field)),
+          );
+          result = true;
+        } else {
+          dispatch(validationActions.clearErrorMessages());
+          result = true;
+        }
       })
       .catch(errors => {
         const initialValue = {};
@@ -34,6 +54,13 @@ export function useValidate() {
               path.indexOf('.') + 1,
               path.length,
             );
+
+            if (
+              (type === 'required' || type === 'typeError') &&
+              !showRequiredError
+            ) {
+              return previousErrorList;
+            }
 
             if (path in previousErrorList) {
               return {
@@ -55,13 +82,11 @@ export function useValidate() {
           initialValue,
         );
 
-        return {
-          isValidForm: false,
-          errors: filteredErrors,
-        };
+        dispatch(validationActions.setErrorMessages(filteredErrors));
+        result = false;
       });
 
-    return response;
+    return result;
   };
 
   return validate;

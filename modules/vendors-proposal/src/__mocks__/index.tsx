@@ -5,3 +5,5 @@ export * from './insuredListMock';
 export * from './insuredAdressesMock';
 export * from './policyholdersMock';
 export * from './policyholderAffiliatesMock';
+export * from './modalityListMock';
+export * from './proposalMock';

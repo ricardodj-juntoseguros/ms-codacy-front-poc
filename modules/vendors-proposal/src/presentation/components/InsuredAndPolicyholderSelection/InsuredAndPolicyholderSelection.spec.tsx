@@ -10,7 +10,7 @@ import { insuredAndPolicyholderSelectionActions } from '../../../application/fea
 describe('InsuredAndPolicyholderSelection', () => {
   it('Should display skeleton initially and then display fields when insureds are loaded', async () => {
     jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getInsuredList')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredList')
       .mockImplementationOnce(async () => {
         return insuredListMock;
       });
@@ -34,15 +34,12 @@ describe('InsuredAndPolicyholderSelection', () => {
 
   it('Should enable next button when store values are correcly filled', async () => {
     jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getInsuredList')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredList')
       .mockImplementationOnce(async () => {
         return insuredListMock;
       });
     jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getInsuredAddresses',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredAddresses')
       .mockImplementationOnce(async () => {
         return insuredAddressesMock;
       });
@@ -92,15 +89,12 @@ describe('InsuredAndPolicyholderSelection', () => {
 
   it('Should call handleNextStep callback with insured and policyholder corporateName if policyholder is present in proposal', async () => {
     jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getInsuredList')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredList')
       .mockImplementationOnce(async () => {
         return insuredListMock;
       });
     jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getInsuredAddresses',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredAddresses')
       .mockImplementationOnce(async () => {
         return insuredAddressesMock;
       });
@@ -151,15 +145,12 @@ describe('InsuredAndPolicyholderSelection', () => {
 
   it('Should call handleNextStep callback with insured and policyholder search input value if policyholder is not present in proposal', async () => {
     jest
-      .spyOn(InsuredAndPolicyholderSelectionApi.prototype, 'getInsuredList')
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredList')
       .mockImplementationOnce(async () => {
         return insuredListMock;
       });
     jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getInsuredAddresses',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredAddresses')
       .mockImplementationOnce(async () => {
         return insuredAddressesMock;
       });

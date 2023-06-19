@@ -40,7 +40,16 @@ describe('ProjectSelectionSlice', () => {
     expect(projectSelection.projectSearchValue).toEqual('Lorem');
   });
 
-  it('should set the project search value correctly', async () => {
+  it('should leave the list of projects empty if an empty string is sent', async () => {
+    await store.dispatch(projectSelectionActions.setProjectSearchValue(''));
+    const { projectSelection } = store.getState();
+
+    expect(projectSelection.projectSearchValue).toEqual('');
+    expect(projectSelection.projectOptions).toMatchObject([]);
+    expect(projectSelection.projectOptionsMapped).toMatchObject([]);
+  });
+
+  it('should set the project list correctly', async () => {
     await store.dispatch(fetchProjects('Lorem'));
     const { projectSelection } = store.getState();
 
@@ -62,7 +71,7 @@ describe('ProjectSelectionSlice', () => {
     ]);
   });
 
-  it('should set the project search value correctly', async () => {
+  it('should not set project list', async () => {
     getProjectsMock = jest
       .spyOn(ProjectSelectionAPI, 'getProjects')
       .mockImplementation(() =>

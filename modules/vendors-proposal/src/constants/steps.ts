@@ -2,6 +2,7 @@ import { StepComponentModel, StepStatusEnum } from '../application/types/model';
 import ContractData from '../presentation/components/ContractData/ContractData';
 import InsuredAndPolicyholderSelection from '../presentation/components/InsuredAndPolicyholderSelection/InsuredAndPolicyholderSelection';
 import PolicyholderContact from '../presentation/components/PolicyholderContact/PolicyholderContact';
+import WarrantyData from '../presentation/components/WarrantyData/WarrantyData';
 
 export const COMMON_PROPOSAL_STEPS: StepComponentModel[] = [
   {
@@ -29,6 +30,15 @@ export const COMMON_PROPOSAL_STEPS: StepComponentModel[] = [
     title: {
       text: 'Agora, nos indique o melhor %STRONG% Aquele que receberá a solicitação para aprovação.',
       boldWords: ['contato da empresa contratada.'],
+    },
+  },
+  {
+    name: 'WarrantyData',
+    status: StepStatusEnum.HIDDEN,
+    component: WarrantyData,
+    title: {
+      text: 'Estamos quase lá, para finalizar, preencha os %STRONG%',
+      boldWords: ['dados da garantia.'],
     },
   },
 ];

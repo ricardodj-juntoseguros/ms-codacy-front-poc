@@ -23,10 +23,7 @@ describe('InsuredAddressSelector', () => {
       }),
     );
     const apiMock = jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getInsuredAddresses',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredAddresses')
       .mockImplementationOnce(async () => insuredAddressesMock);
     const { getByTestId, findByTestId } = render(<InsuredAddressSelector />);
     expect(
@@ -46,10 +43,7 @@ describe('InsuredAddressSelector', () => {
       }),
     );
     const apiMock = jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getInsuredAddresses',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredAddresses')
       .mockImplementationOnce(async () => insuredAddressesMock.slice(0, 1));
     const { getByTestId, findByTestId, findByDisplayValue } = render(
       <InsuredAddressSelector />,
@@ -74,10 +68,7 @@ describe('InsuredAddressSelector', () => {
       }),
     );
     jest
-      .spyOn(
-        InsuredAndPolicyholderSelectionApi.prototype,
-        'getInsuredAddresses',
-      )
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredAddresses')
       .mockImplementationOnce(async () => insuredAddressesMock);
     const { getByTestId, findByTestId, findByDisplayValue } = render(
       <InsuredAddressSelector />,
