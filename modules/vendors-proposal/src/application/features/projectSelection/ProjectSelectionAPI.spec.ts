@@ -25,4 +25,18 @@ describe('ProjectSelectionAPI', () => {
     });
     expect(result).toBe('OK');
   });
+
+  it('linkProject should call bff service correctly', async () => {
+    const mockGet = jest
+      .spyOn(AxiosHttpClient.prototype, 'post')
+      .mockImplementation(async () => {
+        return 'OK';
+      });
+    const result = await ProjectSelectionAPI.linkProject('LOREM', null, 12345);
+    expect(mockGet).toHaveBeenCalledWith({
+      url: '/api/v1/project',
+      payload: { proposalId: 12345, name: 'LOREM' },
+    });
+    expect(result).toBe('OK');
+  });
 });

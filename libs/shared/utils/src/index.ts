@@ -9,3 +9,5 @@ export * from './phoneFormatter';
 export * from './formatDateString';
 export * from './federalIdValidator';
 export * from './parseStringToDate';
+export * from './currencyFormatter';
+export * from './downloadFile';

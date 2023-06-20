@@ -6,9 +6,10 @@ import {
   createProposal,
   proposalActions,
   selectProposal,
+  // updateProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import InsuredAndPolicyholderSelectionApi from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionApi';
-import { VALIDATION_MESSAGES } from '../../../constants';
+import { ERROR_MESSAGES } from '../../../constants';
 import { useValidate } from '../useValidate';
 import { ValidationErrorModel } from '../../../application/types/model';
 
@@ -34,9 +35,9 @@ export function useCreateProposal() {
       })
       .catch(error => {
         const errorMessage =
-          error && error.data && error.data.data && error.data.data.message
+          error && error.data && error.data.data && error.data.data[0].message
             ? error.data.data[0].message
-            : VALIDATION_MESSAGES.policyholderRegister;
+            : ERROR_MESSAGES.policyholderRegister;
         return {
           success: false,
           errors: { policyholderInputValue: errorMessage },
@@ -56,13 +57,16 @@ export function useCreateProposal() {
     const policyholderExists = await checkPolicyholder();
     if (!policyholderExists.success) return policyholderExists;
 
+    // if (!proposal.identification) {
     await dispatch(createProposal(proposalPayload));
-    if (
-      !proposal.identification?.policyId ||
-      !proposal.identification?.proposalId
-    ) {
-      return { success: false, errors: {} };
-    }
+    // } else {
+    //   await dispatch(
+    //     updateProposal({
+    //       policyId: proposal.identification.policyId,
+    //       payload: proposalPayload,
+    //     }),
+    //   );
+    // }
 
     return { success: true, errors: {} };
   }, [checkPolicyholder, dispatch, proposal, validate]);

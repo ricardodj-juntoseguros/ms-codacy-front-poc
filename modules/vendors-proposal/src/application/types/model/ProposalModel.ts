@@ -2,10 +2,14 @@ import { SearchOptions } from 'junto-design-system';
 import { ProposalPolicyholderModel } from './ProposalPolicyholderModel';
 import { PolicyholderContactModel } from './PolicyholderContactModel';
 import { ModalityModel } from './ModalityModel';
-import { ProposalResultDTO } from '../dto/ProposalResultDTO';
 
 export interface ProposalModel {
-  identification: ProposalResultDTO | null;
+  identification: {
+    proposalId: number;
+    policyId: number;
+    quotationId: number;
+    newQuoterId: number;
+  } | null;
   contractNumber: string;
   contractValue: number;
   insuredFederalId: string;
@@ -21,5 +25,7 @@ export interface ProposalModel {
   warrantyPercentage: number;
   modality: ModalityModel;
   additionalCoverageLabor: boolean;
+  totalValue: number;
   createProposalLoading: boolean;
+  createProposalSuccess: boolean;
 }

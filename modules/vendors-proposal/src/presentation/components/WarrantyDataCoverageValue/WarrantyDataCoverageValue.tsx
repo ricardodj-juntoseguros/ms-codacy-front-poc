@@ -1,24 +1,20 @@
 import className from 'classnames';
 import { memo, useContext, useMemo } from 'react';
 import { ThemeContext } from 'junto-design-system';
+import { currencyFormatter } from '@shared/utils';
 
 import styles from './WarrantyDataCoverageValue.module.scss';
 
 export interface WarrantyDataCoverageValueProps {
-  contractValue: number;
-  warrantyPercentage: number;
+  totalValue: number;
 }
 
 const WarrantyDataCoverageValue: React.FunctionComponent<WarrantyDataCoverageValueProps> =
-  ({ contractValue, warrantyPercentage }) => {
+  ({ totalValue }) => {
     const theme = useContext(ThemeContext);
-    const value = useMemo(
-      () =>
-        new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format((contractValue / 100) * warrantyPercentage),
-      [contractValue, warrantyPercentage],
+    const totalValueFormatted = useMemo(
+      () => currencyFormatter(totalValue),
+      [totalValue],
     );
 
     return (
@@ -37,7 +33,7 @@ const WarrantyDataCoverageValue: React.FunctionComponent<WarrantyDataCoverageVal
             styles[theme],
           )}
         >
-          {value}
+          {totalValueFormatted}
         </p>
       </div>
     );

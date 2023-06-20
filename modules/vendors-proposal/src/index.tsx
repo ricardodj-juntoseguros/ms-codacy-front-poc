@@ -4,6 +4,8 @@ import { useHistory } from 'react-router';
 import Routes from './config/routes';
 import { store } from './config/store';
 import Header from '../../../apps/vendors/src/app/presentation/components/Header';
+import { FileProvider } from './config/filesContext';
+import { URLS_WITHOUT_HEADER } from './constants';
 
 const VendorsProposal = () => {
   const history = useHistory();
@@ -11,9 +13,13 @@ const VendorsProposal = () => {
 
   return (
     <Provider store={store}>
-      <Header showMenuItems={false} backButton={backButton}/>
-      <Routes />
-      <ToastContainer />
+      <FileProvider>
+        {!URLS_WITHOUT_HEADER.includes(history.location.pathname) && (
+          <Header showMenuItems={false} backButton={backButton} />
+        )}
+        <Routes />
+        <ToastContainer />
+      </FileProvider>
     </Provider>
   );
 };

@@ -15,10 +15,12 @@ describe('ProposalSlice', () => {
   });
 
   it('should set the contract value correctly', async () => {
+    await store.dispatch(proposalActions.setWarrantyPercentage(100));
     await store.dispatch(proposalActions.setContractValue(12345));
     const { proposal } = store.getState();
 
     expect(proposal.contractValue).toEqual(12345);
+    expect(proposal.totalValue).toEqual(12345);
   });
 
   it('should set insured values correctly', async () => {
@@ -155,11 +157,23 @@ describe('ProposalSlice', () => {
     expect(proposal.additionalCoverageLabor).toEqual(true);
   });
 
+  it('should set the create proposal success correctly', async () => {
+    await store.dispatch(proposalActions.setCreateProposalSuccess(true));
+    const { proposal } = store.getState();
+
+    expect(proposal.createProposalSuccess).toEqual(true);
+  });
+
   it('should call the create proposal correctly', async () => {
     const createProposalAPIMock = jest
       .spyOn(ProposalAPI, 'createProposal')
       .mockImplementation(() =>
-        Promise.resolve({ proposalId: 12345, policyId: 12345 }),
+        Promise.resolve({
+          ProposalId: 12345,
+          PolicyId: 12345,
+          NewQuoterId: 12345,
+          QuotationId: 12345,
+        }),
       );
 
     await store.dispatch(createProposal(proposalMock));

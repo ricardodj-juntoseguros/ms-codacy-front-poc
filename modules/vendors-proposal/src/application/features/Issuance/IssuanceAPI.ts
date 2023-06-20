@@ -4,22 +4,21 @@ import {
 } from '@infrastructure/http-client';
 import VendorsProposalBaseApi from '../VendorsProposalBaseApi';
 
-class UploadDocumentAPI {
+class IssuanceAPI {
   private instance: AxiosHttpClient;
 
   public constructor() {
     this.instance = new VendorsProposalBaseApi().getInstance();
   }
 
-  async uploadDocument(proposalId: number, payload: FormData) {
+  async submitToApproval(policyId: number): Promise<void> {
     const params: IHttpClientRequestParameters = {
-      url: `/api/v1/document/proposal/${proposalId}`,
-      headers: { 'Content-Type': 'multipart/form-data' },
-      payload,
+      url: '/api/v1/issue',
+      payload: { documentNumber: policyId },
     };
 
     return this.instance.post(params);
   }
 }
 
-export default new UploadDocumentAPI();
+export default new IssuanceAPI();

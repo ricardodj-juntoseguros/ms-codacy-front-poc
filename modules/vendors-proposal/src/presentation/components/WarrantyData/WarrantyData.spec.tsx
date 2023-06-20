@@ -1,19 +1,24 @@
 import '@testing-library/jest-dom';
 import * as reactRedux from 'react-redux';
-import { MODALITIES_INFORMATION } from 'modules/vendors-proposal/src/constants';
-import { format } from 'date-fns';
-import { WarrantyDataSchema } from '../../../application/validations/schemas';
-import { ValidationTypesEnum } from '../../../application/types/model';
+import { fetchModalities } from 'modules/vendors-proposal/src/application/features/ModalitySelection/ModalitySelectionSlice';
+import { MODALITIES_INFORMATION } from '../../../constants';
 import ModalitySelectionAPI from '../../../application/features/ModalitySelection/ModalitySelectionAPI';
 import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
-import {
-  act,
-  fireEvent,
-  queryAllByText,
-  render,
-} from '../../../config/testUtils';
+import { act, fireEvent, render } from '../../../config/testUtils';
 import { modalityListMock, storeMock } from '../../../__mocks__';
 import WarrantyData from './WarrantyData';
+
+const mockHistoryPush = jest.fn();
+jest.mock('react-router', () => {
+  const rest = jest.requireActual('react-router');
+
+  return {
+    ...rest,
+    useHistory: () => ({
+      push: mockHistoryPush,
+    }),
+  };
+});
 
 describe('WarrantyData', () => {
   const handleNextStepMock = jest.fn();
@@ -41,6 +46,7 @@ describe('WarrantyData', () => {
         proposal: {
           ...storeMock.proposal,
           contractValue: 1000,
+          insuredFederalId: '99999999999999',
         },
       }),
     );
@@ -53,6 +59,28 @@ describe('WarrantyData', () => {
     );
 
     expect(baseElement).toBeInTheDocument();
+  });
+
+  it('should go to summary page if create proposal success is true', () => {
+    useSelectorMock.mockImplementation(select =>
+      select({
+        ...storeMock,
+        proposal: {
+          ...storeMock.proposal,
+          contractValue: 1000,
+          createProposalSuccess: true,
+        },
+      }),
+    );
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    render(
+      <WarrantyData
+        handleNextStep={handleNextStepMock}
+        updateTitle={updateTitle}
+      />,
+    );
+
+    expect(mockHistoryPush).toHaveBeenCalled();
   });
 
   it('should allow the user to fill in the fields', async () => {
@@ -172,8 +200,7 @@ describe('WarrantyData', () => {
       ...storeMock,
       proposal: {
         ...storeMock.proposal,
-        contractValue: 1000,
-        warrantyPercentage: 80,
+        totalValue: 800,
       },
     };
     useSelectorMock.mockImplementation(select =>

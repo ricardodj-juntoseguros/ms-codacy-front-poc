@@ -20,6 +20,15 @@ class PolicyholderContactAPI {
 
     return await this.instance.get<PolicyholderContactDTO[]>(params);
   }
+
+  async createContact(name: string, email: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/api/v1/policyholder/contacts`,
+      payload: { name, email },
+    };
+
+    return this.instance.post(params);
+  }
 }
 
 export default new PolicyholderContactAPI();

@@ -17,6 +17,7 @@ import {
 } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
 import className from 'classnames';
+import { useHistory } from 'react-router';
 import { flowActions } from '../../../application/features/flow/FlowSlice';
 import {
   fetchModalities,
@@ -56,7 +57,8 @@ const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
     insuredFederalId,
     modality,
     additionalCoverageLabor,
-    contractValue,
+    totalValue,
+    createProposalSuccess,
   } = proposal;
   const { modalityOptionsMapped } = useSelector(selectModalitySelection);
   const { errors } = useSelector(selectValidation);
@@ -65,6 +67,7 @@ const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
   const createProposal = useCreateProposal();
   const [openModal, setOpenModal] = useState(false);
   const [proposalLoading, setProposalLoading] = useState(false);
+  const history = useHistory();
 
   const disabledButton = useMemo(
     () =>
@@ -83,6 +86,10 @@ const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
       warrantyPercentage,
     ],
   );
+
+  useEffect(() => {
+    if (createProposalSuccess) history.push('/summary');
+  }, [createProposalSuccess, history]);
 
   useEffect(() => {
     dispatch(validationActions.setIsValidForm(false));
@@ -175,16 +182,11 @@ const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
   ]);
 
   const renderWarrantyDataConverageValue = () => {
-    if (!contractValue || !warrantyPercentage || warrantyPercentage > 100) {
+    if (!totalValue || warrantyPercentage > 100) {
       return null;
     }
 
-    return (
-      <WarrantyDataCoverageValue
-        contractValue={contractValue}
-        warrantyPercentage={warrantyPercentage}
-      />
-    );
+    return <WarrantyDataCoverageValue totalValue={totalValue} />;
   };
 
   const handleSubmit = useCallback(
@@ -194,7 +196,6 @@ const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
 
       const result = await createProposal();
       setProposalLoading(false);
-
       if (
         !result.success &&
         Object.keys(result.errors).includes('policyholderInputValue')
@@ -203,14 +204,9 @@ const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
         dispatch(
           flowActions.setEditableStep('InsuredAndPolicyholderSelection'),
         );
-        return;
       }
-
-      if (!result.success) return;
-
-      console.log(proposal);
     },
-    [createProposal, dispatch, proposal],
+    [createProposal, dispatch],
   );
 
   return (

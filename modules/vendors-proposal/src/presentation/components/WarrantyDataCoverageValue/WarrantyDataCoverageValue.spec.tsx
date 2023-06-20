@@ -5,10 +5,7 @@ import WarrantyDataCoverageValue from './WarrantyDataCoverageValue';
 describe('WarrantyDataCoverageValue', () => {
   it('should calculate and render correctly', () => {
     const { baseElement, getByText } = render(
-      <WarrantyDataCoverageValue
-        contractValue={1000}
-        warrantyPercentage={80}
-      />,
+      <WarrantyDataCoverageValue totalValue={800} />,
     );
 
     const value = getByText('R$ 800,00');

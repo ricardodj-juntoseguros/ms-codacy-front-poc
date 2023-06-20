@@ -25,4 +25,25 @@ describe('PolicyholderContactAPI', () => {
     });
     expect(result).toBe('OK');
   });
+
+  it('createContact should call bff service correctly', async () => {
+    const mockGet = jest
+      .spyOn(AxiosHttpClient.prototype, 'post')
+      .mockImplementation(async () => {
+        return 'OK';
+      });
+    const contactMock = {
+      name: 'John Doe',
+      email: 'john@doe.com',
+    };
+    const result = await PolicyholderContactAPI.createContact(
+      contactMock.name,
+      contactMock.email,
+    );
+    expect(mockGet).toHaveBeenCalledWith({
+      url: '/api/v1/policyholder/contacts',
+      payload: contactMock,
+    });
+    expect(result).toBe('OK');
+  });
 });

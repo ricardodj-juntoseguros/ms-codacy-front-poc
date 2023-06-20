@@ -21,6 +21,15 @@ class ProposalAPI {
 
     return this.instance.post<ProposalResultDTO>(params);
   }
+
+  async updateProposal(policyId: number, payload: ProposalDTO) {
+    const params: IHttpClientRequestParameters = {
+      url: `/api/v1/proposal/${policyId}`,
+      payload,
+    };
+
+    return this.instance.put<ProposalResultDTO>(params);
+  }
 }
 
 export default new ProposalAPI();

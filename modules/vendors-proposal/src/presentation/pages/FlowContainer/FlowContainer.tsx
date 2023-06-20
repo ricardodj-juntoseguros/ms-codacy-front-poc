@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
-import { FileProvider } from '../../../config/filesContext';
 import { StepStatusEnum } from '../../../application/types/model';
 import styles from './FlowContainer.module.scss';
 import {
@@ -17,8 +16,10 @@ function FlowContainer() {
   const { steps } = useSelector(selectFlow);
 
   useEffect(() => {
-    dispatch(flowActions.setSteps(getStepList(COMMON_PROPOSAL_STEPS)));
-  }, [dispatch]);
+    if (steps.length === 0) {
+      dispatch(flowActions.setSteps(getStepList(COMMON_PROPOSAL_STEPS)));
+    }
+  }, [dispatch, steps]);
 
   const renderSteps = () => {
     return steps.map((step, index) => {
@@ -30,11 +31,9 @@ function FlowContainer() {
   };
 
   return (
-    <FileProvider>
-      <section className={styles['flow-container__wrapper']}>
-        {renderSteps()}
-      </section>
-    </FileProvider>
+    <section className={styles['flow-container__wrapper']}>
+      {renderSteps()}
+    </section>
   );
 }
 

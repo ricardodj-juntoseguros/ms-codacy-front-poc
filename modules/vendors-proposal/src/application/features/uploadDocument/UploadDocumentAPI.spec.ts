@@ -25,10 +25,7 @@ describe('UploadDocumentAPI', () => {
     const result = await UploadDocumentAPI.uploadDocument(1234, formData);
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/api/v1/document/proposal',
-      params: {
-        proposalId: 1234,
-      },
+      url: '/api/v1/document/proposal/1234',
       headers: { 'Content-Type': 'multipart/form-data' },
       payload: formData,
     });

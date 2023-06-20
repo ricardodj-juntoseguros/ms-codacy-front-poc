@@ -20,7 +20,7 @@ jest.mock('../useValidate', () => {
   };
 });
 
-describe('useValidate', () => {
+describe('useCreateProposal', () => {
   const mockDispatch = jest.fn();
   const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
@@ -134,30 +134,6 @@ describe('useValidate', () => {
       '33768864000107',
     );
     expect(mockDispatch).not.toHaveBeenCalledWith(
-      proposalActions.setPolicyholder(policyholdersMock[0]),
-    );
-  });
-
-  it('should return an error and not continue the process if there is a failure to include the proposal', async () => {
-    useSelectorMock.mockImplementation(select =>
-      select({
-        ...updatedStoreMock,
-        proposal: { ...updatedStoreMock.proposal, identification: null },
-      }),
-    );
-    useDispatchMock.mockImplementation(() => mockDispatch);
-
-    const { result } = renderHook(() => useCreateProposal());
-    const createProposalResult = await result.current();
-
-    expect(createProposalResult).toEqual({
-      success: false,
-      errors: {},
-    });
-    expect(InsuredAndPolicyholderSelectionApiMock).toHaveBeenCalledWith(
-      '33768864000107',
-    );
-    expect(mockDispatch).toHaveBeenCalledWith(
       proposalActions.setPolicyholder(policyholdersMock[0]),
     );
   });

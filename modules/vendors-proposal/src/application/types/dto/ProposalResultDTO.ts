@@ -1,4 +1,6 @@
 export interface ProposalResultDTO {
-  proposalId: number;
-  policyId: number;
+  ProposalId: number;
+  PolicyId: number;
+  QuotationId: number;
+  NewQuoterId: number;
 }

@@ -29,9 +29,9 @@ export function useValidate() {
       .validate(data, { abortEarly: false })
       .then(() => {
         if (isPartial) {
-          validationFields.forEach(field =>
-            dispatch(validationActions.removeErrorMessage(field)),
-          );
+          validationFields.forEach(field => {
+            dispatch(validationActions.removeErrorMessage(field));
+          });
           result = true;
         } else {
           dispatch(validationActions.clearErrorMessages());
@@ -72,6 +72,7 @@ export function useValidate() {
                 ],
               };
             }
+
             return Object.assign(previousErrorList, {
               [paramName]: [
                 (VALIDATION_MESSAGES as any)[type] ||
@@ -82,8 +83,17 @@ export function useValidate() {
           initialValue,
         );
 
-        dispatch(validationActions.setErrorMessages(filteredErrors));
-        result = false;
+        if (Object.keys(filteredErrors).length === 0) {
+          if (isPartial) {
+            validationFields.forEach(field => {
+              dispatch(validationActions.removeErrorMessage(field));
+            });
+            result = true;
+          }
+        } else {
+          dispatch(validationActions.setErrorMessages(filteredErrors));
+          result = false;
+        }
       });
 
     return result;

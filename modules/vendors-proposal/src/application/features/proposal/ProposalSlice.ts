@@ -2,6 +2,8 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { SearchOptions, makeToast } from 'junto-design-system';
 import { add, differenceInCalendarDays, format, isValid } from 'date-fns';
 import { parseStringToDate } from '@shared/utils';
+import { ERROR_MESSAGES } from '../../../constants';
+import { getProposalValue } from '../../../helpers';
 import { RootState } from '../../../config/store';
 import {
   ProposalPolicyholderModel,
@@ -26,12 +28,32 @@ export const createProposal = createAsyncThunk<
         const message =
           error.data && error.data.data
             ? error.data.data[0].message
-            : 'Ops, houve um problema com sua solicitação, tente novamente mais tarde';
+            : ERROR_MESSAGES.createProposal;
 
         return rejectWithValue(message);
       });
   },
 );
+
+// export const updateProposal = createAsyncThunk<
+//   ProposalResultDTO,
+//   { policyId: number; payload: ProposalDTO },
+//   { rejectValue: string }
+// >(
+//   'proposal/updateProposal',
+//   async ({ policyId, payload }, { rejectWithValue }) => {
+//     return ProposalAPI.updateProposal(policyId, payload)
+//       .then(response => response)
+//       .catch(error => {
+//         const message =
+//           error.data && error.data.data
+//             ? error.data.data[0].message
+//             : ERROR_MESSAGES.createProposal;
+
+//         return rejectWithValue(message);
+//       });
+//   },
+// );
 
 const initialState: ProposalModel = {
   identification: null,
@@ -54,7 +76,9 @@ const initialState: ProposalModel = {
   warrantyPercentage: NaN,
   modality: {} as ModalityModel,
   additionalCoverageLabor: false,
+  totalValue: 0,
   createProposalLoading: false,
+  createProposalSuccess: false,
 };
 
 export const proposalSlice = createSlice({
@@ -66,6 +90,13 @@ export const proposalSlice = createSlice({
     },
     setContractValue: (state, action: PayloadAction<number>) => {
       state.contractValue = action.payload;
+
+      if (state.warrantyPercentage) {
+        state.totalValue = getProposalValue(
+          state.contractValue,
+          state.warrantyPercentage,
+        );
+      }
     },
     setInsuredValues: (
       state,
@@ -148,12 +179,22 @@ export const proposalSlice = createSlice({
     },
     setWarrantyPercentage: (state, action: PayloadAction<number>) => {
       state.warrantyPercentage = action.payload;
+
+      if (state.contractValue) {
+        state.totalValue = getProposalValue(
+          state.contractValue,
+          state.warrantyPercentage,
+        );
+      }
     },
     setModality: (state, action: PayloadAction<ModalityModel>) => {
       state.modality = action.payload;
     },
     setAdditionalCoverageLabor: (state, action: PayloadAction<boolean>) => {
       state.additionalCoverageLabor = action.payload;
+    },
+    setCreateProposalSuccess: (state, action: PayloadAction<boolean>) => {
+      state.createProposalSuccess = action.payload;
     },
   },
   extraReducers: builder => {
@@ -163,16 +204,38 @@ export const proposalSlice = createSlice({
       })
       .addCase(createProposal.fulfilled, (state, action) => {
         state.identification = {
-          proposalId: action.payload.proposalId,
-          policyId: action.payload.policyId,
+          proposalId: action.payload.ProposalId,
+          policyId: action.payload.PolicyId,
+          quotationId: action.payload.QuotationId,
+          newQuoterId: action.payload.NewQuoterId,
         };
+
+        state.createProposalSuccess = true;
         state.createProposalLoading = false;
       })
       .addCase(createProposal.rejected, (state, action) => {
         state.createProposalLoading = false;
-        console.log(action.payload);
+        state.createProposalSuccess = false;
         if (action.payload) makeToast('error', action.payload);
       });
+    // .addCase(updateProposal.pending, state => {
+    //   state.createProposalLoading = true;
+    // })
+    // .addCase(updateProposal.fulfilled, (state, action) => {
+    //   state.identification = {
+    //     proposalId: action.payload.ProposalId,
+    //     policyId: action.payload.PolicyId,
+    //     quotationId: action.payload.QuotationId,
+    //     newQuoterId: action.payload.NewQuoterId,
+    //   };
+    //   state.createProposalSuccess = true;
+    //   state.createProposalLoading = false;
+    // })
+    // .addCase(updateProposal.rejected, (state, action) => {
+    //   state.createProposalLoading = false;
+    //   state.createProposalSuccess = false;
+    //   if (action.payload) makeToast('error', action.payload);
+    // });
   },
 });
 

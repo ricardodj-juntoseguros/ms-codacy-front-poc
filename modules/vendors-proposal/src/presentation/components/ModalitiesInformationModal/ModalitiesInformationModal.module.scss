@@ -62,3 +62,9 @@
   @include font('base');
   @include color('color', 'dark');
 }
+
+@media screen and (max-width: 769px) {
+  .modality-information-modal__wrapper {
+    max-height: 100%;
+  }
+}
