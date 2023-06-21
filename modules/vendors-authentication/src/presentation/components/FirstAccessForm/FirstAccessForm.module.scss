@@ -2,8 +2,12 @@
 
 .first_access_wrapper{
   margin: auto;
-  width: 380px;
-  padding-top: 50px
+  width: 504px;
+  padding-top: 50px;
+
+  @media screen and (max-width: 680px) {
+    width: 312px;
+  }
 }
 
 .first_access_title{
@@ -31,13 +35,15 @@
     }
   .span_terms{
     font-family: "Noto Sans";
-    color: color('grey-500');
+    color: color('dark');
+  }
+  & button > span{
+   font-size: 14px!important;
   }
 }
 
 .first_access_validation_password{
   width: 100%;
-  padding: 0 16px;
   z-index: 100;
   border-radius: 4px;
   box-sizing: border-box;
@@ -47,12 +53,18 @@
 .first_access_validation_password_rule{
   display: flex;
   flex-direction: column;
-  gap: spacing('xs');
   align-items: flex-start
 
 }
 
-.first_access_validation_password_rule_text{
+.first_access_validation_password_rule_text_check{
+  @include font('xs');
+  font-family: "Noto Sans";
+  padding-left: spacing('s');
+  color: color('grey-500')
+}
+
+.first_access_validation_password_rule_text_not_check{
   @include font('xs');
   font-family: "Noto Sans";
   padding-left: spacing('s');

@@ -3,7 +3,7 @@
 .login__wrapper{
   margin: auto;
   width: 380px;
-  padding-top: spacing('xxl-2');
+  padding-top: spacing('xxl');
 }
 .login_title{
   @include font('xl-emphasys');
@@ -17,6 +17,7 @@
   display: flex;
   flex-direction: column;
   gap: spacing('m');
+  text-align: initial
 }
 
 .forgot_passowrd_redirect{

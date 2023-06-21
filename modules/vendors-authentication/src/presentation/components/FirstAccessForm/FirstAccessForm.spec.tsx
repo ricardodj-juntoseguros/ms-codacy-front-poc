@@ -39,12 +39,12 @@ describe('FirstAccessForm', () => {
   });
 
   it('should render successfully', () => {
-    const { baseElement } = render( <FirstAccessForm hash="698dc19d489c4e4db73e28a713eab07b" token="698dc19d489c4e4db73e28a713eab07b" /> );
+    const { baseElement } = render( <FirstAccessForm hash="698dc19d489c4e4db73e28a713eab07b" token="698dc19d489c4e4db73e28a713eab07b"  title="Para sua segurança, precisamos que você defina uma senha." isFiristAccess/> );
     expect(baseElement).toBeTruthy();
   });
 
   it('should render successfully and change inputs',  async () => {
-    const { getByTestId } = render( <FirstAccessForm hash="698dc19d489c4e4db73e28a713eab07b" token="698dc19d489c4e4db73e28a713eab07b" /> );
+    const { getByTestId } = render( <FirstAccessForm hash="698dc19d489c4e4db73e28a713eab07b" token="698dc19d489c4e4db73e28a713eab07b" title="Para sua segurança, precisamos que você defina uma senha." isFiristAccess/> );
 
     const inputPassword = getByTestId('first_access-input-password');
     const inputConfirmPassword= getByTestId('first_access-input-confirmPassword');
@@ -64,7 +64,7 @@ describe('FirstAccessForm', () => {
     });
 
     it('should render successfully and change inputs but button disabled',  async () => {
-      const { getByTestId } = render( <FirstAccessForm hash="698dc19d489c4e4db73e28a713eab07b" token="698dc19d489c4e4db73e28a713eab07b" /> );
+      const { getByTestId } = render( <FirstAccessForm hash="698dc19d489c4e4db73e28a713eab07b" token="698dc19d489c4e4db73e28a713eab07b" title="Para sua segurança, precisamos que você defina uma senha." isFiristAccess/> );
 
       const inputPassword = getByTestId('first_access-input-password');
       const inputConfirmPassword= getByTestId('first_access-input-confirmPassword');
@@ -82,7 +82,7 @@ describe('FirstAccessForm', () => {
       });
 
       it('should render successfully and handle submmit',  async () => {
-        const { getByTestId } = render( <FirstAccessForm hash="698dc19d489c4e4db73e28a713eab07b" token="698dc19d489c4e4db73e28a713eab07b" /> );
+        const { getByTestId } = render( <FirstAccessForm hash="698dc19d489c4e4db73e28a713eab07b" token="698dc19d489c4e4db73e28a713eab07b"  title="Para sua segurança, precisamos que você defina uma senha." isFiristAccess/> );
 
         const inputPassword = getByTestId('first_access-input-password');
         const inputConfirmPassword= getByTestId('first_access-input-confirmPassword');

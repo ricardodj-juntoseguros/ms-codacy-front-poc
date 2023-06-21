@@ -72,7 +72,7 @@ export class VendorsAuthService {
       }),
       {
         expires: cookieExpiresIn,
-        path: this.COOKIE_DOMAIN,
+        domain: this.COOKIE_DOMAIN,
       },
     );
   }

@@ -34,7 +34,7 @@ describe('Vendors Auth Service', () => {
       expect.stringMatching('token'),
       expect.objectContaining({
         expires: expect.anything(),
-        path: expect.anything(),
+        domain: expect.anything(),
       }),
     );
   });

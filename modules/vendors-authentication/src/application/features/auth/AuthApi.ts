@@ -38,6 +38,13 @@ class AuthApi {
     };
     return await this.instance.post<AuthenticationDTO>(params);
   }
+
+  async forgotPassword(email: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/api/v1/user/request-email-forgot-password?email=${email}`,
+    };
+    return await this.instance.post(params);
+  }
 }
 
 const authApi = new AuthApi();
