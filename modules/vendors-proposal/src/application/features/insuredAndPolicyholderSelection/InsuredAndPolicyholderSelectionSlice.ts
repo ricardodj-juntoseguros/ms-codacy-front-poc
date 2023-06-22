@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { makeToast } from 'junto-design-system';
 import { federalIdValidator } from '@shared/utils';
+import { isAffiliateFederalId } from '../../../helpers/isAffiliateFederalId';
 import { RootState } from '../../../config/store';
 import { InsuredAndPolicyholderSelectionModel } from '../../types/model';
 import { PolicyholderAffiliateDTO, PolicyholderDTO } from '../../types/dto';
@@ -22,11 +23,14 @@ export const searchPolicyholders = createAsyncThunk<
 >(
   'insuredAndPolicyholderSelection/searchPolicyholders',
   async (inputtedValue: string, { rejectWithValue }) => {
-    const isFederalId = federalIdValidator(inputtedValue, 'partial');
-    const federalId = isFederalId
-      ? inputtedValue.replace(/[^\d]+/g, '')
-      : undefined;
-    const corporateName = isFederalId ? undefined : inputtedValue;
+    const strippedValue = inputtedValue.replace(/[^\d]+/g, '');
+    const isPartialFederalId = federalIdValidator(inputtedValue, 'partial');
+    const isFullFederalId = federalIdValidator(strippedValue, 'full');
+    if (isFullFederalId && isAffiliateFederalId(inputtedValue)) return [];
+
+    const federalId = isPartialFederalId ? strippedValue : undefined;
+    const corporateName = isPartialFederalId ? undefined : inputtedValue;
+
     return InsuredAndPolicyholderSelectionApi.getPolicyholders(
       federalId,
       corporateName,

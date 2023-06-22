@@ -32,3 +32,12 @@
 .insured-policyholder-selection__submit {
   margin-bottom: spacing('l');
 }
+
+.insured-policyholder-selection__affiliate-alert {
+  margin-bottom: spacing('m');
+  @media screen and (max-width: 505px) {
+    & > div {
+      width: 100% !important;
+    }
+  }
+}

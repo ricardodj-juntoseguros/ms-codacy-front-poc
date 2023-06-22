@@ -189,7 +189,7 @@ describe('InsuredAndPolicyholderSelection', () => {
     act(() => {
       store.dispatch(
         insuredAndPolicyholderSelectionActions.setPolicyholderInputValue(
-          '11223344556677',
+          '06376081000105',
         ),
       );
     });
@@ -201,7 +201,40 @@ describe('InsuredAndPolicyholderSelection', () => {
 
     fireEvent.click(getByTestId('insuredPolicyholderSelection-button-submit'));
     expect(mockCallback).toHaveBeenCalledWith(
-      'Teste segurado e 11.223.344/5566-77',
+      'Teste segurado e 06.376.081/0001-05',
     );
+  });
+
+  it('Should display alert if the policyholder is not selected and inputted policyholder value is an affiliate federalId', async () => {
+    jest
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredList')
+      .mockImplementationOnce(async () => {
+        return insuredListMock;
+      });
+    jest
+      .spyOn(InsuredAndPolicyholderSelectionApi, 'getInsuredAddresses')
+      .mockImplementationOnce(async () => {
+        return insuredAddressesMock;
+      });
+    const { getByText } = render(
+      <InsuredAndPolicyholderSelection handleNextStep={jest.fn()} />,
+    );
+    act(() => {
+      store.dispatch(
+        insuredAndPolicyholderSelectionActions.setPolicyholderInputValue(
+          '45543915000424',
+        ),
+      );
+    });
+    act(() => {
+      store.dispatch(
+        insuredAndPolicyholderSelectionActions.setIsValidFederalId(true),
+      );
+    });
+    expect(
+      getByText(
+        /Ops, parece que esse CNPJ é de uma filial. Precisamos do CNPJ da Matriz para continuar. Caso precise de ajuda/,
+      ),
+    ).toBeInTheDocument();
   });
 });

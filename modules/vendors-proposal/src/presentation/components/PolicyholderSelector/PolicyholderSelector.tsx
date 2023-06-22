@@ -14,6 +14,7 @@ import {
   proposalActions,
   selectProposalPolicyholder,
 } from '../../../application/features/proposal/ProposalSlice';
+import { isAffiliateFederalId } from '../../../helpers/isAffiliateFederalId';
 import styles from './PolicyholderSelector.module.scss';
 
 const PolicyholderSelector: React.FC = () => {
@@ -33,19 +34,29 @@ const PolicyholderSelector: React.FC = () => {
 
   const mappedOptions = useMemo(() => {
     if (policyholderResults === null) return [];
-    if (policyholderResults.length === 0) {
+    const policyholders = policyholderResults.filter(
+      policyholder =>
+        policyholder.corporateName !== null &&
+        policyholder.corporateName !== '',
+    );
+    if (policyholders.length === 0) {
       if (policyholderInputValue.length < 4) {
         return [];
       }
       if (hasInputtedFederalId(policyholderInputValue)) {
-        return isValidFederalId
-          ? [
-              {
-                label: 'CNPJ válido. O fornecedor será cadastrado.',
-                value: '-1',
-              },
-            ]
-          : [{ label: 'Ops, parece que esse CNPJ não existe.', value: '-1' }];
+        if (isValidFederalId) {
+          return [
+            {
+              label: isAffiliateFederalId(policyholderInputValue)
+                ? 'Ops, parece que esse CNPJ é de uma filial. Precisamos do CNPJ da Matriz para continuar.'
+                : 'CNPJ válido. O fornecedor será cadastrado.',
+              value: '-1',
+            },
+          ];
+        }
+        return [
+          { label: 'Ops, parece que esse CNPJ não existe.', value: '-1' },
+        ];
       }
       return [
         {
@@ -54,7 +65,7 @@ const PolicyholderSelector: React.FC = () => {
         },
       ];
     }
-    return policyholderResults.map(policyholder => {
+    return policyholders.map(policyholder => {
       const { corporateName, federalId } = policyholder;
       return {
         value: federalId,
@@ -82,6 +93,10 @@ const PolicyholderSelector: React.FC = () => {
         insuredAndPolicyholderSelectionActions.setIsValidFederalId(
           federalIdValidator(policyholderInputValue, 'full'),
         ),
+      );
+    } else {
+      dispatch(
+        insuredAndPolicyholderSelectionActions.setIsValidFederalId(false),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

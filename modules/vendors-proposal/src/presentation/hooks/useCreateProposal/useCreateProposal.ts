@@ -23,15 +23,21 @@ export function useCreateProposal() {
       proposal.policyholder.federalId,
     )
       .then(async result => {
-        if (result[0].corporateName !== '') {
+        if (result[0].corporateName !== null) {
           dispatch(
             proposalActions.setPolicyholder({
               ...proposal.policyholder,
               corporateName: result[0].corporateName,
             }),
           );
+          return { success: true, errors: {} as any };
         }
-        return { success: true, errors: {} };
+        return {
+          success: false,
+          errors: {
+            policyholderInputValue: ERROR_MESSAGES.policyholderRegister,
+          },
+        };
       })
       .catch(error => {
         const errorMessage =
