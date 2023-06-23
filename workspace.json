@@ -829,6 +829,35 @@
           }
         }
       }
+    },
+    "vendors-policies": {
+      "root": "modules/vendors-policies",
+      "sourceRoot": "modules/vendors-policies/src",
+      "projectType": "library",
+      "tags": [],
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
+          ],
+          "options": {
+            "lintFilePatterns": [
+              "modules/vendors-policies/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/modules/vendors-policies"
+          ],
+          "options": {
+            "jestConfig": "modules/vendors-policies/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

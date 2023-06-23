@@ -21,5 +21,6 @@ module.exports = {
   coveragePathIgnorePatterns: ['/node_modules/', 'index.ts', 'index.tsx'],
   moduleNameMapper: {
     '\\.(scss|css)$': 'identity-obj-proxy',
+    '.+\\.(svg)$': '<rootDir>../../__mocks__/svgMock.ts',
   },
 };

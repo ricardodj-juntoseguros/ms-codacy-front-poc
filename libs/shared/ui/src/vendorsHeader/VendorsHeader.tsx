@@ -1,21 +1,34 @@
 import { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LinkButton, ThemeContext } from 'junto-design-system';
-import { VendorsAuthService } from '@services';
 import { nanoid } from 'nanoid/non-secure';
 import className from 'classnames';
-import LogoMarsh from '../../../assets/logo-marsh.svg';
-import UserMenu from '../UserMenu/UserMenu';
-import { MENU_ITEMS, USER_MENU_ITEMS } from '../../../constants';
+import { VendorsAuthService } from '@services';
+import { ReactComponent as LogoMarsh } from './assets/logo-marsh.svg';
+import VendorsUserMenu from './VendorsUserMenu';
+import styles from './VendorsHeader.module.scss';
 
-import styles from './Header.module.scss';
+const MENU_ITEMS = {
+  insured: [
+    {
+      label: 'Meu painel',
+      redirect: '/policies',
+    },
+    {
+      label: 'Solicitar garantia',
+      redirect: '/proposal',
+    },
+  ],
+  policyholder: [],
+  broker: [],
+};
 
-export interface HeaderProps {
+export interface VendorsHeaderProps {
   showMenuItems?: boolean;
   backButton?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
+export const VendorsHeader: React.FC<VendorsHeaderProps> = ({
   showMenuItems = true,
   backButton,
 }) => {
@@ -37,14 +50,24 @@ const Header: React.FC<HeaderProps> = ({
     };
   }, []);
 
+  const menuItems = (): { label: string; redirect: string }[] => {
+    const userData = VendorsAuthService.getUserAccessCookie();
+    if (!userData || !userData.userType) return [];
+    const { userType } = userData;
+    return MENU_ITEMS[userType as 'insured' | 'broker' | 'policyholder'];
+  };
+
   const renderNavMenu = () => {
     return (
-      <ul className={styles['header__list']}>
-        {MENU_ITEMS.map(item => (
-          <li className={styles['header__item']} key={nanoid(5)}>
+      <ul className={styles['vendors-header__list']}>
+        {menuItems().map(item => (
+          <li className={styles['vendors-header__item']} key={nanoid(5)}>
             <Link
               data-testid={`header-anchor-${item.redirect}`}
-              className={className(styles['header__link'], styles[theme])}
+              className={className(
+                styles['vendors-header__link'],
+                styles[theme],
+              )}
               to={item.redirect}
             >
               {item.label}
@@ -61,13 +84,9 @@ const Header: React.FC<HeaderProps> = ({
         <Link
           data-testid="header-logo-back"
           to="/"
-          className={styles['header__logo']}
+          className={styles['vendors-header__logo']}
         >
-          <img
-            src={LogoMarsh}
-            className={styles['header__img']}
-            alt="Logo da plataforma Marsh vendors"
-          />
+          <LogoMarsh className={styles['vendors-header__img']} />
         </Link>
       );
     }
@@ -83,20 +102,17 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className={styles.header}>
+    <header className={styles['vendors-header']}>
       {renderBackButton()}
 
-      <nav className={styles['header__navbar']}>
+      <nav className={styles['vendors-header__navbar']}>
         {showMenuItems && renderNavMenu()}
-        <UserMenu
+        <VendorsUserMenu
           isMobile={windowSize.width <= 576}
           username={VendorsAuthService.getUsername() || ''}
           userEmail={VendorsAuthService.getUserEmail() || ''}
-          userMenuItems={USER_MENU_ITEMS}
         />
       </nav>
     </header>
   );
 };
-
-export default Header;

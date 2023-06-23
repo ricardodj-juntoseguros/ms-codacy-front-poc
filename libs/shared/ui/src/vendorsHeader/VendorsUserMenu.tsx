@@ -4,23 +4,23 @@ import { Link } from 'react-router-dom';
 import { nanoid } from 'nanoid/non-secure';
 import className from 'classnames';
 import { Divider, ThemeContext } from 'junto-design-system';
+import styles from './VendorsUserMenu.module.scss';
 
-import styles from './UserMenu.module.scss';
+const USER_MENU_ITEMS = {
+  insured: [],
+  policyholder: [],
+  broker: [],
+};
 
-export interface UserMenuProps {
+export interface VendorsUserMenuProps {
   username: string;
   userEmail: string;
-  userMenuItems: {
-    label: string;
-    redirect: string;
-  }[];
   isMobile: boolean;
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({
+const VendorsUserMenu: React.FC<VendorsUserMenuProps> = ({
   username,
   userEmail,
-  userMenuItems,
   isMobile,
 }) => {
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -45,6 +45,13 @@ const UserMenu: React.FC<UserMenuProps> = ({
     };
   }, [triggerRef]);
 
+  const userMenuItems = (): { label: string; redirect: string }[] => {
+    const userData = VendorsAuthService.getUserAccessCookie();
+    if (!userData || !userData.userType) return [];
+    const { userType } = userData;
+    return USER_MENU_ITEMS[userType as 'insured' | 'broker' | 'policyholder'];
+  };
+
   const renderUserInfo = () => {
     return (
       <>
@@ -61,7 +68,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   };
 
   const renderUserMenuItems = () => {
-    return userMenuItems.map(item => (
+    return userMenuItems().map(item => (
       <li
         className={className(styles['nav__item'], styles[theme])}
         key={nanoid(5)}
@@ -78,31 +85,39 @@ const UserMenu: React.FC<UserMenuProps> = ({
   };
 
   return (
-    <div className={styles['usermenu']} ref={triggerRef}>
+    <div className={styles['vendors-usermenu']} ref={triggerRef}>
       <button
         data-testid="userMenu-button-open-menu"
         type="button"
-        className={styles['usermenu__button']}
+        className={styles['vendors-usermenu__button']}
         onClick={() => setUserMenuOpen(!userMenuOpen)}
       >
         {!isMobile && (
-          <p className={className(styles['usermenu__name'], styles[theme])}>
+          <p
+            className={className(
+              styles['vendors-usermenu__name'],
+              styles[theme],
+            )}
+          >
             {username}
           </p>
         )}
 
         <figure
-          className={className(styles['usermenu__avatar'], styles[theme])}
+          className={className(
+            styles['vendors-usermenu__avatar'],
+            styles[theme],
+          )}
         >
           {initialLetter}
         </figure>
       </button>
       <nav
         className={className(
-          styles['usermenu__nav'],
+          styles['vendors-usermenu__nav'],
           styles['nav'],
           {
-            [styles['usermenu__nav--open']]: userMenuOpen,
+            [styles['vendors-usermenu__nav--open']]: userMenuOpen,
           },
           styles[theme],
         )}
@@ -130,4 +145,4 @@ const UserMenu: React.FC<UserMenuProps> = ({
   );
 };
 
-export default UserMenu;
+export default VendorsUserMenu;

@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { act, fireEvent, render } from '@testing-library/react';
-import { VendorsAuthService } from '@services';
+import { VendorsAuthService } from 'libs/services/src';
 import { MemoryRouter } from 'react-router';
-import Header from './Header';
+import { VendorsHeader } from './VendorsHeader';
 
-describe('Header', () => {
+describe('VendorsHeader', () => {
   beforeAll(() => {
     global.innerWidth = 1024;
     global.dispatchEvent(new Event('resize'));
@@ -16,22 +16,23 @@ describe('Header', () => {
       .mockImplementation(() => 'testuser@email.com');
   });
 
-  it('should render correctly', () => {
+  it('should render correctly for userType insured', () => {
+    jest
+      .spyOn(VendorsAuthService, 'getUserAccessCookie')
+      .mockImplementationOnce(() => ({
+        userType: 'insured',
+      }));
     const { getByText, getAllByText } = render(
       <MemoryRouter>
-        <Header />
+        <VendorsHeader />
       </MemoryRouter>,
     );
 
-    const panel = getByText('Meu painel');
-    const insureds = getByText('Meu painel');
-    const suppliers = getByText('Administrar Fornecedores');
     const user = getAllByText('Test user');
     const email = getAllByText('testuser@email.com');
 
-    expect(panel).toBeInTheDocument();
-    expect(insureds).toBeInTheDocument();
-    expect(suppliers).toBeInTheDocument();
+    expect(getByText('Meu painel')).toBeInTheDocument();
+    expect(getByText('Solicitar garantia')).toBeInTheDocument();
     expect(user[0]).toBeInTheDocument();
     expect(email[0]).toBeInTheDocument();
   });
@@ -39,19 +40,17 @@ describe('Header', () => {
   it('should render correctly without the menus', async () => {
     const { queryByTestId, getAllByText } = render(
       <MemoryRouter>
-        <Header showMenuItems={false} />
+        <VendorsHeader showMenuItems={false} />
       </MemoryRouter>,
     );
 
-    const panel = await queryByTestId('header-anchor-/panel');
-    const insureds = await queryByTestId('header-anchor-/insured');
-    const suppliers = await queryByTestId('header-anchor-/suppliers');
+    const proposal = queryByTestId('header-anchor-/proposal');
+    const policies = queryByTestId('header-anchor-/policies');
     const user = getAllByText('Test user');
     const email = getAllByText('testuser@email.com');
 
-    expect(panel).not.toBeInTheDocument();
-    expect(insureds).not.toBeInTheDocument();
-    expect(suppliers).not.toBeInTheDocument();
+    expect(proposal).not.toBeInTheDocument();
+    expect(policies).not.toBeInTheDocument();
     expect(user[0]).toBeInTheDocument();
     expect(email[0]).toBeInTheDocument();
   });
@@ -60,7 +59,10 @@ describe('Header', () => {
     const backFunctionMock = jest.fn();
     const { getByTestId } = render(
       <MemoryRouter>
-        <Header showMenuItems={false} backButton={() => backFunctionMock()} />
+        <VendorsHeader
+          showMenuItems={false}
+          backButton={() => backFunctionMock()}
+        />
       </MemoryRouter>,
     );
 
@@ -83,7 +85,10 @@ describe('Header', () => {
 
     const wrapper = render(
       <MemoryRouter>
-        <Header showMenuItems={false} backButton={() => backFunctionMock()} />
+        <VendorsHeader
+          showMenuItems={false}
+          backButton={() => backFunctionMock()}
+        />
       </MemoryRouter>,
     );
 

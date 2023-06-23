@@ -1,10 +1,10 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.usermenu {
+.vendors-usermenu {
   position: relative;
 }
 
-.usermenu__button {
+.vendors-usermenu__button {
   display: flex;
   align-items: center;
   background-color: transparent;
@@ -14,7 +14,7 @@
   cursor: pointer;
 }
 
-.usermenu__name {
+.vendors-usermenu__name {
   @include font('xs-emphasys');
   @include color('color', 'dark');
   margin-left: spacing('m');
@@ -25,7 +25,7 @@
   white-space: nowrap;
   text-transform: uppercase;
 }
-.usermenu__avatar {
+.vendors-usermenu__avatar {
   @include font('sm-emphasys');
   @include color('background-color', 'grey-100');
   @include color('color', 'brand-primary');
@@ -42,11 +42,11 @@
   width: spacing('xl');
 }
 
-.usermenu__avatar {
-  @include margin('xs', 'xs', 'xs', 's')
+.vendors-usermenu__avatar {
+  @include margin('xs', 'xs', 'xs', 's');
 }
 
-.usermenu__nav {
+.vendors-usermenu__nav {
   width: 17.5rem;
   position: absolute;
   right: 0;
@@ -55,7 +55,7 @@
   padding: spacing('l');
   box-sizing: border-box;
   @include color('background-color', 'white');
-  box-shadow: 0px 4px 16px 0 rgba(0,0,0, 0.15);
+  box-shadow: 0px 4px 16px 0 rgba(0, 0, 0, 0.15);
   opacity: 0;
   transform: translateY(-20%);
   transition: all 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -78,7 +78,7 @@
 .nav__name {
   @include font('sm-emphasys');
   @include color('color', 'dark');
-  margin-bottom: spacing('xs')
+  margin-bottom: spacing('xs');
 }
 
 .nav__email {
@@ -120,15 +120,11 @@
 }
 
 @media screen and (max-width: 576px) {
-  .usermenu__button {
+  .vendors-usermenu__button {
     border: 0;
   }
 
-  .usermenu__avatar {
+  .vendors-usermenu__avatar {
     margin-left: spacing('xs');
   }
 }
-
-
-
-

@@ -1,18 +1,19 @@
 module.exports = {
-  displayName: 'fidelize-mapeamentos-import',
+  displayName: 'vendors-policies',
   preset: '../../jest.preset.js',
   transform: {
     '.+\\.(js|jsx)$': 'babel-jest',
     '.+\\.(ts|tsx)$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/modules/fidelize-mapeamentos-import',
+  coverageDirectory: '../../coverage/modules/vendors-policies',
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/config/*.{ts,tsx}',
     '!src/constants/*.{ts,tsx}',
-    '!src/application/types/*.{ts,tsx}',
+    '!src/application/types/*/*.{ts,tsx}',
     '!src/application/validations/*.{ts,tsx}',
+    '!src/application/validations/*/*.{ts,tsx}',
     '!src/application/**/dataPresenter/*.{ts,tsx}',
     '!src/declarations.d.ts',
   ],

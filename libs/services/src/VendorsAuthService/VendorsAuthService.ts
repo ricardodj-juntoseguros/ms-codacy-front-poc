@@ -27,9 +27,9 @@ export class VendorsAuthService {
   };
 
   private readonly REDIRECT_PAGES_AFTER_LOGIN = {
-    policyholder: `${this.PLATAFORMA_VENDORS_URL}/proposal`,
-    insured: `${this.PLATAFORMA_VENDORS_URL}/proposal`,
-    broker: `${this.PLATAFORMA_VENDORS_URL}/proposal`,
+    policyholder: `${this.PLATAFORMA_VENDORS_URL}/policies`,
+    insured: `${this.PLATAFORMA_VENDORS_URL}/policies`,
+    broker: `${this.PLATAFORMA_VENDORS_URL}/policies`,
   };
 
   getUserAccessCookie() {
@@ -170,20 +170,11 @@ export class VendorsAuthService {
       .finally(() => this.clearAuthData());
   }
 
-  // eslint-disable-next-line camelcase
-  getUserType(access_token: string) {
-    const tokenData = jwtDecode<any>(access_token);
-
-    if (tokenData.realm_access.roles.includes(this.USER_TYPES.policyholder)) {
-      return this.USER_TYPES.policyholder;
-    }
-    if (tokenData.realm_access.roles.includes(this.USER_TYPES.insured)) {
-      return this.USER_TYPES.insured;
-    }
-    if (tokenData.realm_access.roles.includes(this.USER_TYPES.broker)) {
-      return this.USER_TYPES.broker;
-    }
-    return '';
+  getUserType(): 'insured' | 'policyholder' | 'broker' | null {
+    const userCookie = this.getUserAccessCookie();
+    if (!userCookie) return null;
+    const { userType } = userCookie;
+    return userType;
   }
 
   // eslint-disable-next-line camelcase

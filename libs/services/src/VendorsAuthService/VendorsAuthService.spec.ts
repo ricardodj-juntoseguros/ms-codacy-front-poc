@@ -126,18 +126,18 @@ describe('Vendors Auth Service', () => {
   it('getRedirectPageAfterLogin should read userType from user cookie and return correct url for type insured', () => {
     jest.spyOn(Cookies, 'get').mockReturnValue(mockInsuredCookie as any);
     const url = VendorsAuthService.getRedirectPageAfterLogin();
-    expect(url).toMatch(/\/proposal/i);
+    expect(url).toMatch(/\/policies/i);
   });
 
   it('getRedirectPageAfterLogin should read userType from user cookie and return correct url for type policyholder', () => {
     jest.spyOn(Cookies, 'get').mockReturnValue(mockPolicyholderCookie as any);
     const url = VendorsAuthService.getRedirectPageAfterLogin();
-    expect(url).toMatch(/\proposal/i);
+    expect(url).toMatch(/\policies/i);
   });
 
   it('getRedirectPageAfterLogin should read userType from user cookie and return correct url for type broker', () => {
     jest.spyOn(Cookies, 'get').mockReturnValue(mockBrokerCookie as any);
     const url = VendorsAuthService.getRedirectPageAfterLogin();
-    expect(url).toMatch(/\proposal/i);
+    expect(url).toMatch(/\policies/i);
   });
 });

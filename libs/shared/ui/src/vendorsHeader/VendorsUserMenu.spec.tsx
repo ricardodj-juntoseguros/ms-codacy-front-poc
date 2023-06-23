@@ -1,19 +1,17 @@
 import '@testing-library/jest-dom';
-import { VendorsAuthService } from '@services';
+import { VendorsAuthService } from 'libs/services/src';
 import { act, fireEvent, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import UserMenu from './UserMenu';
-import { USER_MENU_ITEMS } from '../../../constants';
+import VendorsUserMenu from './VendorsUserMenu';
 
-describe('UserMenu', () => {
+describe('VendorsUserMenu', () => {
   it('should render with the received information correctly', () => {
     const { baseElement, getAllByText, getByText, getByTestId } = render(
       <MemoryRouter>
-        <UserMenu
+        <VendorsUserMenu
           isMobile={false}
           username="lorem"
           userEmail="lorem@lorem.com"
-          userMenuItems={USER_MENU_ITEMS}
         />
       </MemoryRouter>,
     );
@@ -33,11 +31,10 @@ describe('UserMenu', () => {
   it('should open the user menu and show the options', async () => {
     const { getByTestId, getByText } = render(
       <MemoryRouter>
-        <UserMenu
+        <VendorsUserMenu
           isMobile={false}
           username="lorem"
           userEmail="lorem@lorem.com"
-          userMenuItems={USER_MENU_ITEMS}
         />
       </MemoryRouter>,
     );
@@ -57,11 +54,10 @@ describe('UserMenu', () => {
     });
     const { getByTestId, getByText } = render(
       <MemoryRouter>
-        <UserMenu
+        <VendorsUserMenu
           isMobile={false}
           username="lorem"
           userEmail="lorem@lorem.com"
-          userMenuItems={USER_MENU_ITEMS}
         />
       </MemoryRouter>,
     );
@@ -79,11 +75,10 @@ describe('UserMenu', () => {
   it('should hide username when on mobile', async () => {
     const { queryAllByText } = render(
       <MemoryRouter>
-        <UserMenu
+        <VendorsUserMenu
           isMobile
           username="lorem"
           userEmail="lorem@lorem.com"
-          userMenuItems={USER_MENU_ITEMS}
         />
       </MemoryRouter>,
     );
