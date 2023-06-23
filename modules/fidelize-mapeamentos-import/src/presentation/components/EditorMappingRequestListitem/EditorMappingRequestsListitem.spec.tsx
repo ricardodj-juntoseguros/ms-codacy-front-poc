@@ -6,7 +6,7 @@ import {
   findAllByTestId,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { store } from 'modules/fidelize-mapeamentos-import/src/config/store';
+import { store } from '../../../config/store';
 import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 import EditorMappingRequestListitem from './EditorMappingRequestListitem';
 

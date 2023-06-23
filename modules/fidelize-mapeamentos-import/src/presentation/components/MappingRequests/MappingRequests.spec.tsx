@@ -128,7 +128,7 @@ describe('MappingRequests', () => {
     );
   });
 
-  it('Should call api method to fetch requests on component blokcked mount', async () => {
+  it('Should call api method to fetch requests on component blocked mount', async () => {
     mockOngoingSuccess();
     const { findByTestId } = render(
       <MappingRequests

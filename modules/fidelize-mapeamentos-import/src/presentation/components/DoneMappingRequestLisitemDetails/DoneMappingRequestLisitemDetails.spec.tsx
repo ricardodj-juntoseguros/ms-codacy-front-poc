@@ -1,9 +1,26 @@
 import '@testing-library/jest-dom';
-import { render } from '../../../config/testUtils';
+import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
+import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import { MappingDoneDetailsDTO } from '../../../application/types/dto';
 import DoneMappingRequestsListitemDetails from './DoneMappingRequestListitemDetails';
 
 describe('DoneMappingRequestsListitemDetails', () => {
+  const mockSuccess = () => {
+    jest
+      .spyOn(ListingMappingApi.prototype, 'downloadMappingItem')
+      .mockImplementation(async () => {
+        return Promise.resolve();
+      });
+  };
+  const mockError = () => {
+    jest
+      .spyOn(ListingMappingApi.prototype, 'downloadMappingItem')
+      .mockImplementation(async () => {
+        return new Promise((resolve, reject) => {
+          return reject();
+        });
+      });
+  };
   const requestMock: MappingDoneDetailsDTO = {
     id: 4,
     policyholderFederalId: '12345678910114',
@@ -43,7 +60,7 @@ describe('DoneMappingRequestsListitemDetails', () => {
       {
         id: 4,
         name: 'Federal',
-        mappedAt: '2023-04-13T11:27:42.8745375',
+        mappedAt: '',
         requested: true,
         totalProcesses: 6,
         totalOpenProcesses: 2,
@@ -54,7 +71,7 @@ describe('DoneMappingRequestsListitemDetails', () => {
       {
         id: 5,
         name: 'Estadual',
-        mappedAt: '2023-04-13T11:27:42.8745375',
+        mappedAt: '',
         requested: true,
         totalProcesses: 6,
         totalOpenProcesses: 2,
@@ -65,7 +82,7 @@ describe('DoneMappingRequestsListitemDetails', () => {
       {
         id: 6,
         name: 'CARF',
-        mappedAt: '2023-04-13T11:27:42.8745375',
+        mappedAt: '',
         requested: true,
         totalProcesses: 6,
         totalOpenProcesses: 2,
@@ -76,7 +93,7 @@ describe('DoneMappingRequestsListitemDetails', () => {
       {
         id: 7,
         name: 'Divida Ativa',
-        mappedAt: '2023-04-13T11:27:42.8745375',
+        mappedAt: '',
         requested: true,
         totalProcesses: 6,
         totalOpenProcesses: 2,
@@ -108,5 +125,42 @@ describe('DoneMappingRequestsListitemDetails', () => {
         'Bloqueado por motivo 1; Bloqueado por motivo 2; Bloqueado por motivo 3; Bloqueado por motivo 4.',
       ),
     ).toBeInTheDocument();
+  });
+
+  it('Should render download link correctly and get blob file on click', () => {
+    mockSuccess();
+    const a = document.createElement('a');
+    jest
+      .spyOn(document, 'createElement')
+      .mockReturnValueOnce(document.createElement('a'));
+    const dispatchEventSpy = jest.spyOn(a, 'dispatchEvent');
+    const { findByText, getByTestId } = render(
+      <DoneMappingRequestsListitemDetails mappingRequest={requestMock} />,
+    );
+    const btnDownloadLink = getByTestId('download-opportunity-btn');
+    fireEvent.click(btnDownloadLink);
+    const tempLink = findByText('Download - opportunity');
+    expect(tempLink).toBeTruthy();
+    waitFor(async () => {
+      expect(tempLink).toHaveAttribute('href');
+      expect(tempLink).toHaveBeenCalledTimes(1);
+      expect(dispatchEventSpy).toHaveBeenCalled();
+      expect(tempLink).not.toBeTruthy();
+    });
+  });
+
+  it('Should return a error message on download error', async () => {
+    mockError();
+    const { findByText, getByTestId } = render(
+      <DoneMappingRequestsListitemDetails mappingRequest={requestMock} />,
+    );
+
+    const btnDownloadLink = await getByTestId('download-opportunity-btn');
+    fireEvent.click(btnDownloadLink);
+
+    const errorMessage = findByText(
+      'Ops, parece que algo deu errado. Tente novamente.',
+    );
+    expect(errorMessage).toBeTruthy();
   });
 });

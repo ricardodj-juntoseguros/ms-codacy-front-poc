@@ -39,7 +39,7 @@ const MappingRequestPaging: React.FC<MappingRequestPagingProps> = ({
       : renderMappingEditionLossModal(
           editionLossModalRef.current,
           () => {
-            dispatch(setEditorId([0]));
+            dispatch(setEditorId({ edit: 0, scroll: 0 }));
             dispatch(
               mappingRequestsListSliceActions.setActivePage({
                 status: mappingStatus,
@@ -53,7 +53,7 @@ const MappingRequestPaging: React.FC<MappingRequestPagingProps> = ({
 
   const handleSelectPageSize = (value: any) => {
     const pageSize = Number(value);
-    dispatch(setEditorId([0]));
+    dispatch(setEditorId({ edit: 0, scroll: 0 }));
     dispatch(
       mappingRequestsListSliceActions.setActivePage({
         status: mappingStatus,

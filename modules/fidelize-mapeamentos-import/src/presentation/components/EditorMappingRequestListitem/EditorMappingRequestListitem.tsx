@@ -62,7 +62,7 @@ const EditorMappingRequestListitem: React.FC<EditorMappingRequestListitemProps> 
         .putMappingItem(id, updateData)
         .then(() => {
           setIsSubmitting(false);
-          dispatch(setEditorId([0]));
+          dispatch(setEditorId({ edit: 0, scroll: 0 }));
           onChangeCallback();
         })
         .catch(() => {
@@ -188,7 +188,7 @@ const EditorMappingRequestListitem: React.FC<EditorMappingRequestListitemProps> 
             <Button
               data-testid="cancel-update-btn"
               onClick={() => {
-                dispatch(setEditorId([0]));
+                dispatch(setEditorId({ edit: 0, scroll: 0 }));
               }}
               variant="secondary"
               size="small"

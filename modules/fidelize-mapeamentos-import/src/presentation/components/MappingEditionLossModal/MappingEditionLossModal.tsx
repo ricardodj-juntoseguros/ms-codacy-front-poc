@@ -70,8 +70,14 @@ const MappingEditionLossModal: React.FC<MappingEditionLossModalProps> = ({
   return (
     <Modal
       open={isOpen}
-      onClose={() => onModalClose()}
-      onBackdropClick={() => onModalClose()}
+      onClose={() => {
+        window.scrollTo(0, scrollingTo);
+        onModalClose();
+      }}
+      onBackdropClick={() => {
+        window.scrollTo(0, scrollingTo);
+        onModalClose();
+      }}
       size="default"
       template={{
         icon: <AlertIllustration />,

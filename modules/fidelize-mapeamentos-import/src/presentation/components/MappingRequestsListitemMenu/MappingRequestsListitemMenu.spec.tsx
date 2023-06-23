@@ -77,7 +77,7 @@ describe('MappingRequestsListitemMenu', () => {
   });
 
   it('Should performs the cancel exclusion flow using cancel button', async () => {
-    store.dispatch(setEditorId([0]));
+    store.dispatch(setEditorId({ edit: 0, scroll: 0 }));
     const { getByTestId, findByText, findByTestId } = render(
       <Provider store={store}>
         <MappingRequestsListitemMenu
@@ -109,7 +109,7 @@ describe('MappingRequestsListitemMenu', () => {
   });
 
   it('Should performs to loss actual edition on try delete another opportunity', async () => {
-    store.dispatch(setEditorId([1]));
+    store.dispatch(setEditorId({ edit: 1, scroll: 0 }));
     const { getByTestId, findByText, findByTestId } = render(
       <Provider store={store}>
         <MappingRequestsListitemMenu
@@ -141,7 +141,7 @@ describe('MappingRequestsListitemMenu', () => {
   });
 
   it('Should performs to loss actual edition on try edit another opportunity', async () => {
-    store.dispatch(setEditorId([1]));
+    store.dispatch(setEditorId({ edit: 1, scroll: 0 }));
     const { getByTestId, findByText, findByTestId } = render(
       <Provider store={store}>
         <MappingRequestsListitemMenu

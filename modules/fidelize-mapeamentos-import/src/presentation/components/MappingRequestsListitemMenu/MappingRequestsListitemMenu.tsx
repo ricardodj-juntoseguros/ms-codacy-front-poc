@@ -48,14 +48,14 @@ const MappingRequestsListitemMenu: React.FC<MappingRequestsListitemMenuProps> =
         case 'edit':
           if (!editorId) {
             setShowMenu(false);
-            dispatch(setEditorId([mappingId, pos]));
+            dispatch(setEditorId({ edit: mappingId, scroll: pos }));
             break;
           }
 
           renderMappingEditionLossModal(
             editionLossModalRef.current,
             () => {
-              dispatch(setEditorId([mappingId, pos]));
+              dispatch(setEditorId({ edit: mappingId, scroll: pos }));
             },
             true,
           );

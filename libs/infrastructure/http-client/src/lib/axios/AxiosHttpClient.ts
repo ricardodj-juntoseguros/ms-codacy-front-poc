@@ -62,7 +62,7 @@ export class AxiosHttpClient implements IHttpClient {
     method: Method,
   ): Promise<T> {
     return new Promise<T>((resolve, reject) => {
-      const { url, headers, payload, params } = parameters;
+      const { url, headers, payload, params, responseType } = parameters;
 
       const options: AxiosRequestConfig = {
         url,
@@ -70,6 +70,7 @@ export class AxiosHttpClient implements IHttpClient {
         method,
         params,
         data: payload,
+        responseType,
       };
 
       this.instance

@@ -3,4 +3,5 @@ export interface IHttpClientRequestParameters {
   headers?: any;
   payload?: any;
   params?: any;
+  responseType?: any;
 }

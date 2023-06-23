@@ -6,12 +6,13 @@ import {
   thousandSeparator,
 } from '@shared/utils';
 
-import { Alert, LinkButton } from 'junto-design-system';
+import { Alert, LinkButton, makeToast } from 'junto-design-system';
 import {
   DoneDetailsQueueType,
   MappingDoneDetailsDTO,
 } from '../../../application/types/dto';
 import styles from './DoneMappingRequestListitemDetails.module.scss';
+import ListingMappingApi from '../../../application/features/listingMapping/ListingMappingApi';
 
 interface DoneMappingRequestsListitemProps {
   mappingRequest: MappingDoneDetailsDTO;
@@ -29,11 +30,31 @@ const DoneMappingRequestsListitemDetails: React.FC<DoneMappingRequestsListitemPr
       queueTypes,
     } = mappingRequest;
 
-    const handleBackButtonClick = (type: number) => {
-      const opportunityDownloadUrl =
-        `${process.env.NX_GLOBAL_OPPORTUNITY_MAPPING}/${id}/queue-type/${type}/download` ||
-        '';
-      window.open(opportunityDownloadUrl, '_blank');
+    const downloadLink = document.createElement('a');
+
+    const fetchDownloadOpportunity = (name: string, type: number) => {
+      new ListingMappingApi()
+        .downloadMappingItem(id, type)
+        .then(response => {
+          const opportunity = window.URL.createObjectURL(
+            new Blob([response], {
+              type: response.type,
+            }),
+          );
+
+          downloadLink.href = opportunity;
+          downloadLink.innerHTML = 'Download - opportunity';
+          downloadLink.download = `${policyholderFederalId}-${name}`;
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+        })
+        .catch(() => {
+          makeToast(
+            'error',
+            'Ops, parece que algo deu errado. Tente novamente.',
+          );
+        });
     };
 
     const showDescriptionOrValue = (queue: any, type: string) => {
@@ -235,13 +256,15 @@ const DoneMappingRequestsListitemDetails: React.FC<DoneMappingRequestsListitemPr
               }
             >
               {queue.mappedAt &&
-                queue.id === 3 &&
+                (queue.id === 3 || queue.id === 6) &&
                 queue.totalOpportunities > 0 && (
                   <LinkButton
-                    data-testid="donwload-opportunity-btn"
+                    data-testid="download-opportunity-btn"
                     label=""
                     icon="download"
-                    onClick={() => handleBackButtonClick(queue.id)}
+                    onClick={() =>
+                      fetchDownloadOpportunity(queue.name, queue.id)
+                    }
                   />
                 )}
             </div>

@@ -24,7 +24,7 @@ const DeleteMappingRequestItem: React.FC<DeleteMappingRequestItemProps> = ({
   const [isOpen, setIsOpen] = useState(true);
   const [currentStep, setCurrentStep] = useState<ModalFlowStep>('CONFIRM');
   const onCloseModal = () => {
-    dispatch(setEditorId([0]));
+    dispatch(setEditorId({ edit: 0, scroll: 0 }));
     setIsOpen(false);
     if (currentStep === 'SUCCESS') {
       onChangeCallback();

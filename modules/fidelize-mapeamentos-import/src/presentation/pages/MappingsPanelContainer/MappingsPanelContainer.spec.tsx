@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import ListingMappingApi from 'modules/fidelize-mapeamentos-import/src/application/features/listingMapping/ListingMappingApi';
 import { Provider } from 'react-redux';
 import { fireEvent, render, waitFor } from '../../../config/testUtils';
-import MapppingsPanelContainer from './MappingsPanelContainer';
+import MappingsPanelContainer from './MappingsPanelContainer';
 import { store } from '../../../config/store';
 import { setEditorId } from '../../../application/features/modalMapping/ModalMappingSlice';
 
@@ -60,7 +60,7 @@ describe('Mapping Panel Container', () => {
   it('should render successfully', () => {
     const { baseElement, getByText } = render(
       <Provider store={store}>
-        <MapppingsPanelContainer {...props} />,
+        <MappingsPanelContainer {...props} />,
       </Provider>,
     );
 
@@ -74,10 +74,10 @@ describe('Mapping Panel Container', () => {
   });
 
   it('Should go to solicitar component if button is clicked', () => {
-    const component = render(<MapppingsPanelContainer {...props} />);
+    const component = render(<MappingsPanelContainer {...props} />);
     const goToSolicitation = component.getByTestId('btn-goto-solicitation');
 
-    store.dispatch(setEditorId([0]));
+    store.dispatch(setEditorId({ edit: 0, scroll: 0 }));
 
     fireEvent.click(goToSolicitation);
 
@@ -86,10 +86,10 @@ describe('Mapping Panel Container', () => {
   });
 
   it('Should show alert modal to avoid loss data ', () => {
-    const component = render(<MapppingsPanelContainer {...props} />);
+    const component = render(<MappingsPanelContainer {...props} />);
     const goToSolicitation = component.getByTestId('btn-goto-solicitation');
 
-    store.dispatch(setEditorId([1]));
+    store.dispatch(setEditorId({ edit: 1, scroll: 0 }));
 
     fireEvent.click(goToSolicitation);
 
@@ -109,7 +109,7 @@ describe('Mapping Panel Container', () => {
 
   it('Should render summary with mocked summary values', async () => {
     mockSummarySuccess();
-    const component = render(<MapppingsPanelContainer {...props} />);
+    const component = render(<MappingsPanelContainer {...props} />);
     const tabOnRow = await component.findByTestId('tab-ON_QUEUE');
     const tabBlocked = await component.findByTestId('tab-BLOCKED');
     const tabDone = await component.findByTestId('tab-DONE');
@@ -123,7 +123,7 @@ describe('Mapping Panel Container', () => {
 
   it('Should render summary with zero values and switch tab', () => {
     mockSummaryError();
-    const component = render(<MapppingsPanelContainer {...props} />);
+    const component = render(<MappingsPanelContainer {...props} />);
     const tabOnRow = component.getByTestId('tab-ON_QUEUE');
     const tabBlocked = component.getAllByTestId('tab-BLOCKED');
     const tabDone = component.getByTestId('tab-DONE');
@@ -140,7 +140,7 @@ describe('Mapping Panel Container', () => {
 
   it('Should render an alert message when call details with fail', async () => {
     mockSummaryError();
-    const { findByText } = render(<MapppingsPanelContainer {...props} />);
+    const { findByText } = render(<MappingsPanelContainer {...props} />);
 
     waitFor(async () => {
       const alertMsg = await findByText(

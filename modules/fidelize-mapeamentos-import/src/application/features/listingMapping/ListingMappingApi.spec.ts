@@ -1,7 +1,12 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
+import axios from 'axios';
+import { waitFor } from '@testing-library/react';
 import ListingMappingApi from './ListingMappingApi';
 
 describe('ListingMappingApi', () => {
+  const file = new File(['(⌐□_□)'], 'sheet01.xls', {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
   const dataMockOpportunityRequest = {
     numberOfRecords: 24,
     hasMore: true,
@@ -170,6 +175,21 @@ describe('ListingMappingApi', () => {
       url: '/backoffice/opportunityrequest/5501',
     });
     expect(result).not.toBe(null);
+  });
+
+  it('downloadMappingItem should call api using id and type', async () => {
+    const mockGet = jest.spyOn(axios, 'get').mockImplementation(async () => {
+      return Promise.resolve(file);
+    });
+
+    const result = new ListingMappingApi().downloadMappingItem(13297, 3);
+
+    waitFor(() => {
+      expect(mockGet).toHaveBeenCalledWith({
+        url: `${process.env.NX_GLOBAL_OPPORTUNITY_MAPPING}/13297/queue-type/3/download`,
+      });
+      expect(result).not.toBe(null);
+    });
   });
 
   it('puthMappingItem should call api to update a solicitation by id', async () => {

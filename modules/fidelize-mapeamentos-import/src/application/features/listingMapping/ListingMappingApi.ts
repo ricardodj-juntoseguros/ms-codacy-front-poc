@@ -72,6 +72,14 @@ class ListingMappingApi {
 
     return await this.instance.put<any>(params);
   }
+
+  async downloadMappingItem(id: number, type: number): Promise<any> {
+    const params: IHttpClientRequestParameters = {
+      url: `/ms-opportunity-mapping/api/v2/opportunities/${id}/queue-type/${type}/download`,
+      responseType: 'blob',
+    };
+    return await this.instance.get(params);
+  }
 }
 
 export default ListingMappingApi;

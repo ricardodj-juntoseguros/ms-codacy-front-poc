@@ -2,13 +2,13 @@ import { formatDateString, thousandSeparator } from '@shared/utils';
 import classNames from 'classnames';
 import { Tooltip } from 'junto-design-system';
 import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectModalEdition } from '../../../application/features/modalMapping/ModalMappingSlice';
 import { RequestMappingRecord } from '../../../application/types/dto';
-import {
-  QueueTypesEnum,
-  MappingStatusEnum,
-} from '../../../application/types/model';
+import { QueueTypesEnum } from '../../../application/types/model';
 import styles from './OngoingMappingRequestsListitem.module.scss';
 import MappingRequestsListitemMenu from '../MappingRequestsListitemMenu/MappingRequestsListitemMenu';
+import EditorMappingRequestListitem from '../EditorMappingRequestListitem/EditorMappingRequestListitem';
 
 interface OngoingMappingRequestsListitemProps {
   mappingRequest: RequestMappingRecord;
@@ -28,8 +28,11 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
       statusId,
       isPriority,
       blocks,
+      canUnlock,
     } = mappingRequest;
 
+    const { editorId } = useSelector(selectModalEdition);
+    const editionLossModalRef = useRef<HTMLDivElement>(null);
     const blockDivRef = useRef<HTMLDivElement>(null);
     const [showBlocks, setShowBlocks] = useState(false);
 
@@ -88,130 +91,164 @@ const OngoingMappingRequestsListitem: React.FC<OngoingMappingRequestsListitemPro
     };
 
     return (
-      <div className={styles['ongoing-mapping-requests-listitem__wrapper']}>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          <p className={styles['ongoing-mapping-requests-listitem__label']}>
-            {formatDateString(createdAt, 'dd/MM/yy')}
-          </p>
-        </div>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          <p
-            className={classNames(
-              styles['ongoing-mapping-requests-listitem__label'],
-              styles['ongoing-mapping-requests-listitem__label--emphasys'],
+      <>
+        <div className={styles['ongoing-mapping-requests-listitem__wrapper']}>
+          <div className={styles['ongoing-mapping-requests-listitem__column']}>
+            <p className={styles['ongoing-mapping-requests-listitem__label']}>
+              {formatDateString(createdAt, 'dd/MM/yy')}
+            </p>
+          </div>
+          <div className={styles['ongoing-mapping-requests-listitem__column']}>
+            <p
+              className={classNames(
+                styles['ongoing-mapping-requests-listitem__label'],
+                styles['ongoing-mapping-requests-listitem__label--emphasys'],
+              )}
+              title={policyholderName}
+            >
+              {policyholderName}
+            </p>
+            {!!policyholderEconomicGroupName && (
+              <span
+                className={
+                  styles['ongoing-mapping-requests-listitem__label-helper']
+                }
+                title={policyholderEconomicGroupName}
+              >
+                {policyholderEconomicGroupName}
+              </span>
             )}
-            title={policyholderName}
-          >
-            {policyholderName}
-          </p>
-          {!!policyholderEconomicGroupName && (
+          </div>
+          <div className={styles['ongoing-mapping-requests-listitem__column']}>
+            <p
+              className={styles['ongoing-mapping-requests-listitem__label']}
+              title={brokerName}
+            >
+              {brokerName}
+            </p>
             <span
               className={
                 styles['ongoing-mapping-requests-listitem__label-helper']
               }
-              title={policyholderEconomicGroupName}
             >
-              {policyholderEconomicGroupName}
+              {category}
             </span>
-          )}
-        </div>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          <p
-            className={styles['ongoing-mapping-requests-listitem__label']}
-            title={brokerName}
-          >
-            {brokerName}
-          </p>
-          <span
-            className={
-              styles['ongoing-mapping-requests-listitem__label-helper']
-            }
-          >
-            {category}
-          </span>
-        </div>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.LABOR)}
-        </div>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.FEDERAL)}
-        </div>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.STATE)}
-        </div>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.CARF)}
-        </div>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          {renderQueueColumn(QueueTypesEnum.ACTIVE_DEBT)}
-        </div>
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          <div
-            className={styles['ongoing-mapping-requests-listitem__statuses']}
-          >
-            {isPriority && (
-              <span
-                className={
-                  styles['ongoing-mapping-requests-listitem__priority-tag']
-                }
-              >
-                Urgente
-              </span>
-            )}
-            {statusId !== null && (
-              <span
-                className={
-                  styles['ongoing-mapping-requests-listitem__started-tag']
-                }
-              >
-                Iniciado
-              </span>
-            )}
           </div>
-        </div>
-
-        <div className={styles['ongoing-mapping-requests-listitem__column']}>
-          <div
-            className={
-              styles['ongoing-mapping-requests-listitem-actions__wrapper']
-            }
-          >
-            {blocks?.length > 0 && (
+          {editorId !== id ? (
+            <>
               <div
-                className={
-                  styles[
-                    'ongoing-mapping-requests-listitem-actions__show-tooltip'
-                  ]
-                }
-                ref={blockDivRef}
+                className={styles['ongoing-mapping-requests-listitem__column']}
               >
-                <i
-                  data-testid="show-tooltip"
-                  onMouseEnter={() => setShowBlocks(true)}
-                  onMouseLeave={() => setShowBlocks(false)}
-                  className="icon-alert-circle"
+                {renderQueueColumn(QueueTypesEnum.LABOR)}
+              </div>
+              <div
+                className={styles['ongoing-mapping-requests-listitem__column']}
+              >
+                {renderQueueColumn(QueueTypesEnum.FEDERAL)}
+              </div>
+              <div
+                className={styles['ongoing-mapping-requests-listitem__column']}
+              >
+                {renderQueueColumn(QueueTypesEnum.STATE)}
+              </div>
+              <div
+                className={styles['ongoing-mapping-requests-listitem__column']}
+              >
+                {renderQueueColumn(QueueTypesEnum.CARF)}
+              </div>
+              <div
+                className={styles['ongoing-mapping-requests-listitem__column']}
+              >
+                {renderQueueColumn(QueueTypesEnum.ACTIVE_DEBT)}
+              </div>
+              <div
+                className={styles['ongoing-mapping-requests-listitem__column']}
+              >
+                <div
+                  className={
+                    styles['ongoing-mapping-requests-listitem__statuses']
+                  }
+                >
+                  {isPriority && (
+                    <span
+                      className={
+                        styles[
+                          'ongoing-mapping-requests-listitem__priority-tag'
+                        ]
+                      }
+                    >
+                      Urgente
+                    </span>
+                  )}
+                  {statusId !== null && (
+                    <span
+                      className={
+                        styles['ongoing-mapping-requests-listitem__started-tag']
+                      }
+                    >
+                      Iniciado
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div
+                className={styles['ongoing-mapping-requests-listitem__column']}
+              >
+                <div
+                  className={
+                    styles['ongoing-mapping-requests-listitem-actions__wrapper']
+                  }
+                >
+                  {blocks?.length > 0 && (
+                    <div
+                      className={
+                        styles[
+                          'ongoing-mapping-requests-listitem-actions__show-tooltip'
+                        ]
+                      }
+                      ref={blockDivRef}
+                    >
+                      <i
+                        data-testid="show-tooltip"
+                        onMouseEnter={() => setShowBlocks(true)}
+                        onMouseLeave={() => setShowBlocks(false)}
+                        className="icon-alert-circle"
+                      />
+                    </div>
+                  )}
+
+                  {statusId === 1 ||
+                    (statusId === null && (
+                      <MappingRequestsListitemMenu
+                        policyholderName={policyholderName}
+                        mappingId={id}
+                        canEdit={canUnlock}
+                        onChangeCallback={() => onChangeCallback()}
+                      />
+                    ))}
+                </div>
+
+                <Tooltip
+                  anchorRef={blockDivRef}
+                  text={handleTextBlocks()}
+                  visible={showBlocks}
+                  position="top"
                 />
               </div>
-            )}
-
-            {statusId === 1 ||
-              (statusId === null && (
-                <MappingRequestsListitemMenu
-                  policyholderName={policyholderName}
-                  mappingId={id}
-                  onChangeCallback={() => onChangeCallback()}
-                />
-              ))}
-          </div>
-
-          <Tooltip
-            anchorRef={blockDivRef}
-            text={handleTextBlocks()}
-            visible={showBlocks}
-            position="top"
-          />
+            </>
+          ) : (
+            <EditorMappingRequestListitem
+              id={id}
+              isPriority={isPriority}
+              queueTypes={queueTypes}
+              onChangeCallback={onChangeCallback}
+              policyholderName={policyholderName}
+            />
+          )}
         </div>
-      </div>
+        <div ref={editionLossModalRef} />
+      </>
     );
   };
 

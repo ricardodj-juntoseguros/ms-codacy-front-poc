@@ -33,7 +33,7 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
       : renderMappingEditionLossModal(
           editionLossModalRef.current,
           () => {
-            dispatch(setEditorId([0]));
+            dispatch(setEditorId({ edit: 0, scroll: 0 }));
             history.push('/solicitar');
           },
           true,
@@ -42,7 +42,7 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
 
   useEffect(() => {
     fetchMappingSummary();
-    dispatch(setEditorId([0]));
+    dispatch(setEditorId({ edit: 0, scroll: 0 }));
   }, []);
 
   const fetchMappingSummary = () => {
@@ -107,7 +107,7 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
                 : renderMappingEditionLossModal(
                     editionLossModalRef.current,
                     () => {
-                      dispatch(setEditorId([0]));
+                      dispatch(setEditorId({ edit: 0, scroll: 0 }));
                       setActiveTab(tab);
                     },
                     true,

@@ -71,15 +71,15 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
       }
     };
 
-    const patchDeleteMappingItem = () => {
+    const fetchPatchMappingItem = () => {
       new ListingMappingApi()
         .patchMappingItem(id)
         .then(() => {
-          dispatch(setEditorId([0]));
+          dispatch(setEditorId({ edit: 0, scroll: 0 }));
           setCurrentStep('SUCCESS');
         })
         .catch(() => {
-          dispatch(setEditorId([0]));
+          dispatch(setEditorId({ edit: 0, scroll: 0 }));
           setCurrentStep('ONERROR');
         });
     };
@@ -182,7 +182,7 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
               primary: (
                 <Button
                   data-testid="confirm-unblock-btn"
-                  onClick={() => patchDeleteMappingItem()}
+                  onClick={() => fetchPatchMappingItem()}
                 >
                   Confirmar e enviar
                 </Button>
@@ -215,7 +215,7 @@ const BlockedMappingRequestsListitem: React.FC<BlockedMappingRequestsListitemPro
               primary: (
                 <Button
                   data-testid="retry-unblock-btn"
-                  onClick={() => patchDeleteMappingItem()}
+                  onClick={() => fetchPatchMappingItem()}
                 >
                   Tentar novamente
                 </Button>

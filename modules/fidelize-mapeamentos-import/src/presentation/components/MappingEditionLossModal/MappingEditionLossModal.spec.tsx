@@ -60,4 +60,20 @@ describe('MappingEditionLossModal', () => {
     fireEvent.click(btn);
     expect(onModalCloseMock).toHaveBeenCalled();
   });
+
+  it('Should call onModalClose callback on modal backdrop click', () => {
+    const onModalCloseMock = jest.fn();
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <MappingEditionLossModal
+          isOpen
+          onModalClose={onModalCloseMock}
+          onDiscardSelection={jest.fn()}
+        />
+      </Provider>,
+    );
+    const backDrop = getByTestId('modal-backdrop');
+    fireEvent.click(backDrop);
+    expect(onModalCloseMock).toHaveBeenCalled();
+  });
 });
