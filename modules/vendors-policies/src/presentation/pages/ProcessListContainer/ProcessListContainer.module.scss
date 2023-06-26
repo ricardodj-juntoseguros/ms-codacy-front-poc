@@ -10,15 +10,53 @@
 }
 
 .process-list-container__wrapper {
-  width: 100%;
+  max-width: 1039px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   animation: fade-in 300ms linear;
-  padding: spacing('xxl-3') 0 spacing('l') 0;
+  margin: spacing('xxl-4') auto spacing('xl') auto;
 
-  & h1 {
-    @include font('xl');
-    @include color('color', 'brand-primary');
+  @media screen and (max-width: 768px) {
+    margin: spacing('xxl') spacing('l') spacing('xl') spacing('l');
+  }
+}
+
+.process-list-container__greeting {
+  @include color('color', 'dark');
+  @include font('xl-2-emphasys');
+  margin: 0px;
+
+  @media screen and (max-width: 768px) {
+    @include font('xl-emphasys');
+  }
+}
+
+.process-list-container__new-proposal-button {
+  @include border(1, 'dashed', 'grey-300');
+  @include font('base-emphasys');
+  @include color('color', 'brand-primary');
+  border-radius: 2px;
+  width: 100%;
+  background-color: transparent;
+  height: 100px;
+  margin-top: spacing('xxl');
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+
+  & > i {
+    margin-right: spacing('s');
+  }
+
+  &:hover {
+    @include border(1, 'dashed', 'grey-500');
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 80px;
   }
 }
