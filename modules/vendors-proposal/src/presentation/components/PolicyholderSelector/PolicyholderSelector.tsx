@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SearchInput, SearchOptions } from 'junto-design-system';
 import { federalIdFormatter, federalIdValidator } from '@shared/utils';
 import { useDebounce } from '@shared/hooks';
+import { selectValidation } from '../../../application/features/validation/ValidationSlice';
 import {
   selectInsuredAndPolicyholderSelection,
   insuredAndPolicyholderSelectionActions,
@@ -26,6 +27,7 @@ const PolicyholderSelector: React.FC = () => {
     isValidFederalId,
   } = useSelector(selectInsuredAndPolicyholderSelection);
   const { federalId } = useSelector(selectProposalPolicyholder);
+  const { errors } = useSelector(selectValidation);
 
   const hasInputtedFederalId = (value: string) => {
     const strippedValue = value.replace(/[^\d]+/g, '');
@@ -134,6 +136,16 @@ const PolicyholderSelector: React.FC = () => {
     dispatch(getPolicyholderAffiliates(value));
   };
 
+  const getErrorMessage = () => {
+    if (hasInputtedFederalId(policyholderInputValue) && !isValidFederalId) {
+      return 'Ops, parece que esse CNPJ não existe.';
+    }
+    if (errors && errors.policyholderInputValue) {
+      return errors.policyholderInputValue[0];
+    }
+    return '';
+  };
+
   return (
     <div
       className={classNames(styles['policyholder-selector__wrapper'], {
@@ -148,11 +160,7 @@ const PolicyholderSelector: React.FC = () => {
         placeholder="CNPJ ou Razão social do Fornecedor"
         emptyMessage="Digite o CNPJ ou Razão social para buscar"
         icon={loadingPolicyholders ? 'loading' : 'search'}
-        errorMessage={
-          hasInputtedFederalId(policyholderInputValue) && !isValidFederalId
-            ? 'Ops, parece que esse CNPJ não existe.'
-            : undefined
-        }
+        errorMessage={getErrorMessage()}
         options={mappedOptions}
         changeValueOnSelect={false}
         onValueSelected={v => handleSearchSelect(v)}

@@ -12,14 +12,28 @@ describe('ProposalAPI', () => {
   });
 
   it('createProposal should call bff service correctly', async () => {
-    const mockGet = jest
+    const mockPost = jest
       .spyOn(AxiosHttpClient.prototype, 'post')
       .mockImplementation(async () => {
         return { message: 'ok' };
       });
     const result = await ProposalAPI.createProposal(proposalMock);
-    expect(mockGet).toHaveBeenCalledWith({
+    expect(mockPost).toHaveBeenCalledWith({
       url: '/api/v1/proposal',
+      payload: proposalMock,
+    });
+    expect(result).toEqual({ message: 'ok' });
+  });
+
+  it('updateProposal should call bff service correctly', async () => {
+    const mockPut = jest
+      .spyOn(AxiosHttpClient.prototype, 'put')
+      .mockImplementation(async () => {
+        return { message: 'ok' };
+      });
+    const result = await ProposalAPI.updateProposal(123, proposalMock);
+    expect(mockPut).toHaveBeenCalledWith({
+      url: '/api/v1/proposal/123',
       payload: proposalMock,
     });
     expect(result).toEqual({ message: 'ok' });

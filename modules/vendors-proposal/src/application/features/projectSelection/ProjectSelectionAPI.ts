@@ -12,10 +12,9 @@ class ProjectSelectionAPI {
     this.instance = new VendorsProposalBaseApi().getInstance();
   }
 
-  async getProjects(name: string): Promise<ProjectDTO[]> {
+  async getProjects(): Promise<ProjectDTO[]> {
     const params: IHttpClientRequestParameters = {
       url: `/api/v1/project`,
-      params: { name },
     };
 
     return await this.instance.get<ProjectDTO[]>(params);

@@ -29,10 +29,7 @@ describe('useCreateProposal', () => {
     ...storeMock,
     proposal: {
       ...storeMock.proposal,
-      identification: {
-        proposalId: 12345,
-        policyId: 12345,
-      },
+      identification: null,
       createProposalLoading: false,
       contractNumber: '1234',
       contractValue: 1000,
@@ -85,7 +82,7 @@ describe('useCreateProposal', () => {
     jest.clearAllMocks();
   });
 
-  it('should validate correctly create a proposal and upload the documents', async () => {
+  it('should validate correctly create a proposal', async () => {
     useSelectorMock.mockImplementation(select =>
       select({ ...updatedStoreMock }),
     );
@@ -100,6 +97,35 @@ describe('useCreateProposal', () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       proposalActions.setPolicyholder(policyholdersMock[0]),
     );
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
+  });
+
+  it('should validate correctly update a proposal', async () => {
+    const mock = {
+      ...updatedStoreMock,
+      proposal: {
+        ...updatedStoreMock.proposal,
+        identification: {
+          proposalId: 123,
+          policyId: 1234,
+          quotationId: 12345,
+          newQuoterId: 123456,
+        },
+      },
+    };
+    useSelectorMock.mockImplementation(select => select({ ...mock }));
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const { result } = renderHook(() => useCreateProposal());
+    const createProposalResult = await result.current();
+
+    expect(createProposalResult).toEqual({ success: true, errors: {} });
+    expect(InsuredAndPolicyholderSelectionApiMock).toHaveBeenCalledWith(
+      '33768864000107',
+    );
+    expect(mockDispatch).toHaveBeenCalledWith(
+      proposalActions.setPolicyholder(policyholdersMock[0]),
+    );
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
   });
 
   it('should return error and not continue the process if there is a failure when looking for the policyholder', async () => {
@@ -126,8 +152,9 @@ describe('useCreateProposal', () => {
     expect(createProposalResult).toEqual({
       success: false,
       errors: {
-        policyholderInputValue:
+        policyholderInputValue: [
           'Ops, houve um problema ao cadastrar o fornecedor.',
+        ],
       },
     });
     expect(InsuredAndPolicyholderSelectionApiMock).toHaveBeenCalledWith(

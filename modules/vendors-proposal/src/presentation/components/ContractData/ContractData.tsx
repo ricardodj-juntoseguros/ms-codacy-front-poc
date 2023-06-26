@@ -11,7 +11,7 @@ import {
   SearchOptions,
 } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { thousandSeparator } from '@shared/utils';
 import className from 'classnames';
 import {
@@ -40,13 +40,20 @@ const ContractData: React.FunctionComponent<GenericComponentProps> = ({
   const tooltipButtonRef = useRef<HTMLButtonElement>(null);
   const { contractNumber, contractValue, hasProject, project } =
     useSelector(selectProposal);
-  const { projectSearchValue, projectOptionsMapped } = useSelector(
-    selectProjectSelection,
-  );
+  const { projectSearchValue, projectOptions, projectOptionsFiltered } =
+    useSelector(selectProjectSelection);
   const { handleSetFiles, deleteFile, files } = useFiles();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch();
   const validate = useValidate();
+
+  useEffect(() => {
+    const getProjects = async () => {
+      await dispatch(fetchProjects(''));
+    };
+
+    if (projectOptions.length === 0 && projectSearchValue === '') getProjects();
+  }, [dispatch, projectOptions, projectSearchValue]);
 
   const disabledButton = useMemo(
     () => !contractNumber || !contractValue || files.length <= 0,
@@ -65,12 +72,9 @@ const ContractData: React.FunctionComponent<GenericComponentProps> = ({
     dispatch(proposalActions.setHasProject(!hasProject));
   };
 
-  const handleProject = useCallback(
-    (project: SearchOptions | null) => {
-      dispatch(proposalActions.setProject(project));
-    },
-    [dispatch],
-  );
+  const handleProject = (project: SearchOptions | null) => {
+    dispatch(proposalActions.setProject(project));
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -79,7 +83,7 @@ const ContractData: React.FunctionComponent<GenericComponentProps> = ({
       contractValue,
       files,
       hasProject,
-      projectOptionsMapped,
+      projectOptionsFiltered,
       projectSearchValue,
       project,
     };
@@ -91,14 +95,10 @@ const ContractData: React.FunctionComponent<GenericComponentProps> = ({
     );
   };
 
-  const handleSearchProjects = useCallback(
-    (value: string) => {
-      dispatch(projectSelectionActions.setProjectSearchValue(value));
-      if (value.length <= 0) handleProject(null);
-      if (value.length > 3) dispatch(fetchProjects(value));
-    },
-    [dispatch, handleProject],
-  );
+  const handleSearchProjects = (value: string) => {
+    if (project && project?.label !== value) handleProject(null);
+    dispatch(projectSelectionActions.setProjectSearchValue(value));
+  };
 
   const renderTooltip = () => {
     return (
@@ -135,7 +135,7 @@ const ContractData: React.FunctionComponent<GenericComponentProps> = ({
           placeholder="Ex. Construção da ponte Rio-Niterói"
           icon=""
           value={projectSearchValue}
-          options={projectOptionsMapped}
+          options={projectOptionsFiltered}
           changeValueOnSelect
           onChange={value => handleSearchProjects(value)}
           onValueSelected={handleProject}

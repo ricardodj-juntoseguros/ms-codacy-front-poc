@@ -1,9 +1,11 @@
 /* eslint-disable prefer-promise-reject-errors */
 import '@testing-library/jest-dom';
 import * as reactRedux from 'react-redux';
+import { PolicyholderContactSchema } from '../../../application/validations/schemas';
+import { ValidationTypesEnum } from '../../../application/types/model';
 import PolicyholderContactAPI from '../../../application/features/policyholderContact/PolicyholderContactAPI';
 import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
-import { storeMock } from '../../../__mocks__';
+import { policyholdersMock, storeMock } from '../../../__mocks__';
 import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
 import PolicyholderContact from './PolicyholderContact';
 
@@ -67,7 +69,16 @@ describe('PolicyholderContact', () => {
   });
 
   it('should allow the user to fill in the information in the form', async () => {
-    useSelectorMock.mockImplementation(select => select({ ...storeMock }));
+    const updateStoreMock = {
+      ...storeMock,
+      proposal: {
+        ...storeMock.proposal,
+        policyholder: policyholdersMock[0],
+      },
+    };
+    useSelectorMock.mockImplementation(select =>
+      select({ ...updateStoreMock }),
+    );
     useDispatchMock.mockImplementation(() => mockDispatch);
     const { getByTestId } = render(
       <PolicyholderContact
@@ -100,6 +111,17 @@ describe('PolicyholderContact', () => {
         target: { value: 'john@doe.com' },
       });
     });
+    await act(async () => {
+      await fireEvent.blur(inputContactEmail);
+    });
+
+    expect(mockValidate).toHaveBeenCalledWith(
+      PolicyholderContactSchema,
+      { id: '', name: '', email: '' },
+      ValidationTypesEnum.partial,
+      ['email'],
+      false,
+    );
     expect(mockDispatch).toHaveBeenCalledWith(
       proposalActions.setPolicyholderContact({
         ...storeMock.proposal.policyholderContact,
@@ -188,22 +210,24 @@ describe('PolicyholderContact', () => {
   });
 
   it('should enter the record in the store if the policyholder has a registered contact', async () => {
-    jest.spyOn(PolicyholderContactAPI, 'getContacts').mockImplementation(() =>
-      Promise.resolve([
-        {
-          id: 1,
-          name: 'John Doe',
-          email: 'john@doe.com',
-          companyFederalId: '91833813000119',
-        },
-      ]),
-    );
+    const getContactsMock = jest
+      .spyOn(PolicyholderContactAPI, 'getContacts')
+      .mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: '1',
+            name: 'John Doe',
+            email: 'john@doe.com',
+          },
+        ]),
+      );
     const storeMockUpdated = {
       ...storeMock,
       proposal: {
         ...storeMock,
+        policyholder: policyholdersMock[0],
         policyholderContact: {
-          id: 0,
+          id: '',
           name: '',
           email: '',
         },
@@ -213,6 +237,7 @@ describe('PolicyholderContact', () => {
       select({ ...storeMockUpdated }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
+
     const { getByTestId } = render(
       <PolicyholderContact
         handleNextStep={handleNextStepMock}
@@ -220,13 +245,13 @@ describe('PolicyholderContact', () => {
       />,
     );
 
+    expect(getContactsMock).toBeCalledWith('33768864000107');
     await waitFor(() => {
       expect(mockDispatch).toHaveBeenCalledWith(
         proposalActions.setPolicyholderContact({
-          id: 1,
+          id: '1',
           name: 'John Doe',
           email: 'john@doe.com',
-          companyFederalId: '91833813000119',
         }),
       );
     });
@@ -243,23 +268,26 @@ describe('PolicyholderContact', () => {
   });
 
   it('should show a toast with error if the call returns error', async () => {
-    jest.spyOn(PolicyholderContactAPI, 'getContacts').mockImplementation(() =>
-      Promise.reject({
-        data: {
-          data: [
-            {
-              message: 'Erro ao retornar os contatos',
-            },
-          ],
-        },
-      }),
-    );
+    const getContactsMock = jest
+      .spyOn(PolicyholderContactAPI, 'getContacts')
+      .mockImplementation(() =>
+        Promise.reject({
+          data: {
+            data: [
+              {
+                message: 'Erro ao retornar os contatos',
+              },
+            ],
+          },
+        }),
+      );
     const storeMockUpdated = {
       ...storeMock,
       proposal: {
         ...storeMock,
+        policyholder: policyholdersMock[0],
         policyholderContact: {
-          id: 0,
+          id: '',
           name: '',
           email: '',
         },
@@ -269,15 +297,16 @@ describe('PolicyholderContact', () => {
       select({ ...storeMockUpdated }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { findByText } = render(
+    const { getByTestId } = render(
       <PolicyholderContact
         handleNextStep={handleNextStepMock}
         updateTitle={updateTitle}
       />,
     );
 
-    const toast = await findByText('Erro ao retornar os contatos');
+    const button = getByTestId('policyholderContact-button-next');
 
-    expect(toast).toBeInTheDocument();
+    expect(getContactsMock).toBeCalledWith('33768864000107');
+    expect(button).toHaveAttribute('disabled');
   });
 });

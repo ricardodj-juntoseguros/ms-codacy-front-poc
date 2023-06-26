@@ -12,7 +12,7 @@ describe('ProjectSelectionSlice', () => {
     .mockImplementation(() =>
       Promise.resolve([
         {
-          id: 1,
+          id: '1',
           name: 'Lorem',
         },
       ]),
@@ -46,27 +46,19 @@ describe('ProjectSelectionSlice', () => {
 
     expect(projectSelection.projectSearchValue).toEqual('');
     expect(projectSelection.projectOptions).toMatchObject([]);
-    expect(projectSelection.projectOptionsMapped).toMatchObject([]);
+    expect(projectSelection.projectOptionsFiltered).toMatchObject([]);
   });
 
   it('should set the project list correctly', async () => {
-    await store.dispatch(fetchProjects('Lorem'));
+    await store.dispatch(fetchProjects(''));
     const { projectSelection } = store.getState();
 
-    expect(getProjectsMock).toHaveBeenCalledWith('Lorem');
+    expect(getProjectsMock).toHaveBeenCalledWith();
     expect(projectSelection.projectOptionsLoading).toEqual(false);
     expect(projectSelection.projectOptions).toMatchObject([
       {
-        id: 1,
+        id: '1',
         name: 'Lorem',
-      },
-    ]);
-    expect(projectSelection.projectOptionsMapped).toMatchObject([
-      {
-        id: 1,
-        name: 'Lorem',
-        label: 'Lorem',
-        value: '1',
       },
     ]);
   });
@@ -84,12 +76,12 @@ describe('ProjectSelectionSlice', () => {
         }),
       );
 
-    await store.dispatch(fetchProjects('Lorem'));
+    await store.dispatch(fetchProjects(''));
     const { projectSelection } = store.getState();
 
-    expect(getProjectsMock).toHaveBeenCalledWith('Lorem');
+    expect(getProjectsMock).toHaveBeenCalledWith();
     expect(projectSelection.projectOptionsLoading).toEqual(false);
     expect(projectSelection.projectOptions).toMatchObject([]);
-    expect(projectSelection.projectOptionsMapped).toMatchObject([]);
+    expect(projectSelection.projectOptionsFiltered).toMatchObject([]);
   });
 });

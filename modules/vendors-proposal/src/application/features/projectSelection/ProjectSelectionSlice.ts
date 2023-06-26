@@ -9,18 +9,15 @@ export const fetchProjects = createAsyncThunk<
   ProjectDTO[],
   string,
   { rejectValue: string }
->(
-  'projectSelection/fetchProjects',
-  async (name: string, { rejectWithValue }) => {
-    return ProjectSelectionAPI.getProjects(name)
-      .then(response => response)
-      .catch(error => rejectWithValue(error.data.data.message));
-  },
-);
+>('projectSelection/fetchProjects', async (_, { rejectWithValue }) => {
+  return ProjectSelectionAPI.getProjects()
+    .then(response => response)
+    .catch(error => rejectWithValue(error.data.data.message));
+});
 
 const initialState: ProjectSelectionModel = {
   projectOptions: [],
-  projectOptionsMapped: [],
+  projectOptionsFiltered: [],
   projectOptionsLoading: false,
   projectSearchValue: '',
 };
@@ -33,8 +30,12 @@ export const projectSelectionSlice = createSlice({
       state.projectSearchValue = action.payload;
 
       if (action.payload.length <= 0) {
-        state.projectOptions = [];
-        state.projectOptionsMapped = [];
+        state.projectOptionsFiltered = [];
+      } else {
+        const name = action.payload.toString().toLowerCase();
+        state.projectOptionsFiltered = state.projectOptions.filter(
+          project => project.label.toLowerCase().includes(name) && project,
+        );
       }
     },
   },
@@ -44,12 +45,10 @@ export const projectSelectionSlice = createSlice({
         state.projectOptionsLoading = true;
       })
       .addCase(fetchProjects.fulfilled, (state, action) => {
-        state.projectOptions = action.payload;
-
-        state.projectOptionsMapped = action.payload.map(project => ({
+        state.projectOptions = action.payload.map(project => ({
           ...project,
           label: project.name,
-          value: project.id.toString(),
+          value: project.id,
         }));
 
         state.projectOptionsLoading = false;

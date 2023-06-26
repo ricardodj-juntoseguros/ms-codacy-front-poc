@@ -1,4 +1,4 @@
 export interface ProjectDTO {
-  id: number;
+  id: string;
   name: string;
 }

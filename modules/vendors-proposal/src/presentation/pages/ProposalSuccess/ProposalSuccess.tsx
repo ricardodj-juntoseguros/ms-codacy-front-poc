@@ -4,6 +4,7 @@ import { useContext, useLayoutEffect } from 'react';
 import className from 'classnames';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { REDIRECT_URLS } from '../../../constants';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import styles from './ProposalSuccess.module.scss';
 
@@ -17,7 +18,7 @@ const ProposalSuccess: React.FunctionComponent = () => {
       history.push('/');
   }, [history, identification?.policyId, identification?.proposalId]);
 
-  const handleGoHome = () => history.push('/');
+  const handleGoHome = () => window.location.assign(REDIRECT_URLS.policies);
 
   return (
     <section

@@ -1,8 +1,7 @@
-import { object, string, number } from 'yup';
+import { object, string } from 'yup';
 
 export const PolicyholderContactSchema = object().shape({
-  id: number().notRequired(),
+  id: string().notRequired(),
   name: string().required(),
   email: string().email().required(),
-  federalId: string().notRequired(),
 });

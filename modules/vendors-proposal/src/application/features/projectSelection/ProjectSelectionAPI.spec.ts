@@ -16,12 +16,9 @@ describe('ProjectSelectionAPI', () => {
       .mockImplementation(async () => {
         return 'OK';
       });
-    const result = await ProjectSelectionAPI.getProjects('LOREM');
+    const result = await ProjectSelectionAPI.getProjects();
     expect(mockGet).toHaveBeenCalledWith({
       url: '/api/v1/project',
-      params: {
-        name: 'LOREM',
-      },
     });
     expect(result).toBe('OK');
   });

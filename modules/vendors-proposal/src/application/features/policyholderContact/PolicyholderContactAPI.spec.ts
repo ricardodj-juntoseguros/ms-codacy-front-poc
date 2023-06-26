@@ -35,10 +35,12 @@ describe('PolicyholderContactAPI', () => {
     const contactMock = {
       name: 'John Doe',
       email: 'john@doe.com',
+      federalId: '99999999999999',
     };
     const result = await PolicyholderContactAPI.createContact(
       contactMock.name,
       contactMock.email,
+      contactMock.federalId,
     );
     expect(mockGet).toHaveBeenCalledWith({
       url: '/api/v1/policyholder/contacts',

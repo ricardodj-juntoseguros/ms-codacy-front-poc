@@ -26,7 +26,7 @@ export const createProposal = createAsyncThunk<
       .then(response => response)
       .catch(error => {
         const message =
-          error.data && error.data.data
+          error.data && error.data.data && error.data.data[0].message
             ? error.data.data[0].message
             : ERROR_MESSAGES.createProposal;
 
@@ -35,25 +35,25 @@ export const createProposal = createAsyncThunk<
   },
 );
 
-// export const updateProposal = createAsyncThunk<
-//   ProposalResultDTO,
-//   { policyId: number; payload: ProposalDTO },
-//   { rejectValue: string }
-// >(
-//   'proposal/updateProposal',
-//   async ({ policyId, payload }, { rejectWithValue }) => {
-//     return ProposalAPI.updateProposal(policyId, payload)
-//       .then(response => response)
-//       .catch(error => {
-//         const message =
-//           error.data && error.data.data
-//             ? error.data.data[0].message
-//             : ERROR_MESSAGES.createProposal;
+export const updateProposal = createAsyncThunk<
+  ProposalResultDTO,
+  { proposalId: number; payload: ProposalDTO },
+  { rejectValue: string }
+>(
+  'proposal/updateProposal',
+  async ({ proposalId, payload }, { rejectWithValue }) => {
+    return ProposalAPI.updateProposal(proposalId, payload)
+      .then(response => response)
+      .catch(error => {
+        const message =
+          error.data && error.data.data && error.data.data[0].message
+            ? error.data.data[0].message
+            : ERROR_MESSAGES.updatedProposal;
 
-//         return rejectWithValue(message);
-//       });
-//   },
-// );
+        return rejectWithValue(message);
+      });
+  },
+);
 
 const initialState: ProposalModel = {
   identification: null,
@@ -66,7 +66,7 @@ const initialState: ProposalModel = {
   hasProject: true,
   project: null,
   policyholderContact: {
-    id: 0,
+    id: '',
     name: '',
     email: '',
   },
@@ -217,25 +217,25 @@ export const proposalSlice = createSlice({
         state.createProposalLoading = false;
         state.createProposalSuccess = false;
         if (action.payload) makeToast('error', action.payload);
+      })
+      .addCase(updateProposal.pending, state => {
+        state.createProposalLoading = true;
+      })
+      .addCase(updateProposal.fulfilled, (state, action) => {
+        state.identification = {
+          proposalId: action.payload.ProposalId,
+          policyId: action.payload.PolicyId,
+          quotationId: action.payload.QuotationId,
+          newQuoterId: action.payload.NewQuoterId,
+        };
+        state.createProposalSuccess = true;
+        state.createProposalLoading = false;
+      })
+      .addCase(updateProposal.rejected, (state, action) => {
+        state.createProposalLoading = false;
+        state.createProposalSuccess = false;
+        if (action.payload) makeToast('error', action.payload);
       });
-    // .addCase(updateProposal.pending, state => {
-    //   state.createProposalLoading = true;
-    // })
-    // .addCase(updateProposal.fulfilled, (state, action) => {
-    //   state.identification = {
-    //     proposalId: action.payload.ProposalId,
-    //     policyId: action.payload.PolicyId,
-    //     quotationId: action.payload.QuotationId,
-    //     newQuoterId: action.payload.NewQuoterId,
-    //   };
-    //   state.createProposalSuccess = true;
-    //   state.createProposalLoading = false;
-    // })
-    // .addCase(updateProposal.rejected, (state, action) => {
-    //   state.createProposalLoading = false;
-    //   state.createProposalSuccess = false;
-    //   if (action.payload) makeToast('error', action.payload);
-    // });
   },
 });
 

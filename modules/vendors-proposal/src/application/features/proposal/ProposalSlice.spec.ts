@@ -3,7 +3,11 @@
 import { add, format } from 'date-fns';
 import { modalityListMock, proposalMock } from '../../../__mocks__';
 import { store } from '../../../config/store';
-import { createProposal, proposalActions } from './ProposalSlice';
+import {
+  createProposal,
+  proposalActions,
+  updateProposal,
+} from './ProposalSlice';
 import ProposalAPI from './ProposalAPI';
 
 describe('ProposalSlice', () => {
@@ -75,7 +79,7 @@ describe('ProposalSlice', () => {
 
   it('should set the policyholder contact correctly', async () => {
     const contact = {
-      id: 1,
+      id: '1',
       name: 'John Doe',
       email: 'john@doe.com',
     };
@@ -87,7 +91,7 @@ describe('ProposalSlice', () => {
 
   it('should set the policyholder contact correctly', async () => {
     const contact = {
-      id: 1,
+      id: '1',
       name: 'John Doe',
       email: 'john@doe.com',
     };
@@ -196,5 +200,53 @@ describe('ProposalSlice', () => {
 
     expect(createProposalAPIMock).toHaveBeenCalledWith(proposalMock);
     expect(proposal.createProposalLoading).toEqual(false);
+    expect(proposal.createProposalSuccess).toEqual(false);
+  });
+
+  it('should call the create proposal correctly', async () => {
+    const createProposalAPIMock = jest
+      .spyOn(ProposalAPI, 'updateProposal')
+      .mockImplementation(() =>
+        Promise.resolve({
+          ProposalId: 12,
+          PolicyId: 123,
+          NewQuoterId: 1234,
+          QuotationId: 12345,
+        }),
+      );
+
+    await store.dispatch(
+      updateProposal({
+        proposalId: 12,
+        payload: proposalMock,
+      }),
+    );
+    const { proposal } = store.getState();
+
+    expect(createProposalAPIMock).toHaveBeenCalledWith(12, proposalMock);
+    expect(proposal.identification?.proposalId).toEqual(12);
+    expect(proposal.identification?.policyId).toEqual(123);
+    expect(proposal.identification?.newQuoterId).toEqual(1234);
+    expect(proposal.identification?.quotationId).toEqual(12345);
+  });
+
+  it('should call the create proposal correctly and return error', async () => {
+    const updateProposalAPIMock = jest
+      .spyOn(ProposalAPI, 'updateProposal')
+      .mockImplementation(() =>
+        Promise.reject({ data: { data: { message: 'error' } } }),
+      );
+
+    await store.dispatch(
+      updateProposal({
+        proposalId: 12,
+        payload: proposalMock,
+      }),
+    );
+    const { proposal } = store.getState();
+
+    expect(updateProposalAPIMock).toHaveBeenCalledWith(12, proposalMock);
+    expect(proposal.createProposalLoading).toEqual(false);
+    expect(proposal.createProposalSuccess).toEqual(false);
   });
 });

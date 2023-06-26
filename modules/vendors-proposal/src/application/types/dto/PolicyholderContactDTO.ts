@@ -1,6 +1,5 @@
 export interface PolicyholderContactDTO {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  companyFederalId: string;
 }

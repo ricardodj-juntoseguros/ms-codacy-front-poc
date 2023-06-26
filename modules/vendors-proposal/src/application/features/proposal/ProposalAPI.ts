@@ -22,9 +22,9 @@ class ProposalAPI {
     return this.instance.post<ProposalResultDTO>(params);
   }
 
-  async updateProposal(policyId: number, payload: ProposalDTO) {
+  async updateProposal(proposalId: number, payload: ProposalDTO) {
     const params: IHttpClientRequestParameters = {
-      url: `/api/v1/proposal/${policyId}`,
+      url: `/api/v1/proposal/${proposalId}`,
       payload,
     };
 

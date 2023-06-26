@@ -1,6 +1,5 @@
 export interface PolicyholderContactModel {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  companyFederalId?: string;
 }

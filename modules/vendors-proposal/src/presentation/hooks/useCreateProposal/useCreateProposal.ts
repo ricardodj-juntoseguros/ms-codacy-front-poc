@@ -6,6 +6,7 @@ import {
   createProposal,
   proposalActions,
   selectProposal,
+  updateProposal,
   // updateProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import InsuredAndPolicyholderSelectionApi from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionApi';
@@ -35,7 +36,7 @@ export function useCreateProposal() {
         return {
           success: false,
           errors: {
-            policyholderInputValue: ERROR_MESSAGES.policyholderRegister,
+            policyholderInputValue: [ERROR_MESSAGES.policyholderRegister],
           },
         };
       })
@@ -46,7 +47,7 @@ export function useCreateProposal() {
             : ERROR_MESSAGES.policyholderRegister;
         return {
           success: false,
-          errors: { policyholderInputValue: errorMessage },
+          errors: { policyholderInputValue: [errorMessage] },
         };
       });
   }, [dispatch, proposal.policyholder]);
@@ -63,16 +64,16 @@ export function useCreateProposal() {
     const policyholderExists = await checkPolicyholder();
     if (!policyholderExists.success) return policyholderExists;
 
-    // if (!proposal.identification) {
-    await dispatch(createProposal(proposalPayload));
-    // } else {
-    //   await dispatch(
-    //     updateProposal({
-    //       policyId: proposal.identification.policyId,
-    //       payload: proposalPayload,
-    //     }),
-    //   );
-    // }
+    if (!proposal.identification) {
+      await dispatch(createProposal(proposalPayload));
+    } else {
+      await dispatch(
+        updateProposal({
+          proposalId: proposal.identification.proposalId,
+          payload: proposalPayload,
+        }),
+      );
+    }
 
     return { success: true, errors: {} };
   }, [checkPolicyholder, dispatch, proposal, validate]);

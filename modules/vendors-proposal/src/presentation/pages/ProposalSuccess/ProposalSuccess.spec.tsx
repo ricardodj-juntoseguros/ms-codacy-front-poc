@@ -21,6 +21,13 @@ describe('ProposalSuccess', () => {
   const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
 
+  beforeAll(() => {
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { assign: jest.fn() },
+    });
+  });
+
   beforeEach(() => {
     useSelectorMock.mockClear();
     useDispatchMock.mockClear();
@@ -86,6 +93,8 @@ describe('ProposalSuccess', () => {
       await fireEvent.click(button);
     });
 
-    expect(mockHistoryPush).toHaveBeenCalled();
+    expect(window.location.assign).toHaveBeenCalledWith(
+      `${process.env.NX_GLOBAL_VENDORS_PLATFORM_URL}/policies`,
+    );
   });
 });

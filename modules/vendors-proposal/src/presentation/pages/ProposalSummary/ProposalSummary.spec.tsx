@@ -52,6 +52,7 @@ describe('ProposalSummary', () => {
         policyId: 12345,
       },
       policyholderContact: {
+        id: '',
         name: 'John Doe',
         email: 'john@doe.com',
       },
@@ -91,7 +92,7 @@ describe('ProposalSummary', () => {
   > | null = null;
   let createContactMock: jest.SpyInstance<
     Promise<unknown>,
-    [name: string, email: string]
+    [name: string, email: string, federalId: string]
   > | null = null;
   let IssuanceAPIMock: jest.SpyInstance<
     Promise<void>,
@@ -186,103 +187,117 @@ describe('ProposalSummary', () => {
 
     // expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
     expect(uploadDocumentsMock).toHaveBeenCalled();
-    // expect(createContactMock).toHaveBeenCalledWith('John Doe', 'john@doe.com');
-    // expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
+    expect(createContactMock).toHaveBeenCalledWith(
+      'John Doe',
+      'john@doe.com',
+      '33768864000107',
+    );
+    expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
     expect(mockHistoryPush).toHaveBeenCalled();
   });
 
-  // it('should not call the contact register if there is a contact id', async () => {
-  //   const mock = {
-  //     ...updatedStoreMock,
-  //     proposal: {
-  //       ...updatedStoreMock.proposal,
-  //       policyholderContact: {
-  //         ...updatedStoreMock.proposal.policyholderContact,
-  //         id: 1,
-  //       },
-  //     },
-  //   };
-  //   useSelectorMock.mockImplementation(select => select(mock));
-  //   useDispatchMock.mockImplementation(() => mockDispatch);
-  //   const { getByTestId } = render(<ProposalSummary />);
+  it('should not call the contact register if there is a contact id', async () => {
+    const mock = {
+      ...updatedStoreMock,
+      proposal: {
+        ...updatedStoreMock.proposal,
+        policyholderContact: {
+          ...updatedStoreMock.proposal.policyholderContact,
+          id: '1',
+        },
+      },
+    };
+    useSelectorMock.mockImplementation(select => select(mock));
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const { getByTestId } = render(<ProposalSummary />);
 
-  //   const buttonSubmit = getByTestId('proposalSummary-button-submit');
-  //   await act(async () => {
-  //     await fireEvent.click(buttonSubmit);
-  //   });
+    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    await act(async () => {
+      await fireEvent.click(buttonSubmit);
+    });
 
-  //   expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
-  //   expect(uploadDocumentsMock).toHaveBeenCalled();
-  //   expect(createContactMock).not.toHaveBeenCalledWith(
-  //     'John Doe',
-  //     'john@doe.com',
-  //   );
-  //   expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
-  //   expect(mockHistoryPush).toHaveBeenCalled();
-  // });
+    // expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
+    expect(uploadDocumentsMock).toHaveBeenCalled();
+    expect(createContactMock).not.toHaveBeenCalledWith(
+      'John Doe',
+      'john@doe.com',
+      '33768864000107',
+    );
+    expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
+    expect(mockHistoryPush).toHaveBeenCalled();
+  });
 
-  // it('should not continue the flow if the upload of documents presents an error', async () => {
-  //   uploadDocumentsMock = jest.fn(() => false);
-  //   useSelectorMock.mockImplementation(select => select(updatedStoreMock));
-  //   useDispatchMock.mockImplementation(() => mockDispatch);
-  //   const { getByTestId } = render(<ProposalSummary />);
+  it('should not continue the flow if the upload of documents presents an error', async () => {
+    uploadDocumentsMock = jest.fn(() => false);
+    useSelectorMock.mockImplementation(select => select(updatedStoreMock));
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const { getByTestId } = render(<ProposalSummary />);
 
-  //   const buttonSubmit = getByTestId('proposalSummary-button-submit');
-  //   await act(async () => {
-  //     await fireEvent.click(buttonSubmit);
-  //   });
+    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    await act(async () => {
+      await fireEvent.click(buttonSubmit);
+    });
 
-  //   expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
-  //   expect(uploadDocumentsMock).toHaveBeenCalled();
-  //   expect(createContactMock).not.toHaveBeenCalledWith(
-  //     'John Doe',
-  //     'john@doe.com',
-  //   );
-  //   expect(IssuanceAPIMock).not.toHaveBeenCalledWith(12345);
-  //   expect(mockHistoryPush).not.toHaveBeenCalled();
-  // });
+    // expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
+    expect(uploadDocumentsMock).toHaveBeenCalled();
+    expect(createContactMock).not.toHaveBeenCalledWith(
+      'John Doe',
+      'john@doe.com',
+      '33768864000107',
+    );
+    expect(IssuanceAPIMock).not.toHaveBeenCalledWith(12345);
+    expect(mockHistoryPush).not.toHaveBeenCalled();
+  });
 
-  // it('should not continue the flow if the contact registration presents an error', async () => {
-  //   createContactMock = jest
-  //     .spyOn(PolicyholderContactAPI, 'createContact')
-  //     .mockImplementation(() =>
-  //       Promise.reject({ data: { data: [{ message: 'error' }] } }),
-  //     );
-  //   useSelectorMock.mockImplementation(select => select(updatedStoreMock));
-  //   useDispatchMock.mockImplementation(() => mockDispatch);
-  //   const { getByTestId } = render(<ProposalSummary />);
+  it('should not continue the flow if the contact registration presents an error', async () => {
+    createContactMock = jest
+      .spyOn(PolicyholderContactAPI, 'createContact')
+      .mockImplementation(() =>
+        Promise.reject({ data: { data: [{ message: 'error' }] } }),
+      );
+    useSelectorMock.mockImplementation(select => select(updatedStoreMock));
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const { getByTestId } = render(<ProposalSummary />);
 
-  //   const buttonSubmit = getByTestId('proposalSummary-button-submit');
-  //   await act(async () => {
-  //     await fireEvent.click(buttonSubmit);
-  //   });
+    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    await act(async () => {
+      await fireEvent.click(buttonSubmit);
+    });
 
-  //   expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
-  //   expect(uploadDocumentsMock).toHaveBeenCalled();
-  //   expect(createContactMock).toHaveBeenCalledWith('John Doe', 'john@doe.com');
-  //   expect(IssuanceAPIMock).not.toHaveBeenCalledWith(12345);
-  //   expect(mockHistoryPush).not.toHaveBeenCalled();
-  // });
+    // expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
+    expect(uploadDocumentsMock).toHaveBeenCalled();
+    expect(createContactMock).toHaveBeenCalledWith(
+      'John Doe',
+      'john@doe.com',
+      '33768864000107',
+    );
+    expect(IssuanceAPIMock).not.toHaveBeenCalledWith(12345);
+    expect(mockHistoryPush).not.toHaveBeenCalled();
+  });
 
-  // it('should remain on the proposal summary page in case the issue call returns an error', async () => {
-  //   IssuanceAPIMock = jest
-  //     .spyOn(IssuanceAPI, 'submitToApproval')
-  //     .mockImplementation(() =>
-  //       Promise.reject({ data: { data: [{ message: 'error' }] } }),
-  //     );
-  //   useSelectorMock.mockImplementation(select => select(updatedStoreMock));
-  //   useDispatchMock.mockImplementation(() => mockDispatch);
-  //   const { getByTestId } = render(<ProposalSummary />);
+  it('should remain on the proposal summary page in case the issue call returns an error', async () => {
+    IssuanceAPIMock = jest
+      .spyOn(IssuanceAPI, 'submitToApproval')
+      .mockImplementation(() =>
+        Promise.reject({ data: { data: [{ message: 'error' }] } }),
+      );
+    useSelectorMock.mockImplementation(select => select(updatedStoreMock));
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const { getByTestId } = render(<ProposalSummary />);
 
-  //   const buttonSubmit = getByTestId('proposalSummary-button-submit');
-  //   await act(async () => {
-  //     await fireEvent.click(buttonSubmit);
-  //   });
+    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    await act(async () => {
+      await fireEvent.click(buttonSubmit);
+    });
 
-  //   expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
-  //   expect(uploadDocumentsMock).toHaveBeenCalled();
-  //   expect(createContactMock).toHaveBeenCalledWith('John Doe', 'john@doe.com');
-  //   expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
-  //   expect(mockHistoryPush).not.toHaveBeenCalled();
-  // });
+    // expect(linkProjectMock).toHaveBeenCalledWith('lorem', 1, 12345);
+    expect(uploadDocumentsMock).toHaveBeenCalled();
+    expect(createContactMock).toHaveBeenCalledWith(
+      'John Doe',
+      'john@doe.com',
+      '33768864000107',
+    );
+    expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
+    expect(mockHistoryPush).not.toHaveBeenCalled();
+  });
 });

@@ -21,7 +21,7 @@ const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
   handleNextStep,
   updateTitle,
 }) => {
-  const { policyholderContact } = useSelector(selectProposal);
+  const { policyholderContact, policyholder } = useSelector(selectProposal);
   const [disabledFields, setDisabledFields] = useState(
     !!policyholderContact.id,
   );
@@ -36,11 +36,16 @@ const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
   );
 
   useEffect(() => {
-    const getContacts = () => {
-      const query = window.location.search
-        ? window.location.search.substring(11, window.location.search.length)
-        : '91833813000118';
-      PolicyholderContactAPI.getContacts(query)
+    const fetchContacts = () => {
+      if (
+        !policyholder ||
+        !policyholder.federalId ||
+        policyholderContact.id.length !== 0 ||
+        (policyholderContact.name && policyholderContact.email)
+      )
+        return;
+
+      PolicyholderContactAPI.getContacts(policyholder.federalId)
         .then(response => {
           if (response.length >= 1) {
             dispatch(proposalActions.setPolicyholderContact(response[0]));
@@ -52,13 +57,14 @@ const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
               );
           }
         })
-        .catch(error => {
-          makeToast('warning', error.data.data[0].message);
+        .catch(() => {
+          setDisabledFields(false);
         });
     };
 
-    if (!policyholderContact.name && !policyholderContact.email) getContacts();
-  }, [dispatch, policyholderContact, updateTitle]);
+    fetchContacts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleContactName = (name: string) => {
     dispatch(

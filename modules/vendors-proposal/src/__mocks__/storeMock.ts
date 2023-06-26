@@ -34,7 +34,7 @@ export const storeMock = {
     hasProject: true,
     project: null,
     policyholderContact: {
-      id: 0,
+      id: '',
       name: '',
       email: '',
     },

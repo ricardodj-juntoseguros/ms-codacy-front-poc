@@ -48,7 +48,7 @@ describe('ContractData', () => {
   jest.spyOn(ProjectSelectionAPI, 'getProjects').mockImplementation(() =>
     Promise.resolve([
       {
-        id: 1,
+        id: '1',
         name: 'Lorem',
       },
     ]),
@@ -89,7 +89,7 @@ describe('ContractData', () => {
       },
       projectSelectionActions: {
         projectOptions: [],
-        projectOptionsMapped: [],
+        projectOptionsFiltered: [],
         projectSearchValue: 'Lorem',
       },
     };
@@ -157,7 +157,7 @@ describe('ContractData', () => {
       },
       projectSelectionActions: {
         projectOptions: [],
-        projectOptionsMapped: [],
+        projectOptionsFiltered: [],
         projectSearchValue: 'Lorem',
       },
     };
@@ -165,7 +165,7 @@ describe('ContractData', () => {
       select({ ...updatedStoreMock }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId, getByText } = render(
+    const { getByTestId } = render(
       <ContractData handleNextStep={handleNextStepMock} />,
     );
 
@@ -181,21 +181,8 @@ describe('ContractData', () => {
       projectSelectionActions.setProjectSearchValue('Lorem'),
     );
     await waitFor(() => {
-      expect(mockDispatch).toHaveBeenCalledTimes(2);
+      expect(mockDispatch).toHaveBeenCalledTimes(1);
     });
-
-    const projectItem = getByText('Lorem');
-    await act(async () => {
-      await fireEvent.click(projectItem);
-    });
-    expect(mockDispatch).toHaveBeenCalledWith(
-      proposalActions.setProject({
-        id: 1,
-        name: 'Lorem',
-        label: 'Lorem',
-        value: '1',
-      }),
-    );
   });
 
   it('should allow the user to continuation of the flow', async () => {
