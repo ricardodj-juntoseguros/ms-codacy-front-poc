@@ -255,18 +255,14 @@ const DoneMappingRequestsListitemDetails: React.FC<DoneMappingRequestsListitemPr
                 styles['done-mapping-requests-listitem-details__column']
               }
             >
-              {queue.mappedAt &&
-                (queue.id === 3 || queue.id === 6) &&
-                queue.totalOpportunities > 0 && (
-                  <LinkButton
-                    data-testid="download-opportunity-btn"
-                    label=""
-                    icon="download"
-                    onClick={() =>
-                      fetchDownloadOpportunity(queue.name, queue.id)
-                    }
-                  />
-                )}
+              {queue.mappedAt && queue.totalOpportunities > 0 && (
+                <LinkButton
+                  data-testid="download-opportunity-btn"
+                  label=""
+                  icon="download"
+                  onClick={() => fetchDownloadOpportunity(queue.name, queue.id)}
+                />
+              )}
             </div>
           </div>
         ))}
