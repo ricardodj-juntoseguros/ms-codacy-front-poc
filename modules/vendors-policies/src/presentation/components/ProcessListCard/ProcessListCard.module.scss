@@ -1,0 +1,174 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.process-list-card__wrapper {
+  @include border(1, 'solid', 'grey-300');
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: spacing('l') spacing('xl') spacing('l') spacing('l');
+  justify-content: space-between;
+  gap: spacing('xl');
+  animation: fadeIn 300ms linear;
+
+  & > div:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: spacing('l');
+
+    & button {
+      align-items: center;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    padding: spacing('l');
+
+    & > div {
+      width: 100%;
+    }
+  }
+}
+
+.process-list-card__title-row {
+  margin-bottom: spacing('m');
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: spacing('m');
+
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+    gap: spacing('s');
+    align-items: flex-start;
+  }
+}
+
+.process-list-card__info-row {
+  display: grid;
+  grid-template-columns: 120px 220px 220px;
+  gap: spacing('xl');
+  overflow: hidden;
+
+  & > div:nth-child(2) {
+    display: none;
+  }
+
+  @media screen and (max-width: 700px) {
+    grid-template-columns: 3fr 1fr;
+    transition: all 500ms;
+    gap: 0px;
+    grid-template-areas:
+      'id id btn'
+      'seg seg .'
+      'mod mod .';
+
+    & > div:first-child {
+      grid-area: id;
+    }
+    & > div:nth-child(2) {
+      display: block;
+      grid-area: btn;
+
+      & > button > i {
+        margin-right: 0px;
+      }
+    }
+    & > div:nth-child(3) {
+      grid-area: seg;
+      height: 0px;
+      transition: all 500ms;
+    }
+    & > div:nth-child(4) {
+      grid-area: mod;
+      height: 0px;
+      transition: all 500ms;
+    }
+
+    &--open {
+      gap: spacing('m');
+
+      & > div:nth-child(3) {
+        height: 40px;
+      }
+      & > div:nth-child(4) {
+        height: 40px;
+      }
+    }
+  }
+}
+
+.process-list-card__policyholder {
+  @include font('l-emphasys');
+  max-width: 565px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media screen and (max-width: 700px) {
+    max-width: 100%;
+  }
+}
+
+.process-list-card__status-tag {
+  @include font('xs-emphasys');
+  border-radius: spacing('xs');
+  padding: spacing('0') spacing('xs');
+  height: spacing('m');
+  display: inline-flex;
+  width: fit-content;
+
+  &--under-analysis,
+  &--awaiting-approval {
+    @include color('color', 'brand-primary');
+    @include color('background-color', 'brand-secondary');
+  }
+
+  &--refused,
+  &--canceled {
+    @include color('color', 'error');
+    background-color: #ffd8d8;
+  }
+
+  &--issued {
+    @include color('color', 'success');
+    background-color: #dafffb;
+  }
+
+  &--to-expire {
+    @include color('color', 'warning');
+    background-color: #ffe7db;
+  }
+
+  &--expired {
+    @include color('color', 'grey-500');
+    @include color('background-color', 'grey-100');
+  }
+}
+
+.process-list-card__info-label {
+  @include font('xs-2');
+  @include color('color', 'grey-500');
+}
+
+.process-list-card__info-value {
+  @include font('sm');
+  @include color('color', 'dark');
+  margin-top: spacing('xs');
+  margin-bottom: spacing('0');
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

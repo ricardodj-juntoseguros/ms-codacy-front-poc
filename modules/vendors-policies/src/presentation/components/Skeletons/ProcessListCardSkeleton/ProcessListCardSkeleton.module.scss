@@ -1,0 +1,72 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.process-list-card-skeleton__wrapper {
+  @include border(1, 'solid', 'grey-300');
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: (spacing('l') + spacing('xs')) spacing('xl') spacing('l')
+    spacing('l');
+  justify-content: space-between;
+  gap: spacing('xl');
+
+  & > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: spacing('l');
+
+    & > div:first-child > div {
+      display: flex;
+      flex-direction: row;
+      gap: spacing('l');
+
+      @media screen and (max-width: 700px) {
+        flex-direction: column;
+        gap: spacing('s');
+      }
+    }
+
+    & > div:nth-child(2) {
+      display: flex;
+      flex-direction: row;
+      gap: spacing('xl');
+
+      @media screen and (max-width: 700px) {
+        flex-direction: column;
+        gap: spacing('m');
+      }
+    }
+  }
+
+  & > div:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  @media screen and (max-width: 700px) {
+    padding: spacing('l');
+    & > div {
+      width: 100%;
+    }
+  }
+}
+
+.process-list-card-skeleton__info {
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (max-width: 700px) {
+    display: none !important;
+  }
+}
+
+.process-list-card-skeleton__info-mobile {
+  display: none !important;
+  flex-direction: column;
+
+  @media screen and (max-width: 700px) {
+    display: flex !important;
+  }
+}

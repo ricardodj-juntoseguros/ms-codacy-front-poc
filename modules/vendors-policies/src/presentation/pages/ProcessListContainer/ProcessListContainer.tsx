@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { ThemeContext } from 'junto-design-system';
 import { VendorsAuthService } from '@services';
 import styles from './ProcessListContainer.module.scss';
+import ProcessList from '../../components/ProcessList';
 
 function ProcessListContainer() {
   const theme = useContext(ThemeContext);
@@ -60,6 +61,7 @@ function ProcessListContainer() {
         {getGreetingAuxText()}
       </h1>
       {renderNewProposalButton()}
+      <ProcessList />
     </section>
   );
 }

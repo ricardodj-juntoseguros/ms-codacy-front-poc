@@ -1,0 +1,48 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.process-list__wrapper {
+  margin-top: spacing('xxl-5');
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @media screen and (max-width: 768px) {
+    margin-top: spacing('xxl-4');
+  }
+}
+
+.process-list__title {
+  @include font('xl-emphasys');
+  @include color('color', 'dark');
+  margin-top: 0px;
+  margin-bottom: spacing('m');
+}
+
+.process-list__subtitle {
+  @include font('base');
+  @include color('color', 'grey-600');
+  margin: 0px;
+}
+
+.process-list__totalizer {
+  margin-top: spacing('xl');
+  margin-bottom: spacing('l');
+
+  & > p {
+    @include font('xs');
+    @include color('color', 'grey-500');
+  }
+}
+
+.process-list__list-container {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l');
+}
+
+.process-list__paging {
+  margin-top: spacing('xxl-5');
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+}

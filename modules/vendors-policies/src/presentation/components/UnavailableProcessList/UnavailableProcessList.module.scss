@@ -1,0 +1,40 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.unavailable-process-list__wrapper {
+  width: 100%;
+  animation: fadeIn 400ms linear;
+
+  & > div:last-child {
+    margin: auto;
+    margin-top: spacing('xxl-4');
+    max-width: 576px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & > h2 {
+      @include font('l-emphasys');
+      @include color('color', 'dark');
+      margin-top: spacing('xxl');
+      margin-bottom: 0px;
+      text-align: center;
+    }
+
+    & > p {
+      @include font('base');
+      @include color('color', 'dark');
+      margin-top: spacing('s');
+      margin-bottom: spacing('xl');
+      text-align: center;
+    }
+  }
+}
