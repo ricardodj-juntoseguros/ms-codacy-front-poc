@@ -14,13 +14,14 @@ class TermsApi {
 
   async getAcceptTerms(email: string, nameTerm: string): Promise<TermsDTO> {
     const params: IHttpClientRequestParameters = {
-      url: `/api/v1/terms/accept?email=${email}&description=${nameTerm}`,
+      url: `/api/v1/terms/byUserType?email=${email}&description=${nameTerm}`,
     };
     return await this.instance.get<TermsDTO>(params);
   }
 
-  async getTerm(term: TermsDTO, nameTerm: string): Promise<string> {
+  async getTerm(term: TermsDTO): Promise<string> {
     const version = term?.data[0].version;
+    const nameTerm = term?.data[0].description;
     const params: IHttpClientRequestParameters = {
       url: `api/v1/terms?version=${version}&description=${nameTerm}`,
     };

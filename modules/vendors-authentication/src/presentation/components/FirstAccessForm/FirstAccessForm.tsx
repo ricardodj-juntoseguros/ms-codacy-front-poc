@@ -94,7 +94,7 @@ export function FirstAccessForm({
 
   const getTerm = async (term :TermsDTO) => {
     setTermId(term?.data[0].id || 0);
-    await TermsApi.getTerm(term,TERMS_RESPONSIBILITY.name)
+    await TermsApi.getTerm(term)
     .then(Response => {
       setTerms(Response)
      })

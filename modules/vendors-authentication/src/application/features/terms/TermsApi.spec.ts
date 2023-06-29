@@ -25,7 +25,7 @@ describe('TermsApi', () => {
     const result = await TermsApi.getAcceptTerms(emailMock, nameTermMock);
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/api/v1/terms/accept?email=teste@teste.com.br&description=term-mock',
+      url: '/api/v1/terms/byUserType?email=teste@teste.com.br&description=term-mock',
     });
     expect(result).toBe(TermsMock);
   });
@@ -41,10 +41,10 @@ describe('TermsApi', () => {
         return termTextMock;
       });
 
-    const result = await TermsApi.getTerm(TermsMock, versionMock);
+    const result = await TermsApi.getTerm(TermsMock);
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: `api/v1/terms?version=1.1&description=1.0`,
+      url: `api/v1/terms?version=1.1&description=termo-de-responsabilidade-vendors`,
     });
     expect(result).toBe(termTextMock);
   });
