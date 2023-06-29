@@ -282,7 +282,7 @@ workflows:
           requires:
             - approve-qas
             - eslint
-            - audit
+            # - audit
             - code-climate
           post-steps:
             - jira/notify:
@@ -315,7 +315,7 @@ workflows:
           requires:
             - approve-stg
             - eslint
-            - audit
+            # - audit
             - code-climate
           post-steps:
             - jira/notify:

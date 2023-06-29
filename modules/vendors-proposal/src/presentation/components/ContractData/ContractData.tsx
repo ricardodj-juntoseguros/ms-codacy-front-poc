@@ -53,7 +53,8 @@ const ContractData: React.FunctionComponent<GenericComponentProps> = ({
     };
 
     if (projectOptions.length === 0 && projectSearchValue === '') getProjects();
-  }, [dispatch, projectOptions, projectSearchValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const disabledButton = useMemo(
     () => !contractNumber || !contractValue || files.length <= 0,

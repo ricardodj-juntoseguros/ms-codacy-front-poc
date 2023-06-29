@@ -6,6 +6,8 @@
   margin-top: spacing('xxl-3');
   padding: 0 spacing('l') spacing('l') spacing('l');
   display: grid;
+  scroll-behavior: smooth;
+
   grid-template-columns: 1fr 19.5rem;
   grid-template-areas:
     "header header"

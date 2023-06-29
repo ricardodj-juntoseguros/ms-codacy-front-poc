@@ -22,15 +22,17 @@ class ProjectSelectionAPI {
 
   async linkProject(
     projectSearchValue: string,
-    projectId: number | null,
-    proposalId: number,
+    projectId: string | null,
+    policyId: number,
+    insuredFederalId: string,
   ): Promise<void> {
     const params: IHttpClientRequestParameters = {
-      url: `/api/v1/project`,
+      url: `/api/v1/project/reference/policy/${policyId}`,
       payload: {
+        useDefault: false,
+        insuredFederalId,
         ...(projectId && { id: projectId }),
         ...(!projectId && { name: projectSearchValue }),
-        proposalId,
       },
     };
 

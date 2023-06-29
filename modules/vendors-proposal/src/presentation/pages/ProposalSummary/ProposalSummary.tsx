@@ -7,7 +7,13 @@ import {
   ThemeContext,
   makeToast,
 } from 'junto-design-system';
-import { useCallback, useContext, useLayoutEffect, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useState,
+  useEffect,
+} from 'react';
 import className from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -47,11 +53,16 @@ const ProposalSummary: React.FunctionComponent = () => {
     insuredName,
     contractNumber,
     contractValue,
+    insuredFederalId,
   } = useSelector(selectProposal);
   const dispatch = useDispatch();
   const { projectSearchValue } = useSelector(selectProjectSelection);
   const history = useHistory();
   const { files, uploadDocuments } = useFiles();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleDownloadFiles = () => {
     files.forEach(file => downloadFile(file.file));
@@ -90,7 +101,7 @@ const ProposalSummary: React.FunctionComponent = () => {
   const handleSubmit = async () => {
     if (!identification || !identification.proposalId) return;
     setIssuanceLoading(true);
-    // await onlinkProject(identification.proposalId);
+    await onlinkProject(identification.policyId, insuredFederalId);
 
     const result = await uploadDocuments();
     if (!result) return;
@@ -105,13 +116,15 @@ const ProposalSummary: React.FunctionComponent = () => {
         policyholderContact.email,
         policyholder.federalId,
       )
-        .then(() => onSubmitToApproval(identification.policyId))
+        .then(() => {
+          history.push('success');
+        })
         .catch(() => {
           makeToast('error', ERROR_MESSAGES.createContact);
           setIssuanceLoading(false);
         });
     } else {
-      onSubmitToApproval(identification.proposalId);
+      history.push('success');
     }
   };
 
@@ -127,17 +140,22 @@ const ProposalSummary: React.FunctionComponent = () => {
     [history],
   );
 
-  // const onlinkProject = useCallback(
-  //   async (proposalId: number) => {
-  //     const projectId = project ? Number(project.value) : null;
-  //     return ProjectSelectionAPI.linkProject(
-  //       projectSearchValue,
-  //       projectId,
-  //       proposalId,
-  //     );
-  //   },
-  //   [projectSearchValue, project],
-  // );
+  const onlinkProject = useCallback(
+    async (policyId: number, insuredFederalId: string) => {
+      const projectId = project ? project.value : null;
+      return ProjectSelectionAPI.linkProject(
+        projectSearchValue,
+        projectId,
+        policyId,
+        insuredFederalId,
+      )
+        .then(() => {
+          return true;
+        })
+        .catch(() => makeToast('error', ERROR_MESSAGES.error));
+    },
+    [project, projectSearchValue],
+  );
 
   const handleEditProposal = () => {
     dispatch(proposalActions.setCreateProposalSuccess(false));
