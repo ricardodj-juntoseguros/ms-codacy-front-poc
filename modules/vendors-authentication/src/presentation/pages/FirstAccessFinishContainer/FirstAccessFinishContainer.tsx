@@ -1,15 +1,27 @@
 import { useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import { VendorsAuthService } from '@services';
 import styles from './FirstAccessFinishContainer.module.scss';
 import { ReactComponent as LogoVendors } from '../../assets/logoVendors-white.svg';
 import { ReactComponent as IconFinish } from '../../assets/iconFinish-vendors.svg';
 
 function FirstAccessFinishContainer() {
+  const {proposalId,guid} = useParams() as any;
+  let redirectUrl = '/';
+
   useEffect(() => {
-    setTimeout(() => {
-      const redirectUrl = VendorsAuthService.getRedirectPageAfterLogin();
-      window.location.assign(redirectUrl);
-    }, 3000);
+    if(proposalId && guid){
+      redirectUrl= `${process.env.NX_GLOBAL_VENDORS_PLATFORM_URL}/pre-approval&t010_id=${proposalId}&guid=${guid}`
+      setTimeout(() => {
+        window.location.assign(redirectUrl);
+      }, 3000);
+    }
+    else{
+      redirectUrl = VendorsAuthService.getRedirectPageAfterLogin();
+      setTimeout(() => {
+        window.location.assign(redirectUrl);
+      }, 3000);
+    }
   }, []);
 
   return (

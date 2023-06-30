@@ -19,6 +19,8 @@ import { TermsDTO } from '../../../application/types/dto';
 export interface FirstAccessProps {
   hash: string;
   token: string;
+  proposalId?: string;
+  guid?: string;
   title: string;
   labelButton?: string;
   isFiristAccess: boolean;
@@ -27,6 +29,8 @@ export interface FirstAccessProps {
 export function FirstAccessForm({
   hash,
   token,
+  proposalId,
+  guid,
   title,
   labelButton = 'Cadastrar',
   isFiristAccess,
@@ -126,7 +130,7 @@ export function FirstAccessForm({
       handleLogin();
     }
     else{
-      history.push('/forgot-password-finish')
+      history.push(`/forgot-password-finish`)
     }
      })
      .catch(() =>{
@@ -162,7 +166,8 @@ export function FirstAccessForm({
             expires_in,
             refresh_expires_in,
           );
-          history.push('/first-access-finish')
+          const urlRedirect = proposalId && guid ? `/first-access-finish/${proposalId}/${guid}` :`/first-access-finish`
+          history.push(urlRedirect)
           },
         )
       .catch(() => history.push('/'));

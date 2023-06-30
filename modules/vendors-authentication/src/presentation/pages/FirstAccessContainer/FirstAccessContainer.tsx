@@ -5,9 +5,12 @@ import { FirstAccessForm } from '../../components/FirstAccessForm'
 
 
 function FirstAccessContainer() {
-  const { hash,token } = useParams() as any;
-  const hashValue = hash?.replace('hash=', '')
-  const tokenValue = token?.replace('token=', '')
+  const { hash} = useParams() as any;
+
+  const hashValue = hash?.split('&')[0]?.replace('hash=', '')
+  const token = hash?.split('&')[1]?.replace('token=', '')
+  const proposalId = hash?.split('&')[2]?.replace('documentId=', '')
+  const guid = hash?.split('&')[3]?.replace('guid=', '')
 
 
   return (
@@ -15,7 +18,7 @@ function FirstAccessContainer() {
         <div className={styles['first_Access__logo']}>
           <LogoVendors />
         </div>
-        <FirstAccessForm hash={hashValue} token={tokenValue} title="Para sua segurança, precisamos que você defina uma senha." isFiristAccess/>
+        <FirstAccessForm hash={hashValue} token={token} proposalId={proposalId} guid={guid} title="Para sua segurança, precisamos que você defina uma senha." isFiristAccess/>
    </div>
   );
 }

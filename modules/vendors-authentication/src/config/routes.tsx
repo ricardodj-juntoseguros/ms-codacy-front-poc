@@ -14,10 +14,10 @@ const Routes: React.FC = () => (
   <BrowserRouter basename="login">
     <Switch>
       <Route path="/" exact component={LoginContainer} />
-      <Route path="/first-access/:hash&:token" exact component={FirstAccessContainer} />
+      <Route path="/first-access/:hash" exact component={FirstAccessContainer} />
       <Route path="/forgot-password/:hash&:token" exact component={ForgotPasswordContainer} />
       <Route path="/forgot-password-finish" exact component={ForgotPasswordFinishContainer} />
-      <Route path="/first-access-finish" exact component={FirstAccessFinishContainer} />
+      <Route path="/first-access-finish/:proposalId?/:guid?" exact component={FirstAccessFinishContainer} />
       <Route path="/request-forgot-password" exact component={RequestForgotPasswordContainer} />
       <Route path="/request-forgot-password-finish" exact component={RequestForgotPasswordFinishContainer} />
       <Route path="/request-reset-password-invalid" exact component={RequestResetPasswordInvalid} />
