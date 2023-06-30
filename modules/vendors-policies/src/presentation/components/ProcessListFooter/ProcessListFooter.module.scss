@@ -1,0 +1,13 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.process-list-footer_wrapper {
+  @include font('xs');
+  @include color('color', 'grey-500');
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: spacing('xxl-6');
+  margin-top: spacing('xxl-4');
+}

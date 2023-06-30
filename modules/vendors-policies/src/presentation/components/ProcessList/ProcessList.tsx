@@ -39,7 +39,6 @@ const ProcessList: React.FC = () => {
         setProposals(response);
       })
       .catch(error => {
-        console.log(error);
         setError(true);
         if (error.data && error.data.data) {
           makeToast('error', error.data.data.message);

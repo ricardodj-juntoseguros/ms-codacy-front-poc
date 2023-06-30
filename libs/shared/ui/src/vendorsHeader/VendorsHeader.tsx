@@ -4,7 +4,7 @@ import { LinkButton, ThemeContext } from 'junto-design-system';
 import { nanoid } from 'nanoid/non-secure';
 import className from 'classnames';
 import { VendorsAuthService } from '@services';
-import { ReactComponent as LogoMarsh } from './assets/logo-marsh.svg';
+import { ReactComponent as LogoVendors } from './assets/logoVendors.svg';
 import VendorsUserMenu from './VendorsUserMenu';
 import styles from './VendorsHeader.module.scss';
 
@@ -86,7 +86,7 @@ export const VendorsHeader: React.FC<VendorsHeaderProps> = ({
           to="/"
           className={styles['vendors-header__logo']}
         >
-          <LogoMarsh className={styles['vendors-header__img']} />
+          <LogoVendors className={styles['vendors-header__img']} />
         </Link>
       );
     }
@@ -94,7 +94,7 @@ export const VendorsHeader: React.FC<VendorsHeaderProps> = ({
     return (
       <LinkButton
         data-testid="header-button-back"
-        label={windowSize.width > 576 ? 'Voltar' : ''}
+        label={windowSize.width > 576 ? 'Voltar para meu painel' : ''}
         onClick={backButton}
         icon="arrow-left"
       />

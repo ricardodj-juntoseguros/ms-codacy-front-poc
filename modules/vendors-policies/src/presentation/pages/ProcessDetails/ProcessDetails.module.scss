@@ -1,0 +1,198 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+
+.process-details__wrapper {
+  max-width: 65rem;
+  margin: 0 auto;
+  margin-top: spacing('xxl-3');
+  padding: 0 spacing('l') spacing('l') spacing('l');
+  display: grid;
+  grid-template-columns: 1fr 19.5rem;
+  grid-template-areas:
+    "header header"
+    "content aside";
+}
+
+.process-details__header {
+  grid-area: header;
+  margin-bottom: spacing('xl');
+}
+
+.process-details__title {
+  @include font('xl-emphasys');
+  @include color('color', 'dark');
+  margin: 0;
+}
+
+.process-details__text {
+  @include font('sm');
+  @include color('color', 'grey-500');
+  margin: spacing('s') 0 spacing('l') 0;
+}
+
+.process-details__content {
+  grid-area: content;
+  max-width: 28.5rem;
+}
+
+.process-details__status {
+  @include font('sm-emphasys');
+  margin: spacing('xxl') 0;
+  display: flex;
+  gap: spacing('s');
+
+  &--issued {
+    @include color('color', 'success');
+  }
+
+  &--to-expire,
+  &--awaiting-approval,
+  &--under-analysis {
+    @include color('color', 'warning');
+  }
+
+  &--expired {
+    @include color('color', 'grey-600');
+  }
+
+  &--canceled,
+  &--refused {
+    @include color('color', 'error');
+  }
+}
+
+.process-details__content-values {
+  display: grid;
+  gap: spacing('l');
+}
+
+
+.details-field__wrapper {
+  min-width: 11rem;
+  & button {
+    margin-top: spacing('xl');
+  }
+}
+
+.details-field__title {
+  @include font('xs');
+  @include color('color', 'grey-500');
+  margin: spacing('xs') 0 0 0;
+}
+
+.details-field__value {
+  @include font('l');
+  @include color('color', 'dark');
+  margin: 0;
+}
+
+.proposal-details__item-inline {
+  display: flex;
+  gap: spacing('xxl-3')
+}
+
+.proposal-details__divider {
+  margin: spacing('m') 0;
+}
+
+.process-details__subtitle {
+  @include font('l-emphasys');
+  @include color('color', 'dark');
+  margin: 0;
+}
+
+.proposal-details__item-attachment {
+   @include font('sm');
+  @include color('color', 'dark');
+  display: grid;
+  margin: spacing('m') 0;
+
+  & span {
+    @include font('xs');
+    @include color('color', 'grey-500');
+  }
+}
+
+.process-details__actions {
+  display: grid;
+  gap: spacing('m');
+  margin-top: spacing('l');
+}
+
+.process-details__button {
+  @include color('background-color', 'grey-100');
+  @include font('base-emphasys');
+  @include color('color',  'brand-primary');
+  border: 0;
+  width: 100%;
+  height: spacing('xxl-4');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  & i {
+    margin-right: spacing('s');
+  }
+}
+
+.process-details__aside {
+  grid-area: aside;
+}
+
+.process-details__project {
+  @include border('1', 'solid', 'grey-300');
+  @include font('l');
+  @include color('color', 'dark');
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 7.31rem;
+  padding: spacing('xl');
+  border-radius: spacing('xs');
+
+  & i {
+    @include color('color', 'brand-primary');
+    width: spacing('l');
+    height: spacing('l');
+    margin-right: spacing('l');
+
+    &[class^='icon-']:before, &[class*=' icon-']:before {
+      font-size: spacing('l');
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .proposal-details__item-inline {
+    flex-direction: column;
+    gap: spacing('xl');
+  }
+}
+
+@media screen and (max-width: 690px) {
+  .process-details__wrapper {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header header"
+      "content content"
+      "aside aside";
+    margin-top: spacing('m');
+  }
+
+  .process-details__aside {
+    margin-top: spacing('xxl-3')
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .process-details__title {
+    @include font('l-emphasys');
+  }
+
+  .process-details__aside {
+    margin-top: spacing('xxl-3')
+  }
+}

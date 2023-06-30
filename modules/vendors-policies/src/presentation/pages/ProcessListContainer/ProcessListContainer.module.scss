@@ -14,10 +14,11 @@
   display: flex;
   flex-direction: column;
   animation: fade-in 300ms linear;
-  margin: spacing('xxl-4') auto spacing('xl') auto;
+  margin: spacing('xxl-4') auto auto auto;
+  padding: 0 spacing('l');
 
   @media screen and (max-width: 768px) {
-    margin: spacing('xxl') spacing('l') spacing('xl') spacing('l');
+    margin: spacing('xxl') auto auto auto;
   }
 }
 

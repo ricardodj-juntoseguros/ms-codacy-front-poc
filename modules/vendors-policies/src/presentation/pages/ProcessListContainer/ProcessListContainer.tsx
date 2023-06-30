@@ -4,6 +4,7 @@ import { ThemeContext } from 'junto-design-system';
 import { VendorsAuthService } from '@services';
 import styles from './ProcessListContainer.module.scss';
 import ProcessList from '../../components/ProcessList';
+import ProcessListFooter from '../../components/ProcessListFooter';
 
 function ProcessListContainer() {
   const theme = useContext(ThemeContext);
@@ -62,6 +63,7 @@ function ProcessListContainer() {
       </h1>
       {renderNewProposalButton()}
       <ProcessList />
+      <ProcessListFooter />
     </section>
   );
 }
