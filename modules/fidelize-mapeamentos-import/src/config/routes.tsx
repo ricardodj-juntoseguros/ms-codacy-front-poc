@@ -8,6 +8,7 @@ const Routes: React.FC = () => (
     <Switch>
       <Route path="/" exact component={MappingsPanelContainer} />
       <Route path="/solicitar" exact component={ImportContainer} />
+      <Route path="/concluidos" exact component={MappingsPanelContainer} />
       <Redirect to="/" />
     </Switch>
   </BrowserRouter>

@@ -14,6 +14,9 @@ export class BackofficeAuthService {
   private readonly ACESS_COOKIE =
     process.env['NX_GLOBAL_BACKOFFICE_ACCESS_COOKIE'] || 'bac';
 
+  private readonly COOKIE_DOMAIN =
+    process.env['NX_GLOBAL_COOKIE_DOMAIN'] || 'juntoseguros.com';
+
   isAuthenticated(): boolean {
     const token = localStorage.getItem(this.TOKEN_KEY);
     if (!token) return false;
@@ -77,7 +80,7 @@ export class BackofficeAuthService {
       if (!token || !user) return;
       localStorage.setItem(this.TOKEN_KEY, token);
       localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-      Cookies.remove(this.ACESS_COOKIE);
+      Cookies.remove(this.ACESS_COOKIE, { domain: this.COOKIE_DOMAIN });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(`Error retrieving backoffice access cookie: ${error}`);

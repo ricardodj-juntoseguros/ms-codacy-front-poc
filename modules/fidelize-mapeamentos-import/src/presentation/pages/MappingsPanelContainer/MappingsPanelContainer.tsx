@@ -22,7 +22,9 @@ import {
 function MappingsPanelContainer({ history }: RouteComponentProps) {
   const [summary, setSummary] = useState<MappingSummaryDTO[]>([]);
   const [activeTab, setActiveTab] = useState<string>(
-    MappingStatusEnum.ON_QUEUE,
+    history.location?.pathname === '/concluidos'
+      ? MappingStatusEnum.DONE
+      : MappingStatusEnum.ON_QUEUE,
   );
   const editionLossModalRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
@@ -101,7 +103,8 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
         <div className={styles['mappings-panel__tabs-wrapper']}>
           <Tabs
             activeTab={activeTab}
-            onSelectTab={tab =>
+            onSelectTab={tab => {
+              history.push('/');
               editorId === 0
                 ? setActiveTab(tab)
                 : renderMappingEditionLossModal(
@@ -111,8 +114,8 @@ function MappingsPanelContainer({ history }: RouteComponentProps) {
                       setActiveTab(tab);
                     },
                     true,
-                  )
-            }
+                  );
+            }}
             withDivider={false}
           >
             {renderMappingsStatus('Na fila', MappingStatusEnum.ON_QUEUE)}
