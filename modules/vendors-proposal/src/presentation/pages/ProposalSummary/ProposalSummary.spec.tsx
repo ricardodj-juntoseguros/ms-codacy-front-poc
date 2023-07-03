@@ -7,7 +7,6 @@ import ProjectSelectionAPI from '../../../application/features/projectSelection/
 import PolicyholderContactAPI from '../../../application/features/policyholderContact/PolicyholderContactAPI';
 import IssuanceAPI from '../../../application/features/Issuance/IssuanceAPI';
 import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
-import { flowActions } from '../../../application/features/flow/FlowSlice';
 import { act, fireEvent, render } from '../../../config/testUtils';
 import ProposalSummary from './ProposalSummary';
 import {
@@ -16,6 +15,8 @@ import {
   storeMock,
 } from '../../../__mocks__';
 import * as contextFile from '../../../config/filesContext';
+import { UpdateProposalStatusDTO } from '../../../application/types/dto';
+import ProposalAPI from '../../../application/features/proposal/ProposalAPI';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router', () => {
@@ -86,6 +87,10 @@ describe('ProposalSummary', () => {
     uploadDocuments: uploadDocumentsMock,
   }));
 
+  let updateProposalToAnalysisMock: jest.SpyInstance<
+    Promise<UpdateProposalStatusDTO>,
+    [proposalId: number]
+  > | null = null;
   let linkProjectMock: jest.SpyInstance<
     Promise<void>,
     [
@@ -135,6 +140,11 @@ describe('ProposalSummary', () => {
     IssuanceAPIMock = jest
       .spyOn(IssuanceAPI, 'submitToApproval')
       .mockImplementation(() => Promise.resolve());
+    updateProposalToAnalysisMock = jest
+      .spyOn(ProposalAPI, 'updateProposalToAnalysis')
+      .mockImplementation(() =>
+        Promise.resolve({ proposalId: 123, status: 2 }),
+      );
   });
 
   afterEach(() => {
@@ -198,6 +208,7 @@ describe('ProposalSummary', () => {
       '33768864000107',
     );
     // expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
+    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(mockHistoryPush).toHaveBeenCalled();
   });
 
@@ -221,6 +232,7 @@ describe('ProposalSummary', () => {
       await fireEvent.click(buttonSubmit);
     });
 
+    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(linkProjectMock).toHaveBeenCalledWith('lorem', '1', 12345, '');
     expect(uploadDocumentsMock).toHaveBeenCalled();
     expect(createContactMock).not.toHaveBeenCalledWith(
@@ -243,6 +255,7 @@ describe('ProposalSummary', () => {
       await fireEvent.click(buttonSubmit);
     });
 
+    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(linkProjectMock).toHaveBeenCalledWith('lorem', '1', 12345, '');
     expect(uploadDocumentsMock).toHaveBeenCalled();
     expect(createContactMock).not.toHaveBeenCalledWith(
@@ -269,6 +282,7 @@ describe('ProposalSummary', () => {
       await fireEvent.click(buttonSubmit);
     });
 
+    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(linkProjectMock).toHaveBeenCalledWith('lorem', '1', 12345, '');
     expect(uploadDocumentsMock).toHaveBeenCalled();
     expect(createContactMock).toHaveBeenCalledWith(
@@ -295,6 +309,7 @@ describe('ProposalSummary', () => {
       await fireEvent.click(buttonSubmit);
     });
 
+    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(linkProjectMock).toHaveBeenCalledWith('lorem', '1', 12345, '');
     expect(uploadDocumentsMock).toHaveBeenCalled();
     expect(createContactMock).toHaveBeenCalledWith(

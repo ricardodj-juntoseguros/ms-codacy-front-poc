@@ -1,7 +1,14 @@
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import classNames from 'classnames';
-import { Button, LinkButton, ThemeContext } from 'junto-design-system';
+import { downloadFile } from '@shared/utils';
+import {
+  Button,
+  LinkButton,
+  ThemeContext,
+  makeToast,
+} from 'junto-design-system';
+import DocumentAPI from '../../../application/features/document/DocumentAPI';
 import { ProposalDTO } from '../../../application/types/dto';
 import { PROCESS_STATUS } from '../../../constants';
 import styles from './ProcessListCard.module.scss';
@@ -14,6 +21,7 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
   const theme = useContext(ThemeContext);
   const history = useHistory();
   const [openInfo, setOpenInfo] = useState<boolean>(false);
+  const [isLoadingPolicy, setIsLoadingPolicy] = useState<boolean>(false);
   const {
     identification: { proposalId, policyid, policyNumber },
     insured,
@@ -30,6 +38,19 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
   const getStatusLabel = () => {
     const pStatus = PROCESS_STATUS.find(pStatus => pStatus.id === status);
     return pStatus ? pStatus.cardTagLabel : '';
+  };
+
+  const handleDownloadPolicyDocument = () => {
+    if (isLoadingPolicy) return;
+    setIsLoadingPolicy(true);
+    DocumentAPI.getPolicyDocument(Number.parseInt(`${policyid}`, 10))
+      .then((response: any) => {
+        downloadFile(response.linkDocumento);
+      })
+      .catch(() => {
+        makeToast('error', 'Ocorreu um erro ao baixar a apólice.');
+      })
+      .finally(() => setIsLoadingPolicy(false));
   };
 
   return (
@@ -130,13 +151,17 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
           </div>
         </div>
       </div>
-      <div>
+      <div
+        className={classNames(styles['process-list-card__buttons'], {
+          [styles['process-list-card__buttons--loading']]: isLoadingPolicy,
+        })}
+      >
         {[4, 5, 6].includes(status) && (
           <LinkButton
             data-testid={`processListCard-button-${proposalId}-download`}
-            label="Baixar apólice"
-            icon="download"
-            onClick={() => alert('Baixar apólice')}
+            label={isLoadingPolicy ? 'Aguarde...' : 'Baixar apólice'}
+            icon={isLoadingPolicy ? 'loading' : 'download'}
+            onClick={() => handleDownloadPolicyDocument()}
           />
         )}
         <Button

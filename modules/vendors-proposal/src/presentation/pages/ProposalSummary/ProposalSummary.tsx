@@ -20,20 +20,20 @@ import { useHistory } from 'react-router';
 import { currencyFormatter, downloadFile } from '@shared/utils';
 import { nanoid } from '@reduxjs/toolkit';
 import { VendorsHeader } from '@shared/ui';
-import { flowActions } from '../../../application/features/flow/FlowSlice';
-import ProjectSelectionAPI from '../../../application/features/projectSelection/ProjectSelectionAPI';
 import { selectProjectSelection } from '../../../application/features/projectSelection/ProjectSelectionSlice';
-import PolicyholderContactAPI from '../../../application/features/policyholderContact/PolicyholderContactAPI';
 import { ERROR_MESSAGES, REDIRECT_URLS } from '../../../constants';
 import IssuanceAPI from '../../../application/features/Issuance/IssuanceAPI';
+import ProjectSelectionAPI from '../../../application/features/projectSelection/ProjectSelectionAPI';
+import PolicyholderContactAPI from '../../../application/features/policyholderContact/PolicyholderContactAPI';
+import ProposalAPI from '../../../application/features/proposal/ProposalAPI';
 import {
   proposalActions,
   selectProposal,
 } from '../../../application/features/proposal/ProposalSlice';
-import styles from './ProposalSummary.module.scss';
-import SummaryField from '../../components/SummaryField/SummaryField';
 import { useFiles } from '../../../config/filesContext';
-import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+import SummaryField from '../../components/SummaryField';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import styles from './ProposalSummary.module.scss';
 
 const ProposalSummary: React.FunctionComponent = () => {
   const [issuanceLoading, setIssuanceLoading] = useState(false);
@@ -101,6 +101,7 @@ const ProposalSummary: React.FunctionComponent = () => {
   const handleSubmit = async () => {
     if (!identification || !identification.proposalId) return;
     setIssuanceLoading(true);
+    await ProposalAPI.updateProposalToAnalysis(identification.proposalId);
     await onlinkProject(identification.policyId, insuredFederalId);
 
     const result = await uploadDocuments();

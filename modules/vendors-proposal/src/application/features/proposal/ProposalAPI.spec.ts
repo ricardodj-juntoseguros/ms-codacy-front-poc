@@ -38,4 +38,18 @@ describe('ProposalAPI', () => {
     });
     expect(result).toEqual({ message: 'ok' });
   });
+
+  it('updateProposalToAnalysis should call bff service correctly', async () => {
+    const mockPut = jest
+      .spyOn(AxiosHttpClient.prototype, 'put')
+      .mockImplementation(async () => {
+        return { proposalId: 123, status: 2 };
+      });
+    const result = await ProposalAPI.updateProposalToAnalysis(123);
+    expect(mockPut).toHaveBeenCalledWith({
+      url: '/api/v1/proposal/123/send-analysis',
+    });
+    expect(result.proposalId).toEqual(123);
+    expect(result.status).toEqual(2);
+  });
 });

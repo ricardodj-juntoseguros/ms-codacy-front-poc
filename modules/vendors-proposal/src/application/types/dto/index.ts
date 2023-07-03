@@ -6,3 +6,4 @@ export * from './ProjectDTO';
 export * from './PolicyholderContactDTO';
 export * from './ModalityDTO';
 export * from './ProposalDTO';
+export * from './UpdateProposalStatusDTO';

@@ -10,6 +10,7 @@ import {
   // updateProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import InsuredAndPolicyholderSelectionApi from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionApi';
+import { selectInsuredAndPolicyholderSelection } from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionSlice';
 import { ERROR_MESSAGES } from '../../../constants';
 import { useValidate } from '../useValidate';
 import { ValidationErrorModel } from '../../../application/types/model';
@@ -18,10 +19,14 @@ export function useCreateProposal() {
   const validate = useValidate();
   const dispatch = useDispatch();
   const proposal = useSelector(selectProposal);
+  const { policyholderInputValue } = useSelector(
+    selectInsuredAndPolicyholderSelection,
+  );
 
   const checkPolicyholder = useCallback(async () => {
     return InsuredAndPolicyholderSelectionApi.getPolicyholders(
-      proposal.policyholder.federalId,
+      proposal.policyholder.federalId ||
+        policyholderInputValue.replace(/[^\d]+/g, ''),
     )
       .then(async result => {
         if (result[0].corporateName !== null) {
@@ -50,13 +55,16 @@ export function useCreateProposal() {
           errors: { policyholderInputValue: [errorMessage] },
         };
       });
-  }, [dispatch, proposal.policyholder]);
+  }, [dispatch, proposal.policyholder, policyholderInputValue]);
 
   const postProposal = useCallback(async (): Promise<{
     success: boolean;
     errors: ValidationErrorModel;
   }> => {
-    const proposalPayload = proposalAdapter(proposal);
+    const proposalPayload = proposalAdapter(
+      proposal,
+      policyholderInputValue.replace(/[^\d]+/g, ''),
+    );
 
     const isValidForm = await validate(ProposalSchema, proposalPayload);
     if (!isValidForm) return { success: false, errors: {} };
@@ -76,7 +84,7 @@ export function useCreateProposal() {
     }
 
     return { success: true, errors: {} };
-  }, [checkPolicyholder, dispatch, proposal, validate]);
+  }, [checkPolicyholder, dispatch, proposal, validate, policyholderInputValue]);
 
   return postProposal;
 }

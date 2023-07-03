@@ -10,7 +10,10 @@ import {
 import { ModalityDTO, ProposalDTO } from '../../../types/dto';
 import { ProposalModel } from '../../../types/model';
 
-export const proposalAdapter = (proposal: ProposalModel): ProposalDTO => {
+export const proposalAdapter = (
+  proposal: ProposalModel,
+  policyholderInputValue: string,
+): ProposalDTO => {
   const securedAmount = Number(
     ((proposal.contractValue / 100) * proposal.warrantyPercentage).toFixed(2),
   );
@@ -22,7 +25,7 @@ export const proposalAdapter = (proposal: ProposalModel): ProposalDTO => {
   return {
     policyholderFederalId: proposal.policyholder.federalId
       ? proposal.policyholder.federalId
-      : '',
+      : policyholderInputValue,
     ...(proposal.policyholder.affiliateFederalId &&
       proposal.policyholder.affiliateFederalId !==
         NO_AFFILIATE_OPTION.federalId && {

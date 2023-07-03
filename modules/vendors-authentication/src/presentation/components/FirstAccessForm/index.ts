@@ -1,1 +1,1 @@
-export * from './FirstAccessForm';
+export { default } from './FirstAccessForm';

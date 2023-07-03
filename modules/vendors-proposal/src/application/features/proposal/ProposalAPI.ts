@@ -3,7 +3,7 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import VendorsProposalBaseApi from '../VendorsProposalBaseApi';
-import { ProposalDTO } from '../../types/dto';
+import { ProposalDTO, UpdateProposalStatusDTO } from '../../types/dto';
 import { ProposalResultDTO } from '../../types/dto/ProposalResultDTO';
 
 class ProposalAPI {
@@ -29,6 +29,13 @@ class ProposalAPI {
     };
 
     return this.instance.put<ProposalResultDTO>(params);
+  }
+
+  async updateProposalToAnalysis(proposalId: number) {
+    const params: IHttpClientRequestParameters = {
+      url: `/api/v1/proposal/${proposalId}/send-analysis`,
+    };
+    return this.instance.put<UpdateProposalStatusDTO>(params);
   }
 }
 

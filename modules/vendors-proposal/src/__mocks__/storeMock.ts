@@ -99,4 +99,7 @@ export const storeMock = {
     ],
     modalityOptionsLoading: false,
   },
+  insuredAndPolicyholderSelection: {
+    policyholderInputValue: '33646384000173',
+  },
 };
