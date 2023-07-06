@@ -1,5 +1,6 @@
 import { memo, useContext, useMemo } from 'react';
-import { Modal, ThemeContext } from 'junto-design-system';
+import { LinkButton, Modal, ThemeContext } from 'junto-design-system';
+import { ChatUtils } from '@shared/utils';
 import className from 'classnames';
 import { nanoid } from '@reduxjs/toolkit';
 import { ModalityModel } from '../../../application/types/model';
@@ -98,6 +99,20 @@ const ModalitiesInformationModal: React.FunctionComponent<ModalitiesInformationM
           <ul className={styles['modality-information-modal__list']}>
             {renderInformationList()}
           </ul>
+          <p
+            className={className(
+              styles[theme],
+              styles['modality-information-modal__item-text'],
+              styles['modality-information-modal__help-text'],
+            )}
+          >
+            Ainda não tem certeza?
+          </p>
+          <LinkButton
+            label="Clique aqui e converse com um especialista pelo chat."
+            size="large"
+            onClick={() => ChatUtils.zenDesk.open()}
+          />
         </div>
       </Modal>
     );

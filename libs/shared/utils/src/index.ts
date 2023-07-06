@@ -11,3 +11,4 @@ export * from './federalIdValidator';
 export * from './parseStringToDate';
 export * from './currencyFormatter';
 export * from './downloadFile';
+export * from './chatUtils';

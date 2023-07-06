@@ -1,7 +1,7 @@
 import { useContext, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Alert, Button, ThemeContext } from 'junto-design-system';
-import { federalIdFormatter } from '@shared/utils';
+import { ChatUtils, federalIdFormatter } from '@shared/utils';
 import { GenericComponentProps } from '../../../application/types/model';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import { selectInsuredAndPolicyholderSelection } from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionSlice';
@@ -100,7 +100,7 @@ const InsuredAndPolicyholderSelection: React.FC<GenericComponentProps> = ({
                 text="Ops, parece que esse CNPJ é de uma filial. Precisamos do CNPJ da Matriz para continuar. Caso precise de ajuda, %ACTION_BUTTON%"
                 variant="neutral"
                 actionButtonText="acesse nosso chat"
-                onActionButtonClick={() => alert('Abre o chat')}
+                onActionButtonClick={() => ChatUtils.zenDesk.open()}
                 arrow="top-start"
                 width={504}
               />

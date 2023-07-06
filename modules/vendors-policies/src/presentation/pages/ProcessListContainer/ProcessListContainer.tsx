@@ -1,7 +1,8 @@
-import { useContext } from 'react';
+import { useContext} from 'react';
 import classnames from 'classnames';
 import { ThemeContext } from 'junto-design-system';
 import { VendorsAuthService } from '@services';
+
 import styles from './ProcessListContainer.module.scss';
 import ProcessList from '../../components/ProcessList';
 import ProcessListFooter from '../../components/ProcessListFooter';

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { VendorsAuthService } from '@services';
+import { ChatUtils } from '@shared/utils';
 import { Link } from 'react-router-dom';
 import { nanoid } from 'nanoid/non-secure';
 import className from 'classnames';
@@ -132,9 +133,7 @@ const VendorsUserMenu: React.FC<VendorsUserMenuProps> = ({
               data-testid="userMenu-button-logout"
               type="button"
               className={className(styles['nav__link'], styles[theme])}
-              onClick={() => {
-                VendorsAuthService.logout();
-              }}
+              onClick={() => VendorsAuthService.logout()}
             >
               Sair da plataforma
             </button>

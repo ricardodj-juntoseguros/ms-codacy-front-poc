@@ -1,5 +1,6 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import Cookies from 'js-cookie';
+import { ChatUtils } from '@shared/utils';
 import VendorsAuthService from './VendorsAuthService';
 
 const mockToken =
@@ -89,7 +90,7 @@ describe('Vendors Auth Service', () => {
       mockToken,
       'refresh-token',
     );
-    expect(cookiesMock).toHaveBeenCalledTimes(1);
+    expect(cookiesMock).toHaveBeenCalledTimes(2);
     expect(storageMock).toHaveBeenCalledTimes(1);
   });
 
@@ -139,5 +140,18 @@ describe('Vendors Auth Service', () => {
     jest.spyOn(Cookies, 'get').mockReturnValue(mockBrokerCookie as any);
     const url = VendorsAuthService.getRedirectPageAfterLogin();
     expect(url).toMatch(/\policies/i);
+  });
+
+  it('initInsuredChat should only open chat if logged user type is insured', () => {
+    jest
+      .spyOn(VendorsAuthService, 'getUserType')
+      .mockImplementationOnce(() => 'insured')
+      .mockImplementationOnce(() => 'policyholder');
+    jest.spyOn(ChatUtils.zenDesk, 'init');
+
+    VendorsAuthService.initInsuredChat();
+    expect(ChatUtils.zenDesk.init).toHaveBeenCalledTimes(1);
+    VendorsAuthService.initInsuredChat();
+    expect(ChatUtils.zenDesk.init).toHaveBeenCalledTimes(1);
   });
 });

@@ -15,7 +15,7 @@
   }
 
   &::-webkit-scrollbar-track {
-      width: 12px;
+    width: 12px;
   }
 
   @include color('background-color', 'grey-400', '::-webkit-scrollbar-thumb');
@@ -67,4 +67,8 @@
   .modality-information-modal__wrapper {
     max-height: 100%;
   }
+}
+
+.modality-information-modal__help-text {
+  margin-top: spacing('xl');
 }

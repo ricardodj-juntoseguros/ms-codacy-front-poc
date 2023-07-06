@@ -3,6 +3,7 @@
 import Cookies from 'js-cookie';
 import { addMilliseconds, isBefore } from 'date-fns';
 import { AxiosHttpClient } from '@infrastructure/http-client';
+import { ChatUtils } from '@shared/utils';
 import jwtDecode from 'jwt-decode';
 import UserToken from './types/UserToken';
 
@@ -18,6 +19,9 @@ export class VendorsAuthService {
 
   private readonly PLATAFORMA_VENDORS_URL =
     process.env['NX_GLOBAL_VENDORS_PLATFORM_URL'] || '';
+
+  private readonly USER_CHAT =
+    process.env['NX_GLOBAL_BROKER_USER_CHAT_COOKIE'] || 'user-chat';
 
   private readonly USER_TYPES = {
     policyholder: 'policyholder',
@@ -75,11 +79,23 @@ export class VendorsAuthService {
         domain: this.COOKIE_DOMAIN,
       },
     );
+    Cookies.set(
+      this.USER_CHAT,
+      JSON.stringify({
+        name: tokenData.name,
+        email: tokenData.email || tokenData.preferred_username,
+      }),
+      {
+        domain: this.COOKIE_DOMAIN,
+      },
+    );
   }
 
   clearAuthData() {
+    ChatUtils.zenDesk.close();
     localStorage.clear();
     Cookies.remove(this.USER_ACCESS_COOKIE, { domain: this.COOKIE_DOMAIN });
+    Cookies.remove(this.USER_CHAT, { domain: this.COOKIE_DOMAIN });
     window.location.assign(this.PLATAFORMA_VENDORS_URL);
   }
 
@@ -181,6 +197,13 @@ export class VendorsAuthService {
   isUserMaster(access_token: string) {
     const tokenData = jwtDecode<any>(access_token);
     return tokenData.realm_access.roles.includes(this.USER_TYPES.master);
+  }
+
+  initInsuredChat() {
+    const userType = this.getUserType();
+    if (userType === 'insured') {
+      ChatUtils.zenDesk.init();
+    }
   }
 }
 
