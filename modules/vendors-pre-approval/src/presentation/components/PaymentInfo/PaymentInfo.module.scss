@@ -1,0 +1,50 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.payment-info__wrapper {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.payment-info__graybox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: spacing('l');
+  @include color('background-color', 'grey-100');
+  border-radius: 5px;
+  padding: spacing('l');
+  margin-bottom: spacing('l');
+
+  & svg {
+    width: 25px;
+    height: 16px;
+  }
+
+  & span {
+    @include font('xs');
+    @include color('color', 'grey-500');
+
+    & strong {
+      @include color('color', 'dark');
+      font-weight: 400;
+    }
+  }
+
+  @media only screen and (max-width: 1024px) {
+    justify-content: center;
+  }
+}
+
+.payment-info__details {
+  display: grid;
+  grid-template-columns: 120px 105px;
+  justify-content: space-between;
+}
+
+.payment-info__total {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  @include font('l-emphasys');
+  font-weight: 700;
+}

@@ -1,0 +1,26 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.success-container__wrapper {
+  width: 50vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Noto Sans';
+  text-align: center;
+  margin: 0 auto;
+
+  & h1 {
+    @include font('xl-emphasys');
+    margin-top: spacing('xxl');
+    width: 80%;
+  }
+
+  & p {
+    @include font('base');
+    @include color('color', 'grey-500');
+    margin-bottom: spacing('xxl') spacing(0);
+    width: 80%;
+  }
+}

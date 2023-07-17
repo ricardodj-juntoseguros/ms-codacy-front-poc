@@ -3,6 +3,8 @@ import { VendorsAuthService } from '@services';
 import VendorsProposal from '@modules/vendors-proposal';
 import VendorsAuthentication from '@modules/vendors-authentication';
 import VendorsPolicies from '@modules/vendors-policies';
+import VendorsPreApproval from '@modules/vendors-pre-approval';
+
 import Example from '../presentation/pages/Example';
 import ProtectedRoute from '../presentation/components/ProtectedRoute/ProtectedRoute';
 
@@ -35,6 +37,11 @@ export default function Routes() {
           path="/policies"
           component={VendorsPolicies}
           allowedRoles={['insured', 'broker', 'policyholder']}
+        />
+        <ProtectedRoute
+          path="/pre-approval"
+          component={VendorsPreApproval}
+          allowedRoles={['policyholder']}
         />
       </Switch>
     </BrowserRouter>

@@ -118,14 +118,14 @@ const ProposalSummary: React.FunctionComponent = () => {
         policyholder.federalId,
       )
         .then(() => {
-          history.push('success');
+          onSubmitToApproval(identification.policyId);
         })
         .catch(() => {
           makeToast('error', ERROR_MESSAGES.createContact);
           setIssuanceLoading(false);
         });
     } else {
-      history.push('success');
+      onSubmitToApproval(identification.policyId);
     }
   };
 

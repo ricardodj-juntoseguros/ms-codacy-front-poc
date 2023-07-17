@@ -11,6 +11,7 @@ module.exports = {
     '<rootDir>/modules/vendors-proposal',
     '<rootDir>/modules/vendors-authentication',
     '<rootDir>/modules/vendors-policies',
+    '<rootDir>/modules/vendors-pre-approval',
     '<rootDir>/libs/infrastructure/http-client',
     '<rootDir>/libs/shared/hooks',
     '<rootDir>/libs/shared/ui',

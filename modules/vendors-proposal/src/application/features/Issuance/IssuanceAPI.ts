@@ -13,8 +13,8 @@ class IssuanceAPI {
 
   async submitToApproval(policyId: number): Promise<void> {
     const params: IHttpClientRequestParameters = {
-      url: '/api/v1/issue',
-      payload: { documentNumber: policyId },
+      url: '/api/v1/issue/SubmitToApproval',
+      payload: { id: policyId },
     };
 
     return this.instance.post(params);

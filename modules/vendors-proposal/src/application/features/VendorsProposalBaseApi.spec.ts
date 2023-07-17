@@ -3,7 +3,7 @@ import { VendorsAuthService } from '@services';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import VendorsProposalBaseApi from './VendorsProposalBaseApi';
 
-describe('FidelizeImportMapeamentosBaseApi', () => {
+describe('VendorsPreApprovalBaseApi', () => {
   beforeAll(() => {
     process.env.NX_GLOBAL_VENDORS_BFF_URL = 'vendors_bff';
     Object.defineProperty(window, 'location', {

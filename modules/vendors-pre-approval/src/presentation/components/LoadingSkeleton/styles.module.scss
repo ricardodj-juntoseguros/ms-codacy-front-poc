@@ -1,0 +1,30 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.loading-skeleton__wrapper {
+  box-sizing: border-box;
+  width: 80vw;
+  display: grid;
+  grid-template-columns: 456px 327px;
+  align-items: baseline;
+  gap: 2rem;
+  justify-content: space-between;
+  padding: spacing('xxl-3') spacing('xxl-8');
+}
+
+.loading-skeleton__section {
+  width: 100%;
+}
+
+.loading-skeleton__grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.loading-skeleton-item {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('xs');
+  margin-bottom: spacing('l');
+}

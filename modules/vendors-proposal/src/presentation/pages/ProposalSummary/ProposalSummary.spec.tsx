@@ -207,7 +207,7 @@ describe('ProposalSummary', () => {
       'john@doe.com',
       '33768864000107',
     );
-    // expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
+    expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
     expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(mockHistoryPush).toHaveBeenCalled();
   });
@@ -240,7 +240,7 @@ describe('ProposalSummary', () => {
       'john@doe.com',
       '33768864000107',
     );
-    // expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
+    expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
     expect(mockHistoryPush).toHaveBeenCalled();
   });
 
@@ -317,7 +317,7 @@ describe('ProposalSummary', () => {
       'john@doe.com',
       '33768864000107',
     );
-    // expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
-    // expect(mockHistoryPush).not.toHaveBeenCalled();
+    expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
+    expect(mockHistoryPush).not.toHaveBeenCalled();
   });
 });

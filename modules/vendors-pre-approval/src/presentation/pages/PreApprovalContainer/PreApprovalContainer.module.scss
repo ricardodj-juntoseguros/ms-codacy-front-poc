@@ -1,0 +1,92 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.pre-approval__wrapper {
+  box-sizing: border-box;
+  width: 80vw;
+  display: grid;
+  grid-template-columns: 456px 327px;
+  grid-template-rows: 180px 1fr;
+  grid-template-areas:
+    'header header'
+    'section-1 section-2 ';
+  align-items: baseline;
+  justify-content: space-between;
+  padding: spacing('xxl-3') spacing('xxl-8');
+  font-family: 'Noto Sans';
+  margin: 0 auto;
+
+  @media only screen and (max-width: 1024px) {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    padding: spacing('xxl-3') spacing('xxl-2');
+  }
+}
+
+.pre-approval__title {
+  text-align: center;
+  margin-bottom: spacing('xxl-5');
+  grid-area: header;
+
+  & h1 {
+    @include font('xl-emphasys');
+  }
+
+  & span {
+    @include font('xs-emphasys');
+    @include color('background-color', 'brand-secondary');
+    @include color('color', 'brand-primary');
+    padding: 0 spacing('xs');
+  }
+
+  @media only screen and (max-width: 1024px) {
+    margin-bottom: spacing('xxl-2');
+  }
+}
+
+.pre-approval__section1,
+.pre-approval__section2 {
+  width: 100%;
+
+  & h2 {
+    @include font('l-emphasys');
+  }
+}
+
+.pre-approval__section1 {
+  grid-area: section-1;
+}
+
+.pre-approval__section2 {
+  grid-area: section-2;
+}
+
+.pre-approval__btn-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing('xl');
+  margin-top: spacing('xl');
+}
+
+.pre-approval__refuse-btn {
+  margin: spacing('xxl') 0;
+}
+
+.pre-approval__refuse-link-btn {
+  @include color('background-color', 'white');
+  width: 100%;
+  margin-top: spacing('xxl');
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pre-approval-container__legal {
+  @include font('xs');
+  @include color('color', 'grey-500');
+  margin: spacing('xxl-7') 0;
+}

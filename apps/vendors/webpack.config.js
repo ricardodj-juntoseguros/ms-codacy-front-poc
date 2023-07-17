@@ -34,6 +34,14 @@ module.exports = (config, context) => {
           'vendors-policies',
           'src',
         ),
+        '@modules/vendors-pre-approval': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'modules',
+          'vendors-pre-approval',
+          'src',
+        ),
         '@shared/utils': path.resolve(
           __dirname,
           '..',

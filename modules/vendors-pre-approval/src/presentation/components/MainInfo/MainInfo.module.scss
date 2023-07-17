@@ -1,0 +1,11 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.main-info__wrapper {
+  width: 100%;
+}
+
+.main-info__skeleton {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: spacing('xl');
+}

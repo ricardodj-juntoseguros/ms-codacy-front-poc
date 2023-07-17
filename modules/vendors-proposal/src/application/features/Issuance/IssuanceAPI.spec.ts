@@ -19,8 +19,8 @@ describe('IssuanceAPI', () => {
     const policyIdMock = 12345;
     const result = await IssuanceAPI.submitToApproval(policyIdMock);
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/api/v1/issue',
-      payload: { documentNumber: policyIdMock },
+      url: '/api/v1/issue/SubmitToApproval',
+      payload: { id: policyIdMock },
     });
     expect(result).toEqual({ message: 'ok' });
   });
