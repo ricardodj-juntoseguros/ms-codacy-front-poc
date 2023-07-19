@@ -18,7 +18,7 @@ function ForgotPasswordContainer() {
         token={tokenValue}
         title="Crie uma nova senha."
         isFiristAccess={false}
-        labelButton="Salvar Senha"
+        labelButton="Salvar senha"
       />
     </div>
   );

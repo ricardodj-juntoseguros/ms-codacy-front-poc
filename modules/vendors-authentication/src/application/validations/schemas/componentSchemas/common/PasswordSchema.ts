@@ -28,7 +28,7 @@ export const PasswordSchema = object().shape({
     )
     .test('specialChar', 'specialChar', function validateSpecialChar(value) {
       const regex =
-        /^(?=.*[@.!#$%^&*()ç/\\])[@.!#$%^&*()ç/\\a-zA-Z0-9]{3,100}$/;
+        /^(?=.*[@.!#$%^&*()-_ç/\\])[@.!#$%^&*()-_ç/\\a-zA-Z0-9]{3,100}$/;
       if (!value?.match(regex)) {
         return false;
       }

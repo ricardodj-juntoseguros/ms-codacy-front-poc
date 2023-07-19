@@ -201,7 +201,7 @@ const FirstAccessForm: React.FC<FirstAccessProps> = ({
 
   return (
     <div className={styles['first_access_wrapper']}>
-      <h1 className={styles['first_access_title']}>{title}</h1>
+      <h1 className={styles[(isFiristAccess ? 'first_access_title' : 'forgot_password_title') ]}>{title}</h1>
       <div className={styles['first_access_form']}>
         <InputBase
           data-testid="first_access-input-password"

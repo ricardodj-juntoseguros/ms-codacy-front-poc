@@ -15,6 +15,25 @@
   padding-bottom: 40px;
   font-family: "Noto Sans";
   text-align: center;
+  margin: 0;
+
+  @media screen and (max-width: 680px) {
+    @include font('l-emphasys');
+    font-family: 'Noto Sans';
+  }
+}
+
+.forgot_password_title{
+  @include font('xl-emphasys');
+  padding-bottom: 32px;
+  font-family: "Noto Sans";
+  text-align: center;
+  margin: 0;
+
+  @media screen and (max-width: 680px) {
+    @include font('l-emphasys');
+    font-family: 'Noto Sans';
+  }
 }
 
 .first_access_form{

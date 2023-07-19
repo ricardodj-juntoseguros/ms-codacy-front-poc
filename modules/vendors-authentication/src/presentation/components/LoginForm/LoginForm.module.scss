@@ -4,11 +4,21 @@
   margin: auto;
   width: 380px;
   padding-top: spacing('xxl');
+
+  @media screen and (max-width: 680px) {
+    width: 312px;
+  }
 }
 .login_title{
   @include font('xl-emphasys');
   font-family: 'Noto Sans';
   padding-bottom: spacing('xxl');
+  margin: 0;
+
+  @media screen and (max-width: 680px) {
+    @include font('l-emphasys');
+    font-family: 'Noto Sans';
+  }
 }
 
 .login__form{
