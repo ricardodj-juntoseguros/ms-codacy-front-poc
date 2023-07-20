@@ -81,4 +81,6 @@ class VendorsProposalBaseApi {
   }
 }
 
+export const getInstance = () => new VendorsProposalBaseApi().getInstance();
+
 export default VendorsProposalBaseApi;

@@ -81,4 +81,6 @@ class VendorsPoliciesBaseApi {
   }
 }
 
+export const getInstance = () => new VendorsPoliciesBaseApi().getInstance();
+
 export default VendorsPoliciesBaseApi;

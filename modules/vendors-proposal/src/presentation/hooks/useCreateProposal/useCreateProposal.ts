@@ -45,14 +45,12 @@ export function useCreateProposal() {
           },
         };
       })
-      .catch(error => {
-        const errorMessage =
-          error && error.data && error.data.data && error.data.data[0].message
-            ? error.data.data[0].message
-            : ERROR_MESSAGES.policyholderRegister;
+      .catch(() => {
         return {
           success: false,
-          errors: { policyholderInputValue: [errorMessage] },
+          errors: {
+            policyholderInputValue: [ERROR_MESSAGES.policyholderRegister],
+          },
         };
       });
   }, [dispatch, proposal.policyholder, policyholderInputValue]);

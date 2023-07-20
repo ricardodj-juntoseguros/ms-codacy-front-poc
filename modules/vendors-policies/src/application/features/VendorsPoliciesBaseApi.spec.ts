@@ -1,7 +1,7 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import { VendorsAuthService } from '@services';
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import VendorsPoliciesBaseApi from './VendorsPoliciesBaseApi';
+import VendorsPoliciesBaseApi, { getInstance } from './VendorsPoliciesBaseApi';
 
 describe('VendorsPoliciesBaseApi', () => {
   beforeAll(() => {
@@ -17,7 +17,7 @@ describe('VendorsPoliciesBaseApi', () => {
   });
 
   it('getInstance should return an configured instance of AxiosHttpClient', async () => {
-    const instance = new VendorsPoliciesBaseApi().getInstance();
+    const instance = getInstance();
     jest.spyOn(instance, 'get').mockImplementation(async () => {
       return { success: true };
     });

@@ -1,0 +1,39 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.process-details-header__title {
+  @include font('xl-emphasys');
+  @include color('color', 'dark');
+  margin: 0;
+}
+
+.process-details-header__text {
+  @include font('sm');
+  @include color('color', 'grey-500');
+  margin: spacing('s') 0 spacing('l') 0;
+}
+
+.process-details-header__status {
+  @include font('sm-emphasys');
+  margin: spacing('xxl') 0;
+  display: flex;
+  gap: spacing('s');
+
+  &--issued {
+    @include color('color', 'success');
+  }
+
+  &--to-expire,
+  &--awaiting-approval,
+  &--under-analysis {
+    @include color('color', 'warning');
+  }
+
+  &--expired {
+    @include color('color', 'grey-600');
+  }
+
+  &--canceled,
+  &--refused {
+    @include color('color', 'error');
+  }
+}

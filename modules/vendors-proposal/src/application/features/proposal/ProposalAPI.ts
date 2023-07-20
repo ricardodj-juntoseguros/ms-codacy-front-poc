@@ -1,25 +1,16 @@
-import {
-  AxiosHttpClient,
-  IHttpClientRequestParameters,
-} from '@infrastructure/http-client';
-import VendorsProposalBaseApi from '../VendorsProposalBaseApi';
+import { IHttpClientRequestParameters } from '@infrastructure/http-client';
 import { ProposalDTO, UpdateProposalStatusDTO } from '../../types/dto';
 import { ProposalResultDTO } from '../../types/dto/ProposalResultDTO';
+import { getInstance } from '../VendorsProposalBaseApi';
 
 class ProposalAPI {
-  private instance: AxiosHttpClient;
-
-  public constructor() {
-    this.instance = new VendorsProposalBaseApi().getInstance();
-  }
-
   async createProposal(payload: ProposalDTO) {
     const params: IHttpClientRequestParameters = {
       url: '/api/v1/proposal',
       payload,
     };
 
-    return this.instance.post<ProposalResultDTO>(params);
+    return getInstance().post<ProposalResultDTO>(params);
   }
 
   async updateProposal(proposalId: number, payload: ProposalDTO) {
@@ -28,14 +19,14 @@ class ProposalAPI {
       payload,
     };
 
-    return this.instance.put<ProposalResultDTO>(params);
+    return getInstance().put<ProposalResultDTO>(params);
   }
 
   async updateProposalToAnalysis(proposalId: number) {
     const params: IHttpClientRequestParameters = {
       url: `/api/v1/proposal/${proposalId}/send-analysis`,
     };
-    return this.instance.put<UpdateProposalStatusDTO>(params);
+    return getInstance().put<UpdateProposalStatusDTO>(params);
   }
 }
 

@@ -134,6 +134,13 @@ const PolicyholderSelector: React.FC = () => {
       insuredAndPolicyholderSelectionActions.setPolicyholderInputValue(label),
     );
     dispatch(getPolicyholderAffiliates(value));
+    dispatch(
+      proposalActions.setPolicyholderContact({
+        id: '',
+        name: '',
+        email: '',
+      }),
+    );
   };
 
   const getErrorMessage = () => {

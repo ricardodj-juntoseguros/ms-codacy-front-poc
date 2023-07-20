@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Button, InputBase, makeToast } from 'junto-design-system';
+import { Button, InputBase } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
 import { emailValidator } from '@shared/utils';
 import { PolicyholderContactSchema } from '../../../application/validations/schemas';
@@ -16,18 +16,20 @@ import {
 import { useValidate } from '../../hooks';
 
 import styles from './PolicyholderContact.module.scss';
+import PolicyholderContactSkeleton from '../Skeletons/PolicyholderContactSkeleton/PolicyholderContactSkeleton';
 
 const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
   handleNextStep,
   updateTitle,
 }) => {
   const { policyholderContact, policyholder } = useSelector(selectProposal);
-  const [disabledFields, setDisabledFields] = useState(
-    !!policyholderContact.id,
-  );
   const { errors } = useSelector(selectValidation);
   const dispatch = useDispatch();
   const validate = useValidate();
+  const [disabledFields, setDisabledFields] = useState(
+    !!policyholderContact.id,
+  );
+  const [loading, setLoading] = useState(false);
 
   const disabledButton = useMemo(
     () =>
@@ -45,6 +47,7 @@ const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
       )
         return;
 
+      setLoading(true);
       PolicyholderContactAPI.getContacts(policyholder.federalId)
         .then(response => {
           if (response.length >= 1) {
@@ -59,7 +62,8 @@ const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
         })
         .catch(() => {
           setDisabledFields(false);
-        });
+        })
+        .finally(() => setLoading(false));
     };
 
     fetchContacts();
@@ -106,33 +110,39 @@ const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
       className={styles['policyholder-contact__wrapper']}
       onSubmit={e => handleSubmit(e)}
     >
-      <InputBase
-        data-testid="policyholderContact-input-contact-name"
-        label="Nome de um contato na empresa"
-        placeholder=" "
-        onChange={e => handleContactName(e.target.value)}
-        value={policyholderContact.name}
-        readOnly={disabledFields}
-        errorMessage={errors.name ? errors.name[0] : ''}
-      />
-      <InputBase
-        data-testid="policyholderContact-input-contact-email"
-        label="E-mail de contato na empresa"
-        placeholder=" "
-        onChange={e => handleContactEmail(e.target.value)}
-        onBlur={() => validateFields('email')}
-        value={policyholderContact.email}
-        readOnly={disabledFields}
-        errorMessage={errors.email ? errors.email[0] : ''}
-      />
-      <Button
-        data-testid="policyholderContact-button-next"
-        type="submit"
-        fullWidth
-        disabled={disabledButton}
-      >
-        Avançar
-      </Button>
+      {loading ? (
+        <PolicyholderContactSkeleton />
+      ) : (
+        <>
+          <InputBase
+            data-testid="policyholderContact-input-contact-name"
+            label="Nome de um contato na empresa"
+            placeholder=" "
+            onChange={e => handleContactName(e.target.value)}
+            value={policyholderContact.name}
+            readOnly={disabledFields}
+            errorMessage={errors.name ? errors.name[0] : ''}
+          />
+          <InputBase
+            data-testid="policyholderContact-input-contact-email"
+            label="E-mail de contato na empresa"
+            placeholder=" "
+            onChange={e => handleContactEmail(e.target.value)}
+            onBlur={() => validateFields('email')}
+            value={policyholderContact.email}
+            readOnly={disabledFields}
+            errorMessage={errors.email ? errors.email[0] : ''}
+          />
+          <Button
+            data-testid="policyholderContact-button-next"
+            type="submit"
+            fullWidth
+            disabled={disabledButton}
+          >
+            Avançar
+          </Button>
+        </>
+      )}
     </form>
   );
 };

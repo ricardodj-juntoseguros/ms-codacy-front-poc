@@ -1,0 +1,14 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.policyholder-contact-skeleton__wrapper {
+  display: flex;
+  flex-direction: column;
+
+  & > div {
+    margin-bottom: spacing('xl');
+  }
+
+  & > div:first-child {
+    margin-bottom: spacing('m') + spacing('xs');
+  }
+}

@@ -1,23 +1,14 @@
-import {
-  AxiosHttpClient,
-  IHttpClientRequestParameters,
-} from '@infrastructure/http-client';
-import VendorsProposalBaseApi from '../VendorsProposalBaseApi';
+import { IHttpClientRequestParameters } from '@infrastructure/http-client';
 import { ProjectDTO } from '../../types/dto';
+import { getInstance } from '../VendorsProposalBaseApi';
 
 class ProjectSelectionAPI {
-  private instance: AxiosHttpClient;
-
-  public constructor() {
-    this.instance = new VendorsProposalBaseApi().getInstance();
-  }
-
   async getProjects(): Promise<ProjectDTO[]> {
     const params: IHttpClientRequestParameters = {
       url: `/api/v1/project`,
     };
 
-    return await this.instance.get<ProjectDTO[]>(params);
+    return await getInstance().get<ProjectDTO[]>(params);
   }
 
   async linkProject(
@@ -36,7 +27,7 @@ class ProjectSelectionAPI {
       },
     };
 
-    return await this.instance.post(params);
+    return await getInstance().post(params);
   }
 }
 

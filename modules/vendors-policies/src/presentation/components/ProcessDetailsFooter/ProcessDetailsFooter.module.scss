@@ -1,0 +1,25 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+
+.process-details-footer__actions {
+  display: grid;
+  gap: spacing('m');
+  margin-top: spacing('l');
+}
+
+.process-details-footer__button {
+  @include color('background-color', 'grey-100');
+  @include font('base-emphasys');
+  @include color('color',  'brand-primary');
+  border: 0;
+  width: 100%;
+  height: spacing('xxl-4');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  & i {
+    margin-right: spacing('s');
+  }
+}

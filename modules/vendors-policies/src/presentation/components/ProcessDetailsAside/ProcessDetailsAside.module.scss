@@ -1,0 +1,53 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.process-details-aside__wrapper {
+  grid-area: aside;
+
+  @media screen and (max-width: 768px) {
+    margin-top: spacing('xxl-3');
+    max-width: 28.5rem;
+  }
+}
+
+.process-details-aside__title {
+  @include font('xl-emphasys');
+  @include color('color', 'dark');
+  margin: 0;
+}
+
+.process-details-aside__text {
+  @include font('sm');
+  @include color('color', 'grey-500');
+  margin: spacing('s') 0 spacing('l') 0;
+}
+
+.process-details-aside__project {
+  @include border('1', 'solid', 'grey-300');
+  @include font('l');
+  @include color('color', 'dark');
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 7.31rem;
+  padding: spacing('xl');
+  border-radius: spacing('xs');
+
+  & i {
+    @include color('color', 'brand-primary');
+    width: spacing('l');
+    height: spacing('l');
+    margin-right: spacing('l');
+
+    &[class^='icon-']:before, &[class*=' icon-']:before {
+      font-size: spacing('l');
+    }
+  }
+
+  & p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

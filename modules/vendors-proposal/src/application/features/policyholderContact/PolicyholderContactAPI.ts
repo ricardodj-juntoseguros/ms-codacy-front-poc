@@ -1,24 +1,15 @@
-import {
-  AxiosHttpClient,
-  IHttpClientRequestParameters,
-} from '@infrastructure/http-client';
-import VendorsProposalBaseApi from '../VendorsProposalBaseApi';
+import { IHttpClientRequestParameters } from '@infrastructure/http-client';
 import { PolicyholderContactDTO } from '../../types/dto';
+import { getInstance } from '../VendorsProposalBaseApi';
 
 class PolicyholderContactAPI {
-  private instance: AxiosHttpClient;
-
-  public constructor() {
-    this.instance = new VendorsProposalBaseApi().getInstance();
-  }
-
   async getContacts(federalId: string): Promise<PolicyholderContactDTO[]> {
     const params: IHttpClientRequestParameters = {
       url: `/api/v1/policyholder/contacts`,
       params: { federalId },
     };
 
-    return await this.instance.get<PolicyholderContactDTO[]>(params);
+    return await getInstance().get<PolicyholderContactDTO[]>(params);
   }
 
   async createContact(name: string, email: string, federalId: string) {
@@ -27,7 +18,7 @@ class PolicyholderContactAPI {
       payload: { name, email, federalId },
     };
 
-    return this.instance.post(params);
+    return getInstance().post(params);
   }
 }
 

@@ -179,7 +179,7 @@ describe('ProposalSummary', () => {
     useDispatchMock.mockImplementation(() => mockDispatch);
     const { getByTestId } = render(<ProposalSummary />);
 
-    const buttonEdit = getByTestId('proposalSummary-button-edit');
+    const buttonEdit = getByTestId('proposalSummaryAside-button-edit');
     await act(async () => {
       await fireEvent.click(buttonEdit);
     });
@@ -195,7 +195,7 @@ describe('ProposalSummary', () => {
     useDispatchMock.mockImplementation(() => mockDispatch);
     const { getByTestId } = render(<ProposalSummary />);
 
-    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
       await fireEvent.click(buttonSubmit);
     });
@@ -227,7 +227,7 @@ describe('ProposalSummary', () => {
     useDispatchMock.mockImplementation(() => mockDispatch);
     const { getByTestId } = render(<ProposalSummary />);
 
-    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
       await fireEvent.click(buttonSubmit);
     });
@@ -250,7 +250,7 @@ describe('ProposalSummary', () => {
     useDispatchMock.mockImplementation(() => mockDispatch);
     const { getByTestId } = render(<ProposalSummary />);
 
-    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
       await fireEvent.click(buttonSubmit);
     });
@@ -277,7 +277,7 @@ describe('ProposalSummary', () => {
     useDispatchMock.mockImplementation(() => mockDispatch);
     const { getByTestId } = render(<ProposalSummary />);
 
-    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
       await fireEvent.click(buttonSubmit);
     });
@@ -304,7 +304,7 @@ describe('ProposalSummary', () => {
     useDispatchMock.mockImplementation(() => mockDispatch);
     const { getByTestId } = render(<ProposalSummary />);
 
-    const buttonSubmit = getByTestId('proposalSummary-button-submit');
+    const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
       await fireEvent.click(buttonSubmit);
     });

@@ -1,12 +1,4 @@
-/* eslint-disable consistent-return */
-import {
-  Button,
-  Divider,
-  LinkButton,
-  Tag,
-  ThemeContext,
-  makeToast,
-} from 'junto-design-system';
+import { Divider, Tag, ThemeContext, makeToast } from 'junto-design-system';
 import {
   useCallback,
   useContext,
@@ -17,9 +9,8 @@ import {
 import className from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { currencyFormatter, downloadFile } from '@shared/utils';
-import { nanoid } from '@reduxjs/toolkit';
-import { VendorsHeader } from '@shared/ui';
+import { currencyFormatter } from '@shared/utils';
+import { DetailField, FileList, VendorsHeader } from '@shared/ui';
 import { selectProjectSelection } from '../../../application/features/projectSelection/ProjectSelectionSlice';
 import { ERROR_MESSAGES, REDIRECT_URLS } from '../../../constants';
 import IssuanceAPI from '../../../application/features/Issuance/IssuanceAPI';
@@ -31,9 +22,8 @@ import {
   selectProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import { useFiles } from '../../../config/filesContext';
-import SummaryField from '../../components/SummaryField';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import styles from './ProposalSummary.module.scss';
+import ProposalSummaryAside from '../../components/ProposalSummaryAside/ProposalSummaryAside';
 
 const ProposalSummary: React.FunctionComponent = () => {
   const [issuanceLoading, setIssuanceLoading] = useState(false);
@@ -64,10 +54,6 @@ const ProposalSummary: React.FunctionComponent = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleDownloadFiles = () => {
-    files.forEach(file => downloadFile(file.file));
-  };
-
   useLayoutEffect(() => {
     if (!identification?.proposalId || !identification?.policyId)
       history.push('/');
@@ -75,26 +61,19 @@ const ProposalSummary: React.FunctionComponent = () => {
 
   const renderFiles = () => {
     if (!files) return null;
-    return files.map(file => (
-      <p
-        className={className(
-          styles['proposal-summary__item-attachment'],
-          styles[theme],
-        )}
-        key={nanoid(5)}
-      >
-        {file.file.name}
-        <span>{(file.file.size / 1048576).toFixed(2)} MB</span>
-      </p>
-    ));
+    const filesList = files.map(file => ({
+      filename: file.file.name,
+      size: file.file.size,
+      url: file.file,
+    }));
+
+    return <FileList files={filesList} />;
   };
 
   const getPolicyholderInfo = () => {
     let label = '';
-
     if (policyholder.federalId) label = policyholder.federalId;
     if (policyholder.corporateName) label = policyholder.corporateName;
-
     return label;
   };
 
@@ -183,11 +162,11 @@ const ProposalSummary: React.FunctionComponent = () => {
           </h1>
         </header>
         <section className={styles['proposal-summary__informations']}>
-          <SummaryField
+          <DetailField
             title="Tipo de seguro garantia"
             values={[modality.externalDescription]}
           />
-          <SummaryField
+          <DetailField
             title="Valor total garantido"
             values={[currencyFormatter(totalValue)]}
             helpText={
@@ -196,30 +175,30 @@ const ProposalSummary: React.FunctionComponent = () => {
                 : ''
             }
           />
-          <SummaryField
+          <DetailField
             title="Percentual da garantia"
             values={[warrantyPercentage]}
           />
           <div className={styles['proposal-summary__item-validity']}>
-            <SummaryField
+            <DetailField
               title="Início da vigência"
               values={[initialValidity]}
             />
-            <SummaryField title="Final da vigência" values={[endValidity]} />
+            <DetailField title="Final da vigência" values={[endValidity]} />
           </div>
-          <SummaryField
+          <DetailField
             title="Tempo de vigência do seguro"
             values={[`${validityInDays} dias`]}
           />
           <div className={styles['proposal-summary__divider']}>
             <Divider />
           </div>
-          <SummaryField title="Empresa contratante" values={[insuredName]} />
-          <SummaryField
+          <DetailField title="Empresa contratante" values={[insuredName]} />
+          <DetailField
             title="Empresa contratada"
             values={[getPolicyholderInfo()]}
           />
-          <SummaryField
+          <DetailField
             title="Contato da empresa contratada"
             values={[policyholderContact.name, policyholderContact.email]}
           />
@@ -235,46 +214,27 @@ const ProposalSummary: React.FunctionComponent = () => {
             Informações do contrato
           </h2>
           <div className={styles['proposal-summary__item-contract']}>
-            <SummaryField title="N.° do contrato" values={[contractNumber]} />
-            <SummaryField
+            <DetailField title="N.° do contrato" values={[contractNumber]} />
+            <DetailField
               title="Valor do contrato"
               values={[currencyFormatter(contractValue)]}
             />
           </div>
           {(project || projectSearchValue) && (
-            <SummaryField
+            <DetailField
               title="Projeto"
               values={[project ? project.label : projectSearchValue]}
             />
           )}
-          <SummaryField title="Anexos" values={[]}>
+          <DetailField title="Anexos" values={[]}>
             {renderFiles()}
-          </SummaryField>
-          <LinkButton
-            label="Baixar anexos"
-            icon="download"
-            onClick={() => handleDownloadFiles()}
-            data-testid="proposalSummary-button-dowload-files"
-          />
+          </DetailField>
         </section>
-        <aside className={styles['proposal-summary__actions']}>
-          <Button
-            fullWidth
-            onClick={() => handleSubmit()}
-            data-testid="proposalSummary-button-submit"
-          >
-            {issuanceLoading
-              ? ((<LoadingSpinner />) as any)
-              : 'Solicitar seguro garantia'}
-          </Button>
-          <LinkButton
-            label="Editar solicitação"
-            icon="edit"
-            size="large"
-            onClick={() => handleEditProposal()}
-            data-testid="proposalSummary-button-edit"
-          />
-        </aside>
+        <ProposalSummaryAside
+          handleEdit={handleEditProposal}
+          handleSubmit={handleSubmit}
+          loading={issuanceLoading}
+        />
       </div>
     </>
   );

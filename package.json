@@ -163,6 +163,7 @@
     "yaml": ">=2.2.2",
     "ws": ">=5.2.3 <6.0.0 || >=6.2.2 <7.0.0 || >=7.4.6",
     "webpack": ">=5.76.0",
-    "**/word-wrap": "npm:@aashutoshrathi/word-wrap"
+    "word-wrap": ">= 1.2.4",
+    "tough-cookie": ">=4.1.3 "
   }
 }

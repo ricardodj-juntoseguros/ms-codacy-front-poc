@@ -80,19 +80,27 @@ describe('PolicyholderContact', () => {
       select({ ...updateStoreMock }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(
+    const { findByTestId } = render(
       <PolicyholderContact
         handleNextStep={handleNextStepMock}
         updateTitle={updateTitle}
       />,
     );
 
-    const inputContactName = getByTestId(
-      'policyholderContact-input-contact-name',
-    );
-    const inputContactEmail = getByTestId(
-      'policyholderContact-input-contact-email',
-    );
+    let inputContactName = {} as HTMLElement;
+    let inputContactEmail = {} as HTMLElement;
+
+    await waitFor(async () => {
+      inputContactName = await findByTestId(
+        'policyholderContact-input-contact-name',
+      );
+      inputContactEmail = await findByTestId(
+        'policyholderContact-input-contact-email',
+      );
+
+      expect(inputContactName).toBeVisible();
+      expect(inputContactEmail).toBeVisible();
+    });
 
     await act(async () => {
       await fireEvent.change(inputContactName, {
@@ -146,14 +154,19 @@ describe('PolicyholderContact', () => {
       select({ ...storeMockUpdated }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(
+    const { findByTestId } = render(
       <PolicyholderContact
         handleNextStep={handleNextStepMock}
         updateTitle={updateTitle}
       />,
     );
 
-    const button = getByTestId('policyholderContact-button-next');
+    let button = {} as HTMLElement;
+
+    await waitFor(async () => {
+      button = await findByTestId('policyholderContact-button-next');
+    });
+
     await act(async () => {
       await fireEvent.click(button);
     });
@@ -189,14 +202,21 @@ describe('PolicyholderContact', () => {
       select({ ...storeMockUpdated }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId, queryAllByText } = render(
+    const { findByTestId, queryAllByText } = render(
       <PolicyholderContact
         handleNextStep={handleNextStepMock}
         updateTitle={updateTitle}
       />,
     );
 
-    const button = getByTestId('policyholderContact-button-next');
+    let button = {} as HTMLElement;
+
+    await waitFor(async () => {
+      button = await findByTestId('policyholderContact-button-next');
+
+      expect(button).toBeVisible();
+    });
+
     await act(async () => {
       await fireEvent.click(button);
     });
@@ -238,7 +258,7 @@ describe('PolicyholderContact', () => {
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
 
-    const { getByTestId } = render(
+    const { findByTestId } = render(
       <PolicyholderContact
         handleNextStep={handleNextStepMock}
         updateTitle={updateTitle}
@@ -256,11 +276,23 @@ describe('PolicyholderContact', () => {
       );
     });
 
-    const inputName = getByTestId('policyholderContact-input-contact-name');
-    const inputEmail = getByTestId('policyholderContact-input-contact-email');
+    let inputContactName = {} as HTMLElement;
+    let inputContactEmail = {} as HTMLElement;
 
-    expect(inputName).toHaveAttribute('readonly');
-    expect(inputEmail).toHaveAttribute('readonly');
+    await waitFor(async () => {
+      inputContactName = await findByTestId(
+        'policyholderContact-input-contact-name',
+      );
+      inputContactEmail = await findByTestId(
+        'policyholderContact-input-contact-email',
+      );
+
+      expect(inputContactName).toBeVisible();
+      expect(inputContactEmail).toBeVisible();
+    });
+
+    expect(inputContactName).toHaveAttribute('readonly');
+    expect(inputContactEmail).toHaveAttribute('readonly');
     expect(updateTitle).toHaveBeenCalledWith(
       'Este será o %STRONG% Aquele que receberá a solicitação para aprovação.',
       ['contato da empresa contratada.'],
@@ -297,14 +329,20 @@ describe('PolicyholderContact', () => {
       select({ ...storeMockUpdated }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(
+    const { findByTestId } = render(
       <PolicyholderContact
         handleNextStep={handleNextStepMock}
         updateTitle={updateTitle}
       />,
     );
 
-    const button = getByTestId('policyholderContact-button-next');
+    let button = {} as HTMLElement;
+
+    await waitFor(async () => {
+      button = await findByTestId('policyholderContact-button-next');
+
+      expect(button).toBeVisible();
+    });
 
     expect(getContactsMock).toBeCalledWith('33768864000107');
     expect(button).toHaveAttribute('disabled');

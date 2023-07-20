@@ -1,8 +1,5 @@
-import {
-  AxiosHttpClient,
-  IHttpClientRequestParameters,
-} from '@infrastructure/http-client';
-import VendorsProposalBaseApi from '../VendorsProposalBaseApi';
+import { IHttpClientRequestParameters } from '@infrastructure/http-client';
+import { getInstance } from '../VendorsProposalBaseApi';
 import {
   InsuredAddressDTO,
   InsuredDTO,
@@ -11,18 +8,12 @@ import {
 } from '../../types/dto';
 
 class InsuredAndPolicyholderSelectionApi {
-  private instance: AxiosHttpClient;
-
-  public constructor() {
-    this.instance = new VendorsProposalBaseApi().getInstance();
-  }
-
   async getInsuredList(): Promise<InsuredDTO[]> {
     const params: IHttpClientRequestParameters = {
       url: '/api/v1/insured',
     };
 
-    return this.instance.get<InsuredDTO[]>(params);
+    return getInstance().get<InsuredDTO[]>(params);
   }
 
   async getInsuredAddresses(
@@ -35,7 +26,7 @@ class InsuredAndPolicyholderSelectionApi {
       },
     };
 
-    return this.instance.get<InsuredAddressDTO[]>(params);
+    return getInstance().get<InsuredAddressDTO[]>(params);
   }
 
   async getPolicyholders(
@@ -49,7 +40,7 @@ class InsuredAndPolicyholderSelectionApi {
         corporateName,
       },
     };
-    return this.instance.get<PolicyholderDTO[]>(params);
+    return getInstance().get<PolicyholderDTO[]>(params);
   }
 
   async getPolicyholderAffiliates(
@@ -61,7 +52,7 @@ class InsuredAndPolicyholderSelectionApi {
         federalId: policyholderFederalId,
       },
     };
-    return this.instance.get<PolicyholderAffiliateDTO[]>(params);
+    return getInstance().get<PolicyholderAffiliateDTO[]>(params);
   }
 }
 

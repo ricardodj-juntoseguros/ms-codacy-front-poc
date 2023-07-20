@@ -72,37 +72,6 @@ describe('ProcessDetails', () => {
     expect(mockHistoryPush).toHaveBeenCalled();
   });
 
-  it('should open a new tab if the user clicks on the buttons', async () => {
-    jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'insured';
-    });
-    const { findByTestId } = render(<ProcessDetails />);
-
-    const buttonIssuanceClaim = await findByTestId(
-      'processDetails-button-issuance-claim',
-    );
-    const buttonCertificate = await findByTestId(
-      'processDetails-button-certificate',
-    );
-
-    await act(async () => {
-      await fireEvent.click(buttonIssuanceClaim);
-    });
-
-    await act(async () => {
-      await fireEvent.click(buttonCertificate);
-    });
-
-    expect(windowOpen).toHaveBeenCalledWith(
-      'certificateRegularity/download?format=pdf',
-      '_blank',
-    );
-    expect(windowOpen).toHaveBeenCalledWith(
-      'https://www.juntoseguros.com/canal-de-sinistro/',
-      '_blank',
-    );
-  });
-
   it('should not render issuance claim button on policyholder', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
       return 'policyholder';
@@ -147,39 +116,15 @@ describe('ProcessDetails', () => {
       });
     const { queryByTestId } = render(<ProcessDetails />);
 
-    const status = await queryByTestId('processDetails-paragraph-status');
+    const status = await queryByTestId('processDetailsHeader-paragraph-status');
     const title = await queryByTestId('Solicitação 3885179');
     const issuanceClaimButton = await queryByTestId(
       'processDetails-button-issuance-claim',
-    );
-    const downloadPolicyButton = await queryByTestId(
-      'processDetails-button-download-policy',
     );
 
     expect(status).not.toBeInTheDocument();
     expect(title).not.toBeInTheDocument();
     expect(issuanceClaimButton).not.toBeInTheDocument();
-    expect(downloadPolicyButton).not.toBeInTheDocument();
-  });
-
-  it('should  call the policy download endpoint when the button is clicked', async () => {
-    jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'policyholder';
-    });
-    const getPolicyDocumentMock = jest
-      .spyOn(DocumentAPI, 'getPolicyDocument')
-      .mockImplementation(async () => ({ linkDocumento: 'test' }));
-    const { findByTestId } = render(<ProcessDetails />);
-
-    const downloadPolicyButton = await findByTestId(
-      'processDetails-button-download-policy',
-    );
-
-    act(async () => {
-      await fireEvent.click(downloadPolicyButton);
-    });
-
-    expect(getPolicyDocumentMock).toHaveBeenCalledWith(3885179);
   });
 
   it('should go back to list if an error occurs in the call of details', async () => {

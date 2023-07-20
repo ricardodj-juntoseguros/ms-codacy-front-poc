@@ -1,0 +1,13 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.file-list__item {
+  @include font('sm');
+  @include color('color', 'dark');
+  display: grid;
+  margin: spacing('m') 0;
+
+  & span {
+    @include font('xs');
+    @include color('color', 'grey-500');
+  }
+}

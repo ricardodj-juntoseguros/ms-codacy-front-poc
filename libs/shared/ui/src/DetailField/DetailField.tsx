@@ -10,7 +10,7 @@ export interface DetailFieldProps {
   helpText?: string | number;
 }
 
-const DetailField: React.FunctionComponent<DetailFieldProps> = ({
+export const DetailField: React.FunctionComponent<DetailFieldProps> = ({
   title,
   values,
   helpText,
@@ -46,14 +46,9 @@ const DetailField: React.FunctionComponent<DetailFieldProps> = ({
       <h3 className={className(styles['detail-field__title'], styles[theme])}>
         {title}
       </h3>
-
       {children}
-
       {renderValues()}
-
       {renderHelpText()}
     </article>
   );
 };
-
-export default DetailField;

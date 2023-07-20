@@ -10,6 +10,8 @@ export * from './underConstructionIllustration';
 export * from './cogsAndChartsIllustration';
 export * from './filesCircleIllustration';
 export * from './vendorsHeader';
+export * from './DetailField';
+export * from './FileList';
 export * from './ticketIllustration';
 export * from './checkIconIllustration';
 export * from './alertTriangleIllustration';
