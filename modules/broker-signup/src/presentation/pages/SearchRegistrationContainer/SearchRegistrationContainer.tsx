@@ -4,8 +4,6 @@ import { LinkButton } from 'junto-design-system';
 import styles from './SearchRegistrationContainer.module.scss';
 import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
 import SearchBrokerFederalId from '../../components/SearchBrokerFederalId/SearchBrokerFederalId';
-import Homescreenx09 from '../../assets/Homescreenx09.png';
-import Homescreenx1 from '../../assets/Homescreenx1.png';
 
 const SearchRegistrationContainer = ({ history }: RouteComponentProps) => {
   const sreenHeight = window.screen.height;
@@ -33,7 +31,7 @@ const SearchRegistrationContainer = ({ history }: RouteComponentProps) => {
             </div>
       </div>
         <img
-                src={sreenHeight < 800 ? Homescreenx09 :  Homescreenx1  }
+                src={sreenHeight < 800 ? "https://static.juntoseguros.com/images/HomeSignupx09.png" :  "https://static.juntoseguros.com/images/HomeSignupx1.png"  }
                 data-testid="logo-Junto"
                 alt="Logo - Junto"
         />
