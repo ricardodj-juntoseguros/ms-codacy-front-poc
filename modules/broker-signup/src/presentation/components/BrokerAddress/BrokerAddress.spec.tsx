@@ -31,17 +31,17 @@ describe('BrokerAddress', () => {
     const inputcomplement = getByTestId('broker-complement');
 
     expect(baseElement).toBeTruthy();
-    expect(inputCep).toHaveValue(brokerInformationMock.information.cep);
+    expect(inputCep).toHaveValue(brokerInformationMock.information.zipCode);
     expect(inputCep).toBeDisabled
-    expect(inputUf).toHaveValue(brokerInformationMock.information.uf);
+    expect(inputUf).toHaveValue(brokerInformationMock.information.state);
     expect(inputUf).toBeDisabled
-    expect(inputMunicipality).toHaveValue(brokerInformationMock.information.municipio);
+    expect(inputMunicipality).toHaveValue(brokerInformationMock.information.address);
     expect(inputMunicipality).toBeDisabled
-    expect(inputAddress).toHaveValue(brokerInformationMock.information.logradouro);
+    expect(inputAddress).toHaveValue(brokerInformationMock.information.city);
     expect(inputAddress).toBeDisabled
-    expect(inputNumber).toHaveValue(brokerInformationMock.information.numero);
+    expect(inputNumber).toHaveValue(brokerInformationMock.information.number);
     expect(inputNumber).toBeDisabled
-    expect(inputcomplement).toHaveValue(brokerInformationMock.information.complemento);
+    expect(inputcomplement).toHaveValue(brokerInformationMock.information.complement);
     expect(inputcomplement).toBeDisabled
   });
 });

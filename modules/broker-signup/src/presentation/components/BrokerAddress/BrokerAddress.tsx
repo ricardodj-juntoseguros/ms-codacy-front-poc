@@ -16,7 +16,7 @@ export const BrokerAddress: React.FC = () => {
                     data-testid="broker-cep"
                     label="CEP"
                     placeholder="CEP"
-                    value={brokerInformation.information.cep}
+                    value={brokerInformation.information.zipCode}
                     disabled
           />
         </div>
@@ -25,7 +25,7 @@ export const BrokerAddress: React.FC = () => {
                       data-testid="broker-uf"
                       label="UF"
                       placeholder="UF"
-                      value={brokerInformation.information.uf}
+                      value={brokerInformation.information.state}
                       disabled
             />
         </div>

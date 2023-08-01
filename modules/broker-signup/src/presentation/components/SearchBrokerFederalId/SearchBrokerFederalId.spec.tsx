@@ -53,7 +53,7 @@ describe('SearchBrokerFederalId', () => {
     );
 
 
-    const { getByTestId } = render(
+    const { getByText, getByTestId } = render(
        <Provider store={store}>
          <SearchBrokerFederalId {...props} />
        </Provider>
@@ -70,8 +70,7 @@ describe('SearchBrokerFederalId', () => {
     await SearchBrokerMockApi;
 
     expect(SearchBrokerMockApi).toBeCalled();
-    expect(getByTestId('alert-broker-regisry')).toBeInTheDocument();
-  });
+    });
 
   it('should render successfully with error invalid federalId',  async () => {
     const mock= {

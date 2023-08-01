@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
-import { BrokerInformationModel, RegisterBrokerTypeEnum } from '../../types/model';
+import {
+  BrokerInformationModel,
+  RegisterBrokerTypeEnum,
+} from '../../types/model';
 import { BankDTO } from '../../types/dto';
 
 const initialState: BrokerInformationModel = {
@@ -8,44 +11,16 @@ const initialState: BrokerInformationModel = {
   status: RegisterBrokerTypeEnum.NO_REGISTRY,
   description: '',
   information: {
-      federalId: '',
-      parentCompany: '',
-      brokerCompanyName: '',
-      fantasyName: '',
-      situation: '',
-      dateSituation: '',
-      reasonSituation: '',
-      cityNameForeign: '',
-      countryCod: '',
-      countryName: '',
-      codNatJuridica: '',
-      dateStart: '',
-      cnaeFiscal: '',
-      addressType: '',
-      address: '',
-      number: '',
-      complement: '',
-      neighbourhood: '',
-      cep: '',
-      uf: '',
-      cityCod: '',
-      city: '',
-      ddd1: '',
-      phone1: '',
-      ddd2: '',
-      phone2: '',
-      dddfax: '',
-      numberFax: '',
-      emailBroker: '',
-      qualifResp: '',
-      shareCapital:'',
-      size: '',
-      opcSimple: '',
-      dateOpcSimple: '',
-      dateExcSimple: '',
-      opcMei: '',
-      specialSituation: '',
-      dateSpecialSituation: ''
+    federalId: '',
+    brokerCompanyName: '',
+    address: '',
+    number: '',
+    complement: '',
+    zipCode: '',
+    bairro: '',
+    city: '',
+    state: '',
+    email: '',
   },
   bankDetails: {
     name: '',
@@ -53,11 +28,11 @@ const initialState: BrokerInformationModel = {
     accounNumber: '',
     bankNumber: '',
     bankDigit: '',
-    accounDigit: ''
+    accounDigit: '',
   },
   susepCode: '',
   iss: 0,
-  simplesOptant: false
+  simplesOptant: false,
 };
 
 export const brokerInformationSlice = createSlice({
@@ -65,7 +40,10 @@ export const brokerInformationSlice = createSlice({
   initialState,
   reducers: {
     resetBrokerInformation: () => initialState,
-    setBrokerInformationModel: (state, action: PayloadAction<BrokerInformationModel>) => {
+    setBrokerInformationModel: (
+      state,
+      action: PayloadAction<BrokerInformationModel>,
+    ) => {
       state.status = action.payload.status;
       state.description = action.payload.description;
       state.information = action.payload.information;
@@ -107,9 +85,9 @@ export const brokerInformationSlice = createSlice({
   },
 });
 
-export const selectBroker= (state: RootState) => state.brokerInformation;
+export const selectBroker = (state: RootState) => state.brokerInformation;
 
 export const { actions: brokerInformationSliceActions } =
-brokerInformationSlice;
+  brokerInformationSlice;
 
 export default brokerInformationSlice.reducer;

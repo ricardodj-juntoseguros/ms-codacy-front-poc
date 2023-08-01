@@ -1,16 +1,25 @@
 import { BrokerInformationModel } from '../../../types/model';
 
-export const registerBrokerAdapter = (broker: BrokerInformationModel)  => {
-  const { information,bankDetails } = broker;
-  const { federalId, brokerCompanyName,address,complement,city,uf  } = information;
-  const { name, bankNumber,accounNumber,bankDigit,accounDigit } = bankDetails;
-  return {
+export const registerBrokerAdapter = (broker: BrokerInformationModel) => {
+  const { information, bankDetails } = broker;
+  const {
     federalId,
     brokerCompanyName,
     address,
     complement,
-    zipCode: information.cep,
-    state: uf,
+    city,
+    zipCode,
+    state,
+  } = information;
+  const { name, bankNumber, accounNumber, bankDigit, accounDigit } =
+    bankDetails;
+  return {
+    federalId: federalId.replace(/[^a-zA-Z0-9]/g, ''),
+    brokerCompanyName,
+    address,
+    complement,
+    zipCode,
+    state,
     city,
     bankName: name,
     bankNumber: parseInt(bankNumber, 10) || 0,

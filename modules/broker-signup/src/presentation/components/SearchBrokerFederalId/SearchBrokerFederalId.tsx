@@ -154,10 +154,10 @@ export function SearchBrokerFederalId({handleGoNextClick}: SearchBrokerFederalId
                 errorMessage={getErrorMessage()}
               />
       </div>
-      { statusBrokerRegistry?.information?.razao_social &&
+      { statusBrokerRegistry?.information?.brokerCompanyName &&
         <div className={styles['broker-information_wrapper']}  data-testid="alert-broker-regisry">
             <span className={styles['broker-information_label']}>Razão Social</span>
-            <p className={styles['broker-information_content']}>{statusBrokerRegistry?.information?.razao_social}</p>
+            <p className={styles['broker-information_content']}>{statusBrokerRegistry?.information?.brokerCompanyName}</p>
         </div>
       }
         { showAlert &&
