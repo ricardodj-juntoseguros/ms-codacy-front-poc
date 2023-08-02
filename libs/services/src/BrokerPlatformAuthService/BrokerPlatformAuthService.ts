@@ -123,7 +123,10 @@ export class BrokerPlatformAuthService {
 
     const { token } = userCookie;
     const decodedToken = jwtDecode<UserAccessToken>(token);
-    return decodedToken.realm_access.roles.includes('broker');
+    return decodedToken.realm_access?.roles
+      ? decodedToken.realm_access.roles.includes('broker')
+      : decodedToken?.loginOwnerId !== null &&
+          decodedToken?.loginOwnerUserName !== null;
   }
 
   getBroker(): Broker | null {
