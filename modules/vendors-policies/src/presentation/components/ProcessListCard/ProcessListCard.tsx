@@ -12,6 +12,7 @@ import DocumentAPI from '../../../application/features/document/DocumentAPI';
 import { ProposalDTO } from '../../../application/types/dto';
 import { PROCESS_STATUS } from '../../../constants';
 import styles from './ProcessListCard.module.scss';
+import { ProposalStatusEnum } from '../../../application/types/model';
 
 interface ProcessListCardProps {
   proposal: ProposalDTO;
@@ -92,7 +93,12 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
                 styles['process-list-card__info-label'],
               )}
             >
-              {[4, 5, 6, 8].includes(status)
+              {[
+                ProposalStatusEnum.ISSUED,
+                ProposalStatusEnum.TO_EXPIRE,
+                ProposalStatusEnum.EXPIRED,
+                ProposalStatusEnum.CANCELLED
+              ].includes(status)
                 ? 'Nº da apólice'
                 : 'Nº da solicitação'}
             </span>
@@ -128,7 +134,7 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
                 styles['process-list-card__info-value'],
               )}
             >
-              {insured.companyName}
+              {insured ? insured.companyName : ''}
             </p>
           </div>
           <div>
@@ -156,7 +162,11 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
           [styles['process-list-card__buttons--loading']]: isLoadingPolicy,
         })}
       >
-        {[4, 5, 6].includes(status) && (
+        {[
+          ProposalStatusEnum.ISSUED,
+          ProposalStatusEnum.TO_EXPIRE,
+          ProposalStatusEnum.EXPIRED
+        ].includes(status) && (
           <LinkButton
             data-testid={`processListCard-button-${proposalId}-download`}
             label={isLoadingPolicy ? 'Aguarde...' : 'Baixar apólice'}

@@ -84,7 +84,10 @@ const ProposalSummary: React.FunctionComponent = () => {
     await onlinkProject(identification.policyId, insuredFederalId);
 
     const result = await uploadDocuments();
-    if (!result) return;
+    if (!result) {
+      setIssuanceLoading(false);
+      return;
+    }
 
     if (
       policyholderContact &&

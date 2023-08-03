@@ -7,7 +7,7 @@ import {
   ThemeContext,
   makeToast,
 } from 'junto-design-system';
-import { VendorsAuthService } from '@services';
+import { UserTypeEnum, VendorsAuthService } from '@services';
 import { ProposalListDTO } from '../../../application/types/dto';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
 import styles from './ProcessList.module.scss';
@@ -28,11 +28,10 @@ const ProcessList: React.FC = () => {
   }, [activePage]);
 
   const fetchProposals = (pageNumber: number) => {
-    if (VendorsAuthService.getUserType() !== 'insured') {
+    if (VendorsAuthService.getUserType() === UserTypeEnum.BROKER) {
       setLoadingProcesses(false);
       return;
     }
-    setLoadingProcesses(true);
     ProcessListingApi.getProcesses(pageNumber, 10)
       .then(response => {
         setError(false);

@@ -20,7 +20,7 @@ describe('ProcessDetailsHeader', () => {
   const detailsHeaderMock = {
     createdAt: new Date().toISOString(),
     policyId: 123,
-    processStatusConfig: PROCESS_STATUS[4],
+    processStatusConfig: PROCESS_STATUS[5],
     userType: 'policyholder',
     dateIssuance: new Date().toISOString(),
     policyNumber: 'a21bds213',

@@ -60,7 +60,7 @@ describe('ProcessListContainer', () => {
       return 'policyholder';
     });
     const { getByText, findByText } = render(<ProcessListContainer />);
-    await findByText('0 processos listados');
+    await findByText('3 processos listados');
     expect(getByText('Olá, test policyholder')).toBeInTheDocument();
     expect(
       getByText('acompanhe aqui suas oportunidades de negócio'),

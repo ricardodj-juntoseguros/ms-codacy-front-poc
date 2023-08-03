@@ -10,7 +10,7 @@ describe('ProcessDetailsFooter', () => {
   it('Should render correctly', async () => {
     const { getByTestId } = render(
       <ProcessDetailsFooter
-        processStatusConfig={{ id: 4 }}
+        processStatusConfig={{ id: 5 }}
         userType="insured"
       />,
     );
@@ -45,7 +45,7 @@ describe('ProcessDetailsFooter', () => {
   it('Should render correctly', async () => {
     const { getByTestId, queryByTestId } = render(
       <ProcessDetailsFooter
-        processStatusConfig={{ id: 4 }}
+        processStatusConfig={{ id: 5 }}
         userType="policyholder"
       />,
     );

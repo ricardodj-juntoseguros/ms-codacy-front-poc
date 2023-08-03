@@ -32,6 +32,13 @@ export const PROCESS_STATUS = [
     cardTagLabel: 'Aguardando aprovação',
   },
   {
+    id: ProposalStatusEnum.READY_TO_ISSUE,
+    name: 'under-analysis',
+    detailsMessage: 'Essa solicitação está em análise final da seguradora.',
+    detailsIcon: 'alert-triangle',
+    cardTagLabel: 'Análise final',
+  },
+  {
     id: ProposalStatusEnum.ISSUED,
     name: 'issued',
     detailsMessage: 'Essa apólice está vigente.',
@@ -65,5 +72,12 @@ export const PROCESS_STATUS = [
     detailsMessage: 'Essa apólice foi cancelada.',
     detailsIcon: 'alert-triangle',
     cardTagLabel: 'Cancelada',
+  },
+  {
+    id: ProposalStatusEnum.APPROVED,
+    name: 'approved',
+    detailsMessage: '',
+    detailsIcon: '',
+    cardTagLabel: '',
   },
 ];

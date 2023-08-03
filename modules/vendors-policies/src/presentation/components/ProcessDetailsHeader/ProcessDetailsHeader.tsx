@@ -77,6 +77,7 @@ const ProcessDetailsHeader: React.FC<ProcessDetailsHeaderProps> = ({
   const renderTitle = () => {
     const isProposal = [
       ProposalStatusEnum.ANALYSIS,
+      ProposalStatusEnum.READY_TO_ISSUE,
       ProposalStatusEnum.AWAITING_APPROVAL,
       ProposalStatusEnum.REFUSED,
       ProposalStatusEnum.IN_PROGRESS,
