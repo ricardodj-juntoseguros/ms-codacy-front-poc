@@ -21,13 +21,6 @@ class ProposalAPI {
 
     return getInstance().put<ProposalResultDTO>(params);
   }
-
-  async updateProposalToAnalysis(proposalId: number) {
-    const params: IHttpClientRequestParameters = {
-      url: `/api/v1/proposal/${proposalId}/send-analysis`,
-    };
-    return getInstance().put<UpdateProposalStatusDTO>(params);
-  }
 }
 
 export default new ProposalAPI();

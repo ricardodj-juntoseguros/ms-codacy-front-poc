@@ -80,7 +80,6 @@ const ProposalSummary: React.FunctionComponent = () => {
   const handleSubmit = async () => {
     if (!identification || !identification.proposalId) return;
     setIssuanceLoading(true);
-    await ProposalAPI.updateProposalToAnalysis(identification.proposalId);
     await onlinkProject(identification.policyId, insuredFederalId);
 
     const result = await uploadDocuments();

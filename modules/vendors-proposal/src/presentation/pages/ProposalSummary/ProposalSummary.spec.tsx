@@ -87,10 +87,6 @@ describe('ProposalSummary', () => {
     uploadDocuments: uploadDocumentsMock,
   }));
 
-  let updateProposalToAnalysisMock: jest.SpyInstance<
-    Promise<UpdateProposalStatusDTO>,
-    [proposalId: number]
-  > | null = null;
   let linkProjectMock: jest.SpyInstance<
     Promise<void>,
     [
@@ -140,11 +136,6 @@ describe('ProposalSummary', () => {
     IssuanceAPIMock = jest
       .spyOn(IssuanceAPI, 'submitToApproval')
       .mockImplementation(() => Promise.resolve());
-    updateProposalToAnalysisMock = jest
-      .spyOn(ProposalAPI, 'updateProposalToAnalysis')
-      .mockImplementation(() =>
-        Promise.resolve({ proposalId: 123, status: 2 }),
-      );
   });
 
   afterEach(() => {
@@ -208,7 +199,6 @@ describe('ProposalSummary', () => {
       '33768864000107',
     );
     expect(IssuanceAPIMock).toHaveBeenCalledWith(12345);
-    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(mockHistoryPush).toHaveBeenCalled();
   });
 
@@ -232,7 +222,6 @@ describe('ProposalSummary', () => {
       await fireEvent.click(buttonSubmit);
     });
 
-    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(linkProjectMock).toHaveBeenCalledWith('lorem', '1', 12345, '');
     expect(uploadDocumentsMock).toHaveBeenCalled();
     expect(createContactMock).not.toHaveBeenCalledWith(
@@ -255,7 +244,6 @@ describe('ProposalSummary', () => {
       await fireEvent.click(buttonSubmit);
     });
 
-    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(linkProjectMock).toHaveBeenCalledWith('lorem', '1', 12345, '');
     expect(uploadDocumentsMock).toHaveBeenCalled();
     expect(createContactMock).not.toHaveBeenCalledWith(
@@ -282,7 +270,6 @@ describe('ProposalSummary', () => {
       await fireEvent.click(buttonSubmit);
     });
 
-    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(linkProjectMock).toHaveBeenCalledWith('lorem', '1', 12345, '');
     expect(uploadDocumentsMock).toHaveBeenCalled();
     expect(createContactMock).toHaveBeenCalledWith(
@@ -309,7 +296,6 @@ describe('ProposalSummary', () => {
       await fireEvent.click(buttonSubmit);
     });
 
-    expect(updateProposalToAnalysisMock).toHaveBeenCalledWith(12345);
     expect(linkProjectMock).toHaveBeenCalledWith('lorem', '1', 12345, '');
     expect(uploadDocumentsMock).toHaveBeenCalled();
     expect(createContactMock).toHaveBeenCalledWith(
