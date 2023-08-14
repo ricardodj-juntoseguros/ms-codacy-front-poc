@@ -32,7 +32,7 @@ function FirstAccessFinishContainer() {
           <IconFinish />
         </div>
         <div className={styles['first_Access_finish_container__information']}>
-          <span>
+          <span data-testid="finish_first_access-span">
             Senha criada com sucesso. <br /> A partir de agora você poderá
             visualizar todas as oportunidades Vendors.
           </span>

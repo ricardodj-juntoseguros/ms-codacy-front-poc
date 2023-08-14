@@ -20,7 +20,9 @@ describe('Plataforma - corretor-emissão - Quote Common', () => {
   });
 
   it('should perform the quote flow correctly', () => {
-    cy.get(selectors.search.policyholderSearchText).type('squad', { delay: 200 }).wait(2000);
+    cy.get(selectors.search.policyholderSearchText)
+      .type('squad', { delay: 200 })
+      .wait(2000);
 
     cy.get(selectors.search.policyholderSearchInput)
       .should('be.visible')

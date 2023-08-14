@@ -4,10 +4,17 @@
   "HOSTS": {
     "LOGIN": "https://plataforma-qas.juntoseguros.com/",
     "PLATAFORMA": "https://corretor-qas-6.juntoseguros.com/",
-    "FIDELIZE": "https://fidelize-qas-6.juntoseguros.com/"
+    "FIDELIZE": "https://fidelize-qas-6.juntoseguros.com/",
+    "VENDORS": "https://vendors-qas-1.juntoseguros.com/"
   },
   "URL": {
     "PLATAFORMA_BFF": "https://ms-gateway-qas.juntoseguros.com/squad6/ms-plataforma-bff/",
     "FIDELIZE_BFF": "https://ms-gateway-qas.juntoseguros.com/squad6/fidelize-bff/"
+  },
+  "USERS": {
+    "VENDORS_SQUAD_CADASTRO": "squadCadastroE2E@vendors.com",
+    "VENDORS_SQUAD_CADASTRO_POLICYHOLDER": "squadCadastroE2EPolicyholder@vendors.com",
+    "VENDORS_SQUAD_CADASTRO_INSURED": "squadCadastroE2EInsured@vendors.com",
+    "VENDORS_SQUAD_CADASTRO_BROKER": "squadCadastroE2EBroker@vendors.com"
   }
 }

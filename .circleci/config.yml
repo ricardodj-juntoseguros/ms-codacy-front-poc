@@ -153,6 +153,8 @@ jobs:
           path: /tmp/persist_to_workspace/dist/cypress/apps/fidelize-e2e/screenshots
       - store_artifacts:
           path: /tmp/persist_to_workspace/dist/cypress/apps/plataforma-e2e/screenshots
+      - store_artifacts:
+          path: /tmp/persist_to_workspace/dist/cypress/apps/vendors-e2e/screenshots
 
   deploy-cf:
     <<: *defaults
