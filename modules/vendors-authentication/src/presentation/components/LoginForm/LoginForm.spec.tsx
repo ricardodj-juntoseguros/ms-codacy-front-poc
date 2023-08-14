@@ -38,9 +38,10 @@ describe('LoginForm', () => {
 
       const { getByTestId } = render( <LoginForm /> );
 
+      const button = getByTestId('loginForm-button-login')
       const inputLogin= getByTestId('loginForm-input-login');
       const inputPassword = getByTestId('loginForm-input-password');
-      const button = getByTestId('loginForm-button-login')
+
 
       await act(async () => {
         fireEvent.change(inputLogin, { target: { value: 'teste' } });

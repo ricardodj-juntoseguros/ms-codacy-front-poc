@@ -59,7 +59,7 @@ function RequestForgotPassword() {
           />
           <div>
             <Button
-            data-testid="loginForm-buttom-login"
+            data-testid="loginForm-button-login"
             onClick={() => handleSubmit()}
             type="submit" fullWidth>
             {isSubmitting

@@ -10,6 +10,6 @@ export const selectors = {
   login: {
     Inputlogin: '[data-testid="loginForm-input-login"]',
     password: '[data-testid="loginForm-input-password"]',
-    buttonLogin: '[data-testid="loginForm-buttom-login"]',
+    buttonLogin: '[data-testid="loginForm-button-login"]',
   },
 };

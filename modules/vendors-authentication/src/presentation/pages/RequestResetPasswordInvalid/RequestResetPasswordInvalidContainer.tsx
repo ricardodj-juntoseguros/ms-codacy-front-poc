@@ -19,7 +19,7 @@ function RequestResetPasswordInvalid() {
         <div className={styles['reset_password_container__information']}><span>Infelizmente este link expirou. Precisamos que você solicite um novo link para criar seu acesso ou redefinir sua senha. Em caso de dúvidas, entre em contato pelo e-mail <a href="">vendors@juntoseguros.com</a></span></div>
         <div className={styles['reset_password_redirect']}>
               <Button
-              data-testid="loginForm-buttom-login"
+              data-testid="loginForm-button-login"
               onClick={() => handleGoPageLogin()}
               type="submit" fullWidth>
               Solicitar novo link

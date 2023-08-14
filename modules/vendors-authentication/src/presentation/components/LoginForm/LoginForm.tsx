@@ -87,7 +87,7 @@ export function LoginForm() {
         <div>
           <Button
             disabled={isSubmitting}
-            data-testid="loginForm-buttom-login"
+            data-testid="loginForm-button-login"
             onClick={() => handleSubmit(email, password)}
             type="submit"
             fullWidth
