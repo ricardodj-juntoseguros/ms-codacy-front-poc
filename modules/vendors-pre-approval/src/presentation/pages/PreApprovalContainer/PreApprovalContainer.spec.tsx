@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import PreApprovalContainer from './PreApprovalContainer';
 
 import PreApprovalAPI from '../../../application/features/PreApprovalAPI';

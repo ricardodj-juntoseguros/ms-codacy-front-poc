@@ -33,11 +33,21 @@ describe('PreApprovalAPI', () => {
         return { message: 'sucess' };
       });
 
-    const response = await PreApprovalAPI.refuseProposal(1, 'negativeReason');
+    const payload = {
+      GuidCode: 123,
+      DocumentNumber: 123,
+      Approve: false,
+      Observation: 'Observation',
+      ClientCommunication: false,
+      VisaibleCommission: false,
+      negativeReason: '',
+    };
+
+    const response = await PreApprovalAPI.refuseProposal(payload);
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/api/v1/issue/refuse',
-      payload: { negativeReason: 'negativeReason', id: 1 },
+      payload: { ...payload },
     });
 
     expect(response).toEqual({ message: 'sucess' });

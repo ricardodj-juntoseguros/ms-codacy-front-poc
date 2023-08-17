@@ -21,10 +21,10 @@ class PreApprovalAPI {
     return this.instance.get<PreApprovalDTO>(params);
   }
 
-  async refuseProposal(id: number, negativeReason: string): Promise<any> {
+  async refuseProposal(payload: any): Promise<any> {
     const params: IHttpClientRequestParameters = {
       url: `/api/v1/issue/refuse`,
-      payload: { id, negativeReason },
+      payload: { ...payload },
     };
 
     return this.instance.post(params);
@@ -36,7 +36,7 @@ class PreApprovalAPI {
       payload: { ...payload },
       headers: { 'x-forwarded-for': '' },
     };
-    
+
     return this.instance.post(params);
   }
 }

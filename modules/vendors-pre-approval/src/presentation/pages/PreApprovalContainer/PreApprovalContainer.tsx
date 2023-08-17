@@ -95,7 +95,7 @@ const PreApprovalContainer: React.FC = () => {
   };
 
   const onChangeTextArea = (value: string) => {
-    if (value === '') {
+    if (value !== '') {
       setIsChanged(true);
       setNegativeReason(value);
     } else {
@@ -128,8 +128,18 @@ const PreApprovalContainer: React.FC = () => {
   const refuseProposal = async () => {
     setIsLoading(true);
 
+    const payload = {
+      GuidCode: guid,
+      DocumentNumber: proposalId,
+      Approve: false,
+      Observation: 'Observation',
+      ClientCommunication: false,
+      VisaibleCommission: false,
+      NegativeReason: negativeReason,
+    };
+
     try {
-      await PreApprovalAPI.refuseProposal(proposalId, negativeReason);
+      await PreApprovalAPI.refuseProposal(payload);
       handleRedirectToSucessPage(false);
     } catch {
       makeToast('error', ERROR_MESSAGES.refuseError);
