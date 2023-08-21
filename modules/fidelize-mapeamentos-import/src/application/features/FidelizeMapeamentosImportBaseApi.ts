@@ -6,11 +6,15 @@ import { BackofficeAuthService } from '@services';
 class FidelizeImportMapeamentosBaseApi {
   private readonly BASE_URL = `${process.env.NX_GLOBAL_GATEWAY_URL}`;
 
+  private readonly DOCS_URL = `${process.env.NX_GLOBAL_MS_DOCUMENTS}`;
+
   private headers = {};
 
   private timeout = 1000000;
 
   private instance: AxiosHttpClient;
+
+  private docsInstance: AxiosHttpClient;
 
   public constructor() {
     this.headers = {
@@ -22,7 +26,16 @@ class FidelizeImportMapeamentosBaseApi {
       this.headers,
       this.timeout,
     );
+    this.docsInstance = new AxiosHttpClient(
+      this.DOCS_URL,
+      this.headers,
+      this.timeout,
+    );
     this.instance.setResponseInterceptors(
+      this.handleSuccess,
+      this.handleErrors,
+    );
+    this.docsInstance.setResponseInterceptors(
       this.handleSuccess,
       this.handleErrors,
     );
@@ -54,6 +67,10 @@ class FidelizeImportMapeamentosBaseApi {
 
   public getInstance(): AxiosHttpClient {
     return this.instance;
+  }
+
+  public getDocsInstance(): AxiosHttpClient {
+    return this.docsInstance;
   }
 }
 

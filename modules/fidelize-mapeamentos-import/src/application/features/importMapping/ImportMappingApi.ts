@@ -8,8 +8,12 @@ import { UploadProcessIdDTO } from '../../types/dto';
 class ImportMappingApi {
   private instance: AxiosHttpClient;
 
+  private docsInstance: AxiosHttpClient;
+
   public constructor() {
     this.instance = new FidelizeImportMapeamentosBaseApi().getInstance();
+    this.docsInstance =
+      new FidelizeImportMapeamentosBaseApi().getDocsInstance();
   }
 
   async generateUploadProcessId(): Promise<UploadProcessIdDTO> {
@@ -27,12 +31,12 @@ class ImportMappingApi {
     data.append('QuoteId', `${id}`);
 
     const params: IHttpClientRequestParameters = {
-      url: '/api_documents/files',
+      url: 'files',
       headers: { 'Content-Type': 'multipart/form-data' },
       payload: data,
     };
 
-    return await this.instance.post(params);
+    return await this.docsInstance.post(params);
   }
 
   async finalizeUploadProcess(id: number): Promise<any> {

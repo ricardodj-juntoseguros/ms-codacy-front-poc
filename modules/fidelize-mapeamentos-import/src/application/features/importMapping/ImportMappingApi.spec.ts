@@ -43,7 +43,7 @@ describe('ImportMappingApi', () => {
 
     expect(mockPost).toHaveBeenCalledTimes(1);
     expect(mockPost).toHaveBeenCalledWith({
-      url: '/api_documents/files',
+      url: 'files',
       headers: { 'Content-Type': 'multipart/form-data' },
       payload: data,
     });
