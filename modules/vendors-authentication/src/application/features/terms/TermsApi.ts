@@ -22,10 +22,7 @@ class TermsApi {
   async getTerm(term: TermsDTO): Promise<string> {
     const version = term?.data[0].version;
     const nameTerm = term?.data[0].description;
-    const params: IHttpClientRequestParameters = {
-      url: `api/v1/terms?version=${version}&description=${nameTerm}`,
-    };
-    return await this.instance.get<string>(params);
+    return `api/v1/terms?version=${version}&description=${nameTerm}`;
   }
 
   async postAccept(email: string, termId: number) {

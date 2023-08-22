@@ -328,7 +328,12 @@ const FirstAccessForm: React.FC<FirstAccessProps> = ({
             />
             <span className={styles['span_terms']}>Li e aceito o&nbsp;</span>
             <LinkButton
-              onClick={() => setIsOpen(true)}
+               onClick={() =>
+                window.open(
+                  `${process.env.NX_GLOBAL_VENDORS_BFF_URL}/${terms}`,
+                  '_blank',
+                )
+              }
               label="termo de responsabilidade"
             />
             <span className={styles['span_terms']}>&nbsp;e&nbsp;</span>

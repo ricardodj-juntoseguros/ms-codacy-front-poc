@@ -31,22 +31,11 @@ describe('TermsApi', () => {
   });
 
   it('getTerm should call bff service correctly', async () => {
-    const versionMock = '1.0';
-    const termTextMock =
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id placerat felis. Aliquam vestibulum nibh et erat tempus, malesuada cursus risus venenatis.';
-
-    const mockGet = jest
-      .spyOn(AxiosHttpClient.prototype, 'get')
-      .mockImplementation(async () => {
-        return termTextMock;
-      });
-
     const result = await TermsApi.getTerm(TermsMock);
 
-    expect(mockGet).toHaveBeenCalledWith({
-      url: `api/v1/terms?version=1.1&description=termo-de-responsabilidade-vendors`,
-    });
-    expect(result).toBe(termTextMock);
+    expect(result).toEqual(
+      `api/v1/terms?version=1.1&description=termo-de-responsabilidade-vendors`,
+    );
   });
 
   it('postAccept should call bff service correctly', async () => {
