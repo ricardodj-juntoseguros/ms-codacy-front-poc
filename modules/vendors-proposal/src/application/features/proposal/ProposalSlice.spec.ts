@@ -1,6 +1,6 @@
 /* eslint-disable no-var */
 /* eslint-disable prefer-promise-reject-errors */
-import { add, format } from 'date-fns';
+import { add, format, formatISO } from 'date-fns';
 import { modalityListMock, proposalMock } from '../../../__mocks__';
 import { store } from '../../../config/store';
 import {
@@ -177,6 +177,7 @@ describe('ProposalSlice', () => {
           PolicyId: 12345,
           NewQuoterId: 12345,
           QuotationId: 12345,
+          createdAt: formatISO(new Date())
         }),
       );
 
@@ -212,6 +213,7 @@ describe('ProposalSlice', () => {
           PolicyId: 123,
           NewQuoterId: 1234,
           QuotationId: 12345,
+          createdAt: formatISO(new Date())
         }),
       );
 

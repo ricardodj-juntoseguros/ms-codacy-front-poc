@@ -1,9 +1,10 @@
 /* eslint-disable consistent-return */
-import { Button, ThemeContext } from 'junto-design-system';
-import { useContext, useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect, useMemo } from 'react';
+import { Button, Tag, ThemeContext } from 'junto-design-system';
 import className from 'classnames';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { format } from 'date-fns';
 import { REDIRECT_URLS } from '../../../constants';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import styles from './ProposalSuccess.module.scss';
@@ -11,7 +12,11 @@ import styles from './ProposalSuccess.module.scss';
 const ProposalSuccess: React.FunctionComponent = () => {
   const theme = useContext(ThemeContext);
   const history = useHistory();
-  const { identification } = useSelector(selectProposal);
+  const { identification, createdAt } = useSelector(selectProposal);
+  const protocol = useMemo(() =>
+    `Proposta ${identification?.policyId} - ${format(new Date(createdAt), "dd/MM/yyyy 'às' HH'h'mm")}`,
+    [identification, createdAt]
+  );
 
   useLayoutEffect(() => {
     if (!identification?.proposalId || !identification?.policyId)
@@ -25,6 +30,7 @@ const ProposalSuccess: React.FunctionComponent = () => {
       className={className(styles['proposal-success__wrapper'], styles[theme])}
     >
       <i className={className('icon', 'icon-check', styles[theme])} />
+      <Tag>{protocol}</Tag>
       <h1
         className={className(styles['proposal-success__title'], styles[theme])}
       >

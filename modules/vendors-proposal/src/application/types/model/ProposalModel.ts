@@ -28,4 +28,5 @@ export interface ProposalModel {
   totalValue: number;
   createProposalLoading: boolean;
   createProposalSuccess: boolean;
+  createdAt: string
 }

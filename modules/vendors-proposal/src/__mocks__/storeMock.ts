@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, formatISO } from 'date-fns';
 import { StepStatusEnum } from '../application/types/model';
 import { modalityListMock } from './modalityListMock';
 
@@ -44,6 +44,7 @@ export const storeMock = {
     warrantyPercentage: NaN,
     modality: null,
     additionalCoverageLabor: false,
+    createdAt: formatISO(new Date()),
   },
   projectSelection: {
     projectSearchValue: '',

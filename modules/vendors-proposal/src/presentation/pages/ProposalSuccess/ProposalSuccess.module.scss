@@ -12,6 +12,7 @@
 
   & i {
     @include color('color', 'brand-primary');
+    margin-bottom: spacing('xl');
 
     &[class^='icon-']:before, &[class*=' icon-']:before {
       font-size: 47px;
@@ -23,7 +24,7 @@
   @include font('xl-emphasys');
   @include color('color', 'dark');
   margin: 0;
-  margin-top: spacing('xxl');
+  margin-top: spacing('l');
   text-align: center;
 }
 

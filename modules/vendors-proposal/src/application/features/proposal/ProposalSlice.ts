@@ -79,6 +79,7 @@ const initialState: ProposalModel = {
   totalValue: 0,
   createProposalLoading: false,
   createProposalSuccess: false,
+  createdAt: '',
 };
 
 export const proposalSlice = createSlice({
@@ -210,6 +211,7 @@ export const proposalSlice = createSlice({
           newQuoterId: action.payload.NewQuoterId,
         };
 
+        state.createdAt = action.payload.createdAt;
         state.createProposalSuccess = true;
         state.createProposalLoading = false;
       })
