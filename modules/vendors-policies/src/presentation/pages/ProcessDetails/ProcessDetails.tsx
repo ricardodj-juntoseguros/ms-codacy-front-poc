@@ -108,6 +108,7 @@ function ProcessDetails() {
           <section className={styles['process-details__content']}>
             <ProcessDetailsHeader
               policyId={processDetails.identification.policyid}
+              proposalId={Number(proposalId)}
               createdAt={processDetails.createdAt}
               processStatusConfig={processStatusConfig}
               userType={userType}

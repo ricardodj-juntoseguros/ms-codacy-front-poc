@@ -35,4 +35,22 @@ describe('DocumentAPI', () => {
     });
     expect(result).toBe('OK');
   });
+
+  it('getProposalDocument should call bff service correctly', async () => {
+    const mockGet = jest
+      .spyOn(AxiosHttpClient.prototype, 'get')
+      .mockImplementation(async () => {
+        return { message: 'ok' };
+      });
+    const proposalId = 12345;
+    const result = await DocumentAPI.getProposalDocument(proposalId);
+    expect(mockGet).toHaveBeenCalledWith({
+      url: `/api/v1/document/proposal/${proposalId}`,
+      headers: {
+        Accept: "application/pdf",
+      },
+      responseType: "arraybuffer",
+    });
+    expect(result).toEqual({ message: 'ok' });
+  });
 });

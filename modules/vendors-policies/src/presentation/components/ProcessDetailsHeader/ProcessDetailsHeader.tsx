@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import className from 'classnames';
 import { format } from 'date-fns';
 import { Button, ThemeContext, makeToast } from 'junto-design-system';
@@ -11,6 +11,7 @@ import styles from './ProcessDetailsHeader.module.scss';
 export interface ProcessDetailsHeaderProps {
   processStatusConfig: any;
   policyId: number;
+  proposalId: number;
   createdAt: string;
   policyNumber?: string;
   dateIssuance?: string | null;
@@ -20,11 +21,13 @@ export interface ProcessDetailsHeaderProps {
 const ProcessDetailsHeader: React.FC<ProcessDetailsHeaderProps> = ({
   processStatusConfig,
   policyId,
+  proposalId,
   createdAt,
   policyNumber,
   dateIssuance,
   userType,
 }) => {
+  const [isLoadingDocument, setIsLoadingDocumentDocument] = useState(false);
   const theme = useContext(ThemeContext);
   const {
     detailsMessage,
@@ -45,28 +48,50 @@ const ProcessDetailsHeader: React.FC<ProcessDetailsHeaderProps> = ({
   );
 
   const handleDownloadPolicyDocument = useCallback(() => {
+    setIsLoadingDocumentDocument(true);
     DocumentAPI.getPolicyDocument(policyId)
       .then((response: any) => {
         downloadFile(response.linkDocumento);
       })
-      .catch(error => makeToast('error', error.data.data.message));
+      .catch(error => makeToast('error', error.data.data.message))
+      .finally(() => setIsLoadingDocumentDocument(false));
   }, [policyId]);
 
+  const handleDownloadProposalDocument = useCallback(() => {
+    setIsLoadingDocumentDocument(true);
+    DocumentAPI.getProposalDocument(proposalId)
+      .then((result: any) => {
+        const file = new Blob([result], {
+          type: 'application/pdf'
+        });
+        downloadFile(file, `proposta_${policyId}.pdf`);
+      })
+      .catch(error => makeToast('error', error.data.data.message))
+      .finally(() => setIsLoadingDocumentDocument(false));
+  }, [proposalId, policyId]);
+
   const renderDownloadPolicyDocumentButton = () => {
-    if (
-      [
-        ProposalStatusEnum.ISSUED,
-        ProposalStatusEnum.TO_EXPIRE,
-        ProposalStatusEnum.EXPIRED,
-      ].includes(statusId)
-    ) {
+    const isPolicy =  [
+      ProposalStatusEnum.ISSUED,
+      ProposalStatusEnum.TO_EXPIRE,
+      ProposalStatusEnum.EXPIRED,
+    ].includes(statusId);
+    const isProposal = [
+      ProposalStatusEnum.ANALYSIS,
+      ProposalStatusEnum.AWAITING_APPROVAL,
+    ].includes(statusId);
+
+    if(isPolicy || isProposal) {
       return (
         <Button
-          data-testid="processDetailsHeader-button-download-policy"
+          data-testid="processDetailsHeader-button-download-action"
           type="button"
-          onClick={() => handleDownloadPolicyDocument()}
+          onClick={() => isPolicy ? handleDownloadPolicyDocument() : handleDownloadProposalDocument()}
+          variant={isPolicy ? "primary" : "secondary"}
+          size='medium'
+          disabled={isLoadingDocument}
         >
-          Baixar apólice
+          {isPolicy ? "Baixar apólice" : "Baixar proposta"}
         </Button>
       );
     }

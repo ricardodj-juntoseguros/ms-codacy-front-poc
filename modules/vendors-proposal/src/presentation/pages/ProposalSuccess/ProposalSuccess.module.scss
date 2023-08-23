@@ -10,7 +10,7 @@
   justify-content: center;
   flex-direction: column;
 
-  & i {
+  & > i {
     @include color('color', 'brand-primary');
     margin-bottom: spacing('xl');
 
@@ -37,6 +37,7 @@
 
 .proposal-success__button {
   width: 19.5rem;
+  margin-bottom: spacing('xxl');
 }
 
 @media screen and (max-width: 340px) {

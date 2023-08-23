@@ -20,14 +20,37 @@ describe('ProcessDetailsHeader', () => {
   const detailsHeaderMock = {
     createdAt: new Date().toISOString(),
     policyId: 123,
+    proposalId: 12345,
     processStatusConfig: PROCESS_STATUS[5],
     userType: 'policyholder',
     dateIssuance: new Date().toISOString(),
     policyNumber: 'a21bds213',
   };
+  const file = {
+    fieldname: 'file',
+    originalname: '3880885.pdf',
+    encoding: '7bit',
+    mimetype: 'application/pdf',
+    buffer: Buffer.alloc(253397, 1),
+    size: 415423,
+    stream: undefined,
+    destination: undefined,
+    filename: undefined,
+    path: undefined,
+  };
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   jest.spyOn(DocumentAPI, 'getPolicyDocument').mockImplementation(async () => ({
     linkDocumento: 'link_document',
   }));
+  jest
+    .spyOn(DocumentAPI, 'getProposalDocument')
+    .mockImplementation(() => {
+      return Promise.resolve(file);
+    });
 
   it('Should render correctly', async () => {
     const { getByTestId } = render(
@@ -35,7 +58,7 @@ describe('ProcessDetailsHeader', () => {
     );
 
     const downloadPolicyButton = getByTestId(
-      'processDetailsHeader-button-download-policy',
+      'processDetailsHeader-button-download-action',
     );
     expect(downloadPolicyButton).toBeInTheDocument();
 
@@ -44,5 +67,27 @@ describe('ProcessDetailsHeader', () => {
     });
 
     expect(downloadFile).toHaveBeenCalledWith('link_document');
+  });
+
+  it('Should download proposal document', async () => {
+    const updatedDetailsHeaderMock = {
+      ...detailsHeaderMock,
+      processStatusConfig: PROCESS_STATUS[2]
+    };
+
+    const { getByTestId } = render(
+      <ProcessDetailsHeader {...updatedDetailsHeaderMock} />,
+    );
+
+    const downloadButton = getByTestId(
+      'processDetailsHeader-button-download-action',
+    );
+    expect(downloadButton).toBeInTheDocument();
+
+    await act(async () => {
+      await fireEvent.click(downloadButton);
+    });
+
+    expect(downloadFile).toHaveBeenCalledWith(new Blob, "proposta_123.pdf");
   });
 });
