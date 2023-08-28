@@ -1,9 +1,9 @@
-export const checkSusepMock = {
+export const susepInformationMock = {
   retorno: {
-    cpfCnpj: '48102552000137',
-    nome: 'AON HOLDINGS CORRETORES DE SEGUROS LTDA',
+    cpfCnpj: '46812455000102',
+    nome: 'TESTE CORRETOR LTDA',
     tipoPessoa: 'PJ',
-    numeroSusep: 202039375,
+    numeroSusep: 222222222222,
     recadastrado: true,
     situacao: 'Ativo',
     dataCadastro: '',

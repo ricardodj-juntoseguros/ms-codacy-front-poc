@@ -44,6 +44,7 @@ export const BrokerGeneralInformation: React.FC = () => {
                 onChange={e => {handleCodSusep(codSusepFormatter(e.target.value))}}
                 onBlur={() => validate('codSusep',brokerInformation.susepCode)}
                 errorMessage={errors.codSusep && errors.codSusep[0]}
+                disabled
       />
       </div>
       <div className={styles['broker_general_information_field']}>

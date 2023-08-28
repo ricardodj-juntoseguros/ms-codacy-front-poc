@@ -1,4 +1,4 @@
-import {brokerInformationMock}  from 'modules/broker-signup/src/__mocks__';
+import {brokerInformationMock,susepInformationMock}  from 'modules/broker-signup/src/__mocks__';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
@@ -9,8 +9,9 @@ import {
 } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 import { brokerInformationAdapter } from '../../../application/features/brokerInformation/adapters/BrokerInformationAdapter';
 
+
 describe('BrokerAddress', () => {
-  const broker = brokerInformationAdapter(brokerInformationMock);
+  const broker = brokerInformationAdapter(brokerInformationMock,susepInformationMock);
 
   beforeEach(() => {
     store.dispatch(brokerInformationSliceActions.setBrokerInformationModel(broker));

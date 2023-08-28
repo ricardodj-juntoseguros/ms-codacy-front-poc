@@ -1,31 +1,27 @@
-import {brokerInformationMock}  from 'modules/broker-signup/src/__mocks__';
+import { brokerInformationMock } from 'modules/broker-signup/src/__mocks__';
 import { store } from '../../../config/store';
-import { BrokerInformationModel } from '../../types/model'
+import { BrokerInformationModel } from '../../types/model';
 
-import {
-  brokerInformationSliceActions
-} from './BrokerInformationSlice';
+import { brokerInformationSliceActions } from './BrokerInformationSlice';
 
 describe('BrokerInformationSlice', () => {
-
-
   afterEach(() => {
     store.dispatch(brokerInformationSliceActions.resetBrokerInformation());
   });
 
-  it('should be able search modalities by policyholder', async () => {
-    const brokerInformationModelMock = brokerInformationMock as unknown as BrokerInformationModel
-    store.dispatch(brokerInformationSliceActions.setBrokerInformationModel(brokerInformationModelMock));
-
+  it('should be able set the BrokerInformationSlice', async () => {
+    const brokerInformationModelMock =
+      brokerInformationMock as unknown as BrokerInformationModel;
+    store.dispatch(
+      brokerInformationSliceActions.setBrokerInformationModel(
+        brokerInformationModelMock,
+      ),
+    );
 
     const { brokerInformation } = store.getState();
 
-    expect(brokerInformation).toEqual(
-      brokerInformationMock,
-    );
+    expect(brokerInformation).toEqual(brokerInformationMock);
   });
-
-
 
   it('should be able reset the slice', async () => {
     const { brokerInformation } = store.getState();

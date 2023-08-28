@@ -1,16 +1,19 @@
 import {
   RegisterBrokerTypeEnum,
   CompanyInformationModel,
-  BankModel
+  BankModel,
 } from '../model';
 
 export interface BrokerInformationModel {
-  pathUpdate: string,
+  pathUpdate: string;
   status: RegisterBrokerTypeEnum;
-  description: string,
+  description: string;
   information: CompanyInformationModel;
   bankDetails: BankModel;
-  susepCode: string,
-  iss: number,
-  simplesOptant: boolean
+  susepCode: string;
+  iss: number;
+  simplesOptant: boolean;
+  susepSituation: boolean;
+  renewRegistration: boolean;
+  hasProductDamageInsurance: boolean;
 }

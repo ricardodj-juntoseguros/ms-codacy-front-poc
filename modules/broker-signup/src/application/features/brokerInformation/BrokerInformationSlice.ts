@@ -33,6 +33,9 @@ const initialState: BrokerInformationModel = {
   susepCode: '',
   iss: 0,
   simplesOptant: false,
+  susepSituation: false,
+  renewRegistration: false,
+  hasProductDamageInsurance: false,
 };
 
 export const brokerInformationSlice = createSlice({
@@ -47,6 +50,7 @@ export const brokerInformationSlice = createSlice({
       state.status = action.payload.status;
       state.description = action.payload.description;
       state.information = action.payload.information;
+      state.susepCode = action.payload.susepCode;
     },
     setpathUpdate: (state, action: PayloadAction<string>) => {
       state.pathUpdate = action.payload;

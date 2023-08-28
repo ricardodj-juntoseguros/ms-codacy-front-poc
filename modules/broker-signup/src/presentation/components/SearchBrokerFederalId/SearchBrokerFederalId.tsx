@@ -128,8 +128,8 @@ export function SearchBrokerFederalId({handleGoNextClick}: SearchBrokerFederalId
 
 
 
-  const onSubmit = (value: SearchRegisterBrokerDTO) => {
-    const broker = brokerInformationAdapter(value);
+  const onSubmit = (value: SearchRegisterBrokerDTO, statusSusep: StatusSusepDTO) => {
+    const broker = brokerInformationAdapter(value, statusSusep);
     dispatch(brokerInformationSliceActions.setBrokerInformationModel(broker));
     fetchRegisterBroker(registerBrokerAdapter(broker));
     handleGoNextClick();
@@ -173,7 +173,7 @@ export function SearchBrokerFederalId({handleGoNextClick}: SearchBrokerFederalId
       <div className={styles['search-broker-federalId-button-finish_wrapper']}>
             <Button
               data-testid="button-start-broker-registry"
-              onClick={() => onSubmit(statusBrokerRegistry as SearchRegisterBrokerDTO)}
+              onClick={() => onSubmit(statusBrokerRegistry as SearchRegisterBrokerDTO, statusSusep as StatusSusepDTO)}
               disabled={isDisableButtonSignup}
             >
               {isSubmitting

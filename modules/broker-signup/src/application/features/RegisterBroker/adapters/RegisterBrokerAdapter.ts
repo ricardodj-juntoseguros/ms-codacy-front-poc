@@ -1,7 +1,13 @@
 import { BrokerInformationModel } from '../../../types/model';
 
 export const registerBrokerAdapter = (broker: BrokerInformationModel) => {
-  const { information, bankDetails } = broker;
+  const {
+    information,
+    bankDetails,
+    susepSituation,
+    renewRegistration,
+    hasProductDamageInsurance,
+  } = broker;
   const {
     federalId,
     brokerCompanyName,
@@ -30,5 +36,8 @@ export const registerBrokerAdapter = (broker: BrokerInformationModel) => {
     simplesOptant: broker.simplesOptant,
     iSS: broker.iss,
     susepCode: parseInt(broker.susepCode, 10) || 0,
+    susepSituation,
+    renewRegistration,
+    hasProductDamageInsurance,
   };
 };

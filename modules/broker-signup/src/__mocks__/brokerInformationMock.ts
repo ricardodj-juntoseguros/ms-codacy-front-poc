@@ -25,4 +25,7 @@ export const brokerInformationMock = {
   susepCode: '',
   iss: 0,
   simplesOptant: false,
+  hasProductDamageInsurance: false,
+  renewRegistration: false,
+  susepSituation: false,
 };
