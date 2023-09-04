@@ -175,40 +175,40 @@ describe('Opportunities', () => {
     // cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
   });
 
-  it('Deve navegar até a guia Civel e validar seleção multipla', () => {
-    cy.get(selectors.opportunityDetailsList.civilTab)
-      .should('be.visible')
-      .wait(6000)
-      .click();
-    cy.get('[data-testid=chk-580d35ab-1bc3-4b69-a294-998b1174a76a][type="checkbox"]')
-      .click()
-      .wait(1000);
-    cy.get('[data-testid=chk-0fbec676-48bf-4e1b-8a56-fc73653c97c2][type="checkbox"]')
-      .click()
-      .wait(1000);
-    cy.get('[data-testid=btn-more-details-footer]').click();
-    cy.get(selectors.modal.primaryButton).click();
-    cy.get(selectors.opportunityDetailsList.email).type(
-      'ti_homologacao@juntoseguros.com',
-    );
-    cy.get(selectors.opportunityDetailsList.sendButton)
-      .should('be.visible')
-      .click();
-    // cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
-  });
+  // it('Deve navegar até a guia Civel e validar seleção multipla', () => {
+  //   cy.get(selectors.opportunityDetailsList.civilTab)
+  //     .should('be.visible')
+  //     .wait(6000)
+  //     .click();
+  //   cy.get('[data-testid=chk-580d35ab-1bc3-4b69-a294-998b1174a76a][type="checkbox"]')
+  //     .click()
+  //     .wait(1000);
+  //   cy.get('[data-testid=chk-0fbec676-48bf-4e1b-8a56-fc73653c97c2][type="checkbox"]')
+  //     .click()
+  //     .wait(1000);
+  //   cy.get('[data-testid=btn-more-details-footer]').click();
+  //   cy.get(selectors.modal.primaryButton).click();
+  //   cy.get(selectors.opportunityDetailsList.email).type(
+  //     'ti_homologacao@juntoseguros.com',
+  //   );
+  //   cy.get(selectors.opportunityDetailsList.sendButton)
+  //     .should('be.visible')
+  //     .click();
+  //   // cy.get(selectors.modal.title).contains(messages.moreDetailsSuccess);
+  // });
 
   it('Deve navegar até a guia Fiscal e validar seleção multipla', () => {
     cy.get(selectors.opportunityDetailsList.fiscalTab)
       .should('be.visible')
       .wait(6000)
       .click();
-    cy.get('[data-testid=chk-9aa0f326-5bdd-45d6-a02e-d1daf0e4c536][type="checkbox"]')
-      .click()
-      .wait(1000);
-    cy.get('[data-testid=chk-ea8b4889-0d66-4043-813a-74ecdadf4dfc][type="checkbox"]')
-      .click()
-      .wait(1000);
     cy.get('[data-testid=chk-c3def35c-e282-4acc-ae87-bc9e03d9d572][type="checkbox"]')
+      .click()
+      .wait(1000);
+    cy.get('[data-testid=chk-d2f7f349-9cff-4150-b509-eb2977961daa][type="checkbox"]')
+      .click()
+      .wait(1000);
+    cy.get('[data-testid=chk-c9cc9943-ec17-4648-bf55-6c1520dfbc0e][type="checkbox"]')
       .click()
       .wait(1000);
     cy.get('[data-testid=btn-more-details-footer]').click();

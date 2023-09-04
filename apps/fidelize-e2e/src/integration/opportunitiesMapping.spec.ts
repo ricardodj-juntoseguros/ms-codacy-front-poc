@@ -10,7 +10,8 @@ beforeEach(() => {
 
   cy.get(selectors.login.submitButton)
   .should('be.visible')
-  .click();
+  .click()
+  .wait(9000);
 });
 
 describe('Mapeamento de oportunidades', () => {
@@ -25,8 +26,9 @@ describe('Mapeamento de oportunidades', () => {
   it('Deve solicitar novas oportunidades', () => {
  
     cy.get('.Button_j-button__container__ePge3')
-    .scrollIntoView().should('be.visible')   
-    .trigger('click');
+    .scrollIntoView()
+    .should('be.visible')
+    .click();
 
     cy.get('[data-testid=input-contact-email]')
         .type('ti_homologacao@juntoseguros.com');

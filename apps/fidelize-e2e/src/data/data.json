@@ -2,6 +2,7 @@
   "user": {
     "username": "testecorretor_cor",
     "usernameDenied": "g1p1_cor",
+    "usernameBlackList": "aon",
     "password": "Parana.123"
   },
   "cookies": {

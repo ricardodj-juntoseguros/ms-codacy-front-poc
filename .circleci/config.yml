@@ -127,7 +127,7 @@ jobs:
       environment:
         description: Environment to e2e tests to
         type: string
-    resource_class: gitjmseguradora/k8s-qas
+    resource_class: gitjmseguradora/k8s-eks-qas
     #parallelism: 5
     steps:
       - attach_workspace:

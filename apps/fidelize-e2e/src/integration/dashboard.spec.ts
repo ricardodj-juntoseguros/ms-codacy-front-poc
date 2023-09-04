@@ -14,13 +14,13 @@ beforeEach(() => {
 describe('Dashboard', () => {
 
   it('Deve validar pesquisa pelo nome do tomador', () => {
-    cy.get(selectors.dashboardSummary.searchText).type('TESTE', {
+    cy.get(selectors.dashboardSummary.searchText).type('DEXCO', {
       delay: 1000,
     });
     cy.get(selectors.dashboardSummary.searchInput)
       .should('be.visible')
       .contains(
-        'TOMADOR TESTE',
+        'DEXCO',
       )
       .click();
 
@@ -30,7 +30,7 @@ describe('Dashboard', () => {
   });
 
   it('Deve validar pesquisa pelo CNPJ do tomador', () => {
-    cy.get(selectors.dashboardSummary.searchText).type('91833813000118', {
+    cy.get(selectors.dashboardSummary.searchText).type('97837181000147', {
       delay: 1000,
     });
 
@@ -38,7 +38,7 @@ describe('Dashboard', () => {
       .should('be.visible')
       .should(
         'have.text',
-        'TOMADOR TESTE – SQUAD DESACOPLAMENTO - 91.833.813/0001-18',
+        'DEXCO S.A - 97.837.181/0001-47',
       )
       .click();
 
