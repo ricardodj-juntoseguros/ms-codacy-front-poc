@@ -39,6 +39,9 @@ function DashboardContainer() {
   const hasAccessToLaborModality = useSelector(
     checkAccessToFeature(AccessFeatureEnum.LABOR_MODALITY),
   );
+  const canRequestOpportunity = useSelector(
+    checkAccessToFeature(AccessFeatureEnum.FIDELIZE_SOLICITACAO),
+  );
   const filteredPolicyholders = useSelector(selectPolicyholderSelection);
   const selectedOpportunities = useSelector(selectSelectedOpportunities);
   const selectionLossModalRef = useRef<HTMLDivElement>(null);
@@ -49,6 +52,7 @@ function DashboardContainer() {
 
   useEffect(() => {
     dispatch(fetchAccessToFeature(AccessFeatureEnum.LABOR_MODALITY));
+    dispatch(fetchAccessToFeature(AccessFeatureEnum.FIDELIZE_SOLICITACAO));
   }, [dispatch]);
 
   useEffect(() => {
@@ -176,7 +180,7 @@ function DashboardContainer() {
   return (
     <div className={styles['dashboard-container__wrapper']}>
       <DashboardHeader />
-      <Divider />
+      {!canRequestOpportunity && <Divider />}
       <PolicyholderFilterSelector />
       <DashboardSummary
         totalOpportunities={

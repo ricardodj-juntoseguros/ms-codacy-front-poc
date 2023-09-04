@@ -1,14 +1,16 @@
 import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import DashboardHeader from './DashboardHeader';
+import { store } from '../../../config/store';
 
 describe('DashboardHeader', () => {
   it('Should render successfully', () => {
-    const component = render(<DashboardHeader />);
+    const component = render(
+      <Provider store={store}>
+        <DashboardHeader />
+      </Provider>,
+    );
     expect(component.getByText('Fidelize Dashboard')).toBeTruthy();
-    expect(
-      component.getByText(
-        `Visualize as oportunidades judiciais que o Fidelize já mapeou para alguns tomadores da sua carteira. Caso queira solicitar mapeamento de outro tomador, fale com o seu comercial responsável.`,
-      ),
-    ).toBeTruthy();
+    expect(component.getByTestId('dashboard-opportunity-text')).toBeTruthy();
   });
 });

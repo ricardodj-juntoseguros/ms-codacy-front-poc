@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import { act } from 'react-dom/test-utils';
 import '@testing-library/jest-dom';
 import {
-  ModalitySummaryDTO,
   PolicyholderDTO,
   SummaryChartDataDTO,
   ModalitiesSummaryDTO,
@@ -47,7 +46,8 @@ describe('DashboardContainer', () => {
           tooltip: { labels: [] },
         } as SummaryChartDataDTO;
       });
-    jest.spyOn(OpportunitiesDetailsApi, 'getFiltersContentByModality')
+    jest
+      .spyOn(OpportunitiesDetailsApi, 'getFiltersContentByModality')
       .mockImplementationOnce(async () => {
         return { filters: [] };
       });

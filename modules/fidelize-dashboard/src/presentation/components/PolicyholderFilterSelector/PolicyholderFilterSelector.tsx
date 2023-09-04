@@ -20,9 +20,14 @@ import {
 import { summaryActions } from '../../../application/features/summary/SummarySlice';
 import { summaryChartsActions } from '../../../application/features/summaryCharts/SummaryChartsSlice';
 import styles from './PolicyholderFilterSelector.module.scss';
+import { AccessFeatureEnum } from '../../../application/types/model/AccessFeatureEnum';
+import { checkAccessToFeature } from '../../../application/features/accessCheck/AccessCheckSlice';
 
 const PolicyholderFilterSelector: React.FC = () => {
   const dispatch = useDispatch();
+  const canRequestOpportunity = useSelector(
+    checkAccessToFeature(AccessFeatureEnum.FIDELIZE_SOLICITACAO),
+  );
   const mappedPolicyholders = useSelector(selectMappedPolicyholders) || [];
   const storePolicyholderSelection = useSelector(selectPolicyholderSelection);
   const selectedOpportunities = useSelector(selectSelectedOpportunities);
@@ -202,15 +207,16 @@ const PolicyholderFilterSelector: React.FC = () => {
       })}
     >
       <p className={styles['policyholder-filter-selector__helper-text']}>
-        Informe a Razão Social ou CNPJ do tomador que deseja visualizar as
-        informações abaixo
+        {canRequestOpportunity
+          ? 'Busque por tomadores que já foram mapeados e visualize as oportunidades abaixo'
+          : 'Informe a Razão Social ou CNPJ do tomador que deseja visualizar as informações abaixo'}
       </p>
       <div className={styles['policyholder-filter-selector__input-grid']}>
         <div>
           <SearchInput
-            label="Busque por tomador"
+            label="CNPJ ou Razão Social do tomador"
             icon="search"
-            placeholder="Busque por tomador"
+            placeholder="CNPJ ou Razão Social do tomador "
             value={searchValue}
             options={mapSearchOptions()}
             changeValueOnSelect={false}
