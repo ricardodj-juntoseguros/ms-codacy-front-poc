@@ -21,6 +21,7 @@
         "libs/infrastructure/http-client/src/index.ts"
       ],
       "@modules/broker-signup": ["modules/broker-signup/src/index.tsx"],
+      "@modules/broker-signup-direct": ["modules/broker-signup-direct/src/index.tsx"],
       "@modules/corretor-emissao": ["modules/corretor-emissao/src/index.tsx"],
       "@modules/fidelize-dashboard": [
         "modules/fidelize-dashboard/src/index.tsx"

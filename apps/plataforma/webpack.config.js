@@ -53,6 +53,14 @@ module.exports = (config, context) => {
           'broker-signup',
           'src',
         ),
+        '@modules/broker-signup-direct': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'modules',
+          'broker-signup-direct',
+          'src',
+        ),
         '@infrastructure/http-client': path.resolve(
           __dirname,
           '..',

@@ -27,6 +27,32 @@
       },
       "tags": []
     },
+    "broker-signup-direct": {
+      "root": "modules/broker-signup-direct",
+      "sourceRoot": "modules/broker-signup-direct/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "modules/broker-signup-direct/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/modules/broker-signup-direct"
+          ],
+          "options": {
+            "jestConfig": "modules/broker-signup-direct/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "corretor-emissao": {
       "root": "modules/corretor-emissao",
       "sourceRoot": "modules/corretor-emissao/src",

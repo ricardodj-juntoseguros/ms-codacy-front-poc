@@ -6,6 +6,7 @@ module.exports = {
     '<rootDir>/apps/vendors',
     '<rootDir>/modules/corretor-emissao',
     '<rootDir>/modules/broker-signup',
+    '<rootDir>/modules/broker-signup-direct',
     '<rootDir>/modules/fidelize-dashboard',
     '<rootDir>/modules/fidelize-mapeamentos-import',
     '<rootDir>/modules/vendors-proposal',

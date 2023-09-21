@@ -1,0 +1,36 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.broker_general_information_wrapper{
+  width: 672px;
+  margin: 0 auto;
+  & h1{
+    @include font('base-emphasys');
+    margin: 0;
+    padding-top: spacing('xxl-2');
+  }
+
+  .broker_general_information_field {
+    padding-top: spacing('m');
+    width: 312px;
+    padding: spacing('m') spacing('xxl-2') 0 0 ;
+  }
+
+  @media screen and (max-width: 680px) {
+      width: 312px;
+  }
+}
+
+.broker_general_information_inputs{
+  display: grid;
+  grid-template-columns: auto auto;
+
+  @media screen and (max-width: 680px) {
+    display: contents;
+  }
+}
+
+.broker_general_information_field_toogle{
+  padding: spacing('m') 0 spacing('xl') 0 ;
+}
+
+
