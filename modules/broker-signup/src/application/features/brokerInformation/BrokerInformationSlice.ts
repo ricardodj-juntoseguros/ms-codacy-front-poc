@@ -85,7 +85,7 @@ export const brokerInformationSlice = createSlice({
     },
     setSimplesOptant: (state, action: PayloadAction<boolean>) => {
       state.simplesOptant = action.payload;
-    },
+    },   
   },
 });
 

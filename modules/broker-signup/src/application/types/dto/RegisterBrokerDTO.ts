@@ -16,5 +16,6 @@ export interface RegisterBrokerDTO {
   digitalContactNumber: number
   simplesOptant: boolean,
   iSS: number
-  susepCode: number
+  susepCode: number,
+  email: string
 }

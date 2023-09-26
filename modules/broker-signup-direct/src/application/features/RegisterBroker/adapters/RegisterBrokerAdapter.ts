@@ -16,6 +16,7 @@ export const registerBrokerAdapter = (broker: BrokerInformationModel) => {
     city,
     zipCode,
     state,
+    email,
   } = information;
   const { name, bankNumber, accounNumber, bankDigit, accounDigit } =
     bankDetails;
@@ -39,5 +40,6 @@ export const registerBrokerAdapter = (broker: BrokerInformationModel) => {
     susepSituation,
     renewRegistration,
     hasProductDamageInsurance,
+    email,
   };
 };
