@@ -13,6 +13,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const { component: Component, ...rest } = props;
   const vendorsLoginUrl = `${process.env.NX_GLOBAL_VENDORS_PLATFORM_URL}/login`;
+  const currentLocationUrl = window.location.href;
   return (
     <Route
       {...rest}
@@ -20,7 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         const isAuthenticated = VendorsAuthService.isAuthenticated();
         const userType = VendorsAuthService.getUserType();
         if (!isAuthenticated) {
-          window.location.assign(`${vendorsLoginUrl}`);
+          window.location.assign(`${vendorsLoginUrl}?redirectUrl=${currentLocationUrl}`);
           return null;
         }
         if (!userType || !allowedRoles.includes(userType)) {

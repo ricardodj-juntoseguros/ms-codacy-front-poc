@@ -32,6 +32,7 @@ describe('Vendors Protected Route', () => {
   });
 
   it('Should redirect to platform login if user is not authenticated', () => {
+    window.location.href = 'pre-approval?';
     jest
       .spyOn(VendorsAuthService, 'isAuthenticated')
       .mockImplementation(() => false);
@@ -41,7 +42,7 @@ describe('Vendors Protected Route', () => {
     const componentToRender = () => <h1>Teste 123</h1>;
 
     renderComponent(componentToRender, ['insured']);
-    expect(window.location.assign).toHaveBeenCalledWith('/vendorsUrl/login');
+    expect(window.location.assign).toHaveBeenCalledWith('/vendorsUrl/login?redirectUrl=pre-approval?');
   });
 
   it('Should redirect to default url if user type is not allowed to access route', () => {

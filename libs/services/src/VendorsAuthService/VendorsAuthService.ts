@@ -158,10 +158,20 @@ export class VendorsAuthService {
   }
 
   getRedirectPageAfterLogin(): string {
+    const currentLocationUrl = window.location.href;
+    const redirectUrl =
+      currentLocationUrl.split('redirectUrl=').length > 0
+        ? currentLocationUrl.split('redirectUrl=')[1]
+        : undefined;
     const userCookie = this.getUserAccessCookie();
+
     if (!userCookie) return '';
     const { userType } = userCookie;
     let urlRedirect = '';
+
+    if (redirectUrl) {
+      return redirectUrl;
+    }
 
     switch (userType) {
       case this.USER_TYPES.policyholder:

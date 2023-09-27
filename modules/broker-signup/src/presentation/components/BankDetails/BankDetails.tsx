@@ -68,12 +68,23 @@ export function BankDetails({
       dispatch(validationActions.setErrorMessages({[input]: [VALIDATION_MESSAGES.required]}),
       );
     }
+    if(valueInput !== "" && brokerInformation.bankDetails.bankCode === ''){
+      dispatch(validationActions.setErrorMessages({[input]: [VALIDATION_MESSAGES.required]}),
+      );
+      handleChangePolicyholderInput("");
+    }
   }
 
   const handleChangePolicyholderInput = (value: string) => {
     dispatch(brokerInformationSliceActions.setBankName(value));
     const result = bankOptions.filter(item => item.name.toUpperCase().includes(value.toUpperCase()) || item.bankCode.toUpperCase().includes(value.toUpperCase()));
     setOptions(result);
+    if(result.length ===0){
+      dispatch(brokerInformationSliceActions.setBank({ name: value,bankCode: ''}));
+    }
+    else if(result.length === 1){
+      dispatch(brokerInformationSliceActions.setBank({ name: result[0].name, bankCode: result[0].bankCode}));
+    }
   };
 
 

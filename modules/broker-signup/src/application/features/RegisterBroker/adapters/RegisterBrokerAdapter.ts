@@ -22,7 +22,7 @@ export const registerBrokerAdapter = (broker: BrokerInformationModel) => {
     bankDetails;
   return {
     federalId: federalId.replace(/[^a-zA-Z0-9]/g, ''),
-    brokerCompanyName,
+    brokerCompanyName: brokerCompanyName.substring(0, 99),
     address,
     complement,
     zipCode,
