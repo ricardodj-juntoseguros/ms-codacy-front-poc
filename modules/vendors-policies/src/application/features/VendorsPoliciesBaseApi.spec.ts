@@ -59,7 +59,6 @@ describe('VendorsPoliciesBaseApi', () => {
 
   it('handleErrors should call refresh token and update user cookie and instance headers', async () => {
     jest.mock('axios');
-    const mockedAxios = axios as jest.Mocked<typeof axios>;
     const mockError = {
       response: {
         status: 401,

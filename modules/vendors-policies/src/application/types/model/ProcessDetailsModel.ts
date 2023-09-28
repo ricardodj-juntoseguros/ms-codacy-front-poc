@@ -6,4 +6,5 @@ export interface ProcessDetailsModel extends ProcessDetailDTO {
   netPrizeFormatted?: string;
   initialValidityFormatted: string;
   endValidityFormatted: string;
+  comissionFormatted?: string;
 }

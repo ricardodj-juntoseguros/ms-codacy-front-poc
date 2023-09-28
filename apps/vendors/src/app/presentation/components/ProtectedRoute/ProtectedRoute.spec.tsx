@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter, RouteComponentProps } from 'react-router-dom';
-import { VendorsAuthService } from '@services';
+import { UserTypeEnum, VendorsAuthService } from '@services';
 import ProtectedRoute from './ProtectedRoute';
 
 process.env.NX_GLOBAL_VENDORS_PLATFORM_URL = '/vendorsUrl';
@@ -38,7 +38,7 @@ describe('Vendors Protected Route', () => {
       .mockImplementation(() => false);
     jest
       .spyOn(VendorsAuthService, 'getUserType')
-      .mockImplementation(() => 'insured');
+      .mockImplementation(() => UserTypeEnum.INSURED);
     const componentToRender = () => <h1>Teste 123</h1>;
 
     renderComponent(componentToRender, ['insured']);
@@ -51,7 +51,7 @@ describe('Vendors Protected Route', () => {
       .mockImplementation(() => true);
     jest
       .spyOn(VendorsAuthService, 'getUserType')
-      .mockImplementation(() => 'policyholder');
+      .mockImplementation(() => UserTypeEnum.POLICYHOLDER);
     jest
       .spyOn(VendorsAuthService, 'getRedirectPageAfterLogin')
       .mockImplementation(() => '/vendorsUrl/policies');
@@ -67,7 +67,7 @@ describe('Vendors Protected Route', () => {
       .mockImplementation(() => true);
     jest
       .spyOn(VendorsAuthService, 'getUserType')
-      .mockImplementation(() => 'insured');
+      .mockImplementation(() => UserTypeEnum.INSURED);
     const componentToRender = () => <h1>Teste 123</h1>;
     const component = renderComponent(componentToRender, ['insured']);
     const title = component.findByText('Teste 123');

@@ -28,10 +28,6 @@ const ProcessList: React.FC = () => {
   }, [activePage]);
 
   const fetchProposals = (pageNumber: number) => {
-    if (VendorsAuthService.getUserType() === UserTypeEnum.BROKER) {
-      setLoadingProcesses(false);
-      return;
-    }
     ProcessListingApi.getProcesses(pageNumber, 10)
       .then(response => {
         setError(false);
@@ -40,7 +36,7 @@ const ProcessList: React.FC = () => {
       .catch(error => {
         setError(true);
         if (error.data && error.data.data) {
-          makeToast('error', error.data.data.message);
+          makeToast('error', error.data.data);
         }
       })
       .finally(() => setLoadingProcesses(false));
@@ -83,12 +79,10 @@ const ProcessList: React.FC = () => {
             />
           ))}
         {!loadingProcesses && proposals && proposals.totalCount === 0 && (
-          <EmptyProcessList />
+          <EmptyProcessList userType={VendorsAuthService.getUserType()} />
         )}
         {!loadingProcesses && (!proposals || error) && (
-          <UnavailableProcessList
-            hasError={VendorsAuthService.getUserType() === 'insured'}
-          />
+          <UnavailableProcessList />
         )}
       </div>
       {proposals && proposals.totalCount > 10 && (

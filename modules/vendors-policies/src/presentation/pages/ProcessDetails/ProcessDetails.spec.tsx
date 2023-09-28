@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { VendorsAuthService } from '@services';
+import { UserTypeEnum, VendorsAuthService } from '@services';
 import Router from 'react-router';
 import { act } from 'react-dom/test-utils';
 import DocumentAPI from '../../../application/features/document/DocumentAPI';
@@ -63,7 +63,7 @@ describe('ProcessDetails', () => {
 
   it('should redirect to the list if the parameter sent is incorrect', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'insured';
+      return UserTypeEnum.INSURED;
     });
     jest.spyOn(Router, 'useParams').mockReturnValue({ proposalId: 'aa' });
 
@@ -74,7 +74,7 @@ describe('ProcessDetails', () => {
 
   it('should not render issuance claim button on policyholder', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'policyholder';
+      return UserTypeEnum.POLICYHOLDER;
     });
     const { queryByTestId } = render(<ProcessDetails />);
 
@@ -85,7 +85,7 @@ describe('ProcessDetails', () => {
 
   it('should change title and text if status changes', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'policyholder';
+      return  UserTypeEnum.POLICYHOLDER;
     });
     jest
       .spyOn(ProcessDetailsAPI, 'getProcessDetails')
@@ -104,7 +104,7 @@ describe('ProcessDetails', () => {
 
   it('should not render screen items if it does not have the details', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'policyholder';
+      return UserTypeEnum.POLICYHOLDER;
     });
     jest
       .spyOn(ProcessDetailsAPI, 'getProcessDetails')
@@ -129,7 +129,7 @@ describe('ProcessDetails', () => {
 
   it('should go back to list if an error occurs in the call of details', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'policyholder';
+      return UserTypeEnum.POLICYHOLDER;
     });
     jest
       .spyOn(ProcessDetailsAPI, 'getProcessDetails')
@@ -141,7 +141,7 @@ describe('ProcessDetails', () => {
 
   it('should go back to save screen if click back to my dashboard', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'policyholder';
+      return UserTypeEnum.POLICYHOLDER;
     });
 
     const { findByText } = render(<ProcessDetails />);

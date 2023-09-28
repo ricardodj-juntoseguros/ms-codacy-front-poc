@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { UserTypeEnum } from '@services';
 import { fireEvent, render } from '../../../config/testUtils';
 import EmptyProcessList from './EmptyProcessList';
 
@@ -15,7 +16,7 @@ describe('EmptyProcessList', () => {
   });
 
   it('Should redirect to proposal page on button click', () => {
-    const { getByText, getByTestId } = render(<EmptyProcessList />);
+    const { getByText, getByTestId } = render(<EmptyProcessList userType={UserTypeEnum.INSURED} />);
     expect(getByText('Você ainda não possui processos')).toBeInTheDocument();
     expect(
       getByText(

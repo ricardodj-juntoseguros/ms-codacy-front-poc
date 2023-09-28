@@ -2,6 +2,7 @@
 
 .process-details-aside__wrapper {
   grid-area: aside;
+  width: 100%;
 
   @media screen and (max-width: 768px) {
     margin-top: spacing('xxl-3');
@@ -27,9 +28,10 @@
   @include color('color', 'dark');
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
+  height: auto;
   height: 7.31rem;
   padding: spacing('xl');
   border-radius: spacing('xs');
@@ -40,7 +42,8 @@
     height: spacing('l');
     margin-right: spacing('l');
 
-    &[class^='icon-']:before, &[class*=' icon-']:before {
+    &[class^='icon-']:before,
+    &[class*=' icon-']:before {
       font-size: spacing('l');
     }
   }
@@ -48,6 +51,5 @@
   & p {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
   }
 }

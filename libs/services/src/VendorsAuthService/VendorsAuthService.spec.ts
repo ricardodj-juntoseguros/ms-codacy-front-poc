@@ -2,6 +2,7 @@ import { AxiosHttpClient } from '@infrastructure/http-client';
 import Cookies from 'js-cookie';
 import { ChatUtils } from '@shared/utils';
 import VendorsAuthService from './VendorsAuthService';
+import { UserTypeEnum } from './enums';
 
 const mockToken =
   'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzMF82cUlyUGdXMkFOWHo5YjZreXc2YnAzNUpPR2QtcEZBNDdjWFFHT2g0In0.eyJleHAiOjE2ODY4NTQyNzksImlhdCI6MTY4Njg1MzM3OSwianRpIjoiZjQ1Y2RjNzUtYjZlNi00NGQ1LTk3MmYtMmU4MjgyMmExNTFhIiwiaXNzIjoiaHR0cHM6Ly9nYXRla2VlcGVyLXFhcy5qdW50b3NlZ3Vyb3MuY29tL2F1dGgvcmVhbG1zL3NlZ3VyYWRvcmFfdmVuZG9ycyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhZTI3MzUzNy1iN2FlLTQwYzQtYmIxNy0xYTc5MjE3N2UzODMiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJ2ZW5kb3JzX3BsYXRmb3JtIiwic2Vzc2lvbl9zdGF0ZSI6Ijk4OWE5YTQ1LTVhOGEtNDY5My04OTY4LTBhZjQzMDYwY2FlMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9qdW50b3NlZ3Vyb3MucG9zdG1hbi5jby8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJpbnN1cmVkIiwiZGVmYXVsdC1yb2xlcy1zZWd1cmFkb3JhX3ZlbmRvcnMiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkFETSBCUksiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1fYnJrQGJyay5jb20uYnIiLCJnaXZlbl9uYW1lIjoiQURNIiwiZmFtaWx5X25hbWUiOiJCUksiLCJlbWFpbCI6ImFkbV9icmtAYnJrLmNvbS5iciJ9.fRAv4qQWJbvjF9acT__Jf7KoR5LuXVIClKQ1h-HU0FogKQgC8bL9PssWFZKoILHBOheXjo5-MsF31r92g0ek8Cz7DzJaE7ICB4I_VV5yEmBzeyf6xDmrTbM-BJ7jSpgGPLPDaW2LBMvR_M7bi362PXyTxbNagDAHpzciRbVCGyWqf19v-NTuD9G5OgQSdcqyxTKJw_XEmvnDdQbJwDUFpx64LSeKjMViHkgo5QffGq2tet411D6D2eFhEtqbvFsewf5rh2uTT6M6AxiQz0z4dl7wUzBNY2HohuJ8CW_Y-WdEPRUSUT1qMLm66Xv4gAGOP03BWz7C6tFZuXsswRzL9Q';
@@ -146,8 +147,8 @@ describe('Vendors Auth Service', () => {
   it('initInsuredChat should only open chat if logged user type is insured', () => {
     jest
       .spyOn(VendorsAuthService, 'getUserType')
-      .mockImplementationOnce(() => 'insured')
-      .mockImplementationOnce(() => 'policyholder');
+      .mockImplementationOnce(() => UserTypeEnum.INSURED)
+      .mockImplementationOnce(() => UserTypeEnum.POLICYHOLDER);
     jest.spyOn(ChatUtils.zenDesk, 'init');
 
     VendorsAuthService.initInsuredChat();

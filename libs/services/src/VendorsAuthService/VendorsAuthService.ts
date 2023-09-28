@@ -6,6 +6,7 @@ import { AxiosHttpClient } from '@infrastructure/http-client';
 import { ChatUtils } from '@shared/utils';
 import jwtDecode from 'jwt-decode';
 import UserToken from './types/UserToken';
+import { UserTypeEnum } from './enums';
 
 export class VendorsAuthService {
   private readonly USER_ACCESS_COOKIE =
@@ -196,7 +197,7 @@ export class VendorsAuthService {
       .finally(() => this.clearAuthData());
   }
 
-  getUserType(): 'insured' | 'policyholder' | 'broker' | null {
+  getUserType(): UserTypeEnum | null {
     const userCookie = this.getUserAccessCookie();
     if (!userCookie) return null;
     const { userType } = userCookie;

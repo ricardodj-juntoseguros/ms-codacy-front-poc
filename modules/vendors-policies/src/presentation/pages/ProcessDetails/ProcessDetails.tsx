@@ -12,7 +12,7 @@ import {
   makeToast,
 } from 'junto-design-system';
 import className from 'classnames';
-import { VendorsAuthService } from '@services';
+import { UserTypeEnum, VendorsAuthService } from '@services';
 import { federalIdFormatter, currencyFormatter } from '@shared/utils';
 import { useHistory, useParams } from 'react-router';
 import { format } from 'date-fns';
@@ -52,6 +52,9 @@ function ProcessDetails() {
             securedAmountFormatted: currencyFormatter(response.securedAmount),
             ...(response.netPrize && {
               netPrizeFormatted: currencyFormatter(response.netPrize),
+            }),
+            ...(response.comission && {
+              comissionFormatted: currencyFormatter(response.comission),
             }),
             initialValidityFormatted: format(
               new Date(response.initialValidity),
@@ -138,7 +141,7 @@ function ProcessDetails() {
                   title="Valor da cobertura"
                   values={[processDetails.securedAmountFormatted]}
                 />
-                {processDetails.netPrizeFormatted && (
+                {processDetails.netPrizeFormatted && userType === UserTypeEnum.POLICYHOLDER && (
                   <DetailField
                     title="Custo da garantia"
                     values={[processDetails.netPrizeFormatted]}
@@ -161,6 +164,24 @@ function ProcessDetails() {
                 title="Total em dias"
                 values={[processDetails.durationInDays]}
               />
+
+              {userType === UserTypeEnum.BROKER && (
+                <div className={styles['proposal-details__item-inline']}>
+                  {processDetails.comissionFormatted && (
+                    <DetailField
+                      title="Comissão"
+                      values={[processDetails.comissionFormatted]}
+                    />
+                  )}
+
+                  {processDetails.netPrizeFormatted && (
+                    <DetailField
+                      title="Prêmio"
+                      values={[processDetails.netPrizeFormatted]}
+                    />
+                  )}
+                </div>
+              )}
 
               <div className={styles['proposal-details__divider']}>
                 <Divider />

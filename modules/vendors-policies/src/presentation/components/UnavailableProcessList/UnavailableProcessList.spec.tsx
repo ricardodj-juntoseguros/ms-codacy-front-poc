@@ -8,17 +8,7 @@ describe('UnavailableProcessList', () => {
   });
 
   it('Should render correctly if hasError prop is false', () => {
-    const { getByText } = render(<UnavailableProcessList hasError={false} />);
-    expect(getByText('Lista em construção')).toBeInTheDocument();
-    expect(
-      getByText(
-        'Estamos trabalhando no desenvolvimento dessa lista. Em breve disponibilizaremos ela para você.',
-      ),
-    ).toBeInTheDocument();
-  });
-
-  it('Should render correctly if hasError prop is false', () => {
-    const { getByText } = render(<UnavailableProcessList hasError />);
+    const { getByText } = render(<UnavailableProcessList />);
     expect(getByText('Lista indisponível')).toBeInTheDocument();
     expect(
       getByText(

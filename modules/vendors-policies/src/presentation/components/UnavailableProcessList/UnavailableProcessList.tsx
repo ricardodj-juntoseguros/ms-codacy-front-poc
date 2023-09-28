@@ -3,13 +3,7 @@ import { Divider, ThemeContext } from 'junto-design-system';
 import { ReactComponent as UnderConstructionIllustration } from './assets/under-construction.svg';
 import styles from './UnavailableProcessList.module.scss';
 
-interface UnavailableProcessListProps {
-  hasError: boolean;
-}
-
-const UnavailableProcessList: React.FC<UnavailableProcessListProps> = ({
-  hasError,
-}) => {
+const UnavailableProcessList: React.FC = () => {
   const theme = useContext(ThemeContext);
 
   return (
@@ -18,12 +12,10 @@ const UnavailableProcessList: React.FC<UnavailableProcessListProps> = ({
       <div>
         <UnderConstructionIllustration />
         <h2 className={styles[theme]}>
-          {hasError ? 'Lista indisponível' : 'Lista em construção'}
+          Lista indisponível
         </h2>
         <p className={styles[theme]}>
-          {hasError
-            ? 'Esta lista não está disponível no momento. Em breve você conseguirá acessá-la.'
-            : 'Estamos trabalhando no desenvolvimento dessa lista. Em breve disponibilizaremos ela para você.'}
+          Esta lista não está disponível no momento. Em breve você conseguirá acessá-la.
         </p>
       </div>
     </div>

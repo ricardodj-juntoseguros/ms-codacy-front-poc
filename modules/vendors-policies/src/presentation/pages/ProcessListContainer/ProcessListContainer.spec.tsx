@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { VendorsAuthService } from '@services';
+import { UserTypeEnum, VendorsAuthService } from '@services';
 import { fireEvent, render } from '../../../config/testUtils';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
 import { proposalListMock } from '../../../__mocks__';
@@ -27,7 +27,7 @@ describe('ProcessListContainer', () => {
       return 'test insured';
     });
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'insured';
+      return UserTypeEnum.INSURED;
     });
     const { getByText, findByText } = render(<ProcessListContainer />);
     await findByText('3 processos listados');
@@ -42,10 +42,10 @@ describe('ProcessListContainer', () => {
       return 'test broker';
     });
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'broker';
+      return UserTypeEnum.BROKER;
     });
     const { getByText, findByText } = render(<ProcessListContainer />);
-    await findByText('0 processos listados');
+    await findByText('3 processos listados');
     expect(getByText('Olá, test broker')).toBeInTheDocument();
     expect(
       getByText('acompanhe aqui seus contratos e garantias'),
@@ -57,7 +57,7 @@ describe('ProcessListContainer', () => {
       return 'test policyholder';
     });
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'policyholder';
+      return UserTypeEnum.POLICYHOLDER;
     });
     const { getByText, findByText } = render(<ProcessListContainer />);
     await findByText('3 processos listados');
@@ -69,7 +69,7 @@ describe('ProcessListContainer', () => {
 
   it('Should not render new proposal button for user type broker', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'broker';
+      return UserTypeEnum.BROKER;
     });
     const { queryByTestId } = render(<ProcessListContainer />);
     expect(
@@ -79,7 +79,7 @@ describe('ProcessListContainer', () => {
 
   it('Should not render new proposal button for user type policyholder', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'policyholder';
+      return UserTypeEnum.POLICYHOLDER;
     });
     const { queryByTestId } = render(<ProcessListContainer />);
     expect(
@@ -89,7 +89,7 @@ describe('ProcessListContainer', () => {
 
   it('Should render new proposal button for user type insured and go to proposal page when clicked', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return 'insured';
+      return UserTypeEnum.INSURED;
     });
     const { getByTestId, findByText } = render(<ProcessListContainer />);
     await findByText('3 processos listados');

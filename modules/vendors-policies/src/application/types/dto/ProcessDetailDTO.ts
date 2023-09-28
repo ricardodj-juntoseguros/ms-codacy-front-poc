@@ -31,6 +31,7 @@ export interface ProcessDetailDTO {
   durationInDays: number;
   contractNumber: string;
   netPrize?: number;
+  comission?: number;
   project?: {
     id: string;
     name: string;

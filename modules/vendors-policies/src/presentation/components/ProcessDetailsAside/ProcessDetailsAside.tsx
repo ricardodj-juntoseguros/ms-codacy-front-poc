@@ -13,8 +13,15 @@ const ProcessDetailsAside: React.FC<ProcessDetailsAsideProps> = ({ name }) => {
 
   return (
     <aside className={styles['process-details-aside__wrapper']}>
-      <h2 className={styles['process-details-aside__title']}>Projeto</h2>
-      <p className={styles['process-details-aside__text']}>
+      <h2 className={className(
+        styles['process-details-aside__title'],
+        styles[theme],
+        )}
+      >Projeto</h2>
+      <p className={className(
+        styles['process-details-aside__text'],
+        styles[theme],
+        )}>
         Este processo está vinculado a um projeto.
       </p>
 

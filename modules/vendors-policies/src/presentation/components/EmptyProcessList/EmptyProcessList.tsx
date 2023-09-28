@@ -1,9 +1,15 @@
 import { useContext } from 'react';
 import { Button, Divider, ThemeContext } from 'junto-design-system';
+import { UserTypeEnum } from '@services';
 import { ReactComponent as EmptyIllustration } from './assets/empty-illustration.svg';
 import styles from './EmptyProcessList.module.scss';
 
-const EmptyProcessList: React.FC = () => {
+interface EmptyProcessListProps {
+  userType: UserTypeEnum | null;
+}
+
+
+const EmptyProcessList: React.FC<EmptyProcessListProps> = ({ userType }) => {
   const theme = useContext(ThemeContext);
 
   const handleButtonClick = () => {
@@ -20,12 +26,14 @@ const EmptyProcessList: React.FC = () => {
           Assim que houverem garantias solicitadas, elas serão listadas aqui
           para acompanhamento.
         </p>
-        <Button
-          data-testid="emptyProcessList-button-proposal"
-          onClick={() => handleButtonClick()}
-        >
-          Solicitar garantia
-        </Button>
+        {userType === UserTypeEnum.INSURED && (
+          <Button
+            data-testid="emptyProcessList-button-proposal"
+            onClick={() => handleButtonClick()}
+          >
+            Solicitar garantia
+          </Button>
+        )}
       </div>
     </div>
   );

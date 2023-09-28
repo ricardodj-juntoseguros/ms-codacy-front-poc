@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { VendorsAuthService } from '@services';
+import { UserTypeEnum, VendorsAuthService } from '@services';
 import { fireEvent, render } from '../../../config/testUtils';
 import { proposalListMock, proposalListFullPageMock } from '../../../__mocks__';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
@@ -13,7 +13,7 @@ describe('ProcessList', () => {
   beforeAll(() => {
     jest
       .spyOn(VendorsAuthService, 'getUserType')
-      .mockImplementation(() => 'insured');
+      .mockImplementation(() => UserTypeEnum.INSURED);
   });
 
   it('Should call bff api to fetch processes on component mount', async () => {
