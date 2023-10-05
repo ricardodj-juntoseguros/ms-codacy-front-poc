@@ -1,0 +1,21 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.process-list-status-filter__wrapper {
+  display: flex;
+  flex-flow: row;
+  gap: spacing('l');
+  max-height: 48px !important;
+
+  & > button {
+    min-width: 81px;
+  }
+
+  @media screen and (max-width: 768px) {
+    gap: spacing('m');
+    flex-wrap: wrap;
+
+    & > div {
+      min-height: 48px;
+    }
+  }
+}

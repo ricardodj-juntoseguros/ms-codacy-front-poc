@@ -1,4 +1,5 @@
 export enum ProposalStatusEnum {
+  DEFAULT = -1,
   UNDEFINED = 0,
   IN_PROGRESS = 1,
   ANALYSIS = 2,

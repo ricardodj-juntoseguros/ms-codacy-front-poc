@@ -27,10 +27,13 @@
 .process-list__totalizer {
   margin-top: spacing('xl');
   margin-bottom: spacing('l');
+  display: flex;
+  flex-flow: row;
 
   & > p {
     @include font('xs');
     @include color('color', 'grey-500');
+    margin-right: spacing('s');
   }
 }
 

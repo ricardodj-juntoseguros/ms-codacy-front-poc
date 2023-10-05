@@ -1,0 +1,40 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.process-list-policyholder-filter__wrapper {
+  display: flex;
+  flex-flow: row;
+  gap: spacing('l');
+  max-height: 48px !important;
+
+  & > button {
+    min-width: 81px;
+  }
+
+  &--loading {
+    & i::before {
+      animation: rotating 1s linear infinite;
+      -webkit-animation: rotating 1s linear infinite;
+      display: inline-block;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    gap: spacing('m');
+    flex-wrap: wrap;
+
+    & > div {
+      min-height: 48px;
+    }
+  }
+}

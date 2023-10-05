@@ -2,18 +2,11 @@ import { ProposalStatusEnum } from '../application/types/model';
 
 export const PROCESS_STATUS = [
   {
-    id: ProposalStatusEnum.UNDEFINED,
-    name: 'undefined',
-    detailsMessage: '',
-    detailsIcon: '',
-    cardTagLabel: '',
-  },
-  {
-    id: ProposalStatusEnum.IN_PROGRESS,
-    name: 'in-progress',
-    detailsMessage: '',
-    detailsIcon: '',
-    cardTagLabel: '',
+    id: ProposalStatusEnum.DEFAULT,
+    name: 'default',
+    detailsMessage: 'Essa proposta está em processamento.',
+    detailsIcon: 'settings',
+    cardTagLabel: 'Em processamento',
   },
   {
     id: ProposalStatusEnum.ANALYSIS,
@@ -30,13 +23,6 @@ export const PROCESS_STATUS = [
       'Essa solicitação está aguardando sua aprovação. Verifique seu e-mail.',
     detailsIcon: 'alert-circle',
     cardTagLabel: 'Aguardando aprovação',
-  },
-  {
-    id: ProposalStatusEnum.READY_TO_ISSUE,
-    name: 'under-analysis',
-    detailsMessage: 'Essa solicitação está em análise final da seguradora.',
-    detailsIcon: 'alert-triangle',
-    cardTagLabel: 'Análise final',
   },
   {
     id: ProposalStatusEnum.ISSUED,
@@ -72,12 +58,5 @@ export const PROCESS_STATUS = [
     detailsMessage: 'Essa apólice foi cancelada.',
     detailsIcon: 'alert-triangle',
     cardTagLabel: 'Cancelada',
-  },
-  {
-    id: ProposalStatusEnum.APPROVED,
-    name: 'approved',
-    detailsMessage: '',
-    detailsIcon: '',
-    cardTagLabel: '',
   },
 ];

@@ -21,7 +21,7 @@ describe('ProcessDetailsHeader', () => {
     createdAt: new Date().toISOString(),
     policyId: 123,
     proposalId: 12345,
-    processStatusConfig: PROCESS_STATUS[5],
+    processStatusConfig: PROCESS_STATUS[3],
     userType: 'policyholder',
     dateIssuance: new Date().toISOString(),
     policyNumber: 'a21bds213',
@@ -46,11 +46,9 @@ describe('ProcessDetailsHeader', () => {
   jest.spyOn(DocumentAPI, 'getPolicyDocument').mockImplementation(async () => ({
     linkDocumento: 'link_document',
   }));
-  jest
-    .spyOn(DocumentAPI, 'getProposalDocument')
-    .mockImplementation(() => {
-      return Promise.resolve(file);
-    });
+  jest.spyOn(DocumentAPI, 'getProposalDocument').mockImplementation(() => {
+    return Promise.resolve(file);
+  });
 
   it('Should render correctly', async () => {
     const { getByTestId } = render(
@@ -72,7 +70,7 @@ describe('ProcessDetailsHeader', () => {
   it('Should download proposal document', async () => {
     const updatedDetailsHeaderMock = {
       ...detailsHeaderMock,
-      processStatusConfig: PROCESS_STATUS[2]
+      processStatusConfig: PROCESS_STATUS[1],
     };
 
     const { getByTestId } = render(
@@ -88,6 +86,6 @@ describe('ProcessDetailsHeader', () => {
       await fireEvent.click(downloadButton);
     });
 
-    expect(downloadFile).toHaveBeenCalledWith(new Blob, "proposta_123.pdf");
+    expect(downloadFile).toHaveBeenCalledWith(new Blob(), 'proposta_123.pdf');
   });
 });

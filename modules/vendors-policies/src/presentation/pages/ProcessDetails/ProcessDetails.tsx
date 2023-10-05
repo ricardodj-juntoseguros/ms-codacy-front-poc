@@ -37,7 +37,12 @@ function ProcessDetails() {
 
   // eslint-disable-next-line consistent-return
   const processStatusConfig = useMemo(() => {
-    if (processDetails) return PROCESS_STATUS[processDetails.status];
+    if (processDetails) {
+      return (
+        PROCESS_STATUS.find(pStatus => pStatus.id === processDetails.status) ||
+        PROCESS_STATUS[0]
+      );
+    }
   }, [processDetails]);
 
   useLayoutEffect(() => {
@@ -141,12 +146,13 @@ function ProcessDetails() {
                   title="Valor da cobertura"
                   values={[processDetails.securedAmountFormatted]}
                 />
-                {processDetails.netPrizeFormatted && userType === UserTypeEnum.POLICYHOLDER && (
-                  <DetailField
-                    title="Custo da garantia"
-                    values={[processDetails.netPrizeFormatted]}
-                  />
-                )}
+                {processDetails.netPrizeFormatted &&
+                  userType === UserTypeEnum.POLICYHOLDER && (
+                    <DetailField
+                      title="Custo da garantia"
+                      values={[processDetails.netPrizeFormatted]}
+                    />
+                  )}
               </div>
 
               <div className={styles['proposal-details__item-inline']}>

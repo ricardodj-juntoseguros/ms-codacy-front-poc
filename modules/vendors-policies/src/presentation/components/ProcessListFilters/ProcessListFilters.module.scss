@@ -1,0 +1,41 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.process-list-filters__wrapper {
+  margin-top: spacing('xl');
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  & > div:first-child {
+    max-width: 162px;
+  }
+
+  & > div:last-child {
+    width: 665px;
+  }
+
+  & > div {
+    max-height: 48px;
+  }
+
+  @media screen and (max-width: 768px) {
+    &--applied {
+      margin-bottom: spacing('l');
+    }
+
+    & > div {
+      max-width: none !important;
+      width: 100% !important;
+    }
+  }
+
+  @media screen and (min-width: 890px) {
+    & > div:first-child > div > div > div:not(:hover) {
+      border-right-color: transparent;
+    }
+
+    & > div:last-child > div > div {
+      max-width: 560px;
+    }
+  }
+}

@@ -28,7 +28,8 @@
     @include color('color', 'warning');
   }
 
-  &--expired {
+  &--expired,
+  &--default {
     @include color('color', 'grey-600');
   }
 

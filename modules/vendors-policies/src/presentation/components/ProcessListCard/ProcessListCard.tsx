@@ -30,15 +30,17 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
     product,
     status,
   } = proposal;
+  const processStatusConfig =
+    PROCESS_STATUS.find(pStatus => pStatus.id === status) || PROCESS_STATUS[0];
 
   const getStatusTagClassname = () => {
-    const name = PROCESS_STATUS.find(pStatus => pStatus.id === status)?.name;
+    const { name } = processStatusConfig;
     return `process-list-card__status-tag--${name}`;
   };
 
   const getStatusLabel = () => {
-    const pStatus = PROCESS_STATUS.find(pStatus => pStatus.id === status);
-    return pStatus ? pStatus.cardTagLabel : '';
+    const { cardTagLabel } = processStatusConfig;
+    return cardTagLabel;
   };
 
   const handleDownloadPolicyDocument = () => {
@@ -97,7 +99,7 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
                 ProposalStatusEnum.ISSUED,
                 ProposalStatusEnum.TO_EXPIRE,
                 ProposalStatusEnum.EXPIRED,
-                ProposalStatusEnum.CANCELLED
+                ProposalStatusEnum.CANCELLED,
               ].includes(status)
                 ? 'Nº da apólice'
                 : 'Nº da solicitação'}
@@ -165,7 +167,7 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
         {[
           ProposalStatusEnum.ISSUED,
           ProposalStatusEnum.TO_EXPIRE,
-          ProposalStatusEnum.EXPIRED
+          ProposalStatusEnum.EXPIRED,
         ].includes(status) && (
           <LinkButton
             data-testid={`processListCard-button-${proposalId}-download`}

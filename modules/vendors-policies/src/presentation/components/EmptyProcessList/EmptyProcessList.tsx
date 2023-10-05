@@ -2,14 +2,18 @@ import { useContext } from 'react';
 import { Button, Divider, ThemeContext } from 'junto-design-system';
 import { UserTypeEnum } from '@services';
 import { ReactComponent as EmptyIllustration } from './assets/empty-illustration.svg';
+import { ReactComponent as EmptyWithFiltersIllustration } from './assets/empty-with-filters.svg';
 import styles from './EmptyProcessList.module.scss';
 
 interface EmptyProcessListProps {
+  hasAppliedFilter: boolean;
   userType: UserTypeEnum | null;
 }
 
-
-const EmptyProcessList: React.FC<EmptyProcessListProps> = ({ userType }) => {
+const EmptyProcessList: React.FC<EmptyProcessListProps> = ({
+  hasAppliedFilter,
+  userType,
+}) => {
   const theme = useContext(ThemeContext);
 
   const handleButtonClick = () => {
@@ -20,13 +24,22 @@ const EmptyProcessList: React.FC<EmptyProcessListProps> = ({ userType }) => {
     <div className={styles['empty-process-list__wrapper']}>
       <Divider orientation="horizontal" />
       <div>
-        <EmptyIllustration />
-        <h2 className={styles[theme]}>Você ainda não possui processos</h2>
+        {hasAppliedFilter ? (
+          <EmptyWithFiltersIllustration />
+        ) : (
+          <EmptyIllustration />
+        )}
+        <h2 className={styles[theme]}>
+          {hasAppliedFilter
+            ? 'Não encontramos processos para sua busca'
+            : 'Você ainda não possui processos'}
+        </h2>
         <p className={styles[theme]}>
-          Assim que houverem garantias solicitadas, elas serão listadas aqui
-          para acompanhamento.
+          {hasAppliedFilter
+            ? 'Tente usar outros parâmetros e busque novamente. Caso ainda encontre dificuldades você pode falar com um de nossos especialistas no Chat.'
+            : 'Assim que houverem garantias solicitadas, elas serão listadas aqui para acompanhamento.'}
         </p>
-        {userType === UserTypeEnum.INSURED && (
+        {!hasAppliedFilter && userType === UserTypeEnum.INSURED && (
           <Button
             data-testid="emptyProcessList-button-proposal"
             onClick={() => handleButtonClick()}

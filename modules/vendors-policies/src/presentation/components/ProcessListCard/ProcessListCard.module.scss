@@ -163,7 +163,8 @@
     background-color: #ffe7db;
   }
 
-  &--expired {
+  &--expired,
+  &--default {
     @include color('color', 'grey-500');
     @include color('background-color', 'grey-100');
   }
