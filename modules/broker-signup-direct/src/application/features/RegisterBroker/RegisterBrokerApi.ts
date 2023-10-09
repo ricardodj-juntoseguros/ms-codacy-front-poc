@@ -24,7 +24,7 @@ class RegisterBrokerApi {
   async updateRegisterBroker(payload: any, path: string) {
     const params: IHttpClientRequestParameters = {
       url: `/brokers/signup?id=${path}`,
-      payload
+      payload,
     };
 
     return await this.instance.patch<string>(params);
@@ -35,6 +35,20 @@ class RegisterBrokerApi {
       url: `/brokers/signup/create?id=${path}`,
     };
 
+    return await this.instance.post<string>(params);
+  }
+
+  async checkEmailExists(email: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/brokers/users/exists?email=${email}`,
+    };
+    return await this.instance.get<string>(params);
+  }
+
+  async SendValidationEmail(pathUser: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/brokers/signup/validation/email?id=${pathUser}`,
+    };
     return await this.instance.post<string>(params);
   }
 }

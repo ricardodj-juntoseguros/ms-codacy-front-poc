@@ -16,9 +16,20 @@
   position: relative;
   box-sizing: border-box;
   height: 100vh;
-  padding-top: 184px;
+  padding-top: 176px;
   margin-right: calc(100% - 1480px);
 
+  @media screen and (min-width: 1680px) {
+    padding-top: 204px;
+    margin-left: 112px;
+  }
+  @media screen and (min-width: 700px) and (max-width: 1000px)   {
+    margin-right: 250px;
+  }
+
+  @media screen and (max-width: 680px) {
+    flex-direction: column;
+  }
 
   & div > h1{
     @include font('xl-2-emphasys');
@@ -34,7 +45,7 @@
 
   @media screen and (max-width: 680px) {
     width: 100%;
-    padding: 45px 0 0 24px;
+    padding: 45px 24px 0 24px;
     height: 100%;
     & div > h1{
       @include font('xl-emphasys');
@@ -45,7 +56,7 @@
     & div > h2{
       @include font('base');
       color: color('dark');
-      margin: 0 0 64px 0;
+      margin: 0 0 56px 0;
     }
   }
 
@@ -66,51 +77,10 @@
 padding: 32px 16px 32px 32px;
 }
 
-.search_registration_container_section_helper{
-  width: 480px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  padding: 108px 0 24px 0;
-  box-sizing: border-box;
-  background-color: #F1F5F7;
-  height: 100vh;
-
-  @media screen and (max-width: 680px) {
-    width: 100%;
-    padding: 48px 24px 24px 24px;
-  }
-}
-
-
-
-
-.search_registration_container_section_helper_text{
-  width: 352px;
-  padding: 0 64px 44px 64px;
-  & h2{
-    @include font('l-emphasys');
-    color: color('dark');
-    margin-bottom:  spacing('xs');
-  }
-
-  & p{
-    @include font('base');
-    color: color('dark');
-    margin-bottom:  spacing('xs');
-  }
-
-  @media screen and (max-width: 680px) {
-    width: 352px;
-    padding: 0 24px 44px 24px;
-  }
-}
-
 .search_registration_container_section_form_section{
   width: 360px;
   @media screen and (max-width: 680px) {
-    width: 312px;
+    width: 100%;
   }
 }
 

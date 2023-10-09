@@ -5,10 +5,12 @@ import { LinkButton } from 'junto-design-system';
 import styles from './SearchRegistrationContainer.module.scss';
 import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
 import SearchBrokerFederalId from '../../components/SearchBrokerFederalId/SearchBrokerFederalId';
+import { TextHelper } from '../../components/TextHelper/TextHelper';
 
 const SearchRegistrationContainer = ({ history }: RouteComponentProps) => {
   const sreenWidth = window.screen.width;
   const [showTextHelper, setShowTextHelper] = useState(sreenWidth > 680);
+  const textHelper = ["Para ser aceito, o CNPJ precisa ter cadastro ativo na Susep (Superintendência de Seguros Privados) e estar habilitado no Produto 305.","A empresa deve possuir a atividade “Corretores e agentes de seguros, de planos de previdência complementar e de saúde – código 66223-00” na Classificação Nacional de Atividades Econômicas (CNAE).", "Além disso, a Razão Social ou Nome Empresarial deve conter as expressões 'Corretor(a) de Seguros' ou 'Corretagem de Seguros', sendo o nome reservado por UF." ]
 
   const handleGoNextClick = () => {
       history.push('/register-responsible');
@@ -41,17 +43,9 @@ const SearchRegistrationContainer = ({ history }: RouteComponentProps) => {
      </div>
  </div>
  {showTextHelper &&
-    <div className={styles['search_registration_container_section_helper']}>
-      <div className={styles['search_registration_container_section_helper_text']}>
-        <h2>Quais CNPJ são aceitos?</h2>
-        <p>Para ser aceito, o CNPJ precisa ter cadastro ativo na Susep (Superintendência de Seguros Privados) e estar habilitado no Produto 305.</p>
-        <p>A empresa deve possuir a atividade “Corretores e agentes de seguros, de planos de previdência complementar e de saúde – código 66223-00” na Classificação Nacional de Atividades Econômicas (CNAE).</p>
-        <p>Além disso, a Razão Social ou Nome Empresarial deve conter as expressões "Corretor(a) de Seguros" ou "Corretagem de Seguros", sendo o nome reservado por UF.</p>
-      </div>
-    </div>
+    <TextHelper title="Quais CNPJ são aceitos?" text={textHelper} />
   }
  </div>
-
 );
 }
 

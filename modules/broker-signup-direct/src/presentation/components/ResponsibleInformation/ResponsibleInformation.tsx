@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { InputBase, Button,Checkbox,LinkButton,Modal } from 'junto-design-system';
-import { cpfFormatter, phoneFormatter } from '@shared/utils';
 import { ValidationModel } from 'modules/broker-signup/src/application/types/model';
 import styles from './ResponsibleInformation.module.scss';
 import { responsibleFormatterName } from '../../../helpers';
@@ -11,6 +10,8 @@ import { responsibleInformationSliceActions, selectResponsibleInformation } from
 import { validationActions, selectValidation,validateForm } from '../../../application/features/validation/ValidationSlice';
 import {  ResponsibleInformationDataSchema } from '../../../application/features/validations/schemas/componentSchemas';
 import { TERMS_RESPONSIBILITY } from '../../../constants/termsResponsibility'
+import  RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi'
+import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
 
 export interface ResponsibleInformationProps {
   onSubmit: () => void;
@@ -24,10 +25,10 @@ export function ResponsibleInformation({
   const responsabileInformation = useSelector(selectResponsibleInformation);
   const { errors } = useSelector(selectValidation);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const {nameResponsable, cpfResponsable, phoneNumberResponsable, emailBroker} = responsabileInformation;
+  const {nameResponsable, emailBroker} = responsabileInformation;
 
   useEffect(() => {
-    const hasNotInputEmpty = nameResponsable !== '' && emailBroker !== ''&& cpfResponsable !== '' && phoneNumberResponsable !== ''
+    const hasNotInputEmpty = nameResponsable !== '' && emailBroker !== ''
     const hasInputError = Object.values(errors).length
     if(hasNotInputEmpty && hasInputError === 0 && responsabileInformation.termsResponsibility){
      setIsDisableGoNextStep(false);
@@ -35,19 +36,11 @@ export function ResponsibleInformation({
     if(!responsabileInformation.termsResponsibility){
       setIsDisableGoNextStep(true);
     }
-  }, [errors, responsabileInformation.termsResponsibility, nameResponsable, emailBroker, cpfResponsable, phoneNumberResponsable]);
+  }, [errors, responsabileInformation.termsResponsibility, nameResponsable, emailBroker]);
 
   const handleNameChange = (value: string) => {
     dispatch(responsibleInformationSliceActions.setName(value));
     dispatch(validationActions.removeErrorMessage('name'));
-  };
-  const handleCpfChange = (value: string) => {
-    dispatch(responsibleInformationSliceActions.setCpf(value));
-    dispatch(validationActions.removeErrorMessage('cpf'));
-  };
-  const handlePhoneNumberChange = (value: string) => {
-    dispatch(responsibleInformationSliceActions.setPhone(value));
-    dispatch(validationActions.removeErrorMessage('phone'));
   };
   const handleEmailChange = (value: string) => {
     dispatch(responsibleInformationSliceActions.setEmail(value));
@@ -67,25 +60,47 @@ export function ResponsibleInformation({
       setIsDisableGoNextStep(true);
   };
 
-  const validate = async (input: string,error: string) => {
+
+  const validateName = async () => {
     const validateResult = await dispatch(
       validateForm({
         schema: ResponsibleInformationDataSchema,
         data:
         {
           nameResponsible: nameResponsable,
-          documentNumber: cpfResponsable,
-          phone: phoneNumberResponsable,
+          email: emailBroker
+        },
+      }),
+    );
+    const { errors } = validateResult.payload as ValidationModel;
+    if(errors.nameResponsible && errors.nameResponsible.length > 0){
+      showFormError('name',errors['nameResponsible'][0]);
+    }
+  }
+
+  const validateEmail = async () => {
+    const validateResult = await dispatch(
+      validateForm({
+        schema: ResponsibleInformationDataSchema,
+        data:
+        {
+          nameResponsible: nameResponsable,
           email: emailBroker
         },
       }),
     );
     const { errors } = validateResult.payload as ValidationModel;
 
-    if(errors[error] && errors[error].length > 0){
-      showFormError(input,errors[error][0]);
+    if(errors['email'] && errors['email'].length > 0){
+      showFormError('email',errors['email'][0]);
+      return;
     }
-
+    await RegisterBrokerApi.checkEmailExists(emailBroker)
+    .then(response => {
+      if(response){
+        showFormError('email',VALIDATION_MESSAGES.emailExist);
+      }
+    })
   }
   const templateModal = {
     title: { value: TERMS_RESPONSIBILITY.title},
@@ -95,39 +110,21 @@ export function ResponsibleInformation({
     <div className={styles['responsible_information_wrapper']}>
               <InputBase
                 data-testid="responsible-name"
-                label="Nome completo do responsável"
-                placeholder="Nome completo do responsável"
+                label="Nome completo"
+                placeholder=""
                 value={nameResponsable}
                 onChange={e => {handleNameChange(responsibleFormatterName(e.target.value))}}
-                onBlur={() => validate('name','nameResponsible')}
+                onBlur={() => validateName()}
                 errorMessage={errors.name && errors.name[0]}
 
               />
               <InputBase
-               data-testid="responsible-cpf"
-                label="CPF"
-                placeholder="CPF"
-                value={cpfResponsable}
-                onChange={e => {handleCpfChange(cpfFormatter(e.target.value))}}
-                onBlur={() => validate('cpf','documentNumber')}
-                errorMessage={errors.cpf && errors.cpf[0]}
-              />
-              <InputBase
-               data-testid="responsible-phone"
-                label="Telefone"
-                placeholder="Telefone"
-                value={phoneNumberResponsable}
-                onChange={e => {handlePhoneNumberChange(phoneFormatter(e.target.value))}}
-                onBlur={() => validate('phone','phone')}
-                errorMessage={errors.phone && errors.phone[0]}
-              />
-              <InputBase
                data-testid="responsible-email"
-                label="E-mail"
-                placeholder="E-mail"
+                label="E-mail da corretora"
+                placeholder=""
                 value={emailBroker}
                 onChange={e => {handleEmailChange(e.target.value)}}
-                onBlur={() => validate('email','email')}
+                onBlur={() => validateEmail()}
                 errorMessage={errors.email && errors.email[0]}
               />
               <div className={styles['responsible_information_terms']}>
@@ -155,7 +152,7 @@ export function ResponsibleInformation({
                   onClick={onSubmit}
                   disabled={isDisableGoNextStep}
                   >
-                  Avançar
+                  Continuar
                   </Button>
               </div>
     </div>

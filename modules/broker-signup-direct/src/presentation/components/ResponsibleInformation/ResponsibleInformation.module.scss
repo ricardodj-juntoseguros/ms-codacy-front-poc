@@ -4,33 +4,29 @@
   margin: auto;
   & div  {
     padding-top: spacing('m');
-    width: 312px;
   }
   & div:nth-child(1), div:last-child{
     padding-top: 0;
   }
-  & span {
-    text-align: justify;
-  }
 }
 .responsible_information_terms{
   display: flex;
-  padding: spacing('l') 0 spacing('l') 2px !important;
+  padding: spacing('xl') 0 spacing('xl') 2px !important;
 
   & span {
   @include font('sm');
+  font-weight:600;
   align-self: flex-end;
   }
   .span_terms{
-    color: color('grey-500'); ;
+    font-weight:400;
+    color: color('grey-600'); ;
   }
 }
 
 .responsible_information_button{
     padding-top: 0;
     & button{
-      width: 312px;
+      width: 360px;
     }
 }
-
-

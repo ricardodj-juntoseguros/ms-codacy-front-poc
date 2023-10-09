@@ -4,7 +4,7 @@
   width: 360px;
 
   @media screen and (max-width: 680px) {
-    width: 312px;
+    width: 100%;
   }
 }
 
@@ -12,7 +12,7 @@
   width: 360px;
 
   @media screen and (max-width: 680px) {
-    width: 312px;
+    width: 100%;
   }
 }
 
@@ -35,14 +35,14 @@
 }
 
 .search-broker-federalId-button-finish_wrapper{
- padding-top: 40px;
+ padding-top: 32px;
  & button {
  width: 360px;
  }
 
  @media screen and (max-width: 680px) {
   & button {
-    width: 312px;
+    width: 100%;
     }
   }
 }
