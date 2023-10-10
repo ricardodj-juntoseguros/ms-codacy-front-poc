@@ -1,6 +1,6 @@
 import { InsuredDTO } from '../application/types/dto';
 
-export const getInsuredsForInsuredUserMock = [
+export const getInsuredOptionsMock = [
   {
     federalId: '51715480000108',
     name: 'Teste Segurado 1',

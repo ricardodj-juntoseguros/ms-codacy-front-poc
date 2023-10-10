@@ -38,14 +38,14 @@ class ProcessListingApi {
     return getInstance().get(params);
   }
 
-  async getInsuredOptionsForInsuredUser(): Promise<InsuredDTO[]> {
+  async getInsuredOptions(): Promise<InsuredDTO[]> {
     const params: IHttpClientRequestParameters = {
-      url: '/api/v1/insured',
+      url: '/api/v1/insureds',
     };
     return getInstance().get<InsuredDTO[]>(params);
   }
 
-  async getPolicyholderOptionsForInsuredUser(
+  async searchPolicyholderOptions(
     corporateName: string,
   ): Promise<PolicyholderDTO[]> {
     const params: IHttpClientRequestParameters = {

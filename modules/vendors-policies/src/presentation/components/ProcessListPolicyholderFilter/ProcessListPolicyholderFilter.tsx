@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { VendorsAuthService } from '@services';
+import { UserTypeEnum, VendorsAuthService } from '@services';
 import { useDebounce } from '@shared/hooks';
 import classNames from 'classnames';
 import {
@@ -27,20 +27,18 @@ const ProcessListPolicyholderFilter: React.FC<ProcessListPolicyholderFilterProps
     useDebounce(
       () => {
         if (inputOptions.some(opt => opt.label === inputValue)) return;
-        if (userType === 'insured') {
-          fetchPolicyholderOptionsForInsuredUserType(inputValue || '');
+        if (userType !== UserTypeEnum.POLICYHOLDER) {
+          fetchPolicyholderOptions(inputValue || '');
         }
       },
       1500,
       [inputValue, userType],
     );
 
-    const fetchPolicyholderOptionsForInsuredUserType = (
-      searchValue: string,
-    ) => {
+    const fetchPolicyholderOptions = (searchValue: string) => {
       if (searchValue.length < 3) return;
       setLoadingOptions(true);
-      ProcessListingApi.getPolicyholderOptionsForInsuredUser(searchValue)
+      ProcessListingApi.searchPolicyholderOptions(searchValue)
         .then(response => {
           setInputOptions(
             response.map(({ corporateName, federalId }) => ({

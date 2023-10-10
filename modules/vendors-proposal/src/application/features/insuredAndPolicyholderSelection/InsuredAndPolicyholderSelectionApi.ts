@@ -10,7 +10,7 @@ import {
 class InsuredAndPolicyholderSelectionApi {
   async getInsuredList(): Promise<InsuredDTO[]> {
     const params: IHttpClientRequestParameters = {
-      url: '/api/v1/insured',
+      url: '/api/v1/insureds',
     };
 
     return getInstance().get<InsuredDTO[]>(params);
@@ -20,12 +20,8 @@ class InsuredAndPolicyholderSelectionApi {
     insuredFederalId: string,
   ): Promise<InsuredAddressDTO[]> {
     const params: IHttpClientRequestParameters = {
-      url: '/api/v1/insured/addresses',
-      params: {
-        federalId: insuredFederalId,
-      },
+      url: `/api/v1/insureds/${insuredFederalId}/addresses`,
     };
-
     return getInstance().get<InsuredAddressDTO[]>(params);
   }
 

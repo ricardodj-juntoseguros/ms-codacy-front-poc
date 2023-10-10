@@ -1,8 +1,8 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import ProcessListingApi from './ProcessListingApi';
 import {
-  getInsuredsForInsuredUserMock,
-  getPolicyholderForInsuredUserMock,
+  getInsuredOptionsMock,
+  searchPolicyholderOptionsMock,
   getStatusFilterOptionsMock,
   proposalListMock,
 } from '../../../__mocks__';
@@ -54,27 +54,25 @@ describe('Process Listing API', () => {
     expect(result.length).toBe(8);
   });
 
-  it('[getInsuredOptionsForInsuredUser] should call bff service correctly', async () => {
+  it('[getInsuredOptions] should call bff service correctly', async () => {
     const mockGet = jest
       .spyOn(AxiosHttpClient.prototype, 'get')
-      .mockImplementationOnce(async () => getInsuredsForInsuredUserMock);
+      .mockImplementationOnce(async () => getInsuredOptionsMock);
 
-    const result = await ProcessListingApi.getInsuredOptionsForInsuredUser();
+    const result = await ProcessListingApi.getInsuredOptions();
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/api/v1/insured',
+      url: '/api/v1/insureds',
     });
-    expect(result).toStrictEqual(getInsuredsForInsuredUserMock);
+    expect(result).toStrictEqual(getInsuredOptionsMock);
   });
 
-  it('[getPolicyholderOptionsForInsuredUser] should call bff service correctly', async () => {
+  it('[searchPolicyholderOptionsMock] should call bff service correctly', async () => {
     const mockGet = jest
       .spyOn(AxiosHttpClient.prototype, 'get')
-      .mockImplementationOnce(async () => getPolicyholderForInsuredUserMock);
+      .mockImplementationOnce(async () => searchPolicyholderOptionsMock);
 
-    const result = await ProcessListingApi.getPolicyholderOptionsForInsuredUser(
-      'TOMADOR',
-    );
+    const result = await ProcessListingApi.searchPolicyholderOptions('TOMADOR');
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/api/v1/policyholder',
@@ -82,6 +80,6 @@ describe('Process Listing API', () => {
         corporateName: 'TOMADOR',
       },
     });
-    expect(result).toStrictEqual(getPolicyholderForInsuredUserMock);
+    expect(result).toStrictEqual(searchPolicyholderOptionsMock);
   });
 });

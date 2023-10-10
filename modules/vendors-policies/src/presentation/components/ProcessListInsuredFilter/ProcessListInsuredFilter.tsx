@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { VendorsAuthService } from '@services';
+import { VendorsAuthService, UserTypeEnum } from '@services';
 import classNames from 'classnames';
 import {
   LinkButton,
@@ -19,15 +19,15 @@ const ProcessListInsuredFilter: React.FC<ProcessListInsuredFilterProps> = ({
   showClearButton,
   selectInsuredCallback,
 }) => {
-  const [inputValue, setInputValue] = useState<string>();
+  const [inputValue, setInputValue] = useState<string>('');
   const [inputValueOnFocus, setInputValueOnFocus] = useState<string>();
   const [inputOptions, setInputOptions] = useState<SearchOptions[]>([]);
   const [loadingOptions, setLoadingOptions] = useState<boolean>(false);
   const userType = VendorsAuthService.getUserType();
 
   useEffect(() => {
-    if (userType === 'insured') {
-      fetchInsuredOptionsForInsuredUserType();
+    if (userType !== UserTypeEnum.POLICYHOLDER) {
+      fetchInsuredOptions();
     }
   }, [userType]);
 
@@ -41,9 +41,9 @@ const ProcessListInsuredFilter: React.FC<ProcessListInsuredFilterProps> = ({
     });
   }, [inputValue, inputOptions]);
 
-  const fetchInsuredOptionsForInsuredUserType = () => {
+  const fetchInsuredOptions = () => {
     setLoadingOptions(true);
-    ProcessListingApi.getInsuredOptionsForInsuredUser()
+    ProcessListingApi.getInsuredOptions()
       .then(response => {
         setInputOptions(
           response.map(({ name, federalId }) => ({

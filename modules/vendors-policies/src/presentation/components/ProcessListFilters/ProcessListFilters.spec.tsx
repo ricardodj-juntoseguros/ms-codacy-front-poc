@@ -4,7 +4,7 @@ import { fireEvent, render } from '../../../config/testUtils';
 import ProcessListFilters from './ProcessListFilters';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
 import {
-  getInsuredsForInsuredUserMock,
+  getInsuredOptionsMock,
   getStatusFilterOptionsMock,
 } from '../../../__mocks__';
 
@@ -64,9 +64,9 @@ describe('ProcessListFilters', () => {
 
   it('Should render insured filter when selected', async () => {
     jest
-      .spyOn(ProcessListingApi, 'getInsuredOptionsForInsuredUser')
+      .spyOn(ProcessListingApi, 'getInsuredOptions')
       .mockImplementation(async () => {
-        return getInsuredsForInsuredUserMock;
+        return getInsuredOptionsMock;
       });
     const { findByTestId } = render(
       <ProcessListFilters

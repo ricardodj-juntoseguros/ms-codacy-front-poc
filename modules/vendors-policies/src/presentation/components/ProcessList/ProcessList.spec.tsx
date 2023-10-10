@@ -5,8 +5,8 @@ import {
   proposalListMock,
   proposalListFullPageMock,
   getStatusFilterOptionsMock,
-  getPolicyholderForInsuredUserMock,
-  getInsuredsForInsuredUserMock,
+  searchPolicyholderOptionsMock,
+  getInsuredOptionsMock,
 } from '../../../__mocks__';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
 import ProcessList from './ProcessList';
@@ -161,9 +161,9 @@ describe('ProcessList', () => {
         return proposalListFullPageMock;
       });
     jest
-      .spyOn(ProcessListingApi, 'getPolicyholderOptionsForInsuredUser')
+      .spyOn(ProcessListingApi, 'searchPolicyholderOptions')
       .mockImplementation(async () => {
-        return getPolicyholderForInsuredUserMock;
+        return searchPolicyholderOptionsMock;
       });
 
     const { getByTestId, findByTestId, findByText } = render(<ProcessList />);
@@ -176,9 +176,7 @@ describe('ProcessList', () => {
     });
     jest.runAllTimers();
     await waitFor(async () => {
-      expect(
-        ProcessListingApi.getPolicyholderOptionsForInsuredUser,
-      ).toHaveBeenCalled();
+      expect(ProcessListingApi.searchPolicyholderOptions).toHaveBeenCalled();
     });
     fireEvent.click(await findByText('TOMADOR 1'));
     expect(ProcessListingApi.getProcesses).toHaveBeenLastCalledWith(
@@ -198,9 +196,9 @@ describe('ProcessList', () => {
         return proposalListFullPageMock;
       });
     jest
-      .spyOn(ProcessListingApi, 'getInsuredOptionsForInsuredUser')
+      .spyOn(ProcessListingApi, 'getInsuredOptions')
       .mockImplementation(async () => {
-        return getInsuredsForInsuredUserMock;
+        return getInsuredOptionsMock;
       });
 
     const { getByTestId, findByTestId, findByText } = render(<ProcessList />);
@@ -212,9 +210,7 @@ describe('ProcessList', () => {
       target: { value: 'Segurado 1' },
     });
     await waitFor(async () => {
-      expect(
-        ProcessListingApi.getInsuredOptionsForInsuredUser,
-      ).toHaveBeenCalled();
+      expect(ProcessListingApi.getInsuredOptions).toHaveBeenCalled();
     });
     fireEvent.click(await findByText('Teste Segurado 1'));
     expect(ProcessListingApi.getProcesses).toHaveBeenLastCalledWith(

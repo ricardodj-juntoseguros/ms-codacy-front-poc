@@ -1,6 +1,6 @@
 import { PolicyholderDTO } from '../application/types/dto';
 
-export const getPolicyholderForInsuredUserMock = [
+export const searchPolicyholderOptionsMock = [
   {
     externalPolicyholderId: 1,
     federalId: '33768864000107',

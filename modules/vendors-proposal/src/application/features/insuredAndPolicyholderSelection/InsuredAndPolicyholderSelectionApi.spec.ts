@@ -20,7 +20,7 @@ describe('InsuredAndPolicyholderSelectionApi', () => {
     const result = await InsuredAndPolicyholderSelectionApi.getInsuredList();
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/api/v1/insured',
+      url: '/api/v1/insureds',
     });
 
     expect(result).toStrictEqual(insuredListMock);
@@ -36,10 +36,7 @@ describe('InsuredAndPolicyholderSelectionApi', () => {
     );
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/api/v1/insured/addresses',
-      params: {
-        federalId: '11223344556677',
-      },
+      url: '/api/v1/insureds/11223344556677/addresses',
     });
     expect(result).toStrictEqual(insuredAddressesMock);
   });

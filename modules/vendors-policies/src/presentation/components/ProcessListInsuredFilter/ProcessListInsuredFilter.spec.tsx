@@ -2,7 +2,7 @@ import { UserTypeEnum, VendorsAuthService } from '@services';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
 import { fireEvent, render } from '../../../config/testUtils';
 import ProcessListInsuredFilter from './ProcessListInsuredFilter';
-import { getInsuredsForInsuredUserMock } from '../../../__mocks__';
+import { getInsuredOptionsMock } from '../../../__mocks__';
 
 describe('ProcessListInsuredFilter', () => {
   it('Should fetch insured list on mount if userType is insured', async () => {
@@ -10,8 +10,8 @@ describe('ProcessListInsuredFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementationOnce(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getInsuredOptionsForInsuredUser')
-      .mockImplementationOnce(async () => getInsuredsForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'getInsuredOptions')
+      .mockImplementation(async () => getInsuredOptionsMock);
 
     const { findByTestId } = render(
       <ProcessListInsuredFilter
@@ -20,9 +20,7 @@ describe('ProcessListInsuredFilter', () => {
       />,
     );
 
-    expect(
-      ProcessListingApi.getInsuredOptionsForInsuredUser,
-    ).toHaveBeenCalledTimes(1);
+    expect(ProcessListingApi.getInsuredOptions).toHaveBeenCalled();
     expect((await findByTestId('search-input-list')).children.length).toBe(5);
   });
 
@@ -31,8 +29,8 @@ describe('ProcessListInsuredFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementationOnce(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getInsuredOptionsForInsuredUser')
-      .mockImplementationOnce(async () => getInsuredsForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'getInsuredOptions')
+      .mockImplementation(async () => getInsuredOptionsMock);
 
     const { findByTestId, getByTestId } = render(
       <ProcessListInsuredFilter
@@ -51,8 +49,8 @@ describe('ProcessListInsuredFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementationOnce(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getInsuredOptionsForInsuredUser')
-      .mockImplementationOnce(async () => getInsuredsForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'getInsuredOptions')
+      .mockImplementation(async () => getInsuredOptionsMock);
     const callbackMock = jest.fn();
 
     const { findByTestId } = render(
@@ -70,8 +68,8 @@ describe('ProcessListInsuredFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementationOnce(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getInsuredOptionsForInsuredUser')
-      .mockImplementationOnce(async () => getInsuredsForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'getInsuredOptions')
+      .mockImplementation(async () => getInsuredOptionsMock);
     const callbackMock = jest.fn();
 
     const { findByTestId } = render(
@@ -89,8 +87,8 @@ describe('ProcessListInsuredFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementationOnce(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getInsuredOptionsForInsuredUser')
-      .mockImplementationOnce(async () => getInsuredsForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'getInsuredOptions')
+      .mockImplementation(async () => getInsuredOptionsMock);
     const callbackMock = jest.fn();
 
     const { findByTestId } = render(

@@ -2,10 +2,7 @@ import { UserTypeEnum, VendorsAuthService } from '@services';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
 import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import ProcessListPolicyholderFilter from './ProcessListPolicyholderFilter';
-import {
-  getInsuredsForInsuredUserMock,
-  getPolicyholderForInsuredUserMock,
-} from '../../../__mocks__';
+import { searchPolicyholderOptionsMock } from '../../../__mocks__';
 
 describe('ProcessListPolicyholderFilter', () => {
   jest.useFakeTimers();
@@ -15,8 +12,8 @@ describe('ProcessListPolicyholderFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementation(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getPolicyholderOptionsForInsuredUser')
-      .mockImplementation(async () => getPolicyholderForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'searchPolicyholderOptions')
+      .mockImplementation(async () => searchPolicyholderOptionsMock);
 
     const { findByTestId } = render(
       <ProcessListPolicyholderFilter
@@ -34,9 +31,39 @@ describe('ProcessListPolicyholderFilter', () => {
       expect((await findByTestId('search-input-list')).children.length).toBe(4);
     });
     await waitFor(() => {
-      expect(
-        ProcessListingApi.getPolicyholderOptionsForInsuredUser,
-      ).toHaveBeenCalledWith('TOMADOR 1');
+      expect(ProcessListingApi.searchPolicyholderOptions).toHaveBeenCalledWith(
+        'TOMADOR 1',
+      );
+    });
+  });
+
+  it('Should fetch policyholder options on input fill with broker user type', async () => {
+    jest
+      .spyOn(VendorsAuthService, 'getUserType')
+      .mockImplementation(() => UserTypeEnum.BROKER);
+    jest
+      .spyOn(ProcessListingApi, 'searchPolicyholderOptions')
+      .mockImplementation(async () => searchPolicyholderOptionsMock);
+
+    const { findByTestId } = render(
+      <ProcessListPolicyholderFilter
+        selectPolicyholderCallback={jest.fn()}
+        showClearButton={false}
+      />,
+    );
+
+    const input = await findByTestId(
+      'processListPolicyholderFilter-input-search',
+    );
+    fireEvent.change(input, { target: { value: 'TOMADOR 1' } });
+    jest.runAllTimers();
+    await waitFor(async () => {
+      expect((await findByTestId('search-input-list')).children.length).toBe(4);
+    });
+    await waitFor(() => {
+      expect(ProcessListingApi.searchPolicyholderOptions).toHaveBeenCalledWith(
+        'TOMADOR 1',
+      );
     });
   });
 
@@ -45,8 +72,8 @@ describe('ProcessListPolicyholderFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementation(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getPolicyholderOptionsForInsuredUser')
-      .mockImplementationOnce(async () => getPolicyholderForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'searchPolicyholderOptions')
+      .mockImplementationOnce(async () => searchPolicyholderOptionsMock);
     const callbackMock = jest.fn();
 
     const { findByTestId, findByText } = render(
@@ -76,8 +103,8 @@ describe('ProcessListPolicyholderFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementation(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getPolicyholderOptionsForInsuredUser')
-      .mockImplementationOnce(async () => getPolicyholderForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'searchPolicyholderOptions')
+      .mockImplementationOnce(async () => searchPolicyholderOptionsMock);
     const callbackMock = jest.fn();
 
     const { findByTestId } = render(
@@ -97,8 +124,8 @@ describe('ProcessListPolicyholderFilter', () => {
       .spyOn(VendorsAuthService, 'getUserType')
       .mockImplementation(() => UserTypeEnum.INSURED);
     jest
-      .spyOn(ProcessListingApi, 'getPolicyholderOptionsForInsuredUser')
-      .mockImplementationOnce(async () => getPolicyholderForInsuredUserMock);
+      .spyOn(ProcessListingApi, 'searchPolicyholderOptions')
+      .mockImplementationOnce(async () => searchPolicyholderOptionsMock);
     const callbackMock = jest.fn();
 
     const { findByTestId } = render(
