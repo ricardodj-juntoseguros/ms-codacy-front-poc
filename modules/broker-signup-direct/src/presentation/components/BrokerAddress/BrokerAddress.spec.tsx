@@ -11,7 +11,7 @@ import { brokerInformationAdapter } from '../../../application/features/brokerIn
 
 
 describe('BrokerAddress', () => {
-  const broker = brokerInformationAdapter(brokerInformationMock,susepInformationMock);
+  const broker = brokerInformationAdapter(brokerInformationMock,susepInformationMock,false);
 
   beforeEach(() => {
     store.dispatch(brokerInformationSliceActions.setBrokerInformationModel(broker));

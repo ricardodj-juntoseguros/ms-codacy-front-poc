@@ -5,8 +5,16 @@ import { BrokerInformationModel } from '../../../types/model';
 export const brokerInformationAdapter = (
   broker: SearchRegisterBrokerDTO,
   susepInformation: StatusSusepDTO,
+  codeIsValid: boolean,
 ): BrokerInformationModel => {
   const { status, description, information } = broker;
+  /* Mock para teste de validação do email em QA */
+  if (
+    process.env.NX_GLOBAL_ENVIROMENT === 'qa' &&
+    information.federalId === '05.228.935/0001-43'
+  ) {
+    information.email = 'cadastro@juntoseguros.com';
+  }
   return {
     pathUpdate: '',
     status,
@@ -28,5 +36,6 @@ export const brokerInformationAdapter = (
     hasProductDamageInsurance:
       susepInformation.retorno.produtos.find(p => p.produtoId === 305) !==
       undefined,
+    codeIsValid,
   };
 };

@@ -36,6 +36,7 @@ const initialState: BrokerInformationModel = {
   susepSituation: false,
   renewRegistration: false,
   hasProductDamageInsurance: false,
+  codeIsValid: false,
 };
 
 export const brokerInformationSlice = createSlice({
@@ -85,6 +86,9 @@ export const brokerInformationSlice = createSlice({
     },
     setSimplesOptant: (state, action: PayloadAction<boolean>) => {
       state.simplesOptant = action.payload;
+    },
+    setCodeIsValid: (state, action: PayloadAction<boolean>) => {
+      state.codeIsValid = action.payload;
     },
   },
 });

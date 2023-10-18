@@ -19,7 +19,7 @@ const RegisterResponsibleContainer= ({ history }: RouteComponentProps) => {
   const textHelper = ["Dê preferência ao seu e-mail profissional. E se possível, com o domínio próprio da sua empresa.", "Lembre-se de que esse será o e-mail da pessoa responsável pelo relacionamento com a plataforma."]
 
   useEffect(() => {
-    if(brokerInformation.information.federalId === ''){
+    if(brokerInformation.information.federalId === '' || broker.codeIsValid){
       history.push('/');
     }
     },[brokerInformation.information.federalId]);
@@ -46,7 +46,8 @@ const RegisterResponsibleContainer= ({ history }: RouteComponentProps) => {
 
   const fetchSendEmailValidationCode = async (pathUpdate :string) => {
     await RegisterBrokerApi.SendValidationEmail(pathUpdate)
-    // .finally(() => history.push('/broker-details'))
+     .then(() => history.push('validation-email'))
+     .catch(error => error)
   }
 
   const onSubmit = async () => {

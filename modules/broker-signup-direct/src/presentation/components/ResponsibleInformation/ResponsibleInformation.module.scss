@@ -29,4 +29,10 @@
     & button{
       width: 360px;
     }
+
+    @media screen and (max-width: 680px) {
+      & button{
+        width: 100%;
+      }
+    }
 }

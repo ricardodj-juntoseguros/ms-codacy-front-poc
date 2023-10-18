@@ -1,0 +1,95 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.validation_email_code_wrapper{
+  width: 672px;
+  margin: 0 auto;
+  & h1{
+    @include font('base-emphasys');
+    margin: 0;
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 100%;
+    margin: 0 auto;
+
+    & h1{
+      @include font('base-emphasys');
+      margin: 0;
+    }
+    & div {
+      width: 100%;
+    }
+  }
+}
+
+.validation_email_code_grid_inputs{
+  display: grid;
+  grid-template-columns: 80px 80px 80px 80px 40px;
+  gap: 16px;
+
+  @media screen and (max-width: 680px) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 32px;
+    gap: 13px;
+  }
+}
+
+.validation_email_code__form-field{
+  width: 80px;
+  padding: spacing('m') 0 0 0 ;
+  cursor: auto !important;
+  margin: auto;
+
+  & input {
+  text-align: center;
+  @include font('l');
+  font-weight: 600;
+  }
+
+  & > i {
+    &::before {
+      font-size: 40px !important;
+    }
+  }
+
+  & i[data-icon='x'] {
+    color: color('error');
+    align-self: center;
+  }
+
+  & i[data-icon='check'] {
+    color:  color('success');
+    align-self: center;
+  }
+
+  @media screen and (max-width: 680px) {
+    & > i {
+      &::before {
+        font-size: 32px !important;
+      }
+    }
+
+    & i[data-icon='x'] {
+      color: color('error');
+      align-self: center;
+    }
+
+    & i[data-icon='check'] {
+      color: color('success');
+      align-self: center;
+    }
+  }
+}
+
+.validation_email_code_error_message{
+  display: flex;
+  width: 368px;
+  @include font('xs');
+  color: color('error');
+  padding-top: spacing('m');
+
+  @media screen and (max-width: 680px) {
+    width: 100%;
+  }
+}
+

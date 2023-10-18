@@ -22,6 +22,7 @@ export const brokerInformationMock = {
     bankDigit: '',
     accounDigit: '',
   },
+  codeIsValid: false,
   susepCode: '',
   iss: 0,
   simplesOptant: false,

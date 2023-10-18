@@ -1,4 +1,4 @@
-import { brokerInformationMock } from 'modules/broker-signup/src/__mocks__';
+import { brokerInformationMock } from 'modules/broker-signup-direct/src/__mocks__';
 import { store } from '../../../config/store';
 import { BrokerInformationModel } from '../../types/model';
 

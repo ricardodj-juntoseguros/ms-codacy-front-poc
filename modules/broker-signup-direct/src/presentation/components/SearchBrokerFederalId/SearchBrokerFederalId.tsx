@@ -124,7 +124,7 @@ export function SearchBrokerFederalId({handleGoNextClick}: SearchBrokerFederalId
 
 
   const onSubmit = (value: SearchRegisterBrokerDTO, statusSusep: StatusSusepDTO) => {
-    const broker = brokerInformationAdapter(value, statusSusep);
+    const broker = brokerInformationAdapter(value, statusSusep, brokerInformation.codeIsValid);
     dispatch(brokerInformationSliceActions.setBrokerInformationModel(broker));
     fetchRegisterBroker(registerBrokerAdapter(broker));
     handleGoNextClick();

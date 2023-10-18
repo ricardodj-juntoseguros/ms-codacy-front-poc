@@ -16,4 +16,5 @@ export interface BrokerInformationModel {
   susepSituation: boolean;
   renewRegistration: boolean;
   hasProductDamageInsurance: boolean;
+  codeIsValid: boolean;
 }

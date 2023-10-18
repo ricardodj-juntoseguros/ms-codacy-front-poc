@@ -1,0 +1,103 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.validation_broker_email_container_wrapper{
+  display: flex;
+  flex-direction: row;
+
+  @media screen and (max-width: 680px) {
+    flex-direction: column;
+  }
+}
+
+.validation_broker_email_container_section_form_logo{
+  padding: spacing('xl') spacing('m') spacing('xl') spacing('xl');
+  }
+
+.validation_broker_email_container_section_form{
+  width: 960px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  height: 100vh;
+  padding-top: 184px;
+  margin-right: calc(100% - 1480px);
+
+  & div > h1{
+    @include font('xl-2-emphasys');
+    color: color('dark');
+    margin: 0 0 spacing('l') 0;
+  }
+
+  & div > h2{
+    @include font('base');
+    color: color('dark');
+    margin: 0 0 spacing('xxl-3') 0;
+  }
+
+  & div > h2 > span{
+    @include font('base');
+    color: color('dark');
+    font-weight:600
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 100%;
+    padding: spacing('xxl-2')  spacing('l') 0 spacing('l');
+    height: 100%;
+    & div > h1{
+      @include font('xl');
+      color: color('dark');
+      margin: 0 0 spacing('l') 0;
+      font-weight:600;
+    }
+
+    & div > h2{
+      @include font('base');
+      color: color('dark');
+      margin: 0 0 spacing('xxl-4') 0;
+    }
+
+    & div > h2 > span{
+      @include font('base');
+      color: color('dark');
+      font-weight:600
+    }
+  }
+
+  @media screen and (min-width: 1680px) {
+    padding-top: 204px;
+    margin-left: 112px;
+  }
+}
+
+.validation_broker_email_container_section_form_section{
+  width: 460px;
+  @media screen and (max-width: 680px) {
+    width: 100%;
+  }
+}
+
+
+.validation_broker_email_container_section_form_go_next{
+  display: flex;
+  flex-direction: column;
+  padding-top: spacing('xxl-5');
+  width: 368px;
+
+  & p{
+    @include font('xs-emphasys');
+    color: color('dark');
+    margin-bottom:  spacing('xs');
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 100%;
+  }
+}
+
+.validation_broker_email_container_section_form_go_next_link_butoon{
+  width: 106px;
+  margin: auto;
+  padding-top: spacing('xl');
+}

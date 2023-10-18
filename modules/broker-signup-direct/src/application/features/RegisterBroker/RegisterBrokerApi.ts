@@ -51,6 +51,13 @@ class RegisterBrokerApi {
     };
     return await this.instance.post<string>(params);
   }
+
+  async GetValidationCodeEmail(code: string, pathUser: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/brokers/signup/validation/email?code=${code}&id=${pathUser}`,
+    };
+    return await this.instance.get<boolean>(params);
+  }
 }
 
 const registerBrokerApi = new RegisterBrokerApi();
