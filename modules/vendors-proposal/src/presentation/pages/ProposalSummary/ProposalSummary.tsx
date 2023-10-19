@@ -27,6 +27,7 @@ import ProposalSummaryAside from '../../components/ProposalSummaryAside/Proposal
 
 const ProposalSummary: React.FunctionComponent = () => {
   const [issuanceLoading, setIssuanceLoading] = useState(false);
+  const [policyExternalId, setPolicyExternalId] = useState("");
   const theme = useContext(ThemeContext);
   const {
     policyholder,
@@ -80,7 +81,7 @@ const ProposalSummary: React.FunctionComponent = () => {
   const handleSubmit = async () => {
     if (!identification || !identification.proposalId) return;
     setIssuanceLoading(true);
-    await onlinkProject(identification.policyId, insuredFederalId);
+    if (!policyExternalId) await onlinkProject(identification.policyId, insuredFederalId);
 
     const result = await uploadDocuments();
     if (!result) {
@@ -131,8 +132,9 @@ const ProposalSummary: React.FunctionComponent = () => {
         policyId,
         insuredFederalId,
       )
-        .then(() => {
-          return true;
+        .then((result) => {
+          setPolicyExternalId(result.policyExternalId);
+          
         })
         .catch(() => makeToast('error', ERROR_MESSAGES.error));
     },

@@ -88,7 +88,7 @@ describe('ProposalSummary', () => {
   }));
 
   let linkProjectMock: jest.SpyInstance<
-    Promise<void>,
+    Promise<{ policyExternalId: string }>,
     [
       projectSearchValue: string,
       projectId: string | null,
@@ -129,7 +129,7 @@ describe('ProposalSummary', () => {
 
     linkProjectMock = jest
       .spyOn(ProjectSelectionAPI, 'linkProject')
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve({ policyExternalId: '12345' }));
     createContactMock = jest
       .spyOn(PolicyholderContactAPI, 'createContact')
       .mockImplementation(() => Promise.resolve({ id: 1 }));

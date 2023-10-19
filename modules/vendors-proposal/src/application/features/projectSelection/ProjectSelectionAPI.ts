@@ -16,7 +16,7 @@ class ProjectSelectionAPI {
     projectId: string | null,
     policyId: number,
     insuredFederalId: string,
-  ): Promise<void> {
+  ): Promise<{ policyExternalId: string }> {
     const params: IHttpClientRequestParameters = {
       url: `/api/v1/project/reference/policy/${policyId}`,
       payload: {
