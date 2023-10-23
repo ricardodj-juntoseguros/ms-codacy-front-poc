@@ -1,13 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import ProcessListContainer from '../presentation/pages/ProcessListContainer';
-import ProcessDetails from '../presentation/pages/ProcessDetails/ProcessDetails';
+import ProcessDetailsContainer from '../presentation/pages/ProcessDetailsContainer';
 
 const Routes: React.FC = () => (
   <BrowserRouter basename="policies">
     <Switch>
       <Route path="/" exact component={ProcessListContainer} />
-      <Route path="/details/:proposalId" exact component={ProcessDetails} />
+      <Route
+        path="/details/:proposalId"
+        exact
+        component={ProcessDetailsContainer}
+      />
     </Switch>
   </BrowserRouter>
 );

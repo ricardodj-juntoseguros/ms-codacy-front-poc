@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { UserTypeEnum, VendorsAuthService } from '@services';
 import { useDebounce } from '@shared/hooks';
 import classNames from 'classnames';
@@ -18,25 +18,48 @@ interface ProcessListPolicyholderFilterProps {
 
 const ProcessListPolicyholderFilter: React.FC<ProcessListPolicyholderFilterProps> =
   ({ showClearButton, selectPolicyholderCallback }) => {
+    const userType = VendorsAuthService.getUserType();
     const [inputValue, setInputValue] = useState<string>();
     const [inputValueOnFocus, setInputValueOnFocus] = useState<string>();
     const [inputOptions, setInputOptions] = useState<SearchOptions[]>([]);
     const [loadingOptions, setLoadingOptions] = useState<boolean>(false);
-    const userType = VendorsAuthService.getUserType();
 
     useDebounce(
       () => {
-        if (inputOptions.some(opt => opt.label === inputValue)) return;
-        if (userType !== UserTypeEnum.POLICYHOLDER) {
-          fetchPolicyholderOptions(inputValue || '');
-        }
+        if (userType === UserTypeEnum.POLICYHOLDER) return;
+        if (!userType || inputOptions.some(opt => opt.label === inputValue))
+          return;
+        fetchPolicyholderOptions(userType, inputValue || '');
       },
       1500,
       [inputValue, userType],
     );
 
-    const fetchPolicyholderOptions = (searchValue: string) => {
-      if (searchValue.length < 3) return;
+    useEffect(() => {
+      if (userType === UserTypeEnum.POLICYHOLDER) {
+        fetchPolicyholderOptions(userType);
+      }
+    }, [userType]);
+
+    const filteredInputOptions = useMemo(() => {
+      if (userType !== UserTypeEnum.POLICYHOLDER || !inputValue) return [];
+      return inputOptions.filter(({ label }) => {
+        return (
+          label.toLowerCase().includes(inputValue.toLowerCase()) ||
+          label === inputValue
+        );
+      });
+    }, [inputValue, inputOptions, userType]);
+
+    const fetchPolicyholderOptions = (
+      userType: UserTypeEnum,
+      searchValue?: string | undefined,
+    ) => {
+      if (
+        userType !== UserTypeEnum.POLICYHOLDER &&
+        (searchValue?.length || 0) < 3
+      )
+        return;
       setLoadingOptions(true);
       ProcessListingApi.searchPolicyholderOptions(searchValue)
         .then(response => {
@@ -47,16 +70,22 @@ const ProcessListPolicyholderFilter: React.FC<ProcessListPolicyholderFilterProps
             })),
           );
         })
-        .catch(error => makeToast('error', error))
+        .catch(() =>
+          makeToast(
+            'error',
+            'Ocorreu um erro inesperado ao buscar os fornecedores.',
+          ),
+        )
         .finally(() => setLoadingOptions(false));
     };
 
     const handleOptionSelection = (selectedOption: SearchOptions) => {
-      const { label, value } = selectedOption;
-      setInputOptions(prevInputOptions =>
-        prevInputOptions.filter(opt => opt.value === value),
-      );
-      setInputValue(label);
+      const { value } = selectedOption;
+      if (userType !== UserTypeEnum.POLICYHOLDER) {
+        setInputOptions(prevInputOptions =>
+          prevInputOptions.filter(opt => opt.value === value),
+        );
+      }
       selectPolicyholderCallback(value);
     };
 
@@ -65,15 +94,19 @@ const ProcessListPolicyholderFilter: React.FC<ProcessListPolicyholderFilterProps
         inputValueOnFocus &&
         (!inputValue || inputValue.trim().length === 0)
       ) {
-        setInputOptions([]);
+        if (userType !== UserTypeEnum.POLICYHOLDER) {
+          setInputOptions([]);
+        }
         selectPolicyholderCallback(null);
       }
     };
 
     const handleClearClick = () => {
       setInputValue('');
-      setInputOptions([]);
       selectPolicyholderCallback(null);
+      if (userType !== UserTypeEnum.POLICYHOLDER) {
+        setInputOptions([]);
+      }
     };
 
     return (
@@ -93,7 +126,11 @@ const ProcessListPolicyholderFilter: React.FC<ProcessListPolicyholderFilterProps
           label="Busque pelo nome do fornecedor"
           placeholder="Busque pelo nome do fornecedor"
           value={inputValue}
-          options={inputOptions}
+          options={
+            userType === UserTypeEnum.POLICYHOLDER
+              ? filteredInputOptions
+              : inputOptions
+          }
           onChange={value => setInputValue(value)}
           onBlur={() => handleInputBlur()}
           onFocus={() => setInputValueOnFocus(inputValue)}

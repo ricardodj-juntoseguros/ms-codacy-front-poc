@@ -1,6 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.proposal-success__wrapper {
+.proposal-success-container__wrapper {
   max-width: 31.5rem;
   height: 100vh;
   margin: 0 auto;
@@ -14,13 +14,14 @@
     @include color('color', 'brand-primary');
     margin-bottom: spacing('xl');
 
-    &[class^='icon-']:before, &[class*=' icon-']:before {
+    &[class^='icon-']:before,
+    &[class*=' icon-']:before {
       font-size: 47px;
     }
   }
 }
 
-.proposal-success__title {
+.proposal-success-container__title {
   @include font('xl-emphasys');
   @include color('color', 'dark');
   margin: 0;
@@ -28,20 +29,20 @@
   text-align: center;
 }
 
-.proposal-success__text {
+.proposal-success-container__text {
   @include font('base');
   @include color('color', 'grey-500');
   margin: spacing('l') 0 spacing('xxl') 0;
   text-align: center;
 }
 
-.proposal-success__button {
+.proposal-success-container__button {
   width: 19.5rem;
   margin-bottom: spacing('xxl');
 }
 
 @media screen and (max-width: 340px) {
-  .proposal-success__button {
+  .proposal-success-container__button {
     width: 100%;
   }
 }

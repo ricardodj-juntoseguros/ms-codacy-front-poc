@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames';
 import { Dropdown } from 'junto-design-system';
 import { UserTypeEnum } from '@services';
-import { PROCESS_FILTERS } from '../../../constants';
+import { PROCESS_FILTERS as filterOptions } from '../../../constants';
 import { ProcessListFilterParams } from '../../../application/types/model';
 import styles from './ProcessListFilters.module.scss';
 import ProcessListProcessFilter from '../ProcessListProcessFilter';
@@ -13,7 +13,6 @@ import ProcessListPolicyholderFilter from '../ProcessListPolicyholderFilter';
 interface ProcessListFiltersProps {
   isLoadingProcesses: boolean;
   currentFilters: ProcessListFilterParams;
-  userType: UserTypeEnum | null;
   onChangeFilterValueCallback: (
     filterType: string,
     filterValue: string | null,
@@ -24,16 +23,10 @@ interface ProcessListFiltersProps {
 const ProcessListFilters: React.FC<ProcessListFiltersProps> = ({
   isLoadingProcesses,
   currentFilters,
-  userType,
   onChangeFilterValueCallback,
   onChangeFilterTypeCallback,
 }) => {
   const [currentOption, setCurrentOption] = useState<string>('process');
-
-  const filterOptions = useMemo(() => {
-    if (userType === null) return [];
-    return PROCESS_FILTERS[userType];
-  }, [userType]);
 
   const renderFilterInput = () => {
     switch (currentOption) {

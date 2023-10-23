@@ -1,6 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.proposal-summary__wrapper {
+.proposal-summary-container__wrapper {
   max-width: 65rem;
   margin: 0 auto;
   margin-top: spacing('xxl-3');
@@ -10,16 +10,16 @@
 
   grid-template-columns: 1fr 19.5rem;
   grid-template-areas:
-    "header header"
-    "informations aside";
+    'header header'
+    'informations aside';
 }
 
-.proposal-summary__header {
+.proposal-summary-container__header {
   text-align: center;
   grid-area: header;
 }
 
-.proposal-summary__title {
+.proposal-summary-container__title {
   @include font('xl-emphasys');
   @include color('color', 'dark');
 
@@ -28,7 +28,7 @@
   margin-top: spacing('l');
 }
 
-.proposal-summary__informations {
+.proposal-summary-container__informations {
   grid-area: informations;
   margin-top: spacing('xxl-3');
   max-width: 28.5rem;
@@ -38,24 +38,24 @@
   gap: spacing('l');
 }
 
-.proposal-summary__divider {
+.proposal-summary-container__divider {
   max-width: 28.5rem;
   margin: spacing('m') 0;
 }
 
-.proposal-summary__subtitle {
+.proposal-summary-container__subtitle {
   @include font('l-emphasys');
   @include color('color', 'dark');
   margin: 0;
 }
 
-.proposal-summary__item-validity,
-.proposal-summary__item-contract {
+.proposal-summary-container__item-validity,
+.proposal-summary-container__item-contract {
   display: flex;
   gap: spacing('xxl-3');
 }
 
-.proposal-summary__item-attachment {
+.proposal-summary-container__item-attachment {
   @include font('sm');
   @include color('color', 'dark');
   display: grid;
@@ -68,23 +68,23 @@
 }
 
 @media screen and (max-width: 768px) {
-  .proposal-summary__item-validity,
-  .proposal-summary__item-contract {
+  .proposal-summary-container__item-validity,
+  .proposal-summary-container__item-contract {
     flex-direction: column;
     gap: spacing('xl');
   }
 }
 
 @media screen and (max-width: 650px) {
-  .proposal-summary__wrapper {
+  .proposal-summary-container__wrapper {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "header header"
-      "informations informations"
-      "aside aside";
+      'header header'
+      'informations informations'
+      'aside aside';
   }
 
-  .proposal-summary__item {
+  .proposal-summary-container__item {
     & button {
       margin-top: spacing('m');
     }
@@ -92,16 +92,16 @@
 }
 
 @media screen and (max-width: 490px) {
-  .proposal-summary__wrapper {
+  .proposal-summary-container__wrapper {
     margin-top: spacing('xxl');
   }
 
-  .proposal-summary__informations {
+  .proposal-summary-container__informations {
     width: 100%;
     margin-top: spacing('xl');
   }
 
-  .proposal-summary__title {
+  .proposal-summary-container__title {
     @include font('l-emphasys');
     margin-top: spacing('m');
   }

@@ -1,5 +1,4 @@
 import '@testing-library/jest-dom';
-import { UserTypeEnum } from '@services';
 import { fireEvent, render } from '../../../config/testUtils';
 import ProcessListFilters from './ProcessListFilters';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
@@ -23,7 +22,6 @@ describe('ProcessListFilters', () => {
         currentFilters={{}}
         onChangeFilterValueCallback={jest.fn()}
         onChangeFilterTypeCallback={jest.fn()}
-        userType={UserTypeEnum.INSURED}
       />,
     );
     expect(
@@ -39,7 +37,6 @@ describe('ProcessListFilters', () => {
         currentFilters={{}}
         onChangeFilterValueCallback={mockCallback}
         onChangeFilterTypeCallback={mockCallback}
-        userType={UserTypeEnum.INSURED}
       />,
     );
     fireEvent.click((await findByTestId('dropdown-input-list')).children[1]);
@@ -53,7 +50,6 @@ describe('ProcessListFilters', () => {
         currentFilters={{}}
         onChangeFilterValueCallback={jest.fn()}
         onChangeFilterTypeCallback={jest.fn()}
-        userType={UserTypeEnum.INSURED}
       />,
     );
     fireEvent.click((await findByTestId('dropdown-input-list')).children[1]);
@@ -74,7 +70,6 @@ describe('ProcessListFilters', () => {
         currentFilters={{}}
         onChangeFilterValueCallback={jest.fn()}
         onChangeFilterTypeCallback={jest.fn()}
-        userType={UserTypeEnum.INSURED}
       />,
     );
     fireEvent.click((await findByTestId('dropdown-input-list')).children[3]);
@@ -90,7 +85,6 @@ describe('ProcessListFilters', () => {
         currentFilters={{}}
         onChangeFilterValueCallback={jest.fn()}
         onChangeFilterTypeCallback={jest.fn()}
-        userType={UserTypeEnum.INSURED}
       />,
     );
     fireEvent.click((await findByTestId('dropdown-input-list')).children[2]);

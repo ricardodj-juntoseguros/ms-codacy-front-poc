@@ -59,10 +59,11 @@ describe('Process Listing API', () => {
       .spyOn(AxiosHttpClient.prototype, 'get')
       .mockImplementationOnce(async () => getInsuredOptionsMock);
 
-    const result = await ProcessListingApi.getInsuredOptions();
+    const result = await ProcessListingApi.getInsuredOptions('teste segurado');
 
     expect(mockGet).toHaveBeenCalledWith({
       url: '/api/v1/insureds',
+      params: { name: 'teste segurado' },
     });
     expect(result).toStrictEqual(getInsuredOptionsMock);
   });

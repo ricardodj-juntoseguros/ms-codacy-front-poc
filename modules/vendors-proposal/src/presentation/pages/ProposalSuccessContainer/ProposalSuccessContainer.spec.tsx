@@ -4,7 +4,7 @@ import { downloadFile } from '@shared/utils';
 import { storeMock } from 'modules/vendors-proposal/src/__mocks__';
 import { act, fireEvent, render } from '../../../config/testUtils';
 import DownloadProposalDocumentAPI from '../../../application/features/downloadProposalDocument/DownloadProposalDocumentAPI';
-import ProposalSuccess from './ProposalSuccess';
+import ProposalSuccessContainer from './ProposalSuccessContainer';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router', () => {
@@ -25,7 +25,6 @@ jest.mock('@shared/utils', () => {
     downloadFile: jest.fn(),
   };
 });
-
 
 describe('ProposalSuccess', () => {
   const mockDispatch = jest.fn();
@@ -71,7 +70,7 @@ describe('ProposalSuccess', () => {
       }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    render(<ProposalSuccess />);
+    render(<ProposalSuccessContainer />);
 
     expect(mockHistoryPush).toHaveBeenCalled();
   });
@@ -90,7 +89,7 @@ describe('ProposalSuccess', () => {
       }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { baseElement } = render(<ProposalSuccess />);
+    const { baseElement } = render(<ProposalSuccessContainer />);
 
     expect(baseElement).toBeInTheDocument();
   });
@@ -109,7 +108,7 @@ describe('ProposalSuccess', () => {
       }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(<ProposalSuccess />);
+    const { getByTestId } = render(<ProposalSuccessContainer />);
 
     const button = getByTestId('proposalSuccess-button-go-home');
     await act(async () => {
@@ -136,12 +135,12 @@ describe('ProposalSuccess', () => {
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
     const getProposalDocumentMock = jest
-    .spyOn(DownloadProposalDocumentAPI, 'getProposalDocument')
-    .mockImplementation(() => {
-      return Promise.resolve(file);
-    });
+      .spyOn(DownloadProposalDocumentAPI, 'getProposalDocument')
+      .mockImplementation(() => {
+        return Promise.resolve(file);
+      });
 
-    const { getByTestId } = render(<ProposalSuccess />);
+    const { getByTestId } = render(<ProposalSuccessContainer />);
 
     const button = getByTestId('proposalSuccess-button-download-proposal');
     await act(async () => {
@@ -149,6 +148,6 @@ describe('ProposalSuccess', () => {
     });
 
     expect(getProposalDocumentMock).toHaveBeenCalledWith(12345);
-    expect(downloadFile).toHaveBeenCalledWith(new Blob, "proposta_12345.pdf");
+    expect(downloadFile).toHaveBeenCalledWith(new Blob(), 'proposta_12345.pdf');
   });
 });

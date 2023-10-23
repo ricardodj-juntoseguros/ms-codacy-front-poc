@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FlowContainer from '../presentation/pages/FlowContainer';
-import ProposalSummary from '../presentation/pages/ProposalSummary/ProposalSummary';
-import ProposalSuccess from '../presentation/pages/ProposalSuccess/ProposalSuccess';
+import ProposalSummary from '../presentation/pages/ProposalSummaryContainer';
+import ProposalSuccess from '../presentation/pages/ProposalSuccessContainer';
 
 const Routes: React.FC = () => (
   <BrowserRouter basename="proposal">

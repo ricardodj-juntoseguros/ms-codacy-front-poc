@@ -8,15 +8,13 @@ import PolicyholderContactAPI from '../../../application/features/policyholderCo
 import IssuanceAPI from '../../../application/features/Issuance/IssuanceAPI';
 import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
 import { act, fireEvent, render } from '../../../config/testUtils';
-import ProposalSummary from './ProposalSummary';
+import ProposalSummaryContainer from './ProposalSummaryContainer';
 import {
   modalityListMock,
   policyholdersMock,
   storeMock,
 } from '../../../__mocks__';
 import * as contextFile from '../../../config/filesContext';
-import { UpdateProposalStatusDTO } from '../../../application/types/dto';
-import ProposalAPI from '../../../application/features/proposal/ProposalAPI';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router', () => {
@@ -30,7 +28,7 @@ jest.mock('react-router', () => {
   };
 });
 
-describe('ProposalSummary', () => {
+describe('ProposalSummaryContainer', () => {
   const mockDispatch = jest.fn();
   const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
@@ -145,7 +143,7 @@ describe('ProposalSummary', () => {
   it('should render successfully', async () => {
     useSelectorMock.mockImplementation(select => select(updatedStoreMock));
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { baseElement } = render(<ProposalSummary />);
+    const { baseElement } = render(<ProposalSummaryContainer />);
 
     expect(baseElement).toBeInTheDocument();
   });
@@ -160,7 +158,7 @@ describe('ProposalSummary', () => {
     };
     useSelectorMock.mockImplementation(select => select(mock));
     useDispatchMock.mockImplementation(() => mockDispatch);
-    render(<ProposalSummary />);
+    render(<ProposalSummaryContainer />);
 
     expect(mockHistoryPush).toHaveBeenCalled();
   });
@@ -168,7 +166,7 @@ describe('ProposalSummary', () => {
   it('should go back to proposal flow when user clicks edit button', async () => {
     useSelectorMock.mockImplementation(select => select(updatedStoreMock));
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(<ProposalSummary />);
+    const { getByTestId } = render(<ProposalSummaryContainer />);
 
     const buttonEdit = getByTestId('proposalSummaryAside-button-edit');
     await act(async () => {
@@ -184,7 +182,7 @@ describe('ProposalSummary', () => {
   it('should follow the issuance flow if it had all the data', async () => {
     useSelectorMock.mockImplementation(select => select(updatedStoreMock));
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(<ProposalSummary />);
+    const { getByTestId } = render(<ProposalSummaryContainer />);
 
     const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
@@ -215,7 +213,7 @@ describe('ProposalSummary', () => {
     };
     useSelectorMock.mockImplementation(select => select(mock));
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(<ProposalSummary />);
+    const { getByTestId } = render(<ProposalSummaryContainer />);
 
     const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
@@ -237,7 +235,7 @@ describe('ProposalSummary', () => {
     uploadDocumentsMock = jest.fn(() => false);
     useSelectorMock.mockImplementation(select => select(updatedStoreMock));
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(<ProposalSummary />);
+    const { getByTestId } = render(<ProposalSummaryContainer />);
 
     const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
@@ -263,7 +261,7 @@ describe('ProposalSummary', () => {
       );
     useSelectorMock.mockImplementation(select => select(updatedStoreMock));
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(<ProposalSummary />);
+    const { getByTestId } = render(<ProposalSummaryContainer />);
 
     const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {
@@ -289,7 +287,7 @@ describe('ProposalSummary', () => {
       );
     useSelectorMock.mockImplementation(select => select(updatedStoreMock));
     useDispatchMock.mockImplementation(() => mockDispatch);
-    const { getByTestId } = render(<ProposalSummary />);
+    const { getByTestId } = render(<ProposalSummaryContainer />);
 
     const buttonSubmit = getByTestId('proposalSummaryAside-button-submit');
     await act(async () => {

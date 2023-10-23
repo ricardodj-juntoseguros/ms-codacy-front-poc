@@ -20,10 +20,10 @@ import { format } from 'date-fns';
 import { downloadFile } from '@shared/utils';
 import { ERROR_MESSAGES, REDIRECT_URLS } from '../../../constants';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
-import styles from './ProposalSuccess.module.scss';
+import styles from './ProposalSuccessContainer.module.scss';
 import DownloadProposalDocumentAPI from '../../../application/features/downloadProposalDocument/DownloadProposalDocumentAPI';
 
-const ProposalSuccess: React.FunctionComponent = () => {
+const ProposalSuccessContainer: React.FunctionComponent = () => {
   const [isLoadingProposalDocument, setIsLoadingProposalDocument] =
     useState(false);
   const theme = useContext(ThemeContext);
@@ -64,20 +64,31 @@ const ProposalSuccess: React.FunctionComponent = () => {
 
   return (
     <section
-      className={className(styles['proposal-success__wrapper'], styles[theme])}
+      className={className(
+        styles['proposal-success-container__wrapper'],
+        styles[theme],
+      )}
     >
       <i className={className('icon', 'icon-check', styles[theme])} />
       <Tag>{protocol}</Tag>
       <h1
-        className={className(styles['proposal-success__title'], styles[theme])}
+        className={className(
+          styles['proposal-success-container__title'],
+          styles[theme],
+        )}
       >
         Solicitação realizada! Fique de olho, entraremos em contato com você.
       </h1>
-      <p className={className(styles['proposal-success__text'], styles[theme])}>
+      <p
+        className={className(
+          styles['proposal-success-container__text'],
+          styles[theme],
+        )}
+      >
         Você receberá um e-mail quando houver alguma evolução nesta sua
         solicitação.
       </p>
-      <div className={styles['proposal-success__button']}>
+      <div className={styles['proposal-success-container__button']}>
         <Button
           type="button"
           fullWidth
@@ -99,4 +110,4 @@ const ProposalSuccess: React.FunctionComponent = () => {
   );
 };
 
-export default ProposalSuccess;
+export default ProposalSuccessContainer;

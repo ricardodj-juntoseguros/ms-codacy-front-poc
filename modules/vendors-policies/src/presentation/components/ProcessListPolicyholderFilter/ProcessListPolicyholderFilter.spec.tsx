@@ -37,6 +37,40 @@ describe('ProcessListPolicyholderFilter', () => {
     });
   });
 
+  it('Should fetch policyholder options on mount with policyholder user type and filter results on input fill', async () => {
+    jest
+      .spyOn(VendorsAuthService, 'getUserType')
+      .mockImplementation(() => UserTypeEnum.POLICYHOLDER);
+    jest
+      .spyOn(ProcessListingApi, 'searchPolicyholderOptions')
+      .mockImplementation(async () => searchPolicyholderOptionsMock);
+
+    const { findByTestId } = render(
+      <ProcessListPolicyholderFilter
+        selectPolicyholderCallback={jest.fn()}
+        showClearButton={false}
+      />,
+    );
+
+    const input = await findByTestId(
+      'processListPolicyholderFilter-input-search',
+    );
+    fireEvent.change(input, { target: { value: 'T' } });
+    await waitFor(async () => {
+      expect((await findByTestId('search-input-list')).children.length).toBe(4);
+    });
+    fireEvent.change(input, { target: { value: 'TOMADOR 1' } });
+
+    await waitFor(async () => {
+      expect((await findByTestId('search-input-list')).children.length).toBe(1);
+    });
+    await waitFor(() => {
+      expect(ProcessListingApi.searchPolicyholderOptions).toHaveBeenCalledWith(
+        undefined,
+      );
+    });
+  });
+
   it('Should fetch policyholder options on input fill with broker user type', async () => {
     jest
       .spyOn(VendorsAuthService, 'getUserType')

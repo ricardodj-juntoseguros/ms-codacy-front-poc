@@ -122,7 +122,6 @@ const ProcessList: React.FC = () => {
         currentFilters={otherParams}
         onChangeFilterValueCallback={handleProcessFilterChange}
         onChangeFilterTypeCallback={handleFilterTypeChange}
-        userType={VendorsAuthService.getUserType()}
       />
       <div className={styles['process-list__totalizer']}>
         {loadingProcesses ? (

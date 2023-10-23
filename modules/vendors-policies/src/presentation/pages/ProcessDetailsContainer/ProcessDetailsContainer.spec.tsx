@@ -4,7 +4,7 @@ import Router from 'react-router';
 import { act } from 'react-dom/test-utils';
 import DocumentAPI from '../../../application/features/document/DocumentAPI';
 import { fireEvent, render } from '../../../config/testUtils';
-import ProcessDetails from './ProcessDetails';
+import ProcessDetailsContainer from './ProcessDetailsContainer';
 import ProcessDetailsAPI from '../../../application/features/processDetails/ProcessDetailsAPI';
 import { mockProcessDetails } from '../../../__mocks__/mockProcessDetails';
 
@@ -22,7 +22,7 @@ jest.mock('react-router', () => {
   };
 });
 
-describe('ProcessDetails', () => {
+describe('ProcessDetailsContainer', () => {
   const windowOpen = jest.fn();
   window.open = windowOpen;
   process.env.NX_GLOBAL_MS_DOCUMENTS = '';
@@ -67,7 +67,7 @@ describe('ProcessDetails', () => {
     });
     jest.spyOn(Router, 'useParams').mockReturnValue({ proposalId: 'aa' });
 
-    render(<ProcessDetails />);
+    render(<ProcessDetailsContainer />);
 
     expect(mockHistoryPush).toHaveBeenCalled();
   });
@@ -76,7 +76,7 @@ describe('ProcessDetails', () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
       return UserTypeEnum.POLICYHOLDER;
     });
-    const { queryByTestId } = render(<ProcessDetails />);
+    const { queryByTestId } = render(<ProcessDetailsContainer />);
 
     const button = await queryByTestId('processDetails-button-issuance-claim');
 
@@ -85,7 +85,7 @@ describe('ProcessDetails', () => {
 
   it('should change title and text if status changes', async () => {
     jest.spyOn(VendorsAuthService, 'getUserType').mockImplementation(() => {
-      return  UserTypeEnum.POLICYHOLDER;
+      return UserTypeEnum.POLICYHOLDER;
     });
     jest
       .spyOn(ProcessDetailsAPI, 'getProcessDetails')
@@ -95,7 +95,7 @@ describe('ProcessDetails', () => {
           status: 3,
         });
       });
-    const { findByText } = render(<ProcessDetails />);
+    const { findByText } = render(<ProcessDetailsContainer />);
 
     const title = await findByText('Solicitação 3885179');
 
@@ -114,7 +114,7 @@ describe('ProcessDetails', () => {
           status: 10,
         });
       });
-    const { queryByTestId } = render(<ProcessDetails />);
+    const { queryByTestId } = render(<ProcessDetailsContainer />);
 
     const status = await queryByTestId('processDetailsHeader-paragraph-status');
     const title = await queryByTestId('Solicitação 3885179');
@@ -134,7 +134,7 @@ describe('ProcessDetails', () => {
     jest
       .spyOn(ProcessDetailsAPI, 'getProcessDetails')
       .mockImplementation(async () => Promise.reject());
-    render(<ProcessDetails />);
+    render(<ProcessDetailsContainer />);
 
     expect(mockHistoryPush).toHaveBeenCalled();
   });
@@ -144,7 +144,7 @@ describe('ProcessDetails', () => {
       return UserTypeEnum.POLICYHOLDER;
     });
 
-    const { findByText } = render(<ProcessDetails />);
+    const { findByText } = render(<ProcessDetailsContainer />);
     const linkButton = await findByText('Voltar para meu painel');
 
     act(async () => {

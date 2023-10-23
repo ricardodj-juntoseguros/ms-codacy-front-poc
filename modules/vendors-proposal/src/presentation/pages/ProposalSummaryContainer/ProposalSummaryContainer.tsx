@@ -16,16 +16,15 @@ import { ERROR_MESSAGES, REDIRECT_URLS } from '../../../constants';
 import IssuanceAPI from '../../../application/features/Issuance/IssuanceAPI';
 import ProjectSelectionAPI from '../../../application/features/projectSelection/ProjectSelectionAPI';
 import PolicyholderContactAPI from '../../../application/features/policyholderContact/PolicyholderContactAPI';
-import ProposalAPI from '../../../application/features/proposal/ProposalAPI';
 import {
   proposalActions,
   selectProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import { useFiles } from '../../../config/filesContext';
-import styles from './ProposalSummary.module.scss';
+import styles from './ProposalSummaryContainer.module.scss';
 import ProposalSummaryAside from '../../components/ProposalSummaryAside/ProposalSummaryAside';
 
-const ProposalSummary: React.FunctionComponent = () => {
+const ProposalSummaryContainer: React.FunctionComponent = () => {
   const [issuanceLoading, setIssuanceLoading] = useState(false);
   const [policyExternalId, setPolicyExternalId] = useState("");
   const theme = useContext(ThemeContext);
@@ -153,19 +152,19 @@ const ProposalSummary: React.FunctionComponent = () => {
         backButton={() => window.location.assign(REDIRECT_URLS.policies)}
       />
 
-      <div className={styles['proposal-summary__wrapper']}>
-        <header className={styles['proposal-summary__header']}>
+      <div className={styles['proposal-summary-container__wrapper']}>
+        <header className={styles['proposal-summary-container__header']}>
           <Tag>Solicitação {identification?.policyId}</Tag>
           <h1
             className={className(
-              styles['proposal-summary__title'],
+              styles['proposal-summary-container__title'],
               styles[theme],
             )}
           >
             Por último, confira os dados e solicite sua garantia.
           </h1>
         </header>
-        <section className={styles['proposal-summary__informations']}>
+        <section className={styles['proposal-summary-container__informations']}>
           <DetailField
             title="Tipo de seguro garantia"
             values={[modality.externalDescription]}
@@ -183,7 +182,7 @@ const ProposalSummary: React.FunctionComponent = () => {
             title="Percentual da garantia"
             values={[warrantyPercentage]}
           />
-          <div className={styles['proposal-summary__item-validity']}>
+          <div className={styles['proposal-summary-container__item-validity']}>
             <DetailField
               title="Início da vigência"
               values={[initialValidity]}
@@ -194,7 +193,7 @@ const ProposalSummary: React.FunctionComponent = () => {
             title="Tempo de vigência do seguro"
             values={[`${validityInDays} dias`]}
           />
-          <div className={styles['proposal-summary__divider']}>
+          <div className={styles['proposal-summary-container__divider']}>
             <Divider />
           </div>
           <DetailField title="Empresa contratante" values={[insuredName]} />
@@ -206,18 +205,18 @@ const ProposalSummary: React.FunctionComponent = () => {
             title="Contato da empresa contratada"
             values={[policyholderContact.name, policyholderContact.email]}
           />
-          <div className={styles['proposal-summary__divider']}>
+          <div className={styles['proposal-summary-container__divider']}>
             <Divider />
           </div>
           <h2
             className={className(
-              styles['proposal-summary__subtitle'],
+              styles['proposal-summary-container__subtitle'],
               styles[theme],
             )}
           >
             Informações do contrato
           </h2>
-          <div className={styles['proposal-summary__item-contract']}>
+          <div className={styles['proposal-summary-container__item-contract']}>
             <DetailField title="N.° do contrato" values={[contractNumber]} />
             <DetailField
               title="Valor do contrato"
@@ -244,4 +243,4 @@ const ProposalSummary: React.FunctionComponent = () => {
   );
 };
 
-export default ProposalSummary;
+export default ProposalSummaryContainer;

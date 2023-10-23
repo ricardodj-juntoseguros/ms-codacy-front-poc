@@ -21,12 +21,12 @@ import { ProcessDetailsModel } from '../../../application/types/model';
 import DocumentAPI from '../../../application/features/document/DocumentAPI';
 import ProcessDetailsAPI from '../../../application/features/processDetails/ProcessDetailsAPI';
 import { PROCESS_STATUS } from '../../../constants/processStatus';
-import styles from './ProcessDetails.module.scss';
+import styles from './ProcessDetailsContainer.module.scss';
 import ProcessDetailsHeader from '../../components/ProcessDetailsHeader';
 import ProcessDetailsAside from '../../components/ProcessDetailsAside/ProcessDetailsAside';
 import ProcessDetailsFooter from '../../components/ProcessDetailsFooter/ProcessDetailsFooter';
 
-function ProcessDetails() {
+function ProcessDetailsContainer() {
   const theme = useContext(ThemeContext);
   const { proposalId } = useParams<{ proposalId: string }>();
   const [processDetails, setProcessDetails] =
@@ -103,17 +103,17 @@ function ProcessDetails() {
   );
 
   return (
-    <div className={styles['process-details__wrapper']}>
+    <div className={styles['process-details-container__wrapper']}>
       {processDetails && (
         <>
-          <header className={styles['process-details__header']}>
+          <header className={styles['process-details-container__header']}>
             <LinkButton
               label="Voltar para meu painel"
               icon="arrow-left"
               onClick={() => history.goBack()}
             />
           </header>
-          <section className={styles['process-details__content']}>
+          <section className={styles['process-details-container__content']}>
             <ProcessDetailsHeader
               policyId={processDetails.identification.policyid}
               proposalId={Number(proposalId)}
@@ -123,7 +123,9 @@ function ProcessDetails() {
               dateIssuance={processDetails.dateIssuance}
               policyNumber={processDetails.identification.policynumber}
             />
-            <div className={styles['process-details__content-values']}>
+            <div
+              className={styles['process-details-container__content-values']}
+            >
               <DetailField
                 title="Fornecedor"
                 values={[processDetails.policyholder.companyName]}
@@ -137,11 +139,13 @@ function ProcessDetails() {
                 values={[processDetails.product.modality]}
               />
 
-              <div className={styles['proposal-details__divider']}>
+              <div className={styles['proposal-details-container__divider']}>
                 <Divider />
               </div>
 
-              <div className={styles['proposal-details__item-inline']}>
+              <div
+                className={styles['proposal-details-container__item-inline']}
+              >
                 <DetailField
                   title="Valor da cobertura"
                   values={[processDetails.securedAmountFormatted]}
@@ -155,7 +159,9 @@ function ProcessDetails() {
                   )}
               </div>
 
-              <div className={styles['proposal-details__item-inline']}>
+              <div
+                className={styles['proposal-details-container__item-inline']}
+              >
                 <DetailField
                   title="Início da vigência"
                   values={[processDetails.initialValidityFormatted]}
@@ -172,7 +178,9 @@ function ProcessDetails() {
               />
 
               {userType === UserTypeEnum.BROKER && (
-                <div className={styles['proposal-details__item-inline']}>
+                <div
+                  className={styles['proposal-details-container__item-inline']}
+                >
                   {processDetails.comissionFormatted && (
                     <DetailField
                       title="Comissão"
@@ -189,13 +197,13 @@ function ProcessDetails() {
                 </div>
               )}
 
-              <div className={styles['proposal-details__divider']}>
+              <div className={styles['proposal-details-container__divider']}>
                 <Divider />
               </div>
 
               <h2
                 className={className(
-                  styles['process-details__subtitle'],
+                  styles['process-details-container__subtitle'],
                   styles[theme],
                 )}
               >
@@ -226,4 +234,4 @@ function ProcessDetails() {
   );
 }
 
-export default ProcessDetails;
+export default ProcessDetailsContainer;

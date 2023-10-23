@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { useState } from 'react';
-import { Button,InputBase,LinkButton,Alert } from "junto-design-system";
+import { Button, InputBase, LinkButton, Alert } from 'junto-design-system';
 import { useHistory } from 'react-router-dom';
 import { emailValidator } from '@shared/utils';
 import { VendorsAuthService } from '@services';
@@ -45,7 +45,7 @@ export function LoginForm() {
   };
 
   const validateEmail = async () => {
-    setisEmail(emailValidator(email))
+    setisEmail(emailValidator(email));
   };
 
   return (
@@ -53,49 +53,54 @@ export function LoginForm() {
       <h1 className={styles['login_title']}>
         Seja bem-vindo. Faça seu login para continuar.
       </h1>
-      <div className={styles['login__form']}>
-        <InputBase
-          data-testid="loginForm-input-login"
-          label="E-mail"
-          placeholder=" "
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={() => validateEmail()}
-          value={email}
-          errorMessage={!isEmail ? 'Digite um e-mail válido' : ''}
-        />
-        <InputBase
-          data-testid="loginForm-input-password"
-          label="Senha"
-          placeholder=" "
-          icon={!showPassword ? 'eye-off' : 'eye'}
-          onChange={e => setPassword(e.target.value)}
-          value={password}
-          type={!showPassword ? 'password' : ''}
-          onActionIconClick={HandlerClick}
-        />
-        {showAlert && (
-          <Alert
-            data-testid="alert-login-incorret"
-            variant="error"
-            width={312}
-            text="Os dados que você informou não estão corretos. Confira e tente novamente."
+      <form onSubmit={() => handleSubmit(email, password)}>
+        <div className={styles['login__form']}>
+          <InputBase
+            data-testid="loginForm-input-login"
+            label="E-mail"
+            placeholder=" "
+            onChange={e => setEmail(e.target.value)}
+            onBlur={() => validateEmail()}
+            value={email}
+            errorMessage={!isEmail ? 'Digite um e-mail válido' : ''}
           />
-        )}
-        <div className={styles['forgot_passowrd_redirect']}>
-          <LinkButton label="Esqueceu sua senha?" onClick={() => handleGoPageForgotPassowrd()}/>
+          <InputBase
+            data-testid="loginForm-input-password"
+            label="Senha"
+            placeholder=" "
+            icon={!showPassword ? 'eye-off' : 'eye'}
+            onChange={e => setPassword(e.target.value)}
+            value={password}
+            type={!showPassword ? 'password' : ''}
+            onActionIconClick={HandlerClick}
+          />
+          {showAlert && (
+            <Alert
+              data-testid="alert-login-incorret"
+              variant="error"
+              width={312}
+              text="Os dados que você informou não estão corretos. Confira e tente novamente."
+            />
+          )}
+          <div className={styles['forgot_passowrd_redirect']}>
+            <LinkButton
+              label="Esqueceu sua senha?"
+              onClick={() => handleGoPageForgotPassowrd()}
+            />
+          </div>
+          <div>
+            <Button
+              disabled={isSubmitting}
+              data-testid="loginForm-button-login"
+              onClick={() => handleSubmit(email, password)}
+              type="submit"
+              fullWidth
+            >
+              {isSubmitting ? ((<LoadingSpinner />) as any) : 'Entrar'}
+            </Button>
+          </div>
         </div>
-        <div>
-          <Button
-            disabled={isSubmitting}
-            data-testid="loginForm-button-login"
-            onClick={() => handleSubmit(email, password)}
-            type="submit"
-            fullWidth
-          >
-            {isSubmitting ? ((<LoadingSpinner />) as any) : 'Entrar'}
-          </Button>
-        </div>
-      </div>
+      </form>
     </div>
   );
 }
