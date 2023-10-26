@@ -4,7 +4,7 @@ export interface ProcessDetailDTO {
     policyid: number;
     quotationid: number;
     newquoterid: number;
-    policynumber?: string | undefined;
+    policyNumber?: string | undefined;
   };
   createdAt: string;
   dateIssuance?: string | null;

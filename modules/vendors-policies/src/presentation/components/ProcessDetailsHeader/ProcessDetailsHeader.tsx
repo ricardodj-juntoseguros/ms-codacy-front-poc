@@ -113,7 +113,7 @@ const ProcessDetailsHeader: React.FC<ProcessDetailsHeaderProps> = ({
       : `Apólice ${policyNumber}`;
     const text = isProposal
       ? `Proposta ${policyId}, ${formattedCreatedAt}`
-      : `Contratada em, ${formattedDateIssuance}`;
+      : `Contratada em ${formattedDateIssuance}`;
 
     return (
       <>

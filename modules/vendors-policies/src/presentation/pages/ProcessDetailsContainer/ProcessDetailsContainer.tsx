@@ -121,7 +121,7 @@ function ProcessDetailsContainer() {
               processStatusConfig={processStatusConfig}
               userType={userType}
               dateIssuance={processDetails.dateIssuance}
-              policyNumber={processDetails.identification.policynumber}
+              policyNumber={processDetails.identification.policyNumber}
             />
             <div
               className={styles['process-details-container__content-values']}
