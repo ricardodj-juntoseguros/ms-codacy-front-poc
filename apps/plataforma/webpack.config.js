@@ -37,12 +37,12 @@ module.exports = (config, context) => {
           'hooks',
           'src',
         ),
-        '@modules/corretor-emissao': path.resolve(
+        '@modules/broker-issuance': path.resolve(
           __dirname,
           '..',
           '..',
           'modules',
-          'corretor-emissao',
+          'broker-issuance',
           'src',
         ),
         '@modules/broker-signup': path.resolve(

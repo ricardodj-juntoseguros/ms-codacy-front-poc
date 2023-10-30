@@ -1,64 +1,75 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.step-container {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  margin-bottom: spacing('xxl-4');
-
-  opacity: 0.5;
-  touch-action: none;
-  pointer-events: none;
-  user-select: none;
-
-  &--active {
-    opacity: 1;
-    touch-action: auto;
-    pointer-events: auto;
-    user-select: auto;
-  }
-
-  &--active .step-container__step-number {
-    color: color('brand-primary');
-    border: 2px solid color('brand-primary');
-  }
+.step-container__wrapper {
+  max-width: 100%;
+  position: relative;
 }
 
-.step-container__step-number {
-  @include font('l');
-  @include margin('none', 'm', 'none', 'none');
-  color: color('grey-400');
+.step-container__number {
+  @include font('l-emphasys');
+  @include color('color', 'brand-primary');
+  @include border(2, 'solid', 'brand-primary');
 
   display: flex;
+  text-align: center;
   justify-content: center;
+  box-sizing: border-box;
   align-items: center;
-  width: 48px;
-  height: 48px;
-  border: 2px solid color('grey-200');
-  border-radius: 30px;
-  transition: all 0.3s ease 0s;
-}
+  position: absolute;
+  width: 3rem;
+  height: 3rem;
+  top: 0;
+  border-radius: 50%;
+  left: - spacing('xxl-5');
 
-.step-container__step-content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-
-  &__header,
-  &__header h2 {
-    @include font('l');
-    @include margin('none', 'none', 'l', 'none');
-    color: color('dark');
-    height: 52px;
-    display: flex;
-    align-items: center;
-
-    title {
-      display: block;
-    }
+  &--finished {
+    @include color('color', 'grey-200');
+    @include border(2, 'solid', 'grey-200');
   }
 }
 
-.step-container__loading {
-  margin-bottom: spacing('xxl-4');
+.step-container__title {
+  @include font('l');
+  @include color('color', 'dark');
+  margin: 0 0 spacing('xl') 0;
+
+  & strong {
+    @include font('l-emphasys');
+  }
+
+  &--finished {
+    @include color('color', 'grey-400');
+    margin: 0 0 spacing('s') 0;
+  }
+}
+
+.step-container__info-wrapper {
+  margin: 0 0 spacing('xxl') 0;
+}
+
+.step-container__info-text {
+  @include font('sm');
+  @include color('color', 'grey-600');
+  margin: 0 0 spacing('s') 0;
+  word-wrap: break-word;
+}
+
+
+@media screen and (max-width: 768px) {
+  .step-container__wrapper {
+    padding: spacing('l');
+    margin-top: spacing('xxl');
+  }
+
+  .step-container__number {
+    @include font('base-emphasys');
+    width: 2rem;
+    height: 2rem;
+    top: - spacing('m');
+    left: spacing('l');
+  }
+
+  .step-container__info-wrapper {
+    margin: 0;
+  }
 }

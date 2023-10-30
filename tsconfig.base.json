@@ -10,7 +10,7 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2017", "es2019", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
@@ -22,7 +22,7 @@
       ],
       "@modules/broker-signup": ["modules/broker-signup/src/index.tsx"],
       "@modules/broker-signup-direct": ["modules/broker-signup-direct/src/index.tsx"],
-      "@modules/corretor-emissao": ["modules/corretor-emissao/src/index.tsx"],
+      "@modules/broker-issuance": ["modules/broker-issuance/src/index.tsx"],
       "@modules/fidelize-dashboard": [
         "modules/fidelize-dashboard/src/index.tsx"
       ],

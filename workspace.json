@@ -53,26 +53,26 @@
       },
       "tags": []
     },
-    "corretor-emissao": {
-      "root": "modules/corretor-emissao",
-      "sourceRoot": "modules/corretor-emissao/src",
+    "broker-issuance": {
+      "root": "modules/broker-issuance",
+      "sourceRoot": "modules/broker-issuance/src",
       "projectType": "library",
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "modules/corretor-emissao/**/*.{ts,tsx,js,jsx}"
+              "modules/broker-issuance/**/*.{ts,tsx,js,jsx}"
             ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": [
-            "coverage/modules/corretor-emissao"
+            "coverage/modules/broker-issuance"
           ],
           "options": {
-            "jestConfig": "modules/corretor-emissao/jest.config.js",
+            "jestConfig": "modules/broker-issuance/jest.config.js",
             "passWithNoTests": true
           }
         }

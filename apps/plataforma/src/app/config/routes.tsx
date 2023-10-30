@@ -1,5 +1,5 @@
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
-import CorretorEmissao from '@modules/corretor-emissao';
+import BrokerIssuance from '@modules/broker-issuance';
 import BrokerSignup from '@modules/broker-signup';
 
 import BrokerSignupDirect from '@modules/broker-signup-direct';
@@ -14,7 +14,7 @@ export default function Routes() {
           path="/"
           component={() => <Redirect to="/emissao" />}
         />
-        <ProtectedRoute path="/emissao" component={CorretorEmissao} />
+        <ProtectedRoute path="/emissao" component={BrokerIssuance} />
         <Route path="/signup" component={BrokerSignup} />
         <ProtectedRoute path="/direct" component={BrokerSignupDirect} />
       </Switch>

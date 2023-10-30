@@ -1,58 +1,105 @@
-import { ReactNode } from 'react';
+import { useContext, useMemo } from 'react';
+import { LinkButton, ThemeContext } from 'junto-design-system';
 import className from 'classnames';
-import { SkeletonStepContainer } from '@shared/ui';
-
+import { nanoid } from '@reduxjs/toolkit';
+import { StepContainerProps, StepStatusEnum, useFlow } from '@shared/hooks';
 import styles from './StepContainer.module.scss';
 
-export interface StepContainerProps {
-  stepNumber?: number;
-  isVisible?: boolean;
-  isEnabled?: boolean;
-  isLoading?: boolean;
-  title: ReactNode;
-  children: ReactNode;
-}
-
-export function StepContainer({
-  stepNumber = 1,
-  isVisible = true,
-  isEnabled = true,
-  isLoading = false,
+export const StepContainer: React.FC<StepContainerProps> = ({
+  name,
+  status,
+  index,
   title,
+  infoText,
   children,
-}: StepContainerProps) {
-  if (isLoading) {
-    return (
-      <div className={className(styles['step-container__loading'])}>
-        <SkeletonStepContainer />
-      </div>
-    );
-  }
+}) => {
+  const theme = useContext(ThemeContext);
+  const { setEditableStep } = useFlow();
+  const stepTitle = useMemo(() => {
+    let boldWordsIndex = 0;
+    return title.text.split(' ').map((item: any) => {
+      if (item === '%STRONG%' && title.boldWords) {
+        const updatedText = (
+          <strong
+            key={nanoid(5)}
+            className={styles[theme]}
+          >{`${title.boldWords[boldWordsIndex]} `}</strong>
+        );
+        boldWordsIndex += 1;
+        return updatedText;
+      }
 
-  if (isVisible) {
+      return `${item} `;
+    });
+  }, [theme, title]);
+
+  const renderIdentificationStep = () => {
+    if (status === StepStatusEnum.FINISHED) {
+      return (
+        <i
+          data-testid="stepContainer-identification-check"
+          className={className('icon', 'icon-check', styles[theme])}
+        />
+      );
+    }
+
+    return index + 1;
+  };
+
+  const renderFinishContent = () => {
     return (
       <div
-        className={className(styles['step-container'], {
-          [styles['step-container--active']]: isEnabled,
-        })}
-        data-testid="step-container"
+        data-testid={`stepContainer-finishContent-${index}`}
+        className={styles['step-container__info-wrapper']}
       >
-        <span className={styles['step-container__step-number']}>
-          {stepNumber}
-        </span>
-        <div className={className(styles['step-container__step-content'])}>
-          <div
-            className={className(
-              styles['step-container__step-content__header'],
-            )}
-          >
-            {title}
-          </div>
-          {children}
-        </div>
+        <p
+          className={className(
+            styles['step-container__info-text'],
+            styles[theme],
+          )}
+        >
+          {infoText}
+        </p>
+        <LinkButton
+          data-testid="stepContainer-button-edit"
+          label="Editar"
+          onClick={() => setEditableStep(name)}
+        />
       </div>
     );
-  }
+  };
 
-  return null;
-}
+  return (
+    <div
+      data-testid={`stepContainer-wrapper-${index}`}
+      className={styles['step-container__wrapper']}
+    >
+      <span
+        data-testid={`stepContainer-identification-${index}`}
+        className={className(
+          styles['step-container__number'],
+          {
+            [styles['step-container__number--finished']]:
+              status === StepStatusEnum.FINISHED,
+          },
+          styles[theme],
+        )}
+      >
+        {renderIdentificationStep()}
+      </span>
+      <h2
+        className={className(
+          styles['step-container__title'],
+          {
+            [styles['step-container__title--finished']]:
+              status === StepStatusEnum.FINISHED,
+          },
+          styles[theme],
+        )}
+      >
+        {stepTitle}
+      </h2>
+      {status === StepStatusEnum.FINISHED ? renderFinishContent() : children}
+    </div>
+  );
+};
