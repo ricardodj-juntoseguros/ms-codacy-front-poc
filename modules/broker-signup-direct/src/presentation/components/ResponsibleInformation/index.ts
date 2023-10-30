@@ -1,1 +1,1 @@
-export { default } from './ResponsibleInformation';
+export * from './ResponsibleInformation';

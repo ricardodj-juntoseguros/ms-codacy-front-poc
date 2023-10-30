@@ -1,126 +1,150 @@
 import { RouteComponentProps } from 'react-router';
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'junto-design-system';
+import { Button, LinkButton } from 'junto-design-system';
 import { BankDTO } from 'modules/broker-signup/src/application/types/dto';
 import styles from './BrokerDetailsContainer.module.scss';
-import { BrokerAddress } from '../../components/BrokerAddress/BrokerAddress'
-import { BankDetails } from '../../components/BankDetails/BankDetails'
-import { BrokerGeneralInformation } from '../../components/BrokerGeneralInformation/BrokerGeneralInformation'
-import { HeaderPages } from '../../components/HeaderPages/HeaderPages'
-import  ListBankApi from '../../../application/features/Bank/ListBankApi'
-import  RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi'
-import { brokerInformationSliceActions,selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
-import { validationActions, selectValidation } from '../../../application/features/validation/ValidationSlice';
+import { ResponsibleInformation } from '../../components/ResponsibleInformation/ResponsibleInformation';
+import { BankDetails } from '../../components/BankDetails/BankDetails';
+import { BrokerGeneralInformation } from '../../components/BrokerGeneralInformation/BrokerGeneralInformation';
+import ListBankApi from '../../../application/features/Bank/ListBankApi';
+import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
+import {
+  brokerInformationSliceActions,
+  selectBroker,
+} from '../../../application/features/brokerInformation/BrokerInformationSlice';
+import {
+  validationActions,
+  selectValidation,
+} from '../../../application/features/validation/ValidationSlice';
+import { TextHelper } from '../../components/TextHelper';
+import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
+import { selectResponsibleInformation } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
 
-const BrokerDetailsContainer= ({ history }: RouteComponentProps) => {
-
+const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
   const [isDisableGoNextStep, setIsDisableGoNextStep] = useState(true);
   const [bankOptions, setbankOptions] = useState<BankDTO[]>();
   const dispatch = useDispatch();
   const brokerInformation = useSelector(selectBroker);
   const { errors } = useSelector(selectValidation);
-  const { bankDetails } = brokerInformation
-  const { name,accounDigit,accounNumber,bankNumber } = bankDetails
+  const { bankDetails } = brokerInformation;
+  const { name, accounDigit, accounNumber, bankNumber } = bankDetails;
+  const sreenWidth = window.screen.width;
+  const [showTextHelper, setShowTextHelper] = useState(sreenWidth > 680);
+  const textHelper = [
+    'Nós atrelamos os dados da corretora a uma pessoa física (que será responsável pelo relacionamento na plataforma).',
+    'Além disso, a comissão será depositada única e exclusivamente em uma conta jurídica, atrelada ao CNPJ da empresa.',
+  ];
+  const responsibleInformation = useSelector(selectResponsibleInformation);
 
   useEffect(() => {
-    if(brokerInformation.information.federalId === ''){
+    if (brokerInformation.information.federalId === '') {
       history.push('/');
     }
-    },[brokerInformation.information.federalId]);
+  }, [brokerInformation.information.federalId]);
 
   useEffect(() => {
-    const hasBankDetailsNotInputEmpty = name !== '' && bankNumber && accounNumber && accounDigit !== ''
+    const hasBankDetailsNotInputEmpty =
+      name !== '' && bankNumber && accounNumber && accounDigit !== '';
 
-    const hasInputError = Object.values(errors).length
+    const hasInputError = Object.values(errors).length;
 
-    if(hasBankDetailsNotInputEmpty && hasInputError === 0 &&  brokerInformation.susepCode !== ''){
-     setIsDisableGoNextStep(false);
-    }
-    else{
+    if (hasBankDetailsNotInputEmpty && hasInputError === 0) {
+      setIsDisableGoNextStep(false);
+    } else {
       setIsDisableGoNextStep(true);
     }
-  }, [accounDigit, accounNumber, bankNumber, brokerInformation.susepCode, errors, name]);
+  }, [accounDigit, accounNumber, bankNumber, errors, name]);
 
-  const fetchBanks = useCallback(
-    async () => {
-      await  ListBankApi.getBanks()
-      .then(response => { setbankOptions(response)})
-      .catch(() => setIsDisableGoNextStep(true))
-    },
-    [],
-  );
+  const fetchBanks = useCallback(async () => {
+    await ListBankApi.getBanks()
+      .then(response => {
+        setbankOptions(response);
+      })
+      .catch(() => setIsDisableGoNextStep(true));
+  }, []);
 
   const fetchRegisterResponsibleBroker = useCallback(
-    async (broker,pathUpdate) => {
+    async (broker, responsibleInformation, pathUpdate) => {
       const payload = [
         {
-          op: "replace",
-          path: "/bankName",
-          value: broker.bankDetails.name
+          op: 'replace',
+          path: '/cpfResponsable',
+          value: responsibleInformation.cpfResponsable
+            .trim()
+            .replaceAll(/[./-]/g, ''),
         },
         {
-          op: "replace",
-          path: "/bankNumber",
-          value: broker.bankDetails.bankCode
+          op: 'replace',
+          path: '/phoneNumberResponsable',
+          value: responsibleInformation.phoneNumberResponsable.replaceAll(
+            /[()-]/g,
+            '',
+          ),
         },
         {
-          op: "replace",
-          path: "/currentAccountNumber",
-          value:  broker.bankDetails.accounNumber
+          op: 'replace',
+          path: '/bankName',
+          value: broker.bankDetails.name,
         },
         {
-          op: "replace",
-          path: "/branchNumber",
-          value:  broker.bankDetails.bankNumber
+          op: 'replace',
+          path: '/bankNumber',
+          value: broker.bankDetails.bankCode,
         },
         {
-          op: "replace",
-          path: "/digitalContactNumber",
-          value: broker.bankDetails.accounDigit
+          op: 'replace',
+          path: '/currentAccountNumber',
+          value: broker.bankDetails.accounNumber,
         },
         {
-          op: "replace",
-          path: "/susepCode",
-          value: parseInt(broker.susepCode.replaceAll(/[./-]/g, ''), 10)
+          op: 'replace',
+          path: '/branchNumber',
+          value: broker.bankDetails.bankNumber,
         },
         {
-          op: "replace",
-          path: "/iss",
-          value: broker.iss
+          op: 'replace',
+          path: '/digitalContactNumber',
+          value: broker.bankDetails.accounDigit,
         },
         {
-          op: "replace",
-          path: "/simplesOptant",
-          value: broker.simplesOptant
+          op: 'replace',
+          path: '/iss',
+          value: broker.iss,
         },
-      ]
-      let updateBankDigit: { op: string; path: string; value: any; }[] = [];
-      if(broker.bankDetails.bankDigit !== ''){
+      ];
+      let updateBankDigit: { op: string; path: string; value: any }[] = [];
+      if (broker.bankDetails.bankDigit !== '') {
         updateBankDigit = [
           {
-            op: "replace",
-            path: "/digitalAgencyNumber",
-            value:  broker.bankDetails.bankDigit
+            op: 'replace',
+            path: '/digitalAgencyNumber',
+            value: broker.bankDetails.bankDigit,
           },
-        ]
+        ];
       }
-      await  RegisterBrokerApi.updateRegisterBroker([...payload,...updateBankDigit], pathUpdate)
-      .then(() =>{
-        history.push('/upload-documents');
-      })
+      await RegisterBrokerApi.updateRegisterBroker(
+        [...payload, ...updateBankDigit],
+        pathUpdate,
+      ).then(() => {
+        // history.push('/upload-documents');
+      });
     },
     [history],
   );
 
   useEffect(() => {
-    if(bankOptions === undefined){
+    if (bankOptions === undefined) {
       fetchBanks();
     }
   }, [bankOptions, fetchBanks]);
 
   const onSubmit = () => {
-    fetchRegisterResponsibleBroker(brokerInformation, brokerInformation.pathUpdate);
+    fetchRegisterResponsibleBroker(
+      brokerInformation,
+      responsibleInformation,
+      brokerInformation.pathUpdate,
+    );
   };
 
   const handleGoBackClick = () => {
@@ -134,27 +158,48 @@ const BrokerDetailsContainer= ({ history }: RouteComponentProps) => {
 
   return (
     <div className={styles['broker_details_container__wrapper']}>
-      <HeaderPages showLinkButton handleGoBackClick={handleGoBackClick}/>
-      <div className={styles['broker_details_container__title']}><span>Agora, revise e nos informe os demais dados da corretora</span></div>
-      <BrokerAddress/>
-      <BankDetails
-       bankOptions={bankOptions || []}
-       onSelectBank={handleBankSelection}
-       />
-      <BrokerGeneralInformation/>
-      <div className={styles['broker_details_container__button']}>
-        <Button
-        data-testid="button-broker-details"
-        onClick={() => onSubmit()}
-        disabled={isDisableGoNextStep}
-        >
-          Avançar
-        </Button>
+      <LogoJuntoSeguros />
+      <div className={styles['broker_details_container_section_form']}>
+        <h1>Dados de cadastro</h1>
+        <h2>Complete o cadastro com os dados a seguir:</h2>
+        <ResponsibleInformation />
+        <BankDetails
+          bankOptions={bankOptions || []}
+          onSelectBank={handleBankSelection}
+        />
+        <BrokerGeneralInformation />
+        <div className={styles['broker_details_container__button']}>
+          <Button
+            data-testid="button-broker-details"
+            onClick={() => onSubmit()}
+            disabled={isDisableGoNextStep}
+          >
+            Continuar
+          </Button>
+        </div>
+        {sreenWidth <= 680 && (
+          <div
+            className={
+              styles['broker_details_container_section_form_show_text_helper']
+            }
+          >
+            <LinkButton
+              onClick={() => setShowTextHelper(!showTextHelper)}
+              label="Por quê precisamos desses dados?"
+              icon={!showTextHelper ? 'help-circle' : 'chevron-up'}
+              iconPosition="left"
+            />
+          </div>
+        )}
       </div>
+      {showTextHelper && (
+        <TextHelper
+          title="Por quê precisamos desses dados?"
+          text={textHelper}
+        />
+      )}
     </div>
-
-
   );
-}
+};
 
 export default BrokerDetailsContainer;

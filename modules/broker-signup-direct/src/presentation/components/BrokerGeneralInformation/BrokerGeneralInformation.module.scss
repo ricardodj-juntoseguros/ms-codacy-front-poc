@@ -2,22 +2,37 @@
 
 .broker_general_information_wrapper{
   width: 672px;
-  margin: 0 auto;
   & h1{
     @include font('base-emphasys');
     margin: 0;
-    padding-top: spacing('xxl-2');
-  }
-
-  .broker_general_information_field {
-    padding-top: spacing('m');
-    width: 312px;
-    padding: spacing('m') spacing('xxl-2') 0 0 ;
+    padding-top: spacing('xxl-3');
   }
 
   @media screen and (max-width: 680px) {
-      width: 312px;
+      width: 100%;
   }
+}
+
+.broker_general_information_field {
+  width: 312px;
+  padding: 0 spacing('xxl-2') 0 0 ;
+
+  @media screen and (max-width: 680px) {
+    width: 100%;
+}
+}
+
+.broker_general_information_header{
+  display: grid;
+  grid-template-columns: 230px auto;
+  padding-bottom: spacing('l') ;
+}
+
+.broker_general_information_header_tooltip{
+  display: flex;
+  align-items: end;
+  padding: 0 0 spacing('xs') spacing('s');
+
 }
 
 .broker_general_information_inputs{
@@ -29,8 +44,21 @@
   }
 }
 
-.broker_general_information_field_toogle{
-  padding: spacing('m') 0 spacing('xl') 0 ;
+.broker_general_information-tooltip-button {
+  background-color: transparent;
+  height: 20px;
+  width: 20px;
+  border: none;
+  cursor: pointer;
+  padding: 0px;
+  position: absolute;
+
+  & > i {
+    @include color('color', 'grey-400');
+    @include color('color', 'grey-500', ':hover');
+    height: 20px;
+    width: 20px;
+  }
 }
 
 

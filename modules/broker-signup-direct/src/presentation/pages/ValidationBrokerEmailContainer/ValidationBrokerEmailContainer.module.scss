@@ -9,10 +9,6 @@
   }
 }
 
-.validation_broker_email_container_section_form_logo{
-  padding: spacing('xl') spacing('m') spacing('xl') spacing('xl');
-  }
-
 .validation_broker_email_container_section_form{
   width: 960px;
   display: flex;
@@ -100,4 +96,17 @@
   width: 106px;
   margin: auto;
   padding-top: spacing('xl');
+}
+
+.validation_broker_email_container_modal_text{
+  h1{
+    @include font('l');
+    color: color('dark');
+    font-weight:600;
+  }
+
+  p{
+    @include font('base');
+    color: color('dark');
+  }
 }

@@ -1,6 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.search_registration_container_section_helper{
+.text_helper_componet_section_helper{
   width: 480px;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@
   }
 }
 
-.search_registration_container_section_helper_text{
+.text_helper_componet_section_helper_text{
   width: 352px;
   padding: 0 64px 44px 64px;
 
@@ -45,7 +45,7 @@
   }
 
   @media screen and (max-width: 680px) {
-    width: 352px;
+    width: 100%;
     padding: 0 24px 44px 24px;
   }
 }

@@ -6,6 +6,7 @@ import styles from './SearchRegistrationContainer.module.scss';
 import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
 import SearchBrokerFederalId from '../../components/SearchBrokerFederalId/SearchBrokerFederalId';
 import { TextHelper } from '../../components/TextHelper/TextHelper';
+import  LogoJuntoSeguros  from '../../components/LogoJunto/LogoJuntoSeguros'
 
 const SearchRegistrationContainer = ({ history }: RouteComponentProps) => {
   const sreenWidth = window.screen.width;
@@ -23,10 +24,8 @@ const SearchRegistrationContainer = ({ history }: RouteComponentProps) => {
 
   return (
     <div className={styles['search_registration_container_wrapper']}>
-    <div className={styles['search_registration_container_section_form_logo']}>
-     <LogoJunto />
-     </div>
- <div className={styles['search_registration_container_section_form']}>
+    <LogoJuntoSeguros/>
+    <div className={styles['search_registration_container_section_form']}>
      <div className={styles['search_registration_container_section_form_section']}>
        <h1>Qual é o CNPJ?</h1>
        <h2>Informe o CNPJ de uma empresa cadastrada na Susep.</h2>

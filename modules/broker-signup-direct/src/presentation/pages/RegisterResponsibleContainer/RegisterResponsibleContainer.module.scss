@@ -31,37 +31,35 @@
   & div > h1{
     @include font('xl-2-emphasys');
     color: color('dark');
-    margin: 0 0 24px 0;
+    margin: 0 0 spacing('l') 0;
     width: 322px;
   }
 
   & div > h2{
     @include font('base');
     color: color('dark');
-    margin: 0 0 56px 0;
+    margin: 0 0 spacing('xxl-3') 0;
     width: 350px;
   }
 
   @media screen and (max-width: 680px) {
     width: 100%;
-    padding: 45px 0 0 24px;
+    padding: 45px 0 0 spacing('l');
     height: 100%;
     & div > h1{
       @include font('xl-emphasys');
       color: color('dark');
-      margin: 0 0 24px 0;
+      margin: 0 0 spacing('l') 0;
       width: 280px
     }
 
     & div > h2{
       @include font('base');
       color: color('dark');
-      margin: 0 0 56px 0;
+      margin: 0 0 spacing('xxl-3') 0;
       width: 312px
     }
   }
-
-
 }
 
 .register_responsible_container_section_form_redirect_access{
@@ -74,24 +72,20 @@
   }
 }
 
-.register_responsible_container_section_form_logo{
-padding: 32px 16px 32px 32px;
-}
-
 .register_responsible_container_section_helper{
   width: 480px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  padding: 108px 0 24px 0;
+  padding: 108px 0 spacing('l') 0;
   box-sizing: border-box;
   background-color: #F1F5F7;
   height: 100vh;
 
   @media screen and (max-width: 680px) {
     width: 100%;
-    padding: 48px 24px 24px 24px;
+    padding: spacing('xxl-2') spacing('l') spacing('l') spacing('l');
   }
 }
 
@@ -100,7 +94,7 @@ padding: 32px 16px 32px 32px;
 
 .register_responsible_container_section_helper_text{
   width: 352px;
-  padding: 0 64px 44px 64px;
+  padding: 0 spacing('xxl-4') 44px spacing('xxl-4');
   & h2{
     @include font('l-emphasys');
     color: color('dark');
@@ -114,8 +108,7 @@ padding: 32px 16px 32px 32px;
   }
 
   @media screen and (max-width: 680px) {
-    width: 352px;
-    padding: 0 24px 44px 24px;
+    padding: 0 spacing('l') 44px spacing('l');
   }
 }
 

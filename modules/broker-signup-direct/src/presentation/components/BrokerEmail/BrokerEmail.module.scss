@@ -1,0 +1,38 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.broker_email_wrapper{
+  margin: auto;
+  & div  {
+    padding-top: spacing('m');
+  }
+  & div:nth-child(1), div:last-child{
+    padding-top: 0;
+  }
+}
+.broker_email_terms{
+  display: flex;
+  padding: spacing('xl') 0 spacing('xl') 2px !important;
+
+  & span {
+  @include font('sm');
+  font-weight:600;
+  align-self: flex-end;
+  }
+  .span_terms{
+    font-weight:400;
+    color: color('grey-600'); ;
+  }
+}
+
+.broker_email_button{
+    padding-top: 0;
+    & button{
+      width: 360px;
+    }
+
+    @media screen and (max-width: 680px) {
+      & button{
+        width: 100%;
+      }
+    }
+}

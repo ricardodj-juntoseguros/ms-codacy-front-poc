@@ -1,8 +1,21 @@
 import { object, string } from 'yup';
 
-export const ResponsibleInformationDataSchema = object().shape({
+export const BrokerEmailDataSchema = object().shape({
+  nameResponsible: string()
+    .test('nameResponsible', function validateNameResponsible() {
+      const { nameResponsible } = this.parent;
+      const nameFull = nameResponsible.trim().split(' ');
+      let nameIsValid = true;
+
+      nameFull.forEach((name: string | any[]) => {
+        if (name.length < 2) nameIsValid = false;
+      });
+
+      return !(nameFull.length < 2 || !nameIsValid);
+    })
+    .required(),
   documentNumber: string()
-    .test('documentNumber', function isValidCPF() {
+    .test('nameResponsible', function isValidCPF() {
       const { documentNumber } = this.parent;
       if (typeof documentNumber !== 'string') return false;
 
@@ -31,7 +44,6 @@ export const ResponsibleInformationDataSchema = object().shape({
       return !(rest(10, 2) !== validator[0] || rest(11, 1) !== validator[1]);
     })
     .required(),
-  documentNumberIsNull: string().required(),
   phone: string().min(14).required(),
-  phoneIsNull: string().required(),
+  email: string().email().required(),
 });
