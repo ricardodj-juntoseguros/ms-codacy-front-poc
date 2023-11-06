@@ -41,6 +41,13 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
     if (brokerInformation.information.federalId === '') {
       history.push('/');
     }
+    if (
+      brokerInformation.information.federalId !== '' &&
+      responsibleInformation.emailBroker !== '' &&
+      !responsibleInformation.emailHasValidated
+    ) {
+      history.push('/validation-email');
+    }
   }, [brokerInformation.information.federalId]);
 
   useEffect(() => {
@@ -127,7 +134,7 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
         [...payload, ...updateBankDigit],
         pathUpdate,
       ).then(() => {
-        // history.push('/upload-documents');
+        history.push('/broker-data-review');
       });
     },
     [history],

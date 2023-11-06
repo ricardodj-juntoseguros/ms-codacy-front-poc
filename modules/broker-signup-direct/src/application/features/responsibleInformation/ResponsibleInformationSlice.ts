@@ -7,7 +7,8 @@ const initialState: ResponsibleInformationModel = {
   cpfResponsable: '',
   phoneNumberResponsable: '',
   emailBroker: '',
-  termsResponsibility: false
+  termsResponsibility: false,
+  emailHasValidated: false,
 };
 
 export const responsibleInformationSlice = createSlice({
@@ -30,12 +31,16 @@ export const responsibleInformationSlice = createSlice({
     setTermsResponsibility: (state, action: PayloadAction<boolean>) => {
       state.termsResponsibility = action.payload;
     },
+    setEmailHasValidated: (state, action: PayloadAction<boolean>) => {
+      state.emailHasValidated = action.payload;
+    },
   },
 });
 
-export const selectResponsibleInformation = (state: RootState) => state.responsibleInformation;
+export const selectResponsibleInformation = (state: RootState) =>
+  state.responsibleInformation;
 
-export const { actions:responsibleInformationSliceActions } =
-responsibleInformationSlice;
+export const { actions: responsibleInformationSliceActions } =
+  responsibleInformationSlice;
 
 export default responsibleInformationSlice.reducer;

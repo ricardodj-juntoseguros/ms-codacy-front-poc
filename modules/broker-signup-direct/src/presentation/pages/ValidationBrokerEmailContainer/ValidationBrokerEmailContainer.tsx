@@ -10,7 +10,10 @@ import {
   brokerInformationSliceActions,
   selectBroker,
 } from '../../../application/features/brokerInformation/BrokerInformationSlice';
-import { selectResponsibleInformation } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
+import {
+  selectResponsibleInformation,
+  responsibleInformationSliceActions,
+} from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
 import { EMAIL_PROVIDER_LIST } from '../../../constants/emailProviderList';
 import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
 
@@ -25,6 +28,7 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(responsibleInformationSliceActions.setEmailHasValidated(false));
     if (broker.information.federalId === '') {
       history.push('/');
     }
@@ -92,7 +96,12 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
         },
       ];
       await RegisterBrokerApi.updateRegisterBroker(payload, pathUpdate).finally(
-        () => history.push('/broker-details'),
+        () => {
+          dispatch(
+            responsibleInformationSliceActions.setEmailHasValidated(true),
+          );
+          history.push('/broker-details');
+        },
       );
     },
     [],
