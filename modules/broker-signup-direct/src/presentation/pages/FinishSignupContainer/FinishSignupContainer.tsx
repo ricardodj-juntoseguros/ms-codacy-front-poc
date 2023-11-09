@@ -1,36 +1,92 @@
 import { RouteComponentProps } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { Button, LinkButton, Tooltip } from 'junto-design-system';
 import styles from './FinishSignupContainer.module.scss';
-import { HeaderPages } from '../../components/HeaderPages/HeaderPages'
-import { ReactComponent as IconFinish } from '../../assets/iconFinish.svg';
+import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
+import { ReactComponent as FinishIcon } from '../../assets/finishIcon.svg';
 import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 
-const FinishSignupContainer= ({ history }: RouteComponentProps) => {
+const FinishSignupContainer = ({ history }: RouteComponentProps) => {
   const brokerInformation = useSelector(selectBroker);
 
-  useEffect(() => {
-    if(brokerInformation.information.federalId === ''){
-      history.push('/');
-    }
-    },[brokerInformation.information.federalId, history]);
+  const [copied, setCopied] = useState(false);
+  const [username, setUsername] = useState('anaseguro');
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  const handleGoBackClick = () => {
-    history.push('/');
+  const copyIconRef = useRef<HTMLButtonElement>(null);
+
+  const loginPlatformUrl = process.env.NX_GLOBAL_BROKER_PLATFORM_URL || '';
+
+  // useEffect(() => {
+  //   if (brokerInformation.information.federalId === '') {
+  //     history.push('/');
+  //   }
+  // }, [brokerInformation.information.federalId, history]);
+
+  const handleCopyUsernameToClipboard = () => {
+    navigator.clipboard.writeText(username).then(() => setCopied(true));
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+
+  const handleGoToLoginPage = () => {
+    window.location.assign(loginPlatformUrl);
   };
 
   return (
-    <div className={styles['finish_signup_container__wrapper']}>
-       <HeaderPages handleGoBackClick={handleGoBackClick} showLinkButton={false}/>
-       <div className={styles['finish_signup_box']}>
-          <div className={styles['finish_signup__illustration']}>
-          <IconFinish/>
-          </div>
-          <div className={styles['finish_signup_container__title']}><span>Cadastro solicitado! Fique de olho, entraremos em contato com você.</span></div>
-          <div className={styles['finish_signup_container__information']}><span>Você receberá um e-mail para dar sequência na criação do seu acesso.</span></div>
+    <div className={styles['finish-signup-container__wrapper']}>
+      <div className={styles['finish-signup-container__header']}>
+        <LogoJunto />
       </div>
+      <div className={styles['finish_signup_box']}>
+        <FinishIcon />
+        <div className={styles['finish-signup-container__title']}>
+          <div>
+            <span>Vem Junto!</span>
+          </div>
+          <div>
+            <span>Seu acesso está pronto</span>
+          </div>
+        </div>
+        <div className={styles['finish-signup-container__information']}>
+          <span>Use seu usuário para acessar a plataforma:</span>
+        </div>
+        <div className={styles['finish-signup-container__copy_username']}>
+          <div
+            className={
+              styles['finish-signup-container__copy_username_username']
+            }
+          >
+            <span>{username}</span>
+          </div>
+          <div className={styles['finish-signup-container__copy_icon']}>
+            <LinkButton
+              ref={copyIconRef}
+              onMouseEnter={() => setTooltipVisible(true)}
+              onMouseLeave={() => setTooltipVisible(false)}
+              label=""
+              onClick={handleCopyUsernameToClipboard}
+              icon={copied ? 'check' : 'copy'}
+              name={copied ? 'Copiado' : 'Copiar nome de usuário'}
+            />
+          </div>
+        </div>
+      </div>
+      <div className={styles['finish-signup-container__button']}>
+        <Button data-testid="button-access-now" onClick={handleGoToLoginPage}>
+          Acessar agora
+        </Button>
+      </div>
+      <Tooltip
+        anchorRef={copyIconRef}
+        text={copied ? 'Copiado!' : 'Copiar usuário'}
+        visible={tooltipVisible}
+        position="top"
+      />
     </div>
   );
-}
+};
 
 export default FinishSignupContainer;
