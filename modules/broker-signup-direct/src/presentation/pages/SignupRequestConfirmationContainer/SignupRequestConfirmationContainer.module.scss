@@ -1,0 +1,83 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.signup-request-confirmation-container__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 0px 24px;
+}
+
+.signup-request-confirmation-container__header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  & svg {
+    width: 73px;
+    height: spacing('xl');
+    padding: spacing('xl') 0 spacing('xl');
+  }
+
+  @media screen and (max-width: 680px) {
+    padding: 0px;
+    height: 56px;
+
+    & svg {
+      padding: 12px 0px 16px 0px;
+      width: 64px;
+      height: spacing('xxl-3');
+    }
+  }
+}
+
+.signup-request-confirmation__signup-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  padding-top: spacing('xxl-5');
+
+  @media screen and (max-width: 680px) {
+    & svg {
+      width: spacing('xxl-7');
+      height: spacing('xxl-7');
+    }
+  }
+}
+
+.signup-request-confirmation-container__title {
+  width: 544px;
+  height: 44px;
+  padding-top: spacing('xl');
+
+  & span {
+    @include font('xl-2-emphasys');
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 312px;
+    height: 34px;
+    & span {
+      @include font('xl-emphasys');
+    }
+  }
+}
+
+.signup-request-confirmation-container__information {
+  width: 544px;
+  height: 44px;
+  padding: spacing('l') 0 spacing('xxl');
+  & span {
+    @include font('base');
+    color: color('grey-600');
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 312px;
+    height: 112px;
+  }
+}

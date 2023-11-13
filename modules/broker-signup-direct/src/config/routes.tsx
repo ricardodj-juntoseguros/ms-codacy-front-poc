@@ -6,6 +6,7 @@ import RegisterResponsibleContainer from '../presentation/pages/RegisterResponsi
 import BrokerUploadDocumentsContainer from '../presentation/pages/BrokerUploadDocumentsContainer/BrokerUploadDocumentsContainer';
 import FinishSignupContainer from '../presentation/pages/FinishSignupContainer/FinishSignupContainer';
 import ValidationBrokerEmailContainer from '../presentation/pages/ValidationBrokerEmailContainer/ValidationBrokerEmailContainer';
+import SignupRequestConfirmationContainer from '../presentation/pages/SignupRequestConfirmationContainer/SignupRequestConfirmationContainer';
 import BrokerDataReviewContainer from '../presentation/pages/BrokerDataReviewContainer/BrokerDataReviewContainer';
 
 const Routes: React.FC = () => (
@@ -33,7 +34,12 @@ const Routes: React.FC = () => (
         exact
         component={BrokerUploadDocumentsContainer}
       />
-      <Route path="/finish-signup" exact component={FinishSignupContainer} />
+      <Route path="/finish" exact component={FinishSignupContainer} />
+      <Route
+        path="/request-confirmation"
+        exact
+        component={SignupRequestConfirmationContainer}
+      />
     </Switch>
   </BrowserRouter>
 );
