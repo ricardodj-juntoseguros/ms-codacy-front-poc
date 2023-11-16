@@ -37,5 +37,7 @@ export const brokerInformationAdapter = (
       susepInformation.retorno.produtos.find(p => p.produtoId === 305) !==
       undefined,
     codeIsValid,
+    brokerExternalId: 0,
+    brokerUserName: '',
   };
 };

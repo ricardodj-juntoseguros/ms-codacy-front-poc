@@ -29,4 +29,6 @@ export const brokerInformationMock = {
   hasProductDamageInsurance: false,
   renewRegistration: false,
   susepSituation: false,
+  brokerExternalId: 0,
+  brokerUserName: '',
 };

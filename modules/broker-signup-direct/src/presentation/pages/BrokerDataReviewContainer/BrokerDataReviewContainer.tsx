@@ -10,6 +10,7 @@ import {
 import { selectResponsibleInformation } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
 import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
 import { useAppDispatch } from '../../../config/store';
+import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
 
 const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
   const dispatch = useAppDispatch();
@@ -31,8 +32,22 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
     }
   }, [brokerInformation.information.federalId]);
 
+  const fetchRegisterResponsibleBrokerGv = async () => {
+    await RegisterBrokerApi.registerBrokerGV(brokerInformation.pathUpdate)
+      .then(response => {
+        dispatch(
+          brokerInformationSliceActions.setBrokerExternalId(
+            response as unknown as number,
+          ),
+        );
+      })
+      .finally(() => {
+        history.push('/create-user-access');
+      });
+  };
+
   const onSubmit = () => {
-    history.push('/broker-details');
+    fetchRegisterResponsibleBrokerGv();
   };
 
   const renderButtonEdit = (route: string) => {

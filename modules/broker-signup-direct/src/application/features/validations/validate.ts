@@ -1,6 +1,9 @@
 import { AnyObjectSchema, ValidationError } from 'yup';
 import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
-import { ValidationErrorModel, ValidationModel } from '../../types/model/ValidationModel';
+import {
+  ValidationErrorModel,
+  ValidationModel,
+} from '../../types/model/ValidationModel';
 
 export const validate = async <T>(
   validationSchema: AnyObjectSchema,
@@ -27,7 +30,6 @@ export const validate = async <T>(
           }
 
           const paramName = path.substring(path.indexOf('.') + 1, path.length);
-
           if (path in previousErrorList) {
             return {
               ...previousErrorList,
@@ -40,7 +42,8 @@ export const validate = async <T>(
           }
           return Object.assign(previousErrorList, {
             [paramName]: [
-              (VALIDATION_MESSAGES as any)[path] ||
+              (VALIDATION_MESSAGES as any)[type] ||
+                (VALIDATION_MESSAGES as any)[path] ||
                 VALIDATION_MESSAGES.required,
             ],
           });

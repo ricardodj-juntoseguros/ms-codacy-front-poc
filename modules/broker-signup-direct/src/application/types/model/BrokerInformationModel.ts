@@ -17,4 +17,6 @@ export interface BrokerInformationModel {
   renewRegistration: boolean;
   hasProductDamageInsurance: boolean;
   codeIsValid: boolean;
+  brokerExternalId: number;
+  brokerUserName: string;
 }

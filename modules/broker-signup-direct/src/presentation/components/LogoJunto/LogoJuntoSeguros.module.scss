@@ -2,4 +2,11 @@
 
 .container_section_form_logo{
   padding: spacing('xl') spacing('m') spacing('xl') spacing('xl');
+
+  @media screen and (max-width: 680px) {
+    padding: 12px spacing('m') spacing('m') spacing('l');
+    & svg {
+      height: 28px;
+    }
+  }
 }

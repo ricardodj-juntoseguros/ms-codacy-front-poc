@@ -3,7 +3,7 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import BrokerSignupBaseApi from '../BrokerSignupBaseApi';
-import { RegisterBrokerDTO } from '../../types/dto';
+import { RegisterBrokerDTO, RegisterBrokerNewUserDTO } from '../../types/dto';
 
 class RegisterBrokerApi {
   private instance: AxiosHttpClient;
@@ -57,6 +57,21 @@ class RegisterBrokerApi {
       url: `/brokers/signup/validation/email?code=${code}&id=${pathUser}`,
     };
     return await this.instance.get<boolean>(params);
+  }
+
+  async validateUser(user: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/brokers/users/${user}/checkUsernameExists`,
+    };
+    return await this.instance.get<boolean>(params);
+  }
+
+  async createNewUser(registerBrokerNewUserPayload: RegisterBrokerNewUserDTO) {
+    const params: IHttpClientRequestParameters = {
+      url: `/api_policies/brokers/create/newuser`,
+      payload: registerBrokerNewUserPayload,
+    };
+    return await this.instance.post<boolean>(params);
   }
 }
 

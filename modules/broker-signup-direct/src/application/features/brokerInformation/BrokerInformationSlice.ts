@@ -37,6 +37,8 @@ const initialState: BrokerInformationModel = {
   renewRegistration: false,
   hasProductDamageInsurance: false,
   codeIsValid: false,
+  brokerExternalId: 0,
+  brokerUserName: '',
 };
 
 export const brokerInformationSlice = createSlice({
@@ -89,6 +91,12 @@ export const brokerInformationSlice = createSlice({
     },
     setCodeIsValid: (state, action: PayloadAction<boolean>) => {
       state.codeIsValid = action.payload;
+    },
+    setBrokerExternalId: (state, action: PayloadAction<number>) => {
+      state.brokerExternalId = action.payload;
+    },
+    setBrokerUserName: (state, action: PayloadAction<string>) => {
+      state.brokerUserName = action.payload;
     },
   },
 });

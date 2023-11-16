@@ -1,5 +1,4 @@
-import { RouteComponentProps } from 'react-router';
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, LinkButton, Tooltip } from 'junto-design-system';
 import styles from './FinishSignupContainer.module.scss';
@@ -7,11 +6,11 @@ import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
 import { ReactComponent as FinishIcon } from '../../assets/finishIcon.svg';
 import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 
-const FinishSignupContainer = ({ history }: RouteComponentProps) => {
+const FinishSignupContainer = () => {
   const brokerInformation = useSelector(selectBroker);
 
   const [copied, setCopied] = useState(false);
-  const [username, setUsername] = useState('anaseguro');
+
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const copyIconRef = useRef<HTMLButtonElement>(null);
@@ -25,7 +24,9 @@ const FinishSignupContainer = ({ history }: RouteComponentProps) => {
   // }, [brokerInformation.information.federalId, history]);
 
   const handleCopyUsernameToClipboard = () => {
-    navigator.clipboard.writeText(username).then(() => setCopied(true));
+    navigator.clipboard
+      .writeText(brokerInformation.brokerUserName)
+      .then(() => setCopied(true));
     setTimeout(() => {
       setCopied(false);
     }, 2000);
@@ -59,7 +60,7 @@ const FinishSignupContainer = ({ history }: RouteComponentProps) => {
               styles['finish-signup-container__copy_username_username']
             }
           >
-            <span>{username}</span>
+            <span>{brokerInformation.brokerUserName}</span>
           </div>
           <div className={styles['finish-signup-container__copy_icon']}>
             <LinkButton

@@ -6,6 +6,7 @@ import RegisterResponsibleContainer from '../presentation/pages/RegisterResponsi
 import BrokerUploadDocumentsContainer from '../presentation/pages/BrokerUploadDocumentsContainer/BrokerUploadDocumentsContainer';
 import FinishSignupContainer from '../presentation/pages/FinishSignupContainer/FinishSignupContainer';
 import ValidationBrokerEmailContainer from '../presentation/pages/ValidationBrokerEmailContainer/ValidationBrokerEmailContainer';
+import CreateUserAccessContainer from '../presentation/pages/CreateUserAccessContainer/CreateUserAccessContainer';
 import SignupRequestConfirmationContainer from '../presentation/pages/SignupRequestConfirmationContainer/SignupRequestConfirmationContainer';
 import BrokerDataReviewContainer from '../presentation/pages/BrokerDataReviewContainer/BrokerDataReviewContainer';
 
@@ -24,6 +25,11 @@ const Routes: React.FC = () => (
         component={ValidationBrokerEmailContainer}
       />
       <Route path="/broker-details" exact component={BrokerDetailsContainer} />
+      <Route
+        path="/create-user-access"
+        exact
+        component={CreateUserAccessContainer}
+      />
       <Route
         path="/broker-data-review"
         exact

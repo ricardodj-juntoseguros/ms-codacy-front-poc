@@ -73,7 +73,9 @@ describe('BrokerEmail', () => {
     });
 
     expect(getByText(VALIDATION_MESSAGES.nameResponsible)).toBeInTheDocument();
-    expect(getByText(VALIDATION_MESSAGES.email)).toBeInTheDocument();
+    expect(
+      getByText('O preenchimento deste campo é obrigatório'),
+    ).toBeInTheDocument();
     expect(button).toBeDisabled();
   });
 });

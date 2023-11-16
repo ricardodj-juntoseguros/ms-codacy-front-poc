@@ -34,7 +34,7 @@ describe('FinishSignupContainer component', () => {
   it('should render successfully', () => {
     const { baseElement, getByText, getByTestId } = render(
       <Provider store={store}>
-        <FinishSignupContainer {...props} />
+        <FinishSignupContainer />
       </Provider>,
     );
     const btn = getByTestId('button-access-now');
@@ -51,7 +51,7 @@ describe('FinishSignupContainer component', () => {
   it('Should go to login page on access now button click', async () => {
     const baseElement = render(
       <Provider store={store}>
-        <FinishSignupContainer {...props} />
+        <FinishSignupContainer />
       </Provider>,
     );
     useDispatchMock.mockImplementation(() => historyMock);
