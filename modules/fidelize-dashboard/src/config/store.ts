@@ -5,15 +5,19 @@ import PolicyholderFilterSlice from '../application/features/policyholderFilter/
 import AccessCheckSlice from '../application/features/accessCheck/AccessCheckSlice';
 import SummaryChartsSlice from '../application/features/summaryCharts/SummaryChartsSlice';
 import SummarySlice from '../application/features/summary/SummarySlice';
+import ViewAllPolicyholdersInWalletSlice from '../application/features/viewAllPolicyholdersInWallet/ViewAllPolicyholdersInWalletSlice';
+import SummariesQuantitativeSlice from '../application/features/summariesQuantitative/SummariesQuantitativeSlice';
 
 export const store = configureStore({
   reducer: {
     modalitySelection: ModalitySelectionSlice,
     opportunityDetails: OpportunitiesDetailsSlice,
     policyholderFilter: PolicyholderFilterSlice,
+    allPolicyholdersInWalletFilter: ViewAllPolicyholdersInWalletSlice,
     accessCheck: AccessCheckSlice,
     summary: SummarySlice,
     summaryCharts: SummaryChartsSlice,
+    summariesQuantitative: SummariesQuantitativeSlice,
   },
 });
 

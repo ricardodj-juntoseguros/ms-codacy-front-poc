@@ -13,6 +13,7 @@ export default function Routes() {
           component={() => <Redirect to="/dashboard" />}
         />
         <ProtectedRoute path="/dashboard" component={FidelizeDashboard} />
+        <ProtectedRoute path="/solicitar" component={FidelizeDashboard} />
         <ProtectedRoute
           exact
           path="/pagina-nao-encontrada"

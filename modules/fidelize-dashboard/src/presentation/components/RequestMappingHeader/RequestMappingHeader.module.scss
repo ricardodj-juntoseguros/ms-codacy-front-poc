@@ -1,0 +1,13 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.request-mapping-header__title {
+  @include font('xl-emphasys');
+  margin-bottom: spacing('l');
+  color: color('dark');
+  margin-top: 0px;
+  text-align: center;
+
+  @media screen and (max-width: 930px) {
+    text-align: left;
+  }
+}

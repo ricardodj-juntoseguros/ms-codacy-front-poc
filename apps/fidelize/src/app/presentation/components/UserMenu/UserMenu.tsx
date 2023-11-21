@@ -1,12 +1,26 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { BrokerPlatformAuthService } from '@services';
+import Cookies from 'js-cookie';
 import styles from './UserMenu.module.scss';
 
 const UserMenu: React.FC = () => {
+  const [canRequestOpportunity, setCanRequestOpportunity] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
   const [navOpen, setNavOpen] = useState(false);
   const username = BrokerPlatformAuthService.getUsername();
+
+  useEffect(() => {
+    const fidelizeBrokersFeaturesCookie = Cookies.get(
+      process.env.NX_GLOBAL_FIDELIZE_BROKER_FEATURES_COOKIE || 'fbfc',
+    );
+    if (!fidelizeBrokersFeaturesCookie) {
+      setCanRequestOpportunity(false);
+    } else {
+      const { features } = JSON.parse(fidelizeBrokersFeaturesCookie);
+      setCanRequestOpportunity(features.includes('FIDELIZE_SOLICITACAO'));
+    }
+  }, []);
 
   useEffect(() => {
     function onBodyClick(this: HTMLElement, ev: MouseEvent) {
@@ -21,6 +35,10 @@ const UserMenu: React.FC = () => {
       document.body.removeEventListener('click', onBodyClick);
     };
   }, [triggerRef]);
+
+  const handleNavigation = (url: string) => {
+    window.location.assign(url);
+  };
 
   const renderAvatar = () => {
     return (
@@ -64,6 +82,30 @@ const UserMenu: React.FC = () => {
           <li className={styles['user-menu__nav-list-item']}>
             {renderProfile()}
           </li>
+          {canRequestOpportunity && (
+            <>
+              <li className={styles['user-menu__nav-list-item']}>
+                <button
+                  type="button"
+                  data-testid="user-menu-goto-dashboard-button"
+                  className={styles['user-menu__nav-button']}
+                  onClick={() => handleNavigation('/dashboard')}
+                >
+                  Meu dashboard
+                </button>
+              </li>
+              <li className={styles['user-menu__nav-list-item']}>
+                <button
+                  type="button"
+                  data-testid="user-menu-goto-solicitar-button"
+                  className={styles['user-menu__nav-button']}
+                  onClick={() => handleNavigation('/solicitar')}
+                >
+                  Nova solicitação
+                </button>
+              </li>
+            </>
+          )}
           <li className={styles['user-menu__nav-list-item']}>
             <button
               type="button"

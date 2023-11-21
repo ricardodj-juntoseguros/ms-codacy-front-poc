@@ -8,3 +8,4 @@ export * from './OpportunitiesFiltersContentDTO';
 export * from './OpportunitiesFilterOptionsDTO';
 export * from './OpportunityCompleteDetailsDTO';
 export * from './BrokerLastAccessDTO';
+export * from './AllPolicyholdersInWalletDTO';

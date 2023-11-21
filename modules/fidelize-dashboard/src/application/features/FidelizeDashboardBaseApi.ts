@@ -6,11 +6,15 @@ import { BrokerPlatformAuthService } from '@services';
 class FidelizeDashboardBaseApi {
   private readonly BASE_URL = `${process.env.NX_GLOBAL_FIDELIZE_BFF_URL}/api`;
 
+  private readonly BASE_PLATAFORMA_URL = `${process.env.NX_GLOBAL_BROKER_PLATFORM_BFF_URL}/api_policyholder`;
+
   private headers = {};
 
   private timeout = 1000000;
 
   private instance: AxiosHttpClient;
+
+  private platormaInstance: AxiosHttpClient;
 
   public constructor() {
     this.headers = {
@@ -22,6 +26,16 @@ class FidelizeDashboardBaseApi {
       this.timeout,
     );
     this.instance.setResponseInterceptors(
+      this.handleSuccess,
+      this.handleErrors,
+    );
+
+    this.platormaInstance = new AxiosHttpClient(
+      this.BASE_PLATAFORMA_URL,
+      this.headers,
+      this.timeout,
+    );
+    this.platormaInstance.setResponseInterceptors(
       this.handleSuccess,
       this.handleErrors,
     );
@@ -98,6 +112,10 @@ class FidelizeDashboardBaseApi {
 
   public getInstance(): AxiosHttpClient {
     return this.instance;
+  }
+
+  public getPlataformaInstance(): AxiosHttpClient {
+    return this.platormaInstance;
   }
 }
 

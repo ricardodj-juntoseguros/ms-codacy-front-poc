@@ -7,16 +7,16 @@ import { ReactComponent as LogoFidelize } from './assets/logo-fidelize.svg';
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => {
-  const [canRequestOpportunity, setcanRequestOpportunity] = useState(false);
+  const [canRequestOpportunity, setCanRequestOpportunity] = useState(false);
   useEffect(() => {
     const fidelizeBrokersFeaturesCookie = Cookies.get(
       process.env.NX_GLOBAL_FIDELIZE_BROKER_FEATURES_COOKIE || 'fbfc',
     );
     if (!fidelizeBrokersFeaturesCookie) {
-      setcanRequestOpportunity(false);
+      setCanRequestOpportunity(false);
     } else {
       const { features } = JSON.parse(fidelizeBrokersFeaturesCookie);
-      setcanRequestOpportunity(features.includes('FIDELIZE_SOLICITACAO'));
+      setCanRequestOpportunity(features.includes('FIDELIZE_SOLICITACAO'));
     }
   }, []);
 

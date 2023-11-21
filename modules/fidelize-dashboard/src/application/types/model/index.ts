@@ -1,5 +1,6 @@
 export * from './AccessCheckFeatureModel';
 export * from './AccessCheckModel';
+export * from './AllPolicyholdersInWalletFilterModel';
 export * from './ModalitySelectionModel';
 export * from './ModalityEnum';
 export * from './OpportunitiesDetailsSettingsModel';
@@ -13,3 +14,4 @@ export * from './OpportunityDetailsOrderEnum';
 export * from './SummaryChartsModel';
 export * from './SummaryChartTypeEnum';
 export * from './SummaryModel';
+export * from './SummariesQuantitativeModel';

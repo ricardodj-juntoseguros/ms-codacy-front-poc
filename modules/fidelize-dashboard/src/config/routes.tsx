@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, useHistory } from 'react-router-dom';
 import { BrokerPlatformAuthService } from '@services';
 import LastAccessValidationApi from '../application/features/lastAccessValidation/LastAccessValidationApi';
 import {
   selectMappedPolicyholders,
   fetchMappedPolicyholders,
 } from '../application/features/policyholderFilter/PolicyholderFilterSlice';
+
 import { summaryActions } from '../application/features/summary/SummarySlice';
 import DashboardContainer from '../presentation/pages/DashboardContainer';
 import NoAccessContainer from '../presentation/pages/NoAccessContainer';
 import NoOpportunitiesMappedContainer from '../presentation/pages/NoOpportunitiesMappedContainer';
 import LoadingSpinner from '../presentation/components/LoadingSpinner';
+import RequestMappingContainer from '../presentation/pages/RequestMappingContainer';
+import { fetchAllMappedPolicyholdersInWallet } from '../application/features/viewAllPolicyholdersInWallet/ViewAllPolicyholdersInWalletSlice';
 
 const Routes: React.FC = () => {
   const dispatch = useDispatch();
   const mappedPolicyholders = useSelector(selectMappedPolicyholders);
   const [hasAccess, setHasAccess] = useState(false);
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
     const fidelizeBrokersFeaturesCookie = Cookies.get(
@@ -35,7 +39,9 @@ const Routes: React.FC = () => {
 
   useEffect(() => {
     if (hasAccess) {
-      dispatch(fetchMappedPolicyholders());
+      history.location?.pathname === '/dashboard'
+        ? dispatch(fetchMappedPolicyholders())
+        : dispatch(fetchAllMappedPolicyholdersInWallet());
       const lastAccessCookie =
         BrokerPlatformAuthService.getFidelizeBrokerLastAccessCookie();
       if (!lastAccessCookie) {
@@ -66,14 +72,17 @@ const Routes: React.FC = () => {
     if (!hasAccess) return NoAccessContainer;
     if (mappedPolicyholders?.length === 0)
       return NoOpportunitiesMappedContainer;
-    return DashboardContainer;
+    return history.location?.pathname === '/dashboard'
+      ? DashboardContainer
+      : RequestMappingContainer;
   };
 
   if (loading) return <LoadingSpinner />;
   return (
-    <BrowserRouter basename="dashboard">
+    <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={getComponentToRender()} />
+        <Route path="/dashboard" exact component={getComponentToRender()} />
+        <Route path="/solicitar" exact component={getComponentToRender()} />
       </Switch>
     </BrowserRouter>
   );

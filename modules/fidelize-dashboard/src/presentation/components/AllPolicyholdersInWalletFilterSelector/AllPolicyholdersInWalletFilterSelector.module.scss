@@ -1,6 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.policyholder-filter-selector__wrapper {
+.all-policyholders-in-wallet-filter-selector__wrapper {
   margin-top: spacing('xxl-4');
   padding-bottom: spacing('xl');
   box-sizing: border-box;
@@ -24,14 +24,14 @@
   }
 }
 
-.policyholder-filter-selector__helper-text {
+.all-policyholders-in-wallet-filter-selector__helper-text {
   @include font('base');
   color: color('grey-600');
   margin-bottom: spacing('m');
   margin-top: 0px;
 }
 
-.policyholder-filter-selector__input-grid {
+.all-policyholders-in-wallet-filter-selector__input-grid {
   display: grid;
   grid-template-columns: minmax(320px, 4fr) minmax(216px, 1fr);
   column-gap: spacing('xxl-2');

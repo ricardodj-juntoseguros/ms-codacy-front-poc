@@ -1,0 +1,62 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.all-policyholders-in-wallet-filter-selector-tags__wrapper {
+  display: grid;
+  grid-template-columns: 6fr 2fr;
+
+  & > div {
+    margin-top: spacing('m');
+  }
+
+  & > div:nth-child(2) {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-start;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: spacing('m');
+    width: 100%;
+
+    & > div:nth-child(2) {
+      display: none;
+    }
+    & > div:nth-child(1) {
+      span {
+        padding: 10px 5px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    width: 85%;
+  }
+}
+
+.all-policyholders-in-wallet-filter-selector-tags__tags-list {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.all-policyholders-in-wallet-filter-selector-tags__tag_wrapper {
+  margin-bottom: spacing('s');
+  margin-right: spacing('s');
+  display: flex;
+
+  @media screen and (max-width: 768px) {
+    margin-bottom: spacing('l');
+    flex-direction: column;
+    justify-items: flex-end;
+
+    i {
+      color: blue;
+    }
+  }
+}
+
+.all-policyholders-in-wallet-filter-selector-tags__alert {
+  margin-top: spacing('m');
+}

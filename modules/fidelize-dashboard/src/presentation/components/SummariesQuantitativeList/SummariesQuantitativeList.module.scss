@@ -1,0 +1,26 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.summary-quantitative-list__wrapper {
+  margin-top: 26px;
+}
+
+.summary-quantitative-list__box {
+  width: 100%;
+  border: 1px solid color('grey-200');
+  border-radius: spacing('xs');
+}
+
+.summary-quantitative-list__items {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.summaries-quantitative__footer {
+  width: 1008px;
+  font-size: 12px;
+  margin-top: spacing('l');
+  line-height: spacing('m');
+  margin-bottom: spacing('l');
+  color: color('grey-500');
+  display: inline-block;
+}

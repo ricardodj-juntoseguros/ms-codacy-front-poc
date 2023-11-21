@@ -1,46 +1,44 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, SearchInput, SearchOptions } from 'junto-design-system';
-import TagManager from 'react-gtm-module';
 import classNames from 'classnames';
 import { federalIdFormatter, objectArraysMerger } from '@shared/utils';
-import { renderOpportunitySelectionLossModal } from '../../../helpers';
-import PolicyholderFilterSelectorTags from '../PolicyholderFilterSelectorTags';
-import { PolicyholderDTO } from '../../../application/types/dto';
+import { summariesQuantitativeActions } from '../../../application/features/summariesQuantitative/SummariesQuantitativeSlice';
+import SummariesQuantitativeApi from '../../../application/features/summariesQuantitative/SummariesQuantitativeApi';
+import { AllPolicyholdersInWalletDTO } from '../../../application/types/dto';
 import {
-  selectPolicyholderSelection,
-  policyholderFilterActions,
-  selectMappedPolicyholders,
-  selectErrorFetchPolicyholders,
-} from '../../../application/features/policyholderFilter/PolicyholderFilterSlice';
-import {
-  opportunitiesDetailsActions,
-  selectSelectedOpportunities,
-} from '../../../application/features/opportunitiesDetails/OpportunitiesDetailsSlice';
-import { summaryActions } from '../../../application/features/summary/SummarySlice';
-import { summaryChartsActions } from '../../../application/features/summaryCharts/SummaryChartsSlice';
-import styles from './PolicyholderFilterSelector.module.scss';
+  allPolicyholdersInWalletFilterActions,
+  selectAllPolicyholdersSelection,
+  selectAllMappedPolicyholders,
+  selectAllErrorFetchPolicyholders,
+} from '../../../application/features/viewAllPolicyholdersInWallet/ViewAllPolicyholdersInWalletSlice';
 
-const PolicyholderFilterSelector: React.FC = () => {
+import { summaryChartsActions } from '../../../application/features/summaryCharts/SummaryChartsSlice';
+import styles from './AllPolicyholdersInWalletFilterSelector.module.scss';
+import AllPolicyholdersInWalletFilterSelectorTags from '../AllPolicyholdersInWalletFilterSelectorTags/AllPolicyholdersInWalletFilterSelectorTags';
+
+const AllPolicyholdersInWalletFilterSelector: React.FC = () => {
   const dispatch = useDispatch();
-  const mappedPolicyholders = useSelector(selectMappedPolicyholders) || [];
-  const storePolicyholderSelection = useSelector(selectPolicyholderSelection);
-  const selectedOpportunities = useSelector(selectSelectedOpportunities);
-  const fetchError = useSelector(selectErrorFetchPolicyholders);
+
+  const mappedPolicyholders = useSelector(selectAllMappedPolicyholders) || [];
+  const storePolicyholderSelection = useSelector(
+    selectAllPolicyholdersSelection,
+  );
+  const fetchError = useSelector(selectAllErrorFetchPolicyholders);
 
   const selectionLossModalRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchedPolicyholders, setSearchedPolicyholders] =
-    useState<PolicyholderDTO[]>(mappedPolicyholders);
+    useState<AllPolicyholdersInWalletDTO[]>(mappedPolicyholders);
   const [selectedPolicyholders, setSelectedPolicyholders] = useState<
-    PolicyholderDTO[]
+    AllPolicyholdersInWalletDTO[]
   >([]);
   const [hasChanges, setHasChanges] = useState(false);
   const [showMaxAlert, setShowMaxAlert] = useState(false);
 
   useEffect(() => {
     const selectedFederalIds = selectedPolicyholders.map(
-      selected => selected.federalId,
+      selected => selected.policyholderFederalId,
     );
 
     if (
@@ -75,10 +73,10 @@ const PolicyholderFilterSelector: React.FC = () => {
       return [{ label: 'Carregando...', value: '-1' }];
 
     const options = searchedPolicyholders.map(policyholder => ({
-      label: `${policyholder.name} - ${federalIdFormatter(
-        policyholder.federalId,
+      label: `${policyholder.policyholderName} - ${federalIdFormatter(
+        policyholder.policyholderFederalId,
       )}`,
-      value: policyholder.federalId,
+      value: policyholder.policyholderFederalId,
     }));
 
     return options;
@@ -91,10 +89,10 @@ const PolicyholderFilterSelector: React.FC = () => {
       return;
     }
     const filteredByName = mappedPolicyholders.filter(policyholder =>
-      policyholder.name.toLowerCase().includes(value.toLowerCase()),
+      policyholder.policyholderName.toLowerCase().includes(value.toLowerCase()),
     );
     const filteredByFederalId = mappedPolicyholders.filter(policyholder =>
-      policyholder.federalId.includes(value),
+      policyholder.policyholderFederalId.includes(value),
     );
     const mergedPolicyholders = objectArraysMerger(
       filteredByName,
@@ -109,10 +107,10 @@ const PolicyholderFilterSelector: React.FC = () => {
     if (value === '-1') return;
 
     const selectedPolicyholder = mappedPolicyholders.find(
-      policyholder => policyholder.federalId === value,
+      policyholder => policyholder.policyholderFederalId === value,
     );
 
-    if (selectedPolicyholders.length === 10) {
+    if (selectedPolicyholders.length === 5) {
       setShowMaxAlert(true);
       setTimeout(() => setShowMaxAlert(false), 5000);
       return;
@@ -120,7 +118,7 @@ const PolicyholderFilterSelector: React.FC = () => {
 
     if (
       !selectedPolicyholder ||
-      selectedPolicyholders.find(p => p.federalId === value)
+      selectedPolicyholders.find(p => p.policyholderFederalId === value)
     )
       return;
 
@@ -131,10 +129,10 @@ const PolicyholderFilterSelector: React.FC = () => {
     handleSearchChange('');
   };
 
-  const handleRemoveTag = (policyholder: PolicyholderDTO) => {
+  const handleRemoveTag = (policyholder: AllPolicyholdersInWalletDTO) => {
     setSelectedPolicyholders(prevSelectedPolicyholders =>
       prevSelectedPolicyholders.filter(
-        p => p.federalId !== policyholder.federalId,
+        p => p.policyholderFederalId !== policyholder.policyholderFederalId,
       ),
     );
   };
@@ -142,74 +140,66 @@ const PolicyholderFilterSelector: React.FC = () => {
   const handleClearAll = () => {
     const clearAction = () => {
       setSelectedPolicyholders([]);
-      dispatch(opportunitiesDetailsActions.resetSettings());
       dispatch(summaryChartsActions.clearAllChartsData());
       dispatch(
-        policyholderFilterActions.setPolicyholderSelection({
+        allPolicyholdersInWalletFilterActions.setPolicyholderSelection({
           selection: [],
         }),
       );
-      dispatch(
-        summaryActions.setTotalPolicyholders(mappedPolicyholders.length),
-      );
     };
-    return selectedOpportunities.length > 0
-      ? renderOpportunitySelectionLossModal(
-          selectionLossModalRef.current,
-          clearAction,
-        )
-      : clearAction();
+    clearAction();
   };
 
-  const handleApplyFilter = () => {
-    const applyAction = () => {
-      const count = selectedPolicyholders.length;
-      dispatch(opportunitiesDetailsActions.resetSettings());
-      dispatch(summaryChartsActions.clearAllChartsData());
-      dispatch(
-        policyholderFilterActions.setPolicyholderSelection({
-          selection: selectedPolicyholders.map(selected => selected.federalId),
-        }),
-      );
-      if (count > 0) {
-        dispatch(summaryActions.setTotalPolicyholders(count));
-        TagManager.dataLayer({
-          dataLayer: {
-            event: 'ClickApplyPolicyholderFilterButton',
-            policyholderCount: count,
-          },
-        });
-      } else {
-        dispatch(
-          summaryActions.setTotalPolicyholders(mappedPolicyholders.length),
-        );
-      }
-    };
+  const handleGetQuantitativeSummaries = () => {
+    const federalIds = selectedPolicyholders.map(
+      policyholder => policyholder.policyholderFederalId,
+    );
 
-    return selectedOpportunities.length > 0
-      ? renderOpportunitySelectionLossModal(
-          selectionLossModalRef.current,
-          applyAction,
-        )
-      : applyAction();
+    getSummariesByPolicyholder(federalIds);
+    setHasChanges(false);
+    return [];
+  };
+
+  const getSummariesByPolicyholder = async (federalIds: string[]) => {
+    dispatch(
+      summariesQuantitativeActions.setSummariesQuantitative(
+        await SummariesQuantitativeApi.getSummariesByPolicyholdersList(
+          federalIds,
+        ),
+      ),
+    );
   };
 
   return (
     <div
-      className={classNames(styles['policyholder-filter-selector__wrapper'], {
-        [styles['policyholder-filter-selector__wrapper--has-tags']]:
-          selectedPolicyholders.length > 0,
-      })}
+      className={classNames(
+        styles['all-policyholders-in-wallet-filter-selector__wrapper'],
+        {
+          [styles[
+            'all-policyholders-in-wallet-filter-selector__wrapper--has-tags'
+          ]]: selectedPolicyholders.length > 0,
+        },
+      )}
     >
-      <p className={styles['policyholder-filter-selector__helper-text']}>
-        Busque por tomadores que já foram mapeados e visualize as oportunidades
-        abaixo
+      <p
+        className={
+          styles['all-policyholders-in-wallet-filter-selector__helper-text']
+        }
+      >
+        Informe os dados dos tomadores e selecione aqueles que deseja mapear. Ao
+        finalizar a seleção, continue para a verificação da estimativa de
+        processos.
       </p>
-      <div className={styles['policyholder-filter-selector__input-grid']}>
+      <div
+        className={
+          styles['all-policyholders-in-wallet-filter-selector__input-grid']
+        }
+      >
         <div>
           <SearchInput
+            data-testid="all-policyholders-in-wallet-search-input"
             label="CNPJ ou Razão Social do tomador"
-            icon="search"
+            icon=""
             placeholder="CNPJ ou Razão Social do tomador "
             value={searchValue}
             options={mapSearchOptions()}
@@ -218,7 +208,7 @@ const PolicyholderFilterSelector: React.FC = () => {
             onValueSelected={handleValueSelected}
             onFocus={e => e.target.select()}
           />
-          <PolicyholderFilterSelectorTags
+          <AllPolicyholdersInWalletFilterSelectorTags
             selectedPolicyholders={selectedPolicyholders}
             onClear={() => handleClearAll()}
             onRemove={handleRemoveTag}
@@ -227,11 +217,11 @@ const PolicyholderFilterSelector: React.FC = () => {
         </div>
         <div>
           <Button
-            data-testid="btn-apply-filter"
+            data-testid="btn-apply-policyholders-filter"
             disabled={!hasChanges}
-            onClick={() => handleApplyFilter()}
+            onClick={() => handleGetQuantitativeSummaries()}
           >
-            Aplicar filtro
+            Verificar estimativa
           </Button>
         </div>
       </div>
@@ -240,4 +230,4 @@ const PolicyholderFilterSelector: React.FC = () => {
   );
 };
 
-export default PolicyholderFilterSelector;
+export default AllPolicyholdersInWalletFilterSelector;
