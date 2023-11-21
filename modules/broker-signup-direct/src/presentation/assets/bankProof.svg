@@ -1,0 +1,26 @@
+<svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M58 116C90.0325 116 116 90.7891 116 59.6896C116 28.5901 90.0325 3.37891 58 3.37891C25.9675 3.37891 0 28.5901 0 59.6896C0 90.7891 25.9675 116 58 116Z" fill="#4A5365"/>
+<mask id="mask0_5660_15564" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="3" width="116" height="113">
+<path d="M58 116C90.0325 116 116 90.7891 116 59.6896C116 28.5901 90.0325 3.37891 58 3.37891C25.9675 3.37891 0 28.5901 0 59.6896C0 90.7891 25.9675 116 58 116Z" fill="#9000FF"/>
+</mask>
+<g mask="url(#mask0_5660_15564)">
+<rect x="28" y="26.7998" width="55.2" height="110.4" fill="#0EB0FF"/>
+<rect x="35" y="36" width="44" height="44" rx="2" fill="#B2D9EC"/>
+<rect x="35" y="84" width="44" height="16" rx="2" fill="#B2D9EC"/>
+<rect x="35" y="104" width="44" height="16" rx="2" fill="#B2D9EC"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M67.2 30C67.2 28.6745 68.2745 27.6 69.6 27.6H74.8C78.9974 27.6 82.4 31.0026 82.4 35.2V126.8C82.4 132.102 78.1019 136.4 72.8 136.4H39.2C33.8981 136.4 29.6 132.102 29.6 126.8V35.2C29.6 31.0026 33.0026 27.6 37.2 27.6H42.4C43.7255 27.6 44.8 28.6745 44.8 30C44.8 31.3255 45.8745 32.4 47.2 32.4H64.8C66.1255 32.4 67.2 31.3255 67.2 30ZM24 31.6C24 26.2981 28.2981 22 33.6 22H35.2H76.8H78.4C83.7019 22 88 26.2981 88 31.6V33.2V130.8C88 136.986 82.9856 142 76.8 142H34.4H33.6C28.2981 142 24 137.702 24 132.4V130.8V33.2V31.6Z" fill="#CFDAE1"/>
+<mask id="mask1_5660_15564" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="40" y="47" width="62" height="40">
+<rect x="40" y="47" width="62" height="39.5165" rx="2.75556" fill="#BA60D9"/>
+</mask>
+<g mask="url(#mask1_5660_15564)">
+<rect x="40" y="47" width="62" height="39.5165" rx="2.75556" fill="#BA60D9"/>
+<rect x="83.6045" y="77.6592" width="14.989" height="6.13187" rx="3.06593" fill="#F1F5F7"/>
+<rect x="40" y="55.5801" width="61.7455" height="12.1286" fill="#4A5365"/>
+<g style="mix-blend-mode:soft-light" opacity="0.2">
+<ellipse cx="110.566" cy="95.2738" rx="67.2586" ry="41.8988" fill="white"/>
+</g>
+</g>
+<circle cx="48.7999" cy="26.8002" r="1.6" fill="#ACBEC7"/>
+<rect x="51.2" y="25.2002" width="12.8" height="3.2" rx="1.6" fill="#ACBEC7"/>
+</g>
+</svg>

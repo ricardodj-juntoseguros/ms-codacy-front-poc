@@ -9,6 +9,7 @@ import ValidationBrokerEmailContainer from '../presentation/pages/ValidationBrok
 import CreateUserAccessContainer from '../presentation/pages/CreateUserAccessContainer/CreateUserAccessContainer';
 import SignupRequestConfirmationContainer from '../presentation/pages/SignupRequestConfirmationContainer/SignupRequestConfirmationContainer';
 import BrokerDataReviewContainer from '../presentation/pages/BrokerDataReviewContainer/BrokerDataReviewContainer';
+import BrokerInitialUploadDocumentsContainer from '../presentation/pages/BrokerInitialUploadDocumentsContainer/BrokerInitialUploadDocumentsContainer';
 
 const Routes: React.FC = () => (
   <BrowserRouter basename="direct">
@@ -34,6 +35,11 @@ const Routes: React.FC = () => (
         path="/broker-data-review"
         exact
         component={BrokerDataReviewContainer}
+      />
+      <Route
+        path="/info-upload-documents"
+        exact
+        component={BrokerInitialUploadDocumentsContainer}
       />
       <Route
         path="/upload-documents"

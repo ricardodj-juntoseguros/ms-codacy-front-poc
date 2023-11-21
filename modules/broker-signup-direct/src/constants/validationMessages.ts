@@ -8,7 +8,7 @@ export const VALIDATION_MESSAGES = {
   email: 'O e-mail não existe. Revise o endereço digitado.',
   emailExist: 'E-mail já cadastrado. Utilize outro.',
   typeDocument:
-    'Formato inválido. Utilize arquivos .jpg, .jpeg, .pdf, .png, .doc ou .docx',
+    'Formato inválido. Utilize arquivos .jpg, .jpeg, .pdf, .png, .doc, .docx e .tiff',
   bankName: 'Informe um banco.',
   bankNumber: 'Informe o número da agência.',
   accounNumber: 'Informe o número da conta.',
@@ -23,4 +23,5 @@ export const VALIDATION_MESSAGES = {
   userMinChar: 'O nome de usuário deve ter no mínimo 5 caracteres.',
   userMaxChar: 'O nome de usuário deve ter no máximo 50 caracteres.',
   userSpecialChar: 'Utilize apenas letras (a - z) e números (0 - 9).',
+  errorMessage: 'Ops, parece que algo deu errado. Tente novamente.',
 };
