@@ -75,7 +75,10 @@ export const BrokerGeneralInformation: React.FC = () => {
         </div>
       </div>
       <div className={styles['broker_general_information_inputs']}>
-        <div className={styles['broker_general_information_field']}>
+        <div
+          id="brokerDetails-iss-input"
+          className={styles['broker_general_information_field']}
+        >
           <NumberInput
             data-testid="broker-iss"
             label="Informe o percentual"

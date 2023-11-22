@@ -134,6 +134,7 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
             }
           >
             <Button
+              id="validationBrokerEmail-onSubmit-button"
               data-testid="button-responsible-information-registry"
               size={codeIsValid && codeIsComplet ? 'large' : 'medium'}
               onClick={
@@ -153,10 +154,12 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
             >
               {!codeIsValid && (
                 <LinkButton
+                  id="validationBrokerEmail-openModalProblem-linkButton"
                   onClick={() => setIsOpen(true)}
                   label="Tive um problema"
                 />
               )}
+
               <Modal
                 size="large"
                 open={isOpen}
@@ -164,6 +167,7 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
                 onClose={() => setIsOpen(false)}
               >
                 <div
+                  id="validationBrokerEmail-ihaveProblema-modal"
                   className={
                     styles['validation_broker_email_container_modal_text']
                   }

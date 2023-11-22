@@ -64,6 +64,7 @@ const FinishSignupContainer = () => {
           </div>
           <div className={styles['finish-signup-container__copy_icon']}>
             <LinkButton
+              id="finishSignup-copyBrokerLogin-button"
               ref={copyIconRef}
               onMouseEnter={() => setTooltipVisible(true)}
               onMouseLeave={() => setTooltipVisible(false)}
@@ -76,7 +77,11 @@ const FinishSignupContainer = () => {
         </div>
       </div>
       <div className={styles['finish-signup-container__button']}>
-        <Button data-testid="button-access-now" onClick={handleGoToLoginPage}>
+        <Button
+          id="finishSignup-redirectPlatform-button"
+          data-testid="button-access-now"
+          onClick={handleGoToLoginPage}
+        >
           Acessar agora
         </Button>
       </div>

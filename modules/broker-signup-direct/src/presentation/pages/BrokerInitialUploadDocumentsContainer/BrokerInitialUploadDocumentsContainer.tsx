@@ -14,11 +14,11 @@ const BrokerInitialUploadDocumentsContainer = ({
 }: RouteComponentProps) => {
   const brokerInformation = useSelector(selectBroker);
 
-  // useEffect(() => {
-  //   if (brokerInformation.information.federalId === '') {
-  //     history.push('/');
-  //   }
-  // }, [brokerInformation.information.federalId, history]);
+  useEffect(() => {
+    if (brokerInformation.information.federalId === '') {
+      history.push('/');
+    }
+  }, [brokerInformation.information.federalId, history]);
 
   const handleGoToUploadDocumentsPage = () => {
     history.push('/upload-documents');
@@ -60,6 +60,7 @@ const BrokerInitialUploadDocumentsContainer = ({
         </div>
         <div className={styles['broker-initial-upload-documents__button']}>
           <Button
+            id="infoUploadDocuments-redirectUploadDocuments-button"
             data-testid="button-broker-go-to-upload"
             onClick={handleGoToUploadDocumentsPage}
           >

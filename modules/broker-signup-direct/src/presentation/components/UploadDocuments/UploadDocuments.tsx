@@ -196,7 +196,10 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
         <span className={styles['uploader__label']}>
           Comprovante de endereço
         </span>
-        <div className={styles['uploader__field']}>
+        <div
+          id="uploadDocuments-proofAddress-upload"
+          className={styles['uploader__field']}
+        >
           <Upload
             data-testid="proof-address"
             fullWidth={false}
@@ -222,7 +225,10 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
           Insira a imagem do cartão ou tela do aplicativo do banco para
           validação das informações bancárias da corretora.
         </span>
-        <div className={styles['uploader__field']}>
+        <div
+          id="uploadDocuments-proof-bank-upload"
+          className={styles['uploader__field']}
+        >
           <Upload
             data-testid="proof-bank-details"
             fullWidth={false}
@@ -249,7 +255,10 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
         <span className={styles['uploader__helper-text']}>
           Envie o documento atualizado e que não tenha mais de 10 anos.
         </span>
-        <div className={styles['uploader__field']}>
+        <div
+          id="uploadDocuments-contractSocial-upload"
+          className={styles['uploader__field']}
+        >
           <Upload
             data-testid="contract-social"
             fullWidth={false}
@@ -272,6 +281,7 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
         )}
         <div className={styles['uploader__button']}>
           <Button
+            id="uploadDocuments-submit-button"
             data-testid="button-broker-upload"
             onClick={handleSubmit}
             disabled={isDisableGoNextStep}
@@ -282,6 +292,7 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
         {sreenWidth <= 680 && (
           <div className={styles['uploader__show-text-helper']}>
             <LinkButton
+              id="uploadDocuments-showTextHelper-button"
               onClick={() => setShowTextHelper(!showTextHelper)}
               label="Instruções para envio de documentos"
               icon={!showTextHelper ? 'help-circle' : 'chevron-up'}

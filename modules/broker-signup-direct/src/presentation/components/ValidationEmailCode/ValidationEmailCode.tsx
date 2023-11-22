@@ -88,7 +88,10 @@ export function ValidationEmailCode({
   return (
     <div className={styles['validation_email_code_wrapper']}>
       <div className={styles['validation_email_code_grid_inputs']}>
-        <div className={styles['validation_email_code__form-field']}>
+        <div
+          id="validationBrokerEmail-firstNumberCode-input"
+          className={styles['validation_email_code__form-field']}
+        >
           <InputBase
             ref={FirstNumberRef}
             data-testid="broker-FirstNumber"
@@ -100,7 +103,10 @@ export function ValidationEmailCode({
             errorMessage={!codeIsValid && codeIsComplet ? ' ' : ''}
           />
         </div>
-        <div className={styles['validation_email_code__form-field']}>
+        <div
+          id="validationBrokerEmail-secondNumberCode-input"
+          className={styles['validation_email_code__form-field']}
+        >
           <InputBase
             ref={SecondNumberRef}
             data-testid="broker-SecondNumber"
@@ -112,7 +118,10 @@ export function ValidationEmailCode({
             errorMessage={!codeIsValid && codeIsComplet ? ' ' : ''}
           />
         </div>
-        <div className={styles['validation_email_code__form-field']}>
+        <div
+          id="validationBrokerEmail-thirdNumberCode-input"
+          className={styles['validation_email_code__form-field']}
+        >
           <InputBase
             ref={ThirdNumberRef}
             data-testid="broker-ThirdNumber"
@@ -124,7 +133,10 @@ export function ValidationEmailCode({
             errorMessage={!codeIsValid && codeIsComplet ? ' ' : ''}
           />
         </div>
-        <div className={styles['validation_email_code__form-field']}>
+        <div
+          id="validationBrokerEmail-fourthNumberCode-input"
+          className={styles['validation_email_code__form-field']}
+        >
           <InputBase
             ref={FourthNumberRef}
             data-testid="broker-FourthNumber"

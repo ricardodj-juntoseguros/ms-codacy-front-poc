@@ -73,7 +73,10 @@ export const ResponsibleInformation: React.FC = () => {
     <div className={styles['responsible_information_wrapper']}>
       <h1>Dados da pessoa corretora</h1>
       <div className={styles['responsible_information_grid_inputs']}>
-        <div className={styles['responsible_information__form-field']}>
+        <div
+          id="brokerDetails-federalIdResponsible-input"
+          className={styles['responsible_information__form-field']}
+        >
           <InputBase
             data-testid="broker-federalId"
             label="CPF do responsável"
@@ -88,7 +91,10 @@ export const ResponsibleInformation: React.FC = () => {
             errorMessage={errors.cpf && errors.cpf[0]}
           />
         </div>
-        <div className={styles['responsible_information__form-field']}>
+        <div
+          id="brokerDetails-PhoneResponsible-input"
+          className={styles['responsible_information__form-field']}
+        >
           <InputBase
             data-testid="broker-phone"
             label="Telefone"

@@ -128,6 +128,7 @@ export function BrokerEmail({ onSubmit }: BrokerEmailProps) {
   return (
     <div className={styles['broker_email_wrapper']}>
       <InputBase
+        id="registerResponsible-name-input"
         data-testid="responsible-name"
         label="Nome completo"
         placeholder=""
@@ -139,6 +140,7 @@ export function BrokerEmail({ onSubmit }: BrokerEmailProps) {
         errorMessage={errors.name && errors.name[0]}
       />
       <InputBase
+        id="registerResponsible-email-input"
         data-testid="responsible-email"
         label="E-mail da corretora"
         placeholder=""
@@ -149,7 +151,10 @@ export function BrokerEmail({ onSubmit }: BrokerEmailProps) {
         onBlur={() => validateEmail()}
         errorMessage={errors.email && errors.email[0]}
       />
-      <div className={styles['broker_email_terms']}>
+      <div
+        id="registerResponsible-termsResponsibility-checkbox"
+        className={styles['broker_email_terms']}
+      >
         <Checkbox
           id="chk-select-all"
           checked={responsabileInformation.termsResponsibility}
@@ -157,19 +162,23 @@ export function BrokerEmail({ onSubmit }: BrokerEmailProps) {
         />
         <span className={styles['span_terms']}>Li e aceito o&nbsp;</span>
         <LinkButton
+          id="registerResponsible-termsResponsibility-linkButton"
           onClick={() => setIsOpen(true)}
           label="termo de responsabilidade"
         />
       </div>
-      <Modal
-        size="large"
-        open={isOpen}
-        template={templateModal}
-        onBackdropClick={() => setIsOpen(false)}
-        onClose={() => setIsOpen(false)}
-      />
+      <div id="registerResponsible-termsResponsibility-modal">
+        <Modal
+          size="large"
+          open={isOpen}
+          template={templateModal}
+          onBackdropClick={() => setIsOpen(false)}
+          onClose={() => setIsOpen(false)}
+        />
+      </div>
       <div className={styles['broker_email_button']}>
         <Button
+          id="registerResponsible-submit-button"
           data-testid="button-responsible-information-registry"
           onClick={onSubmit}
           disabled={isDisableGoNextStep}

@@ -50,7 +50,7 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
     fetchRegisterResponsibleBrokerGv();
   };
 
-  const renderButtonEdit = (route: string) => {
+  const renderButtonEdit = (route: string, id: string) => {
     return (
       <div
         className={
@@ -60,6 +60,7 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
         }
       >
         <LinkButton
+          id={id}
           data-testid="header-back-btn"
           label="Editar"
           icon="edit"
@@ -124,7 +125,10 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
               <div>
                 <h1>Pessoa corretora responsável</h1>
               </div>
-              {renderButtonEdit('/register-responsible')}
+              {renderButtonEdit(
+                '/register-responsible',
+                'brokerDataReview-editResponsible-button',
+              )}
             </div>
             <h3>Nome completo</h3>
             <h5>{responsibleInformation.nameResponsable}</h5>
@@ -154,7 +158,10 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
               <div>
                 <h1>Dados de cadastro</h1>
               </div>
-              {renderButtonEdit('/broker-details')}
+              {renderButtonEdit(
+                '/broker-details',
+                'brokerDataReview-editBrokerDetails-button',
+              )}
             </div>
             <h3>CPF do responsável</h3>
             <h5>{responsibleInformation.cpfResponsable}</h5>
@@ -200,6 +207,7 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
         </div>
         <div className={styles['broker_data_review_button']}>
           <Button
+            id="brokerDataReview-subimit-button"
             data-testid="button-broker-details"
             onClick={() => onSubmit()}
           >

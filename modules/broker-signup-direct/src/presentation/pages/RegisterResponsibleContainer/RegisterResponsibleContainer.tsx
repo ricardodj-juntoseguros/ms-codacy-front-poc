@@ -80,6 +80,7 @@ const RegisterResponsibleContainer = ({ history }: RouteComponentProps) => {
             }
           >
             <LinkButton
+              id="registerResponsible-showTextHelper-button"
               onClick={() => setShowTextHelper(!showTextHelper)}
               label="Qual e-mail eu devo informar?"
               icon={!showTextHelper ? 'help-circle' : 'chevron-up'}

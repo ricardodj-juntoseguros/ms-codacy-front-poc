@@ -177,6 +177,7 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
         <BrokerGeneralInformation />
         <div className={styles['broker_details_container__button']}>
           <Button
+            id="brokerDetails-onSubmit-button"
             data-testid="button-broker-details"
             onClick={() => onSubmit()}
             disabled={isDisableGoNextStep}
@@ -191,6 +192,7 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
             }
           >
             <LinkButton
+              id="brokerDetails-showTextHelper-button"
               onClick={() => setShowTextHelper(!showTextHelper)}
               label="Por quê precisamos desses dados?"
               icon={!showTextHelper ? 'help-circle' : 'chevron-up'}

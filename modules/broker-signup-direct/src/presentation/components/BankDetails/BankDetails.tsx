@@ -89,6 +89,7 @@ export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
         className={styles['bank_details_dropdown']}
       >
         <SearchInput
+          id="brokerDetails-bankName-searchInput"
           data-testid="policyholder-input-search"
           label="Banco"
           placeholder="Banco"
@@ -106,7 +107,10 @@ export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
         />
       </div>
       <div className={styles['bank_details_grid_inputs']}>
-        <div className={styles['bank_details__form-field']}>
+        <div
+          id="brokerDetails-bankNumber-input"
+          className={styles['bank_details__form-field']}
+        >
           <InputBase
             data-testid="bank-number"
             label="Agência"
@@ -121,7 +125,10 @@ export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
             errorMessage={errors.bankNumber && errors.bankNumber[0]}
           />
         </div>
-        <div className={styles['bank_details__form-field']}>
+        <div
+          id="brokerDetails-bankDigit-input"
+          className={styles['bank_details__form-field']}
+        >
           <InputBase
             data-testid="bank-digit"
             label="Dígito da agência - opcional"
@@ -132,7 +139,10 @@ export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
             }}
           />
         </div>
-        <div className={styles['bank_details__form-field']}>
+        <div
+          id="brokerDetails-accountNumber-input"
+          className={styles['bank_details__form-field']}
+        >
           <InputBase
             data-testid="account-number"
             label="Conta"
@@ -150,7 +160,10 @@ export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
             errorMessage={errors.accounNumber && errors.accounNumber[0]}
           />
         </div>
-        <div className={styles['bank_details__form-field']}>
+        <div
+          id="brokerDetails-accountDigit-input"
+          className={styles['bank_details__form-field']}
+        >
           <InputBase
             data-testid="account-digit"
             label="Dígito da conta"

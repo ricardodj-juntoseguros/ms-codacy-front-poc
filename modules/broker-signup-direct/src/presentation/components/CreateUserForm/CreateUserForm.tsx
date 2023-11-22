@@ -183,7 +183,10 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
 
   return (
     <div className={styles['create-user-form-wrapper']}>
-      <div className={styles['create-user-form-fileds']}>
+      <div
+        id="createUserAccess-brokerLogin-input"
+        className={styles['create-user-form-fileds']}
+      >
         <InputBase
           data-testid="broker-userName"
           label="Crie um nome de usuário"
@@ -194,7 +197,10 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
           errorMessage={showErrorUserName ? errorUserName : ''}
         />
       </div>
-      <div className={styles['create-user-form-fileds']}>
+      <div
+        id="createUserAccess-brokerPassword-input"
+        className={styles['create-user-form-fileds']}
+      >
         <InputBase
           data-testid="broker-Password"
           label="Crie uma senha"
@@ -206,7 +212,7 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
           onActionIconClick={HandlerClickPassword}
         />
       </div>
-      <div>
+      <div id="createUserAccess-brokerConfirmPassword-input">
         <InputBase
           data-testid="broker-ConfirmPassword"
           label="Confirme a senha"
@@ -327,6 +333,7 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
 
       <div className={styles['create-user-form-button-finish_wrapper']}>
         <Button
+          id="createUserAccess-submit-button"
           data-testid="button-register-broker-login"
           onClick={() => onSubmit()}
           disabled={isDisableButtonSignup}
