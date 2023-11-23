@@ -9,10 +9,7 @@ export const brokerInformationAdapter = (
 ): BrokerInformationModel => {
   const { status, description, information } = broker;
   /* Mock para teste de validação do email em QA */
-  if (
-    process.env.NX_GLOBAL_ENVIROMENT === 'qa' &&
-    information.federalId === '05.228.935/0001-43'
-  ) {
+  if (process.env.NX_GLOBAL_ENVIROMENT === 'qa') {
     information.email = 'cadastro@juntoseguros.com';
   }
   return {
@@ -39,5 +36,6 @@ export const brokerInformationAdapter = (
     codeIsValid,
     brokerExternalId: 0,
     brokerUserName: '',
+    signupDirect: false,
   };
 };

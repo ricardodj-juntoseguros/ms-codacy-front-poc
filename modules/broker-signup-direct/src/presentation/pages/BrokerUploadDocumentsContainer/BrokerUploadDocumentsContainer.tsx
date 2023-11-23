@@ -9,14 +9,14 @@ import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
 const BrokerUploadDocumentsContainer = ({ history }: RouteComponentProps) => {
   const brokerInformation = useSelector(selectBroker);
 
-  // useEffect(() => {
-  //   if(brokerInformation.information.federalId === ''){
-  //     history.push('/');
-  //   }
-  //   },[brokerInformation.information.federalId, history]);
+  useEffect(() => {
+    if (brokerInformation.information.federalId === '') {
+      history.push('/');
+    }
+  }, [brokerInformation.information.federalId, history]);
 
   const onSubmit = () => {
-    history.push('/finish');
+    history.push('/request-confirmation');
   };
 
   return (

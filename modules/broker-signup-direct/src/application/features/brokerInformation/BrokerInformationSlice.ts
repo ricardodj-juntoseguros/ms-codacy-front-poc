@@ -39,6 +39,7 @@ const initialState: BrokerInformationModel = {
   codeIsValid: false,
   brokerExternalId: 0,
   brokerUserName: '',
+  signupDirect: false,
 };
 
 export const brokerInformationSlice = createSlice({
@@ -54,6 +55,10 @@ export const brokerInformationSlice = createSlice({
       state.description = action.payload.description;
       state.information = action.payload.information;
       state.susepCode = action.payload.susepCode;
+      state.renewRegistration = action.payload.renewRegistration;
+      state.hasProductDamageInsurance =
+        action.payload.hasProductDamageInsurance;
+      state.susepSituation = action.payload.susepSituation;
     },
     setpathUpdate: (state, action: PayloadAction<string>) => {
       state.pathUpdate = action.payload;
@@ -97,6 +102,9 @@ export const brokerInformationSlice = createSlice({
     },
     setBrokerUserName: (state, action: PayloadAction<string>) => {
       state.brokerUserName = action.payload;
+    },
+    setSignupDirect: (state, action: PayloadAction<boolean>) => {
+      state.signupDirect = action.payload;
     },
   },
 });

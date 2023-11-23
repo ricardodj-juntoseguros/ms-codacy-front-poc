@@ -23,7 +23,6 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
   const [codeIsValid, setCodeIsValid] = useState(false);
   const [codeIsComplet, setCodeIsComplet] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [signupIsDirect, setSignupIsDirect] = useState<boolean>(false);
   const [buttonDisabled, setButtonDisable] = useState<boolean>(true);
   const dispatch = useDispatch();
 
@@ -47,10 +46,13 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
 
   const onSubmit = () => {
     const validationEmail = compareEmailBrokerToEmailResponsible();
-    setSignupIsDirect(
-      broker.hasProductDamageInsurance &&
-        broker.renewRegistration &&
-        broker.susepSituation,
+    dispatch(
+      brokerInformationSliceActions.setSignupDirect(
+        broker.hasProductDamageInsurance &&
+          broker.renewRegistration &&
+          broker.susepSituation &&
+          validationEmail,
+      ),
     );
     fetchRegisterResponsibleBroker(validationEmail, broker.pathUpdate);
   };

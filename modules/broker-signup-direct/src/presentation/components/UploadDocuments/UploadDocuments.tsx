@@ -175,7 +175,11 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
     await RegisterBrokerApi.updateRegisterBroker(
       [...payload],
       brokerInformation.pathUpdate,
-    );
+    ).then(() => {
+      setIsSubmitting(false);
+      setIsDisableGoNextStep(false);
+      handleGoNextClick();
+    });
   };
 
   const handleSubmit = async () => {

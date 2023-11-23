@@ -42,6 +42,7 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
   );
   const [errorUserName, setErrorUserName] = useState<string>('');
   const sreenWidthMobile = window.screen.width;
+  const now = new Date();
 
   useEffect(() => {
     if (password !== '' || confirmPassword !== '') {
@@ -149,6 +150,20 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
     return 'create-user-form-validation_password_rule_text_check';
   };
 
+  const fetchRegisterBrokerInformation = async () => {
+    const payload = [
+      {
+        op: 'replace',
+        path: '/endSignup',
+        value: now,
+      },
+    ];
+    await RegisterBrokerApi.updateRegisterBroker(
+      [...payload],
+      brokerInformation.pathUpdate,
+    );
+  };
+
   const onSubmit = async () => {
     const newUser = {
       login: brokerUserName,
@@ -162,6 +177,7 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
     setIsDisableButtonSignup(true);
     await RegisterBrokerApi.createNewUser(newUser)
       .then(() => {
+        fetchRegisterBrokerInformation();
         handleGoNextClick();
       })
       .catch(error => {
@@ -169,6 +185,7 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
           dispatch(
             brokerInformationSliceActions.setBrokerUserName(brokerUserName),
           );
+          fetchRegisterBrokerInformation();
           handleGoNextClick();
         } else {
           setIsSubmitting(false);
@@ -193,7 +210,7 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
           placeholder=" "
           value={brokerUserName}
           onChange={e => setBrokerUserNmae(e.target.value)}
-          onBlur={e => showErrorUser()}
+          onBlur={() => showErrorUser()}
           errorMessage={showErrorUserName ? errorUserName : ''}
         />
       </div>

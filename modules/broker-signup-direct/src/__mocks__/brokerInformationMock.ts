@@ -31,4 +31,5 @@ export const brokerInformationMock = {
   susepSituation: false,
   brokerExternalId: 0,
   brokerUserName: '',
+  signupDirect: false,
 };

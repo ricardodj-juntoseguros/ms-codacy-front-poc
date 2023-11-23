@@ -30,9 +30,9 @@ class RegisterBrokerApi {
     return await this.instance.patch<string>(params);
   }
 
-  async registerBrokerGV(path: string) {
+  async registerBrokerGV(path: string, signupDirect: boolean) {
     const params: IHttpClientRequestParameters = {
-      url: `/brokers/signup/create?id=${path}`,
+      url: `/brokers/signup/upsert?id=${path}&signupDirect=${signupDirect}`,
     };
 
     return await this.instance.post<string>(params);

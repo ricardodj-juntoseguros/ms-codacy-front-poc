@@ -32,21 +32,40 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
     }
   }, [brokerInformation.information.federalId]);
 
+  const fetchRegisterBrokerInformation = async () => {
+    const payload = [
+      {
+        op: 'replace',
+        path: '/signupDirect',
+        value: brokerInformation.signupDirect,
+      },
+    ];
+    await RegisterBrokerApi.updateRegisterBroker(
+      [...payload],
+      brokerInformation.pathUpdate,
+    );
+  };
+
   const fetchRegisterResponsibleBrokerGv = async () => {
-    await RegisterBrokerApi.registerBrokerGV(brokerInformation.pathUpdate)
-      .then(response => {
-        dispatch(
-          brokerInformationSliceActions.setBrokerExternalId(
-            response as unknown as number,
-          ),
-        );
-      })
-      .finally(() => {
+    await RegisterBrokerApi.registerBrokerGV(
+      brokerInformation.pathUpdate,
+      brokerInformation.signupDirect,
+    ).then(response => {
+      dispatch(
+        brokerInformationSliceActions.setBrokerExternalId(
+          response as unknown as number,
+        ),
+      );
+      if (brokerInformation.signupDirect) {
         history.push('/create-user-access');
-      });
+      } else {
+        history.push('/info-upload-documents');
+      }
+    });
   };
 
   const onSubmit = () => {
+    fetchRegisterBrokerInformation();
     fetchRegisterResponsibleBrokerGv();
   };
 
