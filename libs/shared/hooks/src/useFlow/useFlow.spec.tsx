@@ -33,6 +33,7 @@ describe('useFlow', () => {
     {
       name: 'ComponentA',
       status: StepStatusEnum.EDITABLE,
+      component: Component,
       title: {
         text: 'Olá. Para iniciar uma nova solicitação de garantia, comece preenchendo os %STRONG%',
         boldWords: ['dados do contrato.'],
@@ -41,6 +42,7 @@ describe('useFlow', () => {
     {
       name: 'ComponentB',
       status: StepStatusEnum.HIDDEN,
+      component: Component,
       title: {
         text: 'Nessa etapa, precisamos que informe as %STRONG% participantes do contrato.',
         boldWords: ['empresas'],
@@ -99,6 +101,7 @@ describe('useFlow', () => {
       {
         name: 'ComponentA',
         status: StepStatusEnum.FINISHED,
+        component: Component,
         title: {
           text: 'Olá. Para iniciar uma nova solicitação de garantia, comece preenchendo os %STRONG%',
           boldWords: ['dados do contrato.'],
@@ -107,6 +110,7 @@ describe('useFlow', () => {
       {
         name: 'ComponentB',
         status: StepStatusEnum.FINISHED,
+        component: Component,
         title: {
           text: 'Nessa etapa, precisamos que informe as %STRONG% participantes do contrato.',
           boldWords: ['empresas'],
@@ -115,6 +119,7 @@ describe('useFlow', () => {
       {
         name: 'ComponentC',
         status: StepStatusEnum.FINISHED,
+        component: Component,
         title: {
           text: 'Nessa etapa, precisamos que informe as %STRONG% participantes do contrato.',
           boldWords: ['empresas'],
@@ -172,12 +177,12 @@ describe('useFlow', () => {
     result.current.setTitle('ComponentA', 'title', []);
     expect(result.current.steps[0]).toEqual({
       name: 'ComponentA',
-      status: StepStatusEnum.FINISHED,
+      status: StepStatusEnum.EDITABLE,
       title: {
         text: 'title',
         boldWords: [],
       },
-      infoText: 'test',
+      infoText: undefined,
     });
   });
 });

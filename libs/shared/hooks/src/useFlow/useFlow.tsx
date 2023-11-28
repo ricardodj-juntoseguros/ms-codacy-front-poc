@@ -11,10 +11,10 @@ import { StepContainer } from '@shared/ui';
 import {
   FlowContextProps,
   FlowProviderProps,
-  StepComponentModel,
   StepModel,
 } from './types';
 import { StepStatusEnum } from './enums';
+import { getStepList } from './utils';
 
 const FlowContext = createContext<FlowContextProps>({} as FlowContextProps);
 
@@ -25,9 +25,9 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
   ComponentContainer = StepContainer,
   children,
 }) => {
-  const [currentSteps, setCurrentSteps] = useState<StepModel[]>(initialSteps);
+  const [currentSteps, setCurrentSteps] = useState<StepModel[]>(getStepList(initialSteps));
 
-  const setSteps = (steps: StepComponentModel[]) => {
+  const setSteps = (steps: StepModel[]) => {
     setCurrentSteps(prevState => prevState.concat(steps));
   };
 

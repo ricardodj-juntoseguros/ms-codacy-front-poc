@@ -8,17 +8,17 @@ export const quoteAdapter = (quote: QuoteModel): QuoteDTO => {
     modality,
     coverageData,
     submodality,
-    subsidiary,
+    policyholderAffiliate,
     pricing,
   } = quote;
 
   return {
     policyHolder: {
       federalId: policyholder ? policyholder.federalId : '',
-      affiliateFederalId: subsidiary ? subsidiary.federalId : '',
+      affiliateFederalId: policyholderAffiliate ? policyholderAffiliate.federalId : '',
     },
     modality: {
-      id: modality ? modality.externalId : 0,
+      id: modality ? modality.id : 0,
       subModalityId: submodality ? submodality.id : 1,
     },
     validity: {
@@ -30,13 +30,13 @@ export const quoteAdapter = (quote: QuoteModel): QuoteDTO => {
     securedAmount: coverageData.securedAmount,
     commissionFlex:
       pricing.commissionFlex &&
-      pricing.commissionFlex !== pricing.comissionValue
+        pricing.commissionFlex !== pricing.comissionValue
         ? pricing.commissionFlex
         : null,
     feeFlex:
       pricing.feeFlex &&
-      pricing.feeFlex !== pricing.proposalFee &&
-      pricing.feeFlex !== pricing.feeStandard
+        pricing.feeFlex !== pricing.proposalFee &&
+        pricing.feeFlex !== pricing.feeStandard
         ? pricing.feeFlex
         : null,
     proposalFee: pricing.proposalFee !== 0 ? pricing.proposalFee : null,

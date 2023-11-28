@@ -1,4 +1,4 @@
-import { modalities } from '../../constants';
+import { modalities } from '../../constants/modalities2';
 import { getModalityByGroup, getModalityType } from '../../helpers';
 import issueSchemas from './schemas/issueSchemas';
 import quoteSchemas from './schemas/quoteSchemas';

@@ -53,12 +53,12 @@
   }
 
   & i[data-icon='x'] {
-    color: color('error');
+    color: color('error-base');
     align-self: center;
   }
 
   & i[data-icon='check'] {
-    color:  color('success');
+    color:  color('success-base');
     align-self: center;
   }
 
@@ -70,12 +70,12 @@
     }
 
     & i[data-icon='x'] {
-      color: color('error');
+      color: color('error-base');
       align-self: center;
     }
 
     & i[data-icon='check'] {
-      color: color('success');
+      color: color('success-base');
       align-self: center;
     }
   }
@@ -85,7 +85,7 @@
   display: flex;
   width: 368px;
   @include font('xs');
-  color: color('error');
+  color: color('error-base');
   padding-top: spacing('m');
 
   @media screen and (max-width: 680px) {

@@ -2,7 +2,6 @@ export * from './PolicyholderModel';
 export * from './PolicyholderSearchModel';
 export * from './PolicyholderSelectionModel';
 export * from './ModalityModel';
-export * from './SubsidiaryModel';
 export * from './CoverageDataModel';
 export * from './QuoteModel';
 export * from './RateCalculationModel';

@@ -3,39 +3,41 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import {
-  PolicyholderDTO,
-  SubsidiaryDTO,
   PolicyholderSearchDTO,
+  PolicyholderDTO,
 } from '../../types/dto';
-import IssueBrokerBaseApi from '../BrokerIssuanceBaseApi';
+import BrokerInssuanceBaseApi from '../BrokerIssuanceBaseApi';
 
 class PolicyholderSelectionApi {
   private readonly httpClient: IHttpClient;
 
   public constructor() {
-    this.httpClient = new IssueBrokerBaseApi().getInstance();
+    this.httpClient = new BrokerInssuanceBaseApi().getInstance();
   }
 
   async searchPolicyHolder(policyHolderLabel: string) {
     const params: IHttpClientRequestParameters = {
-      url: `repository/policyholders/search?q=${policyHolderLabel}`,
+      url: `/v1/policyholders/search?q=${policyHolderLabel}`,
     };
     return this.httpClient.get<PolicyholderSearchDTO>(params);
   }
 
   async getPolicyholderDetails(brokerId: number, federalId: string) {
     const params: IHttpClientRequestParameters = {
-      url: `api/v2/policyholders?brokerExternalId=${brokerId}&federalId=${federalId}`,
+      url: `/v1/policyholders/${federalId}?brokerExternalId=${brokerId}`,
     };
-
     return this.httpClient.get<PolicyholderDTO>(params);
   }
 
-  async getSubsidiaryByPolicyHolder(policyholderId: number) {
+  async postAppointmentLetter(policyholderFederalId: string, brokerId: number, file: File) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
     const params: IHttpClientRequestParameters = {
-      url: `api_policyholder/policyholders/${policyholderId}/getaffiliates`,
+      url: `/v1/policyholders/${policyholderFederalId}/appointment-letter/upload?brokerExternalId=${brokerId}`,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      payload: formData,
     };
-    return this.httpClient.get<SubsidiaryDTO[]>(params);
+    return this.httpClient.post(params);
   }
 }
 

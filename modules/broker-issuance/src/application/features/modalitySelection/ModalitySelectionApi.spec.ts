@@ -7,33 +7,35 @@ describe('ModalitySelectionApi', () => {
     jest.clearAllMocks();
   });
 
-  const getModalitiesByPolicyholderMock = jest.spyOn(
+  const fetchModalitiesMock = jest.spyOn(
     ModalitySelectionApi,
-    'getModalitiesByPolicyholder',
+    'fetchModalities',
   );
 
   it('should not broke retreveing the modalities', () => {
-    const policyHolderId = 140139;
+    const policyholderFederalId = '99999999999999';
+    const brokerFederalId = '8888888888888';
     const response =
-      ModalitySelectionApi.getModalitiesByPolicyholder(policyHolderId);
-    expect(getModalitiesByPolicyholderMock).toHaveBeenCalled();
+      ModalitySelectionApi.fetchModalities(brokerFederalId, policyholderFederalId);
+    expect(fetchModalitiesMock).toHaveBeenCalled();
     expect(response).resolves.not.toThrow();
   });
 
   it('getPolicyholderDetails should call bff service correctly', async () => {
-    const policyHolderId = 140139;
+    const policyholderFederalId = '99999999999999';
+    const brokerFederalId = '8888888888888';
     const mockGet = jest
       .spyOn(AxiosHttpClient.prototype, 'get')
       .mockImplementation(async () => {
         return modalityMock;
       });
 
-    const result = await ModalitySelectionApi.getModalitiesByPolicyholder(
-      policyHolderId,
+    const result = await ModalitySelectionApi.fetchModalities(
+      brokerFederalId, policyholderFederalId,
     );
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: `api_policyholder/policyholders/${policyHolderId}/modalities-to-policyholder`,
+      url: `/v1/products/policyholder/${policyholderFederalId}/modalities?brokerFederalId=${brokerFederalId}`,
     });
     expect(result).toBe(modalityMock);
   });

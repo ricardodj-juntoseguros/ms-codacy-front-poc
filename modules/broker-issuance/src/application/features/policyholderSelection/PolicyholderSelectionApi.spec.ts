@@ -31,7 +31,7 @@ describe('PolicyholderSelectionApi', () => {
     const result = await PolicyholderSelectionApi.searchPolicyHolder('test');
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: 'repository/policyholders/search?q=test',
+      url: '/v1/policyholders/search?q=test',
     });
     expect(result).toBe(mockData);
   });
@@ -73,41 +73,29 @@ describe('PolicyholderSelectionApi', () => {
     );
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: 'api/v2/policyholders?brokerExternalId=1&federalId=99999999999999',
+      url: '/v1/policyholders/99999999999999?brokerExternalId=1',
     });
     expect(result).toBe(mockData);
   });
 
-  it('getSubsidiaryByPolicyHolder should call bff service correctly', async () => {
-    const mockData = [
-      {
-        id: 1,
-        address: 'Rua Visconde de Nácar',
-        cep: '80410-201',
-        city: 'Curitiba',
-        complement: '',
-        country: 'Brasil',
-        federalId: '99999999999999',
-        name: 'Test',
-        number: 1111,
-        policyholdersId: 1,
-        state: 'PR',
-      },
-    ];
-
+  it('postAppointmentLetter should call bff service correctly', async () => {
     const mockGet = jest
-      .spyOn(AxiosHttpClient.prototype, 'get')
+      .spyOn(AxiosHttpClient.prototype, 'post')
       .mockImplementation(async () => {
-        return mockData;
+        return { message: 'ok' };
       });
-
-    const result = await PolicyholderSelectionApi.getSubsidiaryByPolicyHolder(
-      1,
-    );
-
-    expect(mockGet).toHaveBeenCalledWith({
-      url: 'api_policyholder/policyholders/1/getaffiliates',
+    const file = new File(['(⌐□_□)'], 'file.pdf', {
+      type: 'application/pdf',
     });
-    expect(result).toBe(mockData);
+    const result = await PolicyholderSelectionApi.postAppointmentLetter('99999999999999', 12345, file);
+
+    expect(mockGet.mock.calls[0][0]).toMatchObject({
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+      payload: {},
+      url: "/v1/policyholders/99999999999999/appointment-letter/upload?brokerExternalId=12345"
+    });
+    expect(result).toEqual({ message: 'ok' });
   });
 });

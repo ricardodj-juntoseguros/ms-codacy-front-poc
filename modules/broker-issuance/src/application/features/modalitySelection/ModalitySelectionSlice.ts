@@ -1,19 +1,39 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { makeToast } from 'junto-design-system';
+import handleError from '../../../helpers/handlerError';
 import { RootState } from '../../../config/store';
-import { ModalitySelectionModel } from '../../types/model';
+import { ModalityModel, ModalitySelectionModel } from '../../types/model';
 import ModalityApi from './ModalitySelecionApi';
 
 const initialState: ModalitySelectionModel = {
   modalityOptions: [],
-  loadingGetModalities: false,
+  loadingModalities: false,
 };
 
-export const getModalityByPolicyHolder = createAsyncThunk(
-  'modalitySearch/getModalityByPolicyHolder',
-  async (id: number) => {
-    const response = await ModalityApi.getModalitiesByPolicyholder(id);
+interface FetchModalitiesParam {
+  brokerFederalId: string;
+  policyholderFederalId: string
+}
 
-    return response;
+export const fetchModalities = createAsyncThunk<
+  ModalityModel[],
+  FetchModalitiesParam,
+  { rejectValue: string }
+>(
+  'modalitySelection/fetchModalities',
+  async (params, { rejectWithValue }) => {
+    const { brokerFederalId, policyholderFederalId } = params;
+    return ModalityApi.fetchModalities(brokerFederalId, policyholderFederalId)
+      .then(response => {
+        return response.map(modality => ({
+          ...modality,
+          value: modality.id.toString(),
+          label: modality.description,
+        }))
+      })
+      .catch(error => {
+        return rejectWithValue(handleError(error));
+      });
   },
 );
 
@@ -21,28 +41,30 @@ export const ModalitySelectionSlice = createSlice({
   name: 'modalitySearch',
   initialState,
   reducers: {
-    resetSearch: state => {
+    resetModalitySelection: state => {
       state.modalityOptions = [];
-      state.loadingGetModalities = false;
+      state.loadingModalities = false;
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(getModalityByPolicyHolder.fulfilled, (state, action) => {
+      .addCase(fetchModalities.fulfilled, (state, action) => {
         state.modalityOptions = action.payload;
-        state.loadingGetModalities = false;
+        state.loadingModalities = false;
       })
-      .addCase(getModalityByPolicyHolder.pending, state => {
-        state.loadingGetModalities = true;
+      .addCase(fetchModalities.pending, state => {
+        state.loadingModalities = true;
       })
-      .addCase(getModalityByPolicyHolder.rejected, state => {
-        state.loadingGetModalities = false;
+      .addCase(fetchModalities.rejected, (state, action) => {
+        state.loadingModalities = false;
+        const message = action.payload ? action.payload : 'Erro ao buscar modalidades';
+        makeToast('error', message);
       });
   },
 });
 
 export const selectModality = (state: RootState) => state.modalitySelecion;
 
-export const { actions: modalitySearchActions } = ModalitySelectionSlice;
+export const { actions: modalitySelectionActions } = ModalitySelectionSlice;
 
 export default ModalitySelectionSlice.reducer;

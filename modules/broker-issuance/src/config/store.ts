@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import FlowSlice from '../application/features/flow/FlowSlice';
 import SearchInsuredSlice from '../application/features/searchInsured/SearchInsuredSlice';
 import ModalitySlice from '../application/features/modalitySelection/ModalitySelectionSlice';
 import validationSlice from '../application/features/validation/ValidationSlice';
@@ -9,7 +8,6 @@ import PolicyholderSelectionSlice from '../application/features/policyholderSele
 export const store = configureStore({
   reducer: {
     quote: QuoteSlice,
-    flow: FlowSlice,
     policyholderSelection: PolicyholderSelectionSlice,
     searchInsured: SearchInsuredSlice,
     modalitySelecion: ModalitySlice,

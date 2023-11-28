@@ -1,10 +1,16 @@
 import { FlowProvider } from '@shared/hooks';
+import * as ALL_STEPS from '../../../constants/modalitiesSteps';
 import styles from './QuoteContainer.module.scss';
 
-export function QuoteContainer() {
+const QuoteContainer = () => {
   return (
     <div className={styles['quote-container__wrapper']}>
-      <FlowProvider allSteps={[]} initialSteps={[]} showFinishedSteps={false} />
+      <FlowProvider
+        allSteps={Object.values(ALL_STEPS).flat()}
+        initialSteps={ALL_STEPS.COMMON_STEP}
+        showFinishedSteps={false}
+      />
     </div>
   );
-}
+};
+export default QuoteContainer;

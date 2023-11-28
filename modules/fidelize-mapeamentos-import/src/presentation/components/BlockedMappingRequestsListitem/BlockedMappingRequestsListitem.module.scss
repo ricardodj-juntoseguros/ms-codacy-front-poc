@@ -97,7 +97,7 @@
   display: inline-flex;
   width: fit-content;
   background-color: rgba(225, 248, 240, 1);
-  color: color('success');
+  color: color('success-base');
 }
 
 .blocked-mapping-requests-listitem__priority-tag {
@@ -183,7 +183,7 @@
   &--warn {
     &:hover {
       cursor: pointer;
-      color: color('warning');
+      color: color('warning-base');
     }
   }
 }

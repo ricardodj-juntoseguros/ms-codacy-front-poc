@@ -1,10 +1,9 @@
 import { render } from '../../../config/testUtils';
-import { QuoteContainer } from './QuoteContainer';
+import QuoteContainer from './QuoteContainer';
 
-describe('QuoteContainer component', () => {
+describe('QuoteContainer', () => {
   it('should render successfully', () => {
     const { baseElement } = render(<QuoteContainer />);
-
     expect(baseElement).toBeTruthy();
   });
 });

@@ -2,7 +2,7 @@ import {
   policyholderLimitMock,
   policyholderMock,
   storeMock,
-  subsidiaryMock,
+  policyholderAffiliateMock,
   quoteResulMock,
   quoteMock,
 } from '../../../__mocks__';
@@ -18,8 +18,9 @@ describe('ModalitySelectionSlice', () => {
 
   it('should be able to fill in all fields of the quote', async () => {
     const subsidiarySelectedMock = {
-      ...subsidiaryMock,
+      ...policyholderAffiliateMock,
       label: 'Curitiba - PR - 99999999999999',
+      value: '4460',
     };
     const policyHolderLimitResult = policyholderLimitAdapter(
       policyholderLimitMock,
@@ -31,7 +32,7 @@ describe('ModalitySelectionSlice', () => {
         storeMock.modalitySelecion.modalityOptions[0],
       ),
     );
-    store.dispatch(quoteSliceActions.setSubsidiary(subsidiarySelectedMock));
+    store.dispatch(quoteSliceActions.setPolicyholderAffiliate(subsidiarySelectedMock));
     store.dispatch(
       quoteSliceActions.setPolicyholderLimit(policyHolderLimitResult),
     );
@@ -49,7 +50,7 @@ describe('ModalitySelectionSlice', () => {
     expect(quote.modality).toEqual(
       storeMock.modalitySelecion.modalityOptions[0],
     );
-    expect(quote.subsidiary).toEqual(subsidiarySelectedMock);
+    expect(quote.policyholderAffiliate).toEqual(subsidiarySelectedMock);
     expect(quote.policyholderLimit).toEqual(policyHolderLimitResult);
     expect(quote.coverageData.startDate).toEqual('27/05/2022');
     expect(quote.coverageData.endDate).toEqual('27/05/2023');

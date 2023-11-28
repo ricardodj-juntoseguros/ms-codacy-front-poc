@@ -1,23 +1,17 @@
+import { PolicyholderAffiliatesDTO } from "./PolicyholderAffiliatesDTO"
+
 export interface PolicyholderDTO {
-  Activity: string;
-  City: string;
-  Class: string;
-  ClosingReferenceDay: number;
-  CompanyName: string;
-  District: string;
-  Email?: string;
-  ExternalId: number;
-  FederalId: string;
-  Hangs: Array<any>;
-  Id: number;
-  InvoiceDueDateDay: number;
-  IsNew: boolean;
-  PhoneNumber?: number;
-  ProducerRegionals?: string;
-  RegionalName?: string;
-  State: string;
-  Street: string;
-  UseBill: boolean;
-  ValidCredit: boolean;
-  ZipCode: string;
+  registrationData: {
+    id: number,
+    newQuoterId: number,
+    federalId: string,
+    email?: string | null,
+    companyName: string,
+    useBill: boolean,
+    invoiceDueDateDay: number,
+    closingReferenceDay: number,
+    economicGroupId: number,
+    economicGroupName: string
+  };
+  affiliates: Array<PolicyholderAffiliatesDTO>
 }

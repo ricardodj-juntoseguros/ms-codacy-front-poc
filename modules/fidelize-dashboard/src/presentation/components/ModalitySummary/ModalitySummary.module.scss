@@ -74,7 +74,7 @@
 
 .modality-summary__error {
   @include font('l');
-  color: color('error');
+  color: color('error-base');
   width: 100%;
   text-align: center;
 }

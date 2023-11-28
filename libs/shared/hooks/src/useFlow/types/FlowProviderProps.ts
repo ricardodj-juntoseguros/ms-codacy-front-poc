@@ -1,10 +1,9 @@
 import { FunctionComponent } from 'react';
 import { StepComponentModel } from "./StepComponentModel";
 import { StepContainerProps } from "./StepContainerProps";
-import { StepModel } from "./StepModel";
 
 export interface FlowProviderProps {
-  initialSteps: StepModel[];
+  initialSteps: StepComponentModel[];
   allSteps: StepComponentModel[];
   showFinishedSteps?: boolean;
   ComponentContainer?:

@@ -74,31 +74,33 @@ export const StepContainer: React.FC<StepContainerProps> = ({
       data-testid={`stepContainer-wrapper-${index}`}
       className={styles['step-container__wrapper']}
     >
-      <span
-        data-testid={`stepContainer-identification-${index}`}
-        className={className(
-          styles['step-container__number'],
-          {
-            [styles['step-container__number--finished']]:
-              status === StepStatusEnum.FINISHED,
-          },
-          styles[theme],
-        )}
-      >
-        {renderIdentificationStep()}
-      </span>
-      <h2
-        className={className(
-          styles['step-container__title'],
-          {
-            [styles['step-container__title--finished']]:
-              status === StepStatusEnum.FINISHED,
-          },
-          styles[theme],
-        )}
-      >
-        {stepTitle}
-      </h2>
+      <header className={styles['step-container__header']}>
+        <span
+          data-testid={`stepContainer-identification-${index}`}
+          className={className(
+            styles['step-container__number'],
+            {
+              [styles['step-container__number--finished']]:
+                status === StepStatusEnum.FINISHED,
+            },
+            styles[theme],
+          )}
+        >
+          {renderIdentificationStep()}
+        </span>
+        <h2
+          className={className(
+            styles['step-container__title'],
+            {
+              [styles['step-container__title--finished']]:
+                status === StepStatusEnum.FINISHED,
+            },
+            styles[theme],
+          )}
+        >
+          {stepTitle}
+        </h2>
+      </header>
       {status === StepStatusEnum.FINISHED ? renderFinishContent() : children}
     </div>
   );

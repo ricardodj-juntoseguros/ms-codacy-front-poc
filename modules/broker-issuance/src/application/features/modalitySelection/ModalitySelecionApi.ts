@@ -12,16 +12,11 @@ class ModalitySelectionApi {
     this.httpClient = new IssueBrokerBaseApi().getInstance();
   }
 
-  async getModalitiesByPolicyholder(id: number) {
+  async fetchModalities(brokerFederalId: string, policyholderFederalId: string): Promise<ModalityDTO[]> {
     const params: IHttpClientRequestParameters = {
-      url: `api_policyholder/policyholders/${id}/modalities-to-policyholder`,
+      url: `/v1/products/policyholder/${policyholderFederalId}/modalities?brokerFederalId=${brokerFederalId}`,
     };
-
-    const policyholderModalitiesData = await this.httpClient.get<ModalityDTO[]>(
-      params,
-    );
-
-    return policyholderModalitiesData;
+    return this.httpClient.get<ModalityDTO[]>(params);
   }
 }
 

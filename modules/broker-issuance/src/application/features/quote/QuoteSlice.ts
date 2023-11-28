@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DEFAULT_SUBMODALITY_ID } from '../../../constants';
 import { RootState } from '../../../config/store';
 import {
   PolicyholderModel,
   ModalityModel,
-  SubsidiaryModel,
   QuoteModel,
   InsuredModel,
   AddressModel,
@@ -16,6 +16,7 @@ import { LimitModel } from '../../types/model/LimitModel';
 import { parseDateToString } from '../../../helpers/parseDateToString';
 import QuoteApi from './QuoteApi';
 import { QuoteDTO } from '../../types/dto';
+import { PolicyholderAffiliatesModel } from '../../types/model/PolicyholderAffiliatesModel';
 
 export const generateQuote = createAsyncThunk(
   'quote/generateQuote',
@@ -28,9 +29,9 @@ export const generateQuote = createAsyncThunk(
 
 const initialState: QuoteModel = {
   policyholder: null,
+  policyholderAffiliate: null,
   modality: null,
   submodality: null,
-  subsidiary: null,
   policyholderLimit: {
     limiteDisponivel: 0,
     mensagemLimiteFlexibilizacao: '',
@@ -60,12 +61,12 @@ export const quoteSlice = createSlice({
     setPolicyholder: (state, action: PayloadAction<PolicyholderModel>) => {
       state.policyholder = action.payload;
     },
+    setPolicyholderAffiliate: (state, action: PayloadAction<PolicyholderAffiliatesModel>) => {
+      state.policyholderAffiliate = action.payload;
+    },
     setModality: (state, action: PayloadAction<ModalityModel>) => {
       state.modality = action.payload;
-      state.hasQuoteChanges = true;
-    },
-    setSubsidiary: (state, action: PayloadAction<SubsidiaryModel>) => {
-      state.subsidiary = action.payload;
+      state.submodality = action.payload.submodalities.find(modality => modality.id === DEFAULT_SUBMODALITY_ID) || null;
       state.hasQuoteChanges = true;
     },
     setPolicyholderLimit: (state, action: PayloadAction<LimitModel>) => {

@@ -1,6 +1,5 @@
 export * from './PolicyholderDTO';
 export * from './ModalityDTO';
-export * from './SubsidiaryDTO';
 export * from './PolicyholderSearchDTO';
 export * from './AddressDTO';
 export * from './InstallmentDTO';
@@ -13,4 +12,3 @@ export * from './QuoteDTO';
 export * from './QuoteResultDTO';
 export * from './RateFlexPermissionDTO';
 export * from './SubmodalityDTO';
-export * from './SubsidiaryDTO';

@@ -1,15 +1,20 @@
-export interface SubmodalityDTO {
-  description: string;
-  externalDescription: string;
-  externalId: number;
+interface Payments {
   id: number;
-  isRecursal: boolean;
-  isSubstitute: boolean;
-  modalityId: number;
+  description: string;
+}
+
+interface AppealJudicialPremium {
+  judicialDurationInDays: number;
+  securedAmountStart: number;
+}
+
+export interface SubmodalityDTO {
+  id: number;
+  newQuoterId: number;
+  description: string;
   useBill: boolean;
-  appealJudicialPremium?: {
-    judicialDurationInDays: number;
-    securedAmountStart: number;
-    submodalityId: number;
-  }[];
+  isSubstitute: boolean;
+  isRecursal: boolean;
+  payments: Payments[];
+  appealJudicialPremium: AppealJudicialPremium[] | null;
 }

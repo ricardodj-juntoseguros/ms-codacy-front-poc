@@ -1,6 +1,5 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import QuoteApi from './QuoteApi';
-import { QuoteDTO } from '../../types/dto/QuoteDTO';
 import { quoteResulMock, quoteMock } from '../../../__mocks__';
 
 describe('QuoteApi', () => {

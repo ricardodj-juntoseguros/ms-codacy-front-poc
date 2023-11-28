@@ -41,7 +41,7 @@
 }
 
 .dashboard-total-card__error {
-  color: color('error');
+  color: color('error-base');
   @include font('l');
   margin: 0px;
   text-align: center;
@@ -54,7 +54,7 @@
   margin-top: spacing('m');
 
   & > span {
-    color: color('success');
+    color: color('success-base');
     @include font('xs-emphasys');
   }
 }

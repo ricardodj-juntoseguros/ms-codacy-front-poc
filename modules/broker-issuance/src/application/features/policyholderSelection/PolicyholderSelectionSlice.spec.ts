@@ -1,10 +1,9 @@
 import { store } from '../../../config/store';
 import PolicyholderSelectionApi from './PolicyholderSelectionApi';
-import { policyholderSearchMock, subsidiaryMock } from '../../../__mocks__';
+import { policyholderAffiliateMock, policyholderSearchMock } from '../../../__mocks__';
 import {
   searchPolicyholder,
   policyholderSelectionActions,
-  getSubsidiaryByPolicyHolderId,
 } from './PolicyholderSelectionSlice';
 
 describe('PolicyholderSelectionSlice', () => {
@@ -13,11 +12,15 @@ describe('PolicyholderSelectionSlice', () => {
       id: 1,
       federalId: '99999999999999',
       companyName: 'Test',
+      label: "Test",
+      value: "99999999999999",
     },
     {
       id: 2,
       federalId: '88888888888888',
       companyName: 'Test 2',
+      label: "Test 2",
+      value: "88888888888888",
     },
   ];
 
@@ -54,82 +57,43 @@ describe('PolicyholderSelectionSlice', () => {
     expect(policyholderSelection.loadingSearchPolicyholder).toEqual(false);
   });
 
-  it('should be able to search policyholder subsidiaries by policyholder', async () => {
-    const policyHolderId = 140139;
-    const subsidiaryOptionsMock = [
-      { ...subsidiaryMock, label: 'Curitiba - PR - 99999999999999' },
-    ];
-
-    const getSubsidiaryByPolicyHolderApiMock = jest
-      .spyOn(PolicyholderSelectionApi, 'getSubsidiaryByPolicyHolder')
-      .mockImplementation(() => Promise.resolve(subsidiaryOptionsMock));
-
-    await store.dispatch(getSubsidiaryByPolicyHolderId(policyHolderId));
-
-    const { policyholderSelection } = store.getState();
-
-    expect(getSubsidiaryByPolicyHolderApiMock).toHaveBeenCalled();
-    expect(getSubsidiaryByPolicyHolderApiMock).toHaveBeenCalledWith(
-      policyHolderId,
-    );
-    expect(policyholderSelection.subsidiaryOptions).toEqual(
-      subsidiaryOptionsMock,
-    );
+  it('should be able to change the search value and if it is blank text you must clear the selection options', async () => {
+    await store.dispatch(policyholderSelectionActions.setPolicyholderSearchValue('Test'));
+    let { policyholderSelection } = store.getState();
+    expect(policyholderSelection.policyholderSearchValue).toEqual('Test');
+    await store.dispatch(policyholderSelectionActions.setPolicyholderSearchValue(''));
+    policyholderSelection = store.getState().policyholderSelection;
+    expect(policyholderSelection.policyholderSearchValue).toEqual('');
+    expect(policyholderSelection.policyholderOptions).toEqual([]);
   });
 
-  it('Should not update the subsidiary picklist if the error call', async () => {
-    const policyHolderId = 140139;
-
-    const getSubsidiaryByPolicyHolderApiMock = jest
-      .spyOn(PolicyholderSelectionApi, 'getSubsidiaryByPolicyHolder')
-      .mockImplementation(() => Promise.reject(new Error('Not found')));
-
-    await store.dispatch(searchPolicyholder('Test'));
-
+  it('should be able to change the search value and if it is blank text you must clear the selection options', async () => {
+    await store.dispatch(policyholderSelectionActions.setPolicyholderAffiliatesOptions([policyholderAffiliateMock]));
     const { policyholderSelection } = store.getState();
-
-    expect(getSubsidiaryByPolicyHolderApiMock).toHaveBeenCalled();
-    expect(getSubsidiaryByPolicyHolderApiMock).toHaveBeenCalledWith(
-      policyHolderId,
-    );
-    expect(policyholderSelection.subsidiaryOptions).toEqual([]);
-    expect(policyholderSelection.loadingGetSubsidiaries).toEqual(false);
+    expect(policyholderSelection.affiliatesOptions.length).toEqual(3);
+    expect(policyholderSelection.affiliatesOptions[0].companyName).toEqual('DEXCO S.A');
+    expect(policyholderSelection.affiliatesOptions[1].label).toEqual('Nenhuma filial');
+    expect(policyholderSelection.affiliatesOptions[2].label).toEqual('Não encontrei minha filial');
   });
 
   it('should be able reset the slice', async () => {
-    const policyHolderId = 140139;
-    const subsidiaryOptionsMock = [
-      { ...subsidiaryMock, label: 'Curitiba - PR - 99999999999999' },
-    ];
     const policyholderSearchApiMock = jest
       .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
       .mockImplementation(() => Promise.resolve(policyholderSearchMock));
-    const getSubsidiaryByPolicyHolderApiMock = jest
-      .spyOn(PolicyholderSelectionApi, 'getSubsidiaryByPolicyHolder')
-      .mockImplementation(() => Promise.resolve(subsidiaryOptionsMock));
 
     await store.dispatch(searchPolicyholder('Test'));
-    await store.dispatch(getSubsidiaryByPolicyHolderId(policyHolderId));
 
     let { policyholderSelection } = store.getState();
 
     expect(policyholderSearchApiMock).toHaveBeenCalled();
     expect(policyholderSearchApiMock).toHaveBeenCalledWith('Test');
     expect(policyholderSelection.policyholderOptions).toEqual(optionsMock);
-    expect(getSubsidiaryByPolicyHolderApiMock).toHaveBeenCalled();
-    expect(getSubsidiaryByPolicyHolderApiMock).toHaveBeenCalledWith(
-      policyHolderId,
-    );
-    expect(policyholderSelection.subsidiaryOptions).toEqual(
-      subsidiaryOptionsMock,
-    );
 
     store.dispatch(policyholderSelectionActions.clearPolicyholderSelection());
     policyholderSelection = store.getState().policyholderSelection;
 
     expect(policyholderSelection.policyholderOptions).toEqual([]);
     expect(policyholderSelection.loadingSearchPolicyholder).toEqual(false);
-    expect(policyholderSelection.subsidiaryOptions).toEqual([]);
     expect(policyholderSelection.loadingGetSubsidiaries).toEqual(false);
   });
 });

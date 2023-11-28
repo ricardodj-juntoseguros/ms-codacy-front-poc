@@ -12,9 +12,9 @@ export default function Routes() {
         <ProtectedRoute
           exact
           path="/"
-          component={() => <Redirect to="/emissao" />}
+          component={() => <Redirect to="/proposal" />}
         />
-        <ProtectedRoute path="/emissao" component={BrokerIssuance} />
+        <ProtectedRoute path="/proposal" component={BrokerIssuance} />
         <Route path="/signup" component={BrokerSignup} />
         <ProtectedRoute path="/direct" component={BrokerSignupDirect} />
       </Switch>

@@ -1,74 +1,50 @@
-import { modalityMock } from 'modules/broker-issuance/src/__mocks__';
+/* eslint-disable prefer-promise-reject-errors */
+import { waitFor } from '@testing-library/react';
+import { modalityMock } from '../../../__mocks__';
 import { store } from '../../../config/store';
-import { ModalityDTO } from '../../types/dto';
 import ModalitySelecionApi from './ModalitySelecionApi';
 import {
-  getModalityByPolicyHolder,
-  modalitySearchActions,
+  fetchModalities,
+  modalitySelectionActions,
 } from './ModalitySelectionSlice';
 
 describe('ModalitySelectionSlice', () => {
   beforeEach(() => {
-    store.dispatch(modalitySearchActions.resetSearch());
+    store.dispatch(modalitySelectionActions.resetModalitySelection());
   });
 
-  it('should be able search modalities by policyholder', async () => {
-    const policyHolderId = 140139;
+  it('', async () => {
+    const fetchModalitiesMock = jest
+      .spyOn(ModalitySelecionApi, 'fetchModalities')
+      .mockImplementation(() => Promise.resolve([modalityMock]));
+    store.dispatch(fetchModalities({ brokerFederalId: '123', policyholderFederalId: '123' }));
+    expect(fetchModalitiesMock).toHaveBeenCalledWith('123', '123');
+    await waitFor(() => {
+      const { modalitySelecion } = store.getState();
+      expect(modalitySelecion.modalityOptions).toEqual([{
+        ...modalityMock,
+        label: modalityMock.description,
+        value: modalityMock.id.toString(),
+      }]);
+    });
+  });
 
-    const apiGetModalitiesByPolicyholder = jest
-      .spyOn(ModalitySelecionApi, 'getModalitiesByPolicyholder')
-      .mockImplementation(() =>
-        Promise.resolve([modalityMock] as ModalityDTO[]),
-      );
+  it('', async () => {
+    const fetchModalitiesMock = jest
+      .spyOn(ModalitySelecionApi, 'fetchModalities')
+      .mockImplementation(() => Promise.reject({ data: { message: 'error ao buscar as modalidades' } }));
+    store.dispatch(fetchModalities({ brokerFederalId: '123', policyholderFederalId: '123' }));
+    expect(fetchModalitiesMock).toHaveBeenCalledWith('123', '123');
+    await waitFor(() => {
+      const { modalitySelecion } = store.getState();
+      expect(modalitySelecion.loadingModalities).toEqual(false);
+    });
+  });
 
-    await store.dispatch(getModalityByPolicyHolder(policyHolderId));
+  it('should be able to reset the slice', () => {
+    store.dispatch(modalitySelectionActions.resetModalitySelection());
     const { modalitySelecion } = store.getState();
-
-    expect(apiGetModalitiesByPolicyholder).toHaveBeenCalled();
-    expect(apiGetModalitiesByPolicyholder).toHaveBeenCalledWith(policyHolderId);
-    expect(modalitySelecion.modalityOptions).toEqual([
-      modalityMock,
-    ] as ModalityDTO[]);
-  });
-
-  it('should not populate the modalities if the call returns an error', async () => {
-    const policyHolderId = 140139;
-
-    const apiGetModalitiesByPolicyholder = jest
-      .spyOn(ModalitySelecionApi, 'getModalitiesByPolicyholder')
-      .mockImplementation(() => Promise.reject(new Error('Not found')));
-
-    await store.dispatch(getModalityByPolicyHolder(policyHolderId));
-
-    const { modalitySelecion } = store.getState();
-
-    expect(apiGetModalitiesByPolicyholder).toHaveBeenCalled();
-    expect(apiGetModalitiesByPolicyholder).toHaveBeenCalledWith(policyHolderId);
     expect(modalitySelecion.modalityOptions).toEqual([]);
-    expect(modalitySelecion.loadingGetModalities).toEqual(false);
-  });
-
-  it('should be able reset the slice', async () => {
-    const policyHolderId = 140139;
-
-    const apiGetModalitiesByPolicyholder = jest
-      .spyOn(ModalitySelecionApi, 'getModalitiesByPolicyholder')
-      .mockImplementation(() =>
-        Promise.resolve([modalityMock] as ModalityDTO[]),
-      );
-
-    await store.dispatch(getModalityByPolicyHolder(policyHolderId));
-    let { modalitySelecion } = store.getState();
-
-    expect(apiGetModalitiesByPolicyholder).toHaveBeenCalled();
-    expect(apiGetModalitiesByPolicyholder).toHaveBeenCalledWith(policyHolderId);
-    expect(modalitySelecion.modalityOptions).toEqual([
-      modalityMock,
-    ] as ModalityDTO[]);
-
-    store.dispatch(modalitySearchActions.resetSearch());
-    modalitySelecion = store.getState().modalitySelecion;
-
-    expect(modalitySelecion.modalityOptions).toEqual([]);
+    expect(modalitySelecion.loadingModalities).toBe(false);
   });
 });

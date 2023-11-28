@@ -5,7 +5,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export class BrokerInssuanceBaseApi {
   private readonly BASE_URL =
-    process.env.NX_GLOBAL_BROKER_PLATFORM_BFF_URL || '';
+    process.env.NX_GLOBAL_ISSUER_PLATFORM_BFF || '';
 
   private headers = {};
 

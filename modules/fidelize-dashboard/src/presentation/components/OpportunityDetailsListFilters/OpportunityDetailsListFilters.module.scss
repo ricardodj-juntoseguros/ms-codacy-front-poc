@@ -93,6 +93,6 @@
 .opportunity-details-list-filters__error {
   @include font('m');
   padding: spacing('m') 0px;
-  color: color('error');
+  color: color('error-base');
   text-align: left;
 }
