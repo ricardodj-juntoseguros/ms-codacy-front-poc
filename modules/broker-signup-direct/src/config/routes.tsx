@@ -10,6 +10,7 @@ import CreateUserAccessContainer from '../presentation/pages/CreateUserAccessCon
 import SignupRequestConfirmationContainer from '../presentation/pages/SignupRequestConfirmationContainer/SignupRequestConfirmationContainer';
 import BrokerDataReviewContainer from '../presentation/pages/BrokerDataReviewContainer/BrokerDataReviewContainer';
 import BrokerInitialUploadDocumentsContainer from '../presentation/pages/BrokerInitialUploadDocumentsContainer/BrokerInitialUploadDocumentsContainer';
+import ExpiredLinkContainer from '../presentation/pages/ExpiredLinkContainer/ExpiredLinkContainer';
 
 const Routes: React.FC = () => (
   <BrowserRouter basename="direct">
@@ -27,7 +28,7 @@ const Routes: React.FC = () => (
       />
       <Route path="/broker-details" exact component={BrokerDetailsContainer} />
       <Route
-        path="/create-user-access"
+        path="/create-user-access/:signupDirect?/:guid?"
         exact
         component={CreateUserAccessContainer}
       />
@@ -52,6 +53,7 @@ const Routes: React.FC = () => (
         exact
         component={SignupRequestConfirmationContainer}
       />
+      <Route path="/expired-link" exact component={ExpiredLinkContainer} />
     </Switch>
   </BrowserRouter>
 );

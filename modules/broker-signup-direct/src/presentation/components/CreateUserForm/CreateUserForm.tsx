@@ -18,12 +18,19 @@ import {
   ValidationModel,
 } from '../../../application/types/model/ValidationModel';
 import { validateForm } from '../../../application/features/validation/ValidationSlice';
+import { RegisterBrokerNewUserDTO } from '../../../application/types/dto';
 
 export interface CreateUserFormProps {
   handleGoNextClick(): void;
+  hash?: string;
+  token?: string;
 }
 
-export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
+export function CreateUserForm({
+  handleGoNextClick,
+  hash,
+  token,
+}: CreateUserFormProps) {
   const dispatch = useAppDispatch();
   const brokerInformation = useSelector(selectBroker);
   const [brokerUserName, setBrokerUserNmae] = useState('');
@@ -165,17 +172,30 @@ export function CreateUserForm({ handleGoNextClick }: CreateUserFormProps) {
   };
 
   const onSubmit = async () => {
-    const newUser = {
+    let payload = {
       login: brokerUserName,
       password,
       confirmPassword,
-      _brokerExternalId: brokerInformation.brokerExternalId,
       acceptTerms: true,
       brokerAutomaticSignup: true,
-    };
+    } as RegisterBrokerNewUserDTO;
+
+    if (hash && token) {
+      payload = {
+        ...payload,
+        hash,
+        token,
+      };
+    } else {
+      payload = {
+        ...payload,
+        _brokerExternalId: 0,
+      };
+    }
+
     setIsSubmitting(true);
     setIsDisableButtonSignup(true);
-    await RegisterBrokerApi.createNewUser(newUser)
+    await RegisterBrokerApi.createNewUser(payload)
       .then(() => {
         fetchRegisterBrokerInformation();
         handleGoNextClick();

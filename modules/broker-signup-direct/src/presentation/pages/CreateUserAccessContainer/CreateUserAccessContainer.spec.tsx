@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
+import Router from 'react-router';
 import CreateUserAccessContainer from './CreateUserAccessContainer';
 import { store } from '../../../config/store';
 import { brokerInformationSliceActions } from '../../../application/features/brokerInformation/BrokerInformationSlice';
@@ -21,6 +22,10 @@ describe('CreateUserAccessContainer component', () => {
   });
 
   it('should render successfully', () => {
+    jest
+      .spyOn(Router, 'useParams')
+      .mockReturnValue({ hash: 'asasasasasassa', token: 'aasasaahsaushuhsa' });
+
     const { baseElement, getByText } = render(
       <Provider store={store}>
         <CreateUserAccessContainer {...props} />

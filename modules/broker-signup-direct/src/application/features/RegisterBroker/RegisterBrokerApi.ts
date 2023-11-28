@@ -3,7 +3,11 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import BrokerSignupBaseApi from '../BrokerSignupBaseApi';
-import { RegisterBrokerDTO, RegisterBrokerNewUserDTO } from '../../types/dto';
+import {
+  RegisterBrokerDTO,
+  RegisterBrokerNewUserDTO,
+  verifyTokenDTO,
+} from '../../types/dto';
 
 class RegisterBrokerApi {
   private instance: AxiosHttpClient;
@@ -72,6 +76,13 @@ class RegisterBrokerApi {
       payload: registerBrokerNewUserPayload,
     };
     return await this.instance.post<boolean>(params);
+  }
+
+  async verifyTokenValiditySignupInternalized(guid: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/api_policies/brokers/create/continue/${guid}`,
+    };
+    return await this.instance.get<verifyTokenDTO>(params);
   }
 }
 

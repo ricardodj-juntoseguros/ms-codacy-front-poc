@@ -1,17 +1,31 @@
 import { RouteComponentProps } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styles from './CreateUserAccessContainer.module.scss';
 import CreateUserForm from '../../components/CreateUserForm/CreateUserForm';
 import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
 import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
+import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
 
 const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
   const sreenWidth = window.screen.width;
   const brokerInformation = useSelector(selectBroker);
+  const { signupDirect, guid } = useParams() as any;
+  const [hash, setHash] = useState('');
+  const [token, setToken] = useState('');
 
   useEffect(() => {
-    if (brokerInformation.information.federalId === '') {
+    if (signupDirect) {
+      RegisterBrokerApi.verifyTokenValiditySignupInternalized(
+        guid.replace('target=', ''),
+      )
+        .then(response => {
+          setHash(response.hash);
+          setToken(response.token);
+        })
+        .catch(() => history.push('/expired-link'));
+    } else if (brokerInformation.information.federalId === '') {
       history.push('/');
     }
   }, [brokerInformation.information.federalId, history]);
@@ -30,7 +44,11 @@ const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
             Você vai acessar a plataforma da Junto com esse usuário e senha.
           </h2>
         </div>
-        <CreateUserForm handleGoNextClick={handleGoNextClick} />
+        <CreateUserForm
+          handleGoNextClick={handleGoNextClick}
+          hash={hash}
+          token={token}
+        />
       </div>
       <div className={styles['create-user-access_container_illustration']}>
         <img
