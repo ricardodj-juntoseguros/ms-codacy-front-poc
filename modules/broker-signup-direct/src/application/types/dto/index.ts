@@ -3,4 +3,5 @@ export * from './BankDTO';
 export * from './RegisterBrokerDTO';
 export * from './StatusSusepDTO';
 export * from './RegisterBrokerNewUserDTO';
+export * from './ValidateBankAccountDTO';
 export * from './verifyTokenDTO';

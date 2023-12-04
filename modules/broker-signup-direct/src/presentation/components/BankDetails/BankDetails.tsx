@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { InputBase, SearchInput } from 'junto-design-system';
+import { InputBase, SearchInput, Alert } from 'junto-design-system';
 import { useOptionsMapper } from '@shared/hooks';
 import styles from './BankDetails.module.scss';
 import { BankDTO } from '../../../application/types/dto';
@@ -18,13 +18,19 @@ import { inputNoAcceptLetters } from '../../../helpers';
 export interface BankDetailsProps {
   bankOptions: BankDTO[];
   onSelectBank: (value: BankDTO) => void;
+  showAlertError?: boolean;
 }
 
-export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
+export function BankDetails({
+  bankOptions,
+  onSelectBank,
+  showAlertError = false,
+}: BankDetailsProps) {
   const brokerInformation = useSelector(selectBroker);
   const dispatch = useDispatch();
   const { errors } = useSelector(selectValidation);
   const [options, setOptions] = useState(bankOptions);
+  const sreenWidth = window.screen.width;
 
   useEffect(() => {
     setOptions(bankOptions);
@@ -34,7 +40,7 @@ export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
     useOptionsMapper(options, 'name', 'bankCode', 'name', onSelectBank);
 
   const handleAccounNumber = (value: string) => {
-    if (value.length <= 15) {
+    if (value.length <= 20) {
       dispatch(validationActions.removeErrorMessage('accounNumber'));
       dispatch(brokerInformationSliceActions.setAccounNumber(value));
     }
@@ -80,10 +86,14 @@ export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
   return (
     <div className={styles['bank_details_wrapper']}>
       <h1>Dados bancários da corretora</h1>
-      <h2>
-        A conta informada deve estar vinculada ao CNPJ da corretora e será
-        utilizada para o depósito da comissão.{' '}
-      </h2>
+      <div className={styles['bank_details_wrapper_alert_warning']}>
+        <Alert
+          text="A conta informada precisa ser uma conta jurídica atrelada ao CNPJ da corretora, pois será usada para o depósito da comissão."
+          variant="warning"
+          width={sreenWidth > 680 ? 640 : sreenWidth * 0.87}
+          icon="alert-triangle"
+        />
+      </div>
       <div
         id="bank_details_dropdown"
         className={styles['bank_details_dropdown']}
@@ -179,6 +189,16 @@ export function BankDetails({ bankOptions, onSelectBank }: BankDetailsProps) {
           />
         </div>
       </div>
+      {showAlertError && (
+        <div className={styles['bank_details_wrapper_alert_error']}>
+          <Alert
+            text="Dados bancários inválidos ou inexistentes. Verifique se os dados foram digitados corretamente. Caso o dígito verificador for a letra X, substitua pelo número zero 0."
+            variant="error"
+            width={sreenWidth > 680 ? 640 : sreenWidth * 0.87}
+            icon="x-circle"
+          />
+        </div>
+      )}
     </div>
   );
 }

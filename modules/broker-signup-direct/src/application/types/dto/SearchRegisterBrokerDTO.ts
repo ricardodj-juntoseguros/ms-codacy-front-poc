@@ -10,6 +10,7 @@ export interface SearchRegisterBrokerDTO {
     brokerCompanyName: string;
     address: string;
     number: string;
+    opcSimples: boolean;
     complement: string;
     zipCode: string;
     bairro: string;

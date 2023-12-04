@@ -20,4 +20,5 @@ export interface BrokerInformationModel {
   brokerExternalId: number;
   brokerUserName: string;
   signupDirect: boolean;
+  showIss: boolean;
 }

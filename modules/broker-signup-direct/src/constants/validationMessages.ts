@@ -3,7 +3,7 @@ export const VALIDATION_MESSAGES = {
   phone: 'Número de telefone incompleto. Digite os 11 caracteres.',
   phoneIsNull: 'Informe o número de telefone.',
   nameResponsible: 'Digite o nome completo. Evite abreviar nome e sobrenome.',
-  documentNumber: 'CPF incompleto. Digite os 11 caracteres',
+  documentNumber: 'CPF inválido. Digite os 11 caracteres.',
   documentNumberIsNull: 'Informe o número do CPF.',
   email: 'O e-mail não existe. Revise o endereço digitado.',
   emailExist: 'E-mail já cadastrado. Utilize outro.',

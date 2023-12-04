@@ -27,7 +27,7 @@ export const brokerInformationAdapter = (
     },
     susepCode: susepInformation.retorno.numeroSusep.toString(),
     iss: 0,
-    simplesOptant: false,
+    simplesOptant: information.opcSimples,
     susepSituation: susepInformation.retorno.situacao === 'Ativo',
     renewRegistration: susepInformation.retorno.recadastrado,
     hasProductDamageInsurance:
@@ -37,5 +37,6 @@ export const brokerInformationAdapter = (
     brokerExternalId: 0,
     brokerUserName: '',
     signupDirect: false,
+    showIss: true,
   };
 };

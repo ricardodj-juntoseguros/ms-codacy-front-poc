@@ -1,8 +1,11 @@
+/* eslint-disable no-restricted-globals */
 import { RouteComponentProps } from 'react-router';
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, LinkButton } from 'junto-design-system';
-import { BankDTO } from 'modules/broker-signup/src/application/types/dto';
+import { BankDTO } from '../../../application/types/dto';
+import { ACCOUNT_BANK_TYPES } from '../../../constants/AccountBankType';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import styles from './BrokerDetailsContainer.module.scss';
 import { ResponsibleInformation } from '../../components/ResponsibleInformation/ResponsibleInformation';
 import { BankDetails } from '../../components/BankDetails/BankDetails';
@@ -23,6 +26,8 @@ import { selectResponsibleInformation } from '../../../application/features/resp
 
 const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
   const [isDisableGoNextStep, setIsDisableGoNextStep] = useState(true);
+  const [showAlertErrorValidateBank, setShowAlertErrorValidateBank] =
+    useState(false);
   const [bankOptions, setbankOptions] = useState<BankDTO[]>();
   const dispatch = useDispatch();
   const brokerInformation = useSelector(selectBroker);
@@ -36,6 +41,7 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
     'Além disso, a comissão será depositada única e exclusivamente em uma conta jurídica, atrelada ao CNPJ da empresa.',
   ];
   const responsibleInformation = useSelector(selectResponsibleInformation);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (brokerInformation.information.federalId === '') {
@@ -117,7 +123,10 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
         {
           op: 'replace',
           path: '/iss',
-          value: broker.iss,
+          value:
+            broker.iss === null || isNaN(brokerInformation.iss)
+              ? 5
+              : broker.iss,
         },
       ];
       let updateBankDigit: { op: string; path: string; value: any }[] = [];
@@ -134,6 +143,7 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
         [...payload, ...updateBankDigit],
         pathUpdate,
       ).then(() => {
+        setIsSubmitting(false);
         history.push('/broker-data-review');
       });
     },
@@ -146,16 +156,68 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
     }
   }, [bankOptions, fetchBanks]);
 
-  const onSubmit = () => {
-    fetchRegisterResponsibleBroker(
-      brokerInformation,
-      responsibleInformation,
-      brokerInformation.pathUpdate,
+  useEffect(() => {
+    RegisterBrokerApi.hasTaxCollection(brokerInformation.pathUpdate).then(
+      response => {
+        const issValue = response.value;
+        const { hasTaxCollection } = response;
+
+        const showIssOtherCitys =
+          (brokerInformation.simplesOptant &&
+            issValue === null &&
+            hasTaxCollection) ||
+          (!brokerInformation.simplesOptant &&
+            issValue !== null &&
+            hasTaxCollection);
+
+        const showIssCwb =
+          !brokerInformation.simplesOptant && issValue !== null;
+
+        const showIss =
+          brokerInformation.information.city.toLocaleUpperCase() === 'CURITIBA'
+            ? showIssCwb
+            : showIssOtherCitys;
+
+        dispatch(brokerInformationSliceActions.setIss(issValue));
+        dispatch(brokerInformationSliceActions.setShowIss(showIss));
+      },
     );
+  }, []);
+
+  const onSubmit = () => {
+    setIsDisableGoNextStep(true);
+    setIsSubmitting(true);
+    validateBankAccount();
   };
 
-  const handleGoBackClick = () => {
-    history.push('/register-responsible');
+  const validateBankAccount = async () => {
+    const payload = {
+      federalId: brokerInformation.information.federalId,
+      bankCode: brokerInformation.bankDetails.bankCode,
+      agency: brokerInformation.bankDetails.bankNumber,
+      account: brokerInformation.bankDetails.accounNumber,
+      accountDigit: brokerInformation.bankDetails.accounDigit,
+      accountType: ACCOUNT_BANK_TYPES.CheckingAccount,
+    };
+
+    await ListBankApi.validateBankAccount(payload)
+      .then(response => {
+        if (response.validation.valid) {
+          fetchRegisterResponsibleBroker(
+            brokerInformation,
+            responsibleInformation,
+            brokerInformation.pathUpdate,
+          );
+        } else {
+          setShowAlertErrorValidateBank(true);
+          setIsDisableGoNextStep(true);
+        }
+      })
+      .catch(() => {
+        setIsSubmitting(false);
+        setIsDisableGoNextStep(true);
+        setShowAlertErrorValidateBank(true);
+      });
   };
 
   function handleBankSelection(bank: BankDTO) {
@@ -173,8 +235,9 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
         <BankDetails
           bankOptions={bankOptions || []}
           onSelectBank={handleBankSelection}
+          showAlertError={showAlertErrorValidateBank}
         />
-        <BrokerGeneralInformation />
+        {brokerInformation.showIss && <BrokerGeneralInformation />}
         <div className={styles['broker_details_container__button']}>
           <Button
             id="brokerDetails-onSubmit-button"
@@ -182,7 +245,7 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
             onClick={() => onSubmit()}
             disabled={isDisableGoNextStep}
           >
-            Continuar
+            {isSubmitting ? ((<LoadingSpinner />) as any) : 'Continuar'}
           </Button>
         </div>
         {sreenWidth <= 680 && (

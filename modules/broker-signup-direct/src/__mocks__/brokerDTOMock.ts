@@ -12,5 +12,6 @@ export const brokerDTOMock = {
     city: 'CURITIBA',
     state: 'PR',
     email: 'contabil@jmsegs.com',
+    opcSimples: true,
   },
 };

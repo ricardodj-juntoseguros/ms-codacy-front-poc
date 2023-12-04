@@ -6,8 +6,10 @@ import BrokerSignupBaseApi from '../BrokerSignupBaseApi';
 import {
   RegisterBrokerDTO,
   RegisterBrokerNewUserDTO,
+  SearchRegisterBrokerDTO,
   verifyTokenDTO,
 } from '../../types/dto';
+import { SimpleOptantDTO } from '../../types/dto/SimpleOptantDTO';
 
 class RegisterBrokerApi {
   private instance: AxiosHttpClient;
@@ -76,6 +78,20 @@ class RegisterBrokerApi {
       payload: registerBrokerNewUserPayload,
     };
     return await this.instance.post<boolean>(params);
+  }
+
+  async isSimpleOptant(federalId: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/signup/broker/${federalId}`,
+    };
+    return await this.instance.get<SearchRegisterBrokerDTO>(params);
+  }
+
+  async hasTaxCollection(pathUser: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/brokers/simpleOptant?userId=${pathUser}`,
+    };
+    return await this.instance.get<SimpleOptantDTO>(params);
   }
 
   async verifyTokenValiditySignupInternalized(guid: string) {

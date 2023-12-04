@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import { RouteComponentProps } from 'react-router';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -212,8 +213,17 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
                 </h5>
               </div>
             </div>
-            <h3>Percentual ISS</h3>
-            <h5>{broker.iss}%</h5>
+            {brokerInformation.showIss && (
+              <>
+                <h3>Percentual ISS</h3>
+                <h5>
+                  {broker.iss === null || isNaN(brokerInformation.iss)
+                    ? 5
+                    : broker.iss}
+                  %
+                </h5>
+              </>
+            )}
           </div>
         </div>
         <div className={styles['broker_data_review_container_alert']}>

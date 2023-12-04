@@ -88,7 +88,7 @@ export function SearchBrokerFederalId({
         return;
       }
       if (
-        statusSusep?.retorno?.situacao.toUpperCase() !== 'ATIVO' &&
+        statusSusep?.retorno === null &&
         statusBrokerRegistry?.status !== RegisterBrokerTypeEnum.INVALID
       ) {
         setAlertText(

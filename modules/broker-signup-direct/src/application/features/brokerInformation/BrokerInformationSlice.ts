@@ -40,6 +40,7 @@ const initialState: BrokerInformationModel = {
   brokerExternalId: 0,
   brokerUserName: '',
   signupDirect: false,
+  showIss: true,
 };
 
 export const brokerInformationSlice = createSlice({
@@ -59,6 +60,7 @@ export const brokerInformationSlice = createSlice({
       state.hasProductDamageInsurance =
         action.payload.hasProductDamageInsurance;
       state.susepSituation = action.payload.susepSituation;
+      state.simplesOptant = action.payload.simplesOptant;
     },
     setpathUpdate: (state, action: PayloadAction<string>) => {
       state.pathUpdate = action.payload;
@@ -105,6 +107,9 @@ export const brokerInformationSlice = createSlice({
     },
     setSignupDirect: (state, action: PayloadAction<boolean>) => {
       state.signupDirect = action.payload;
+    },
+    setShowIss: (state, action: PayloadAction<boolean>) => {
+      state.showIss = action.payload;
     },
   },
 });

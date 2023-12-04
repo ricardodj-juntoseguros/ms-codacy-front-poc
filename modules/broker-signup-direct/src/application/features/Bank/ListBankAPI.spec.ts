@@ -1,5 +1,5 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
-import {ListBanksMock}  from 'modules/broker-signup/src/__mocks__';
+import { ListBanksMock } from '../../../__mocks__/ListBanksMock';
 import ListBankApi from './ListBankApi';
 
 describe('ListBankApi', () => {
