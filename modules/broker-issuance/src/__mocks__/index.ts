@@ -5,6 +5,6 @@ export * from './modalityMock';
 export * from './policyholderLimitMock';
 export * from './policyholderSearchMock';
 export * from './policyholderDetailsMock';
-export * from './quoteMock';
+export * from './createQuoteMock';
 export * from './quoteResultMock';
 export * from './brokerMock';

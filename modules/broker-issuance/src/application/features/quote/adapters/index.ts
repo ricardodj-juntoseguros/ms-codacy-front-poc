@@ -1,1 +1,1 @@
-export * from './QuoteAdapter';
+export * from './QuotationAdapter';

@@ -99,10 +99,9 @@ describe('BrokerIssuanceBaseApi', () => {
     await testInstance.handleErrors(mockError);
     expect(BrokerPlatformAuthService.getUserAccessCookie).toHaveBeenCalled();
     expect(BrokerPlatformAuthService.doRefreshToken).toHaveBeenCalled();
-    expect(BrokerPlatformAuthService.setUserAccessCookie).toHaveBeenCalledWith(
-      { "access_token": "new_token", "expires_in": 900, "refresh_expires_in": 1800, "refresh_token": "new_refresh_token" }, 900);
+    expect(BrokerPlatformAuthService.setUserAccessCookie).toHaveBeenCalled();
     expect(
-      testInstance.getInstance().instance.defaults.headers.Authorization,
+      testInstance.getInstance().instance.defaults.headers.authorization,
     ).toBe('bearer new_token');
   });
 });

@@ -87,14 +87,18 @@ describe('PolicyholderSelectionApi', () => {
     const file = new File(['(⌐□_□)'], 'file.pdf', {
       type: 'application/pdf',
     });
-    const result = await PolicyholderSelectionApi.postAppointmentLetter('99999999999999', 12345, file);
+    const result = await PolicyholderSelectionApi.postAppointmentLetter(
+      '99999999999999',
+      12345,
+      file,
+    );
 
     expect(mockGet.mock.calls[0][0]).toMatchObject({
       headers: {
-        "Content-Type": "multipart/form-data"
+        'Content-Type': 'multipart/form-data',
       },
       payload: {},
-      url: "/v1/policyholders/99999999999999/appointment-letter/upload?brokerExternalId=12345"
+      url: '/v1/policyholders/99999999999999/appointment-letter/upload?brokerExternalId=12345',
     });
     expect(result).toEqual({ message: 'ok' });
   });

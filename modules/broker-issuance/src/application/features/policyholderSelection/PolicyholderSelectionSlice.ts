@@ -1,4 +1,9 @@
-import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
+import {
+  PayloadAction,
+  createAsyncThunk,
+  createSlice,
+  nanoid,
+} from '@reduxjs/toolkit';
 import { RootState } from '../../../config/store';
 import {
   PolicyholderSearchModel,
@@ -12,17 +17,21 @@ import { AFFILIATE_DEFAULT_OPTIONS } from '../../../constants';
 export const searchPolicyholder = createAsyncThunk(
   'policyholderSelection/searchPolicyholder',
   async (policyholderLabel: string, { rejectWithValue }) => {
-    const value = checkValidFederalId(policyholderLabel) ? policyholderLabel.toString().replace(/[^\d]/g, '') : policyholderLabel;
+    const value = checkValidFederalId(policyholderLabel)
+      ? policyholderLabel.toString().replace(/[^\d]/g, '')
+      : policyholderLabel;
     return PolicyholderSelectionApi.searchPolicyHolder(value)
       .then(response => {
         if (!response.records) return [];
-        const data: PolicyholderSearchModel[] = response.records.map(policyholder => ({
-          id: policyholder.id,
-          federalId: policyholder.federalId,
-          companyName: policyholder.name,
-          label: policyholder.name,
-          value: policyholder.federalId,
-        }));
+        const data: PolicyholderSearchModel[] = response.records.map(
+          policyholder => ({
+            id: policyholder.id,
+            federalId: policyholder.federalId,
+            companyName: policyholder.name,
+            label: policyholder.name,
+            value: policyholder.federalId,
+          }),
+        );
 
         return data;
       })
@@ -57,7 +66,10 @@ export const policyholderSelectionSlice = createSlice({
       if (!action.payload) state.policyholderOptions = [];
       state.policyholderSearchValue = action.payload;
     },
-    setPolicyholderAffiliatesOptions: (state, action: PayloadAction<PolicyholderAffiliatesDTO[]>) => {
+    setPolicyholderAffiliatesOptions: (
+      state,
+      action: PayloadAction<PolicyholderAffiliatesDTO[]>,
+    ) => {
       state.affiliatesOptions = action.payload.map(affiliate => ({
         ...affiliate,
         label: `${affiliate.city} - ${affiliate.state} - CNPJ: ${affiliate.federalId}`,
@@ -65,9 +77,11 @@ export const policyholderSelectionSlice = createSlice({
       }));
 
       if (state.affiliatesOptions.length > 0) {
-        state.affiliatesOptions = state.affiliatesOptions.concat(Object.values(AFFILIATE_DEFAULT_OPTIONS));
+        state.affiliatesOptions = state.affiliatesOptions.concat(
+          Object.values(AFFILIATE_DEFAULT_OPTIONS),
+        );
       }
-    }
+    },
   },
   extraReducers: builder => {
     builder
@@ -77,7 +91,8 @@ export const policyholderSelectionSlice = createSlice({
       })
       .addCase(searchPolicyholder.fulfilled, (state, action) => {
         if (checkValidFederalId(state.policyholderSearchValue)) {
-          state.policyholderSearchValue = action.payload[0]?.label || state.policyholderSearchValue;
+          state.policyholderSearchValue =
+            action.payload[0]?.label || state.policyholderSearchValue;
           state.isValidFederalId = true;
         }
         state.loadingSearchPolicyholder = false;

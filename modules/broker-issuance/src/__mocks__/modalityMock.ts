@@ -1,18 +1,20 @@
-export const modalityMock = {
-  id: 76,
-  newQuoterId: 66,
-  description: 'Judicial',
-  labelNoticeContract: 'N.° dos Autos da Reclamação ',
-  labelNoticeAnnex: 'Reclamante / Autor',
+export const modalityBidderMock = {
+  id: 99,
+  newQuoterId: 5,
+  value: '99',
+  label: 'Licitante',
+  description: 'Licitante',
+  labelNoticeContract: 'N° Edital ',
+  labelNoticeAnnex: 'Anexo do Edital (Utilizar para DER/SP e SABESP) ',
   helpNoticeContract:
-    'N.° dos Autos da Reclamação Trabalhista; Movida por; Vara do Trabalho e Localidade da mesma \r\n\r\nNo preenchimento do campo N.° dos Autos da Reclamação Trabalhista; Movida por; Vara do Trabalho e Localidade da mesma, observar o seguinte:\r\na) Preencher o campo com o número dos Autos da Reclamação Trabalhista.\r\nb) Citar O nome da pessoa física que está movendo a Reclamação.\r\nc) Citar qual é a Vara do Trabalho que está tramitando o processo (Segurado da apólice), bem como, a localidade da mesma.\r\nd) Os campos em branco deverão ser preenchidos manualmente.\r\n\r\nCaso o objeto não esteja de forma harmônica, preencher manualmente, ou  entrar em contato com o Desenvolvimento.',
+    'Preencher o campo N.° Edital com o número completo do Edital e/ou da Licitação. Após o preenchimento, caso esteja no GOL Clássico, clique no link abaixo, caso esteja na Nova Plataforma, faça a impressão da Minuta, para visualizar o texto formatado no Objeto da apólice. Caso não esteja de forma harmônica, revisar preenchimento do campo do N.° Edital / Contrato ou entre em contato com a Regional que lhe atende.',
   helpNoticeAnnex:
-    'Esta caixa deve ser preenchida somente para os processos dos Segurados DER/SP e SABESP. Neste campo deve ser informado o Número do Anexo / Modelo previsto nos Editais do DER/SP e da SABESP. A descrição desta caixa será impressa nas condições particulares do documento. Após o preenchimento, clicar no link "Clique aqui para visualizar as Condições Particulares".   \r\n\r\nCASO NÃO SE TRATE DE UM PROCESSO DOS SEGURADOS DER/SP E SABESP, DEIXAR ESTA CAIXA EM BRANCO. \r\n',
-  isJudicial: true,
+    'Esta caixa deve ser preenchida somente para os processos dos Segurados DER/SP e SABESP. Neste campo deve ser informado o Número do Anexo / Modelo previsto nos Editais do DER/SP e da SABESP. A descrição desta caixa será impressa nas condições particulares do documento. Caso esteja no GOL Clássico, após o preenchimento, clicar no link "Clique aqui para visualizar as Condições Particulares".   \r\n\r\nCASO NÃO SE TRATE DE UM PROCESSO DOS SEGURADOS DER/SP E SABESP, DEIXAR ESTA CAIXA EM BRANCO.  \r\n',
+  isJudicial: false,
   showAuctionNoticeFields: false,
   submodalityIdForCoverageLabor: 0,
-  typeModalityId: 1,
-  typeModalityDescription: 'Modalidades Financeiras',
+  typeModalityId: 2,
+  typeModalityDescription: 'Modalidades Tradicionais',
   submodalities: [
     {
       id: 1,
@@ -27,55 +29,43 @@ export const modalityMock = {
           description: 'Boleto',
         },
       ],
-      appealJudicialPremium: [
-        {
-          judicialDurationInDays: 1095,
-          securedAmountStart: 0.01,
-        },
-        {
-          judicialDurationInDays: 1460,
-          securedAmountStart: 0.01,
-        },
-        {
-          judicialDurationInDays: 1825,
-          securedAmountStart: 0.01,
-        },
-      ],
+      appealJudicialPremium: [],
     },
+  ],
+  needAcceptAdditionalCoverageLabor: false,
+  showSpecialClause: true,
+  labelSpecialClause:
+    'Este processo solicita a inclusão da Cláusula de Irrevogabilidade',
+  isSubstitute: false,
+  allowsAdditionalCoverageLabor: false,
+  allowsAdditionalCoverageVigilance: false,
+  retroactiveDays: 1,
+};
+
+export const modalityDefaultMock = {
+  id: 98,
+  newQuoterId: 4,
+  value: '98',
+  label: 'Executante Fornecedor',
+  description: 'Executante Fornecedor',
+  labelNoticeContract: 'N° Edital / Contrato',
+  labelNoticeAnnex: 'Anexo do Edital',
+  helpNoticeContract:
+    'No preenchimento do campo N.° Edital/Contrato, observar o seguinte:\r\na) Caso o Contrato já esteja assinado, preencher o campo com o número do Contrato;\r\nb) Caso o Contrato ainda não tenha sido assinado, preencher o campo com a seguinte frase, sem aspas: "a ser assinado, referente ao Edital n.° (AQUI DEVERÁ SER PREENCHIDO COM O NÚMERO REAL DO EDITAL REFERENTE A ESTA PROPOSTA)";\r\nc) Após o preenchimento, caso esteja no GOL Clássico, clique no link abaixo, caso esteja na Nova Plataforma, faça a impressão da Minuta, para visualizar o texto formatado no Objeto da apólice. Caso não esteja de forma harmônica, revisar preenchimento do campo do N.° Edital / Contrato ou entre em contato com a Regional que lhe atende.',
+  helpNoticeAnnex:
+    'Esta caixa deve ser preenchida somente para os processos dos Segurados DER/SP e SABESP. Neste campo deve ser informado o Número do Anexo / Modelo previsto nos Editais do DER/SP e da SABESP. A descrição desta caixa será impressa nas condições particulares do documento. Caso esteja no GOL Clássico, após o preenchimento, clicar no link "Clique aqui para visualizar as Condições Particulares".   \r\n\r\nCASO NÃO SE TRATE DE UM PROCESSO DOS SEGURADOS DER/SP E SABESP, DEIXAR ESTA CAIXA EM BRANCO.  ',
+  isJudicial: false,
+  showAuctionNoticeFields: false,
+  submodalityIdForCoverageLabor: 0,
+  typeModalityId: 2,
+  typeModalityDescription: 'Modalidades Tradicionais',
+  submodalities: [
     {
-      id: 44,
-      newQuoterId: 23,
-      description: 'Cível',
-      useBill: true,
-      isSubstitute: false,
-      isRecursal: false,
-      payments: [
-        {
-          id: 1,
-          description: 'Boleto',
-        },
-      ],
-      appealJudicialPremium: [
-        {
-          judicialDurationInDays: 1095,
-          securedAmountStart: 0,
-        },
-        {
-          judicialDurationInDays: 1460,
-          securedAmountStart: 0,
-        },
-        {
-          judicialDurationInDays: 1825,
-          securedAmountStart: 0,
-        },
-      ],
-    },
-    {
-      id: 53,
-      newQuoterId: 28,
-      description: 'Substituição - Trabalhista',
+      id: 90,
+      newQuoterId: 50,
+      description: 'Trabalhista',
       useBill: false,
-      isSubstitute: true,
+      isSubstitute: false,
       isRecursal: false,
       payments: [
         {
@@ -87,27 +77,33 @@ export const modalityMock = {
           description: 'Fatura',
         },
       ],
-      appealJudicialPremium: [
+      appealJudicialPremium: [],
+    },
+    {
+      id: 92,
+      newQuoterId: 51,
+      description: 'Trabalhista e Previdenciária',
+      useBill: false,
+      isSubstitute: false,
+      isRecursal: false,
+      payments: [
         {
-          judicialDurationInDays: 1095,
-          securedAmountStart: 0,
+          id: 1,
+          description: 'Boleto',
         },
         {
-          judicialDurationInDays: 1460,
-          securedAmountStart: 0,
-        },
-        {
-          judicialDurationInDays: 1825,
-          securedAmountStart: 0,
+          id: 2,
+          description: 'Fatura',
         },
       ],
+      appealJudicialPremium: [],
     },
   ],
   needAcceptAdditionalCoverageLabor: false,
   showSpecialClause: false,
-  labelSpecialClause: null,
-  isSubstitute: true,
-  allowsAdditionalCoverageLabor: false,
+  labelSpecialClause: '',
+  isSubstitute: false,
+  allowsAdditionalCoverageLabor: true,
   allowsAdditionalCoverageVigilance: false,
-  retroactiveDays: 5,
+  retroactiveDays: 180,
 };

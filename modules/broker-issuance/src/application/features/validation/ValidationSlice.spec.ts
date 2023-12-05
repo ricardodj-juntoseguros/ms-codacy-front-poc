@@ -1,7 +1,6 @@
-import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
+import { VALIDATION_MESSAGES } from '../../../constants';
 import { store } from '../../../config/store';
-import { validateForm, validationActions } from './ValidationSlice';
-import { CoverageDataSchema } from '../../validations/schemas/componentSchemas';
+import { validationActions } from './ValidationSlice';
 
 describe('ValidateSlice', () => {
   beforeEach(() => {
@@ -11,28 +10,28 @@ describe('ValidateSlice', () => {
   it('should be able to populate the slice with an error', () => {
     store.dispatch(
       validationActions.setErrorMessages({
-        endDate: [VALIDATION_MESSAGES.minValidity],
+        endDate: [VALIDATION_MESSAGES.invalidDate],
       }),
     );
 
     const { validation } = store.getState();
 
     expect(validation.errors.endDate).toEqual([
-      VALIDATION_MESSAGES.minValidity,
+      VALIDATION_MESSAGES.invalidDate,
     ]);
   });
 
   it('should be able to remove an error', () => {
     store.dispatch(
       validationActions.setErrorMessages({
-        endDate: [VALIDATION_MESSAGES.minValidity],
+        endDate: [VALIDATION_MESSAGES.invalidDate],
       }),
     );
 
     let { validation } = store.getState();
 
     expect(validation.errors.endDate).toEqual([
-      VALIDATION_MESSAGES.minValidity,
+      VALIDATION_MESSAGES.invalidDate,
     ]);
 
     store.dispatch(validationActions.removeErrorMessage('endDate'));
@@ -47,29 +46,5 @@ describe('ValidateSlice', () => {
     const { validation } = store.getState();
 
     expect(validation.isValidating).toEqual(true);
-  });
-
-  it('should be able to change the state of the isValidating property', async () => {
-    const mockData = {
-      coverageData: {
-        startDate: '27/05/2022',
-        endDate: '27/05/2023',
-        durationInDays: 365,
-        securedAmount: 1000,
-      },
-    };
-
-    await store.dispatch(
-      validateForm({
-        schema: CoverageDataSchema,
-        data: mockData,
-      }),
-    );
-
-    const { validation } = store.getState();
-
-    expect(validation.isValidating).toEqual(false);
-    expect(validation.isValidForm).toEqual(true);
-    expect(validation.errors).toMatchObject({});
   });
 });

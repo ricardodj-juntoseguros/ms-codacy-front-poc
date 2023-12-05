@@ -12,30 +12,27 @@ const initialState: ModalitySelectionModel = {
 
 interface FetchModalitiesParam {
   brokerFederalId: string;
-  policyholderFederalId: string
+  policyholderFederalId: string;
 }
 
 export const fetchModalities = createAsyncThunk<
   ModalityModel[],
   FetchModalitiesParam,
   { rejectValue: string }
->(
-  'modalitySelection/fetchModalities',
-  async (params, { rejectWithValue }) => {
-    const { brokerFederalId, policyholderFederalId } = params;
-    return ModalityApi.fetchModalities(brokerFederalId, policyholderFederalId)
-      .then(response => {
-        return response.map(modality => ({
-          ...modality,
-          value: modality.id.toString(),
-          label: modality.description,
-        }))
-      })
-      .catch(error => {
-        return rejectWithValue(handleError(error));
-      });
-  },
-);
+>('modalitySelection/fetchModalities', async (params, { rejectWithValue }) => {
+  const { brokerFederalId, policyholderFederalId } = params;
+  return ModalityApi.fetchModalities(brokerFederalId, policyholderFederalId)
+    .then(response => {
+      return response.map(modality => ({
+        ...modality,
+        value: modality.id.toString(),
+        label: modality.description,
+      }));
+    })
+    .catch(error => {
+      return rejectWithValue(handleError(error));
+    });
+});
 
 export const ModalitySelectionSlice = createSlice({
   name: 'modalitySearch',
@@ -57,7 +54,9 @@ export const ModalitySelectionSlice = createSlice({
       })
       .addCase(fetchModalities.rejected, (state, action) => {
         state.loadingModalities = false;
-        const message = action.payload ? action.payload : 'Erro ao buscar modalidades';
+        const message = action.payload
+          ? action.payload
+          : 'Erro ao buscar modalidades';
         makeToast('error', message);
       });
   },

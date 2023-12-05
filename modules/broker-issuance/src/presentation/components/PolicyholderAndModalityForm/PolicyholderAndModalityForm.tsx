@@ -27,6 +27,7 @@ import {
 import PolicyholderAppointmentLetter from '../PolicyholderAppointmentLetter';
 import PolicyholderSelection from '../PolicyholderSelection';
 import styles from './PolicyholderAndModalityForm.module.scss';
+import { MODALITY_STEPS } from '../../../constants/steps/modalitySteps';
 
 const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   name,
@@ -35,7 +36,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   const [appointmentLetter, setAppointmentLetter] = useState<UploadFile[]>([]);
   const [uploadAppointmentLetterLoading, setUploadAppointmentLetterLoading] =
     useState(false);
-  const { advanceStep } = useFlow();
+  const { advanceStep, setSteps } = useFlow();
   const { modalityOptions, loadingModalities } = useSelector(selectModality);
   const { policyholder, modality } = useSelector(selectQuote);
   const { policyholderSearchValue } = useSelector(selectPolicyholder);
@@ -60,6 +61,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   };
 
   const handleModalitySelected = (optionSelected: ModalityModel) => {
+    setSteps(MODALITY_STEPS[optionSelected.id]);
     dispatch(setModality(optionSelected));
   };
 

@@ -1,0 +1,76 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.secured-amount-pricing__wrapper {
+  @include border(1, 'solid', 'grey-400');
+  @include rounded('card');
+  padding: spacing('xl');
+
+  @media screen and (max-width: 500px) {
+    padding: spacing('l');
+  }
+}
+
+.secured-amount-pricing__title {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  margin: 0 0 spacing('l') 0;
+}
+
+.secured-amount-pricing__rates-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('xl');
+  margin-top: spacing('xl');
+}
+
+.secured-amount-pricing__rate-inputs {
+  display: flex;
+  flex-direction: row;
+  gap: spacing('m');
+
+  & > div:first-child {
+    max-width: 494px;
+  }
+
+  @media screen and (max-width: 486px) {
+    flex-direction: column;
+  }
+}
+
+.secured-amount-pricing__rate-data {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('m');
+}
+
+.secured-amount-pricing__rate-data-item {
+  display: grid;
+  grid-template-columns: 100px auto;
+
+  & > p {
+    display: inline-flex;
+    @include font('sm');
+    @include color('color', 'dark');
+    margin: 0px;
+
+    & > span {
+      margin-left: spacing('s');
+    }
+  }
+
+  & > p:last-child {
+    justify-content: flex-end;
+    @include font('sm-emphasys');
+    @include color('color', 'dark');
+    margin: 0px;
+  }
+
+  &--large {
+    & > p:last-child {
+      display: inline-flex;
+      @include font('l-emphasys');
+      @include color('color', 'dark');
+      margin: 0px;
+    }
+  }
+}

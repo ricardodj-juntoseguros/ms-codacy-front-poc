@@ -1,2 +1,1 @@
-export * from './getValidationSchemaByModality';
-export * from './validate';
+export * from './schemas';

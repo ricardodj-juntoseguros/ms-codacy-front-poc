@@ -1,17 +1,15 @@
 import {
-  policyholderLimitMock,
   policyholderMock,
   storeMock,
   policyholderAffiliateMock,
   quoteResulMock,
-  quoteMock,
+  createQuoteMock,
 } from '../../../__mocks__';
 import { store } from '../../../config/store';
-import { generateQuote, quoteSliceActions } from './QuoteSlice';
-import { policyholderLimitAdapter } from '../coverageData/adapters';
 import QuoteApi from './QuoteApi';
+import { postQuotation, putQuotation, quoteSliceActions } from './QuoteSlice';
 
-describe('ModalitySelectionSlice', () => {
+describe('QuoteSlice', () => {
   beforeEach(() => {
     store.dispatch(quoteSliceActions.resetQuote());
   });
@@ -22,27 +20,20 @@ describe('ModalitySelectionSlice', () => {
       label: 'Curitiba - PR - 99999999999999',
       value: '4460',
     };
-    const policyHolderLimitResult = policyholderLimitAdapter(
-      policyholderLimitMock,
-    );
-
     store.dispatch(quoteSliceActions.setPolicyholder(policyholderMock));
     store.dispatch(
       quoteSliceActions.setModality(
         storeMock.modalitySelecion.modalityOptions[0],
       ),
     );
-    store.dispatch(quoteSliceActions.setPolicyholderAffiliate(subsidiarySelectedMock));
     store.dispatch(
-      quoteSliceActions.setPolicyholderLimit(policyHolderLimitResult),
+      quoteSliceActions.setPolicyholderAffiliate(subsidiarySelectedMock),
     );
-    store.dispatch(quoteSliceActions.setStartDate('27/05/2022'));
-    store.dispatch(quoteSliceActions.setEndDate('27/05/2023'));
+    store.dispatch(quoteSliceActions.setStartDateValidity('27/05/2022'));
+    store.dispatch(quoteSliceActions.setEndDateValidity('27/05/2023'));
     store.dispatch(quoteSliceActions.setDurationInDays(365));
     store.dispatch(quoteSliceActions.setSecuredAmount(1000));
     store.dispatch(quoteSliceActions.setProposalFee(1.87));
-    store.dispatch(quoteSliceActions.setFeeFlex(1.92));
-    store.dispatch(quoteSliceActions.setCommissionFlex(100));
 
     const { quote } = store.getState();
 
@@ -51,101 +42,76 @@ describe('ModalitySelectionSlice', () => {
       storeMock.modalitySelecion.modalityOptions[0],
     );
     expect(quote.policyholderAffiliate).toEqual(subsidiarySelectedMock);
-    expect(quote.policyholderLimit).toEqual(policyHolderLimitResult);
-    expect(quote.coverageData.startDate).toEqual('27/05/2022');
-    expect(quote.coverageData.endDate).toEqual('27/05/2023');
-    expect(quote.coverageData.durationInDays).toEqual(365);
-    expect(quote.coverageData.securedAmount).toEqual(1000);
-    expect(quote.pricing.proposalFee).toEqual(1.87);
-    expect(quote.pricing.feeFlex).toEqual(1.92);
-    expect(quote.pricing.commissionFlex).toEqual(100);
+    expect(quote.startDateValidity).toEqual('27/05/2022');
+    expect(quote.endDateValidity).toEqual('27/05/2023');
+    expect(quote.durationInDays).toEqual(365);
+    expect(quote.securedAmount).toEqual(1000);
+    expect(quote.proposalFee).toEqual(1.87);
     expect(quote.hasQuoteChanges).toEqual(true);
   });
 
-  it('should be able to generate quote', async () => {
-    const policyholderSearchApiMock = jest
-      .spyOn(QuoteApi, 'generateQuote')
-      .mockImplementation(() => Promise.resolve(quoteResulMock));
-    const pricingResult = {
-      ...quoteResulMock.pricing,
-      feeFlex: 1.87,
-      totalPrize: quoteResulMock.quote.totalPrize,
-      proposalFee: 1.87,
-      commissionFlex: 57,
-    };
+  it('postQuotation thunk should call api and alter store with values', async () => {
+    const apiMock = jest
+      .spyOn(QuoteApi, 'postQuotation')
+      .mockImplementation(async () => quoteResulMock);
 
-    await store.dispatch(generateQuote(quoteMock));
+    await store.dispatch(postQuotation(createQuoteMock));
 
-    const { quote } = store.getState();
-
-    expect(policyholderSearchApiMock).toHaveBeenCalled();
-    expect(policyholderSearchApiMock).toHaveBeenCalledWith(quoteMock);
-    expect(quote.pricing).toMatchObject(pricingResult);
-    expect(quote.identification).toMatchObject(
-      quoteResulMock.quote.identification,
-    );
-    expect(quote.installments).toMatchObject(
-      quoteResulMock.pricing.installmentOptions,
-    );
-    expect(quote.loadingQuote).toEqual(false);
-    expect(quote.hasQuoteChanges).toEqual(false);
+    expect(apiMock).toHaveBeenCalledWith(createQuoteMock);
+    const state = store.getState().quote;
+    expect(state.currentQuote).toBeTruthy();
+    expect(state.currentQuote?.identification.ProposalId).toEqual(90408);
+    expect(state.proposalFee).toEqual(0.26);
+    expect(state.loadingQuote).toBeFalsy();
+    expect(state.hasQuoteChanges).toBeFalsy();
   });
 
-  it('should be able to generate quote with flex rate or flex commission', async () => {
-    const quoteResulFlex = {
-      ...quoteResulMock,
-      quote: {
-        ...quoteResulMock.quote,
-        feeFlex: 2.0,
-      },
-      pricing: {
-        ...quoteResulMock.pricing,
-        commissionFlex: 120,
-      },
-    };
-    const policyholderSearchApiMock = jest
-      .spyOn(QuoteApi, 'generateQuote')
-      .mockImplementation(() => Promise.resolve(quoteResulFlex));
+  it('postQuotation thunk should not set values if api call fails', async () => {
+    jest
+      .spyOn(QuoteApi, 'postQuotation')
+      .mockImplementation(async () => Promise.reject(new Error('test error')));
 
-    const pricingResult = {
-      ...quoteResulMock.pricing,
-      feeFlex: 2.0,
-      totalPrize: quoteResulMock.quote.totalPrize,
-      proposalFee: 1.87,
-      commissionFlex: 120,
-    };
-
-    await store.dispatch(generateQuote(quoteMock));
-
-    const { quote } = store.getState();
-
-    expect(policyholderSearchApiMock).toHaveBeenCalled();
-    expect(policyholderSearchApiMock).toHaveBeenCalledWith(quoteMock);
-    expect(quote.pricing).toMatchObject(pricingResult);
-    expect(quote.identification).toMatchObject(
-      quoteResulMock.quote.identification,
-    );
-    expect(quote.installments).toMatchObject(
-      quoteResulMock.pricing.installmentOptions,
-    );
-    expect(quote.loadingQuote).toEqual(false);
-    expect(quote.hasQuoteChanges).toEqual(false);
+    await store.dispatch(postQuotation(createQuoteMock));
+    const state = store.getState().quote;
+    expect(state.currentQuote).toBe(null);
+    expect(state.proposalFee).toEqual(NaN);
+    expect(state.loadingQuote).toBeFalsy();
+    expect(state.hasQuoteChanges).toBeTruthy();
   });
 
-  it('Should not update quote if the error call', async () => {
-    const policyholderSearchApiMock = jest
-      .spyOn(QuoteApi, 'generateQuote')
-      .mockImplementation(() => Promise.reject(new Error('Not found')));
+  it('putQuotation thunk should call api and alter store with values', async () => {
+    const apiMock = jest
+      .spyOn(QuoteApi, 'putQuotation')
+      .mockImplementation(async () => quoteResulMock);
 
-    await store.dispatch(generateQuote(quoteMock));
+    await store.dispatch(
+      putQuotation({
+        proposalId: 12345,
+        quoteData: createQuoteMock,
+      }),
+    );
 
-    const { quote } = store.getState();
+    expect(apiMock).toHaveBeenCalledWith(12345, createQuoteMock);
+    const state = store.getState().quote;
+    expect(state.currentQuote).toBeTruthy();
+    expect(state.currentQuote?.identification.ProposalId).toEqual(90408);
+    expect(state.proposalFee).toEqual(0.26);
+    expect(state.loadingQuote).toBeFalsy();
+    expect(state.hasQuoteChanges).toBeFalsy();
+  });
 
-    expect(policyholderSearchApiMock).toHaveBeenCalled();
-    expect(policyholderSearchApiMock).toHaveBeenCalledWith(quoteMock);
-    expect(quote.identification).toEqual(null);
-    expect(quote.installments).toEqual([]);
-    expect(quote.loadingQuote).toEqual(false);
-    expect(quote.hasQuoteChanges).toEqual(false);
+  it('put thunk should not set values if api call fails', async () => {
+    jest
+      .spyOn(QuoteApi, 'putQuotation')
+      .mockImplementation(async () => Promise.reject(new Error('test error')));
+
+    await store.dispatch(
+      putQuotation({ proposalId: 12345, quoteData: createQuoteMock }),
+    );
+    const state = store.getState().quote;
+    expect(state.currentQuote).toBe(null);
+    expect(state.proposalFee).toEqual(NaN);
+    expect(state.loadingQuote).toBeFalsy();
+    expect(state.hasQuoteChanges).toBeTruthy();
   });
 });

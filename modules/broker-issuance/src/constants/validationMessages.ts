@@ -1,8 +1,16 @@
 export const VALIDATION_MESSAGES = {
   required: 'O preenchimento deste campo é obrigatório',
-  min: 'Valor menor que o mínimo permitido.',
-  minValidity:
-    'A data do fim da vigência não pode ser anterior ou igual a de início.',
-  minDurationInDays: 'A cobertura precisa ter pelo menos um dia de duração.',
-  maxSecuredAmount: 'O valor de cobertura não pode ser maior que o limite.',
+  min: 'Valor menor que o mínimo permitido',
+  invalidDate: 'Data inválida',
+  initialValidityMaxRetroactive:
+    'A data de início da vigência ultrapassa o limite retroativo',
+  invalidValidityRange: 'Data final menor ou igual a data inicial',
+  endValidityLessThanToday: 'Data final deve ser após o dia de hoje',
+  maxSecuredAmount: 'O valor de cobertura não pode ser maior que o limite',
+  invalidPolicyholderFederalId: 'CNPJ do tomador informado é inválido',
+  invalidPolicyholderAffiliateFederalId:
+    'CNPJ da filial do tomador informado é inválido',
+  invalidBrokerFederalId: 'CNPJ do corretor inválido',
+  invalidProposalFeeValue:
+    'O valor da taxa padrão deve estar entre 0% e 11,99%',
 };

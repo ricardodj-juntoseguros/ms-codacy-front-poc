@@ -1,0 +1,69 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.quotation-pricing-skeleton__wrapper {
+  margin-top: spacing('xl');
+
+  & > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: spacing('xl');
+
+    & > div:nth-child(2) {
+      display: flex;
+      flex-direction: row;
+      gap: spacing('m');
+
+      & > div:first-child {
+        display: flex;
+        flex-direction: column;
+        gap: spacing('s');
+      }
+    }
+
+    & > div:last-child {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        gap: spacing('m');
+      }
+    }
+  }
+
+  & > div:last-child {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    & > div:first-child {
+      display: none;
+    }
+
+    & > div:last-child {
+      display: flex;
+      flex-direction: column;
+      gap: spacing('xl');
+
+      & > div:nth-child(2) {
+        display: flex;
+        flex-direction: column;
+        gap: spacing('m');
+
+        & > div:first-child {
+          display: flex;
+          flex-direction: column;
+          gap: spacing('s');
+        }
+      }
+
+      & > div:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: spacing('m');
+      }
+    }
+  }
+}

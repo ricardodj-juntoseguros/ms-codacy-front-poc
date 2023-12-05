@@ -22,4 +22,3 @@ export interface ModalityDTO {
   allowsAdditionalCoverageVigilance: boolean;
   retroactiveDays: number;
 }
-

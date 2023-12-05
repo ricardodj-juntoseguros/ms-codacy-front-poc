@@ -1,6 +1,6 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import QuoteApi from './QuoteApi';
-import { quoteResulMock, quoteMock } from '../../../__mocks__';
+import { quoteResulMock, createQuoteMock } from '../../../__mocks__';
 
 describe('QuoteApi', () => {
   beforeAll(() => {
@@ -11,19 +11,54 @@ describe('QuoteApi', () => {
     jest.clearAllMocks();
   });
 
-  it('generateQuote should call bff service correctly', async () => {
+  it('postQuotation should call bff service correctly', async () => {
     const mockPost = jest
       .spyOn(AxiosHttpClient.prototype, 'post')
       .mockImplementation(async () => {
         return quoteResulMock;
       });
 
-    const result = await QuoteApi.generateQuote(quoteMock);
+    const result = await QuoteApi.postQuotation(createQuoteMock);
 
     expect(mockPost).toHaveBeenCalledWith({
-      payload: quoteMock,
-      url: `ms-middleware-proposal/api/quotation`,
+      url: `/v1/quotation`,
+      payload: createQuoteMock,
     });
     expect(result).toBe(quoteResulMock);
+  });
+
+  it('putQuotation should call bff service correctly', async () => {
+    const mockPut = jest
+      .spyOn(AxiosHttpClient.prototype, 'put')
+      .mockImplementation(async () => {
+        return quoteResulMock;
+      });
+
+    const result = await QuoteApi.putQuotation(12345, createQuoteMock);
+
+    expect(mockPut).toHaveBeenCalledWith({
+      url: '/v1/quotation/12345',
+      payload: createQuoteMock,
+    });
+    expect(result).toBe(quoteResulMock);
+  });
+
+  it('getQuotationDocument should call bff service correctly', async () => {
+    const mockPost = jest
+      .spyOn(AxiosHttpClient.prototype, 'get')
+      .mockImplementation(async () => {
+        return 'Ok';
+      });
+
+    const result = await QuoteApi.getQuotationDocument(12345);
+
+    expect(mockPost).toHaveBeenCalledWith({
+      url: `/v1/quotation/12345/document`,
+      headers: {
+        Accept: 'application/pdf',
+      },
+      responseType: 'arraybuffer',
+    });
+    expect(result).toBe('Ok');
   });
 });

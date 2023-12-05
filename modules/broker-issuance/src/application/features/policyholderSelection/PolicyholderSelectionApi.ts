@@ -2,10 +2,7 @@ import {
   IHttpClient,
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
-import {
-  PolicyholderSearchDTO,
-  PolicyholderDTO,
-} from '../../types/dto';
+import { PolicyholderSearchDTO, PolicyholderDTO } from '../../types/dto';
 import BrokerInssuanceBaseApi from '../BrokerIssuanceBaseApi';
 
 class PolicyholderSelectionApi {
@@ -29,7 +26,11 @@ class PolicyholderSelectionApi {
     return this.httpClient.get<PolicyholderDTO>(params);
   }
 
-  async postAppointmentLetter(policyholderFederalId: string, brokerId: number, file: File) {
+  async postAppointmentLetter(
+    policyholderFederalId: string,
+    brokerId: number,
+    file: File,
+  ) {
     const formData = new FormData();
     formData.append('file', file, file.name);
     const params: IHttpClientRequestParameters = {

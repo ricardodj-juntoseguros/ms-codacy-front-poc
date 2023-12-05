@@ -1,6 +1,9 @@
 import { store } from '../../../config/store';
 import PolicyholderSelectionApi from './PolicyholderSelectionApi';
-import { policyholderAffiliateMock, policyholderSearchMock } from '../../../__mocks__';
+import {
+  policyholderAffiliateMock,
+  policyholderSearchMock,
+} from '../../../__mocks__';
 import {
   searchPolicyholder,
   policyholderSelectionActions,
@@ -9,18 +12,18 @@ import {
 describe('PolicyholderSelectionSlice', () => {
   const optionsMock = [
     {
-      id: 1,
-      federalId: '99999999999999',
       companyName: 'Test',
-      label: "Test",
-      value: "99999999999999",
+      federalId: '99999999999999',
+      id: 1,
+      label: 'Test',
+      value: '99999999999999',
     },
     {
-      id: 2,
-      federalId: '88888888888888',
       companyName: 'Test 2',
-      label: "Test 2",
-      value: "88888888888888",
+      federalId: '88888888888888',
+      id: 2,
+      label: 'Test 2',
+      value: '88888888888888',
     },
   ];
 
@@ -58,22 +61,36 @@ describe('PolicyholderSelectionSlice', () => {
   });
 
   it('should be able to change the search value and if it is blank text you must clear the selection options', async () => {
-    await store.dispatch(policyholderSelectionActions.setPolicyholderSearchValue('Test'));
+    await store.dispatch(
+      policyholderSelectionActions.setPolicyholderSearchValue('Test'),
+    );
     let { policyholderSelection } = store.getState();
     expect(policyholderSelection.policyholderSearchValue).toEqual('Test');
-    await store.dispatch(policyholderSelectionActions.setPolicyholderSearchValue(''));
+    await store.dispatch(
+      policyholderSelectionActions.setPolicyholderSearchValue(''),
+    );
     policyholderSelection = store.getState().policyholderSelection;
     expect(policyholderSelection.policyholderSearchValue).toEqual('');
     expect(policyholderSelection.policyholderOptions).toEqual([]);
   });
 
   it('should be able to change the search value and if it is blank text you must clear the selection options', async () => {
-    await store.dispatch(policyholderSelectionActions.setPolicyholderAffiliatesOptions([policyholderAffiliateMock]));
+    await store.dispatch(
+      policyholderSelectionActions.setPolicyholderAffiliatesOptions([
+        policyholderAffiliateMock,
+      ]),
+    );
     const { policyholderSelection } = store.getState();
     expect(policyholderSelection.affiliatesOptions.length).toEqual(3);
-    expect(policyholderSelection.affiliatesOptions[0].companyName).toEqual('DEXCO S.A');
-    expect(policyholderSelection.affiliatesOptions[1].label).toEqual('Nenhuma filial');
-    expect(policyholderSelection.affiliatesOptions[2].label).toEqual('Não encontrei minha filial');
+    expect(policyholderSelection.affiliatesOptions[0].companyName).toEqual(
+      'DEXCO S.A',
+    );
+    expect(policyholderSelection.affiliatesOptions[1].label).toEqual(
+      'Nenhuma filial',
+    );
+    expect(policyholderSelection.affiliatesOptions[2].label).toEqual(
+      'Não encontrei minha filial',
+    );
   });
 
   it('should be able reset the slice', async () => {

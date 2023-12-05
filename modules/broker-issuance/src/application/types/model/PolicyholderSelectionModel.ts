@@ -1,5 +1,5 @@
 import { PolicyholderAffiliatesModel } from './PolicyholderAffiliatesModel';
-import { PolicyholderSearchModel } from './PolicyholderSearchModel'
+import { PolicyholderSearchModel } from './PolicyholderSearchModel';
 
 export interface PolicyholderSelectionModel {
   policyholderSearchValue: string;

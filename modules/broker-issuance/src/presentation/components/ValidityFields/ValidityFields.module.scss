@@ -1,0 +1,23 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.validity-fields__form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('m');
+  margin-bottom: spacing('m');
+
+  & > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    gap: spacing('m');
+  }
+
+  @media screen and (max-width: 586px) {
+    margin-bottom: spacing('l');
+
+    & > div:first-child {
+      flex-direction: column;
+      justify-content: baseline;
+    }
+  }
+}

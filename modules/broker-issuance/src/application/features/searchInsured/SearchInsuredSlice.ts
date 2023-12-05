@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from 'modules/broker-issuance/src/config/store';
+import { RootState } from '../../../config/store';
 import { SearchInsuredModel } from '../../types/model';
 
 import {

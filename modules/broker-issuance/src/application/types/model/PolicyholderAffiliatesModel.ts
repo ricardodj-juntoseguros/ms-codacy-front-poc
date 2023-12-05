@@ -1,4 +1,4 @@
-import { SearchOptions } from "junto-design-system";
+import { SearchOptions } from 'junto-design-system';
 
 export interface PolicyholderAffiliatesModel extends SearchOptions {
   id: number;

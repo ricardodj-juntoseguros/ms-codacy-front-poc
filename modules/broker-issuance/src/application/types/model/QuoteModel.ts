@@ -1,25 +1,26 @@
+import { QuoteResultDTO } from '../dto';
 import { SubmodalityDTO } from '../dto/SubmodalityDTO';
-import { ContractDataModel } from './ContractDataModel';
-import { CoverageDataModel } from './CoverageDataModel';
-import { IdentificationModel } from './IdentificationModel';
-import { InstallmentModel } from './InstallmentModel';
-import { LimitModel } from './LimitModel';
 import { ModalityModel } from './ModalityModel';
 import { PolicyholderAffiliatesModel } from './PolicyholderAffiliatesModel';
 import { PolicyholderModel } from './PolicyholderModel';
-import { PricingModel } from './PricingModel';
 
 export interface QuoteModel {
+  currentQuote?: QuoteResultDTO | null;
   policyholder: PolicyholderModel | null;
   policyholderAffiliate: PolicyholderAffiliatesModel | null;
-  policyholderLimit: LimitModel | null;
   modality: ModalityModel | null;
   submodality: SubmodalityDTO | null;
-  coverageData: CoverageDataModel;
-  contractData: ContractDataModel;
-  pricing: PricingModel;
-  installments: InstallmentModel[];
-  identification: IdentificationModel[] | null;
-  loadingQuote: boolean;
+  startDateValidity?: string | null;
+  endDateValidity?: string | null;
+  durationInDays?: number | null;
+  securedAmount?: number;
+  toggleRateFlex?: boolean;
+  proposalFee?: number;
+  paymentType?: number;
+  additionalCoverage?: [];
+  hasAdditionalCoverageLabor?: boolean;
+  hasAdditionalCoverageGuarantee?: boolean;
+  hasAdditionalCoverageVigilance?: boolean;
+  loadingQuote?: boolean;
   hasQuoteChanges: boolean;
 }

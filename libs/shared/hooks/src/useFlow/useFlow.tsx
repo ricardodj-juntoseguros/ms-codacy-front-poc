@@ -6,13 +6,8 @@ import {
   useCallback,
 } from 'react';
 import { nanoid } from 'nanoid/non-secure';
-
 import { StepContainer } from '@shared/ui';
-import {
-  FlowContextProps,
-  FlowProviderProps,
-  StepModel,
-} from './types';
+import { FlowContextProps, FlowProviderProps, StepModel } from './types';
 import { StepStatusEnum } from './enums';
 import { getStepList } from './utils';
 
@@ -25,7 +20,9 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
   ComponentContainer = StepContainer,
   children,
 }) => {
-  const [currentSteps, setCurrentSteps] = useState<StepModel[]>(getStepList(initialSteps));
+  const [currentSteps, setCurrentSteps] = useState<StepModel[]>(
+    getStepList(initialSteps),
+  );
 
   const setSteps = (steps: StepModel[]) => {
     setCurrentSteps(prevState => prevState.concat(steps));

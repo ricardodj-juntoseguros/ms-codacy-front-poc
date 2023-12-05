@@ -1,6 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 import { waitFor } from '@testing-library/react';
-import { modalityMock } from '../../../__mocks__';
+import { modalityDefaultMock } from '../../../__mocks__';
 import { store } from '../../../config/store';
 import ModalitySelecionApi from './ModalitySelecionApi';
 import {
@@ -16,24 +16,32 @@ describe('ModalitySelectionSlice', () => {
   it('', async () => {
     const fetchModalitiesMock = jest
       .spyOn(ModalitySelecionApi, 'fetchModalities')
-      .mockImplementation(() => Promise.resolve([modalityMock]));
-    store.dispatch(fetchModalities({ brokerFederalId: '123', policyholderFederalId: '123' }));
+      .mockImplementation(() => Promise.resolve([modalityDefaultMock]));
+    store.dispatch(
+      fetchModalities({ brokerFederalId: '123', policyholderFederalId: '123' }),
+    );
     expect(fetchModalitiesMock).toHaveBeenCalledWith('123', '123');
     await waitFor(() => {
       const { modalitySelecion } = store.getState();
-      expect(modalitySelecion.modalityOptions).toEqual([{
-        ...modalityMock,
-        label: modalityMock.description,
-        value: modalityMock.id.toString(),
-      }]);
+      expect(modalitySelecion.modalityOptions).toEqual([
+        {
+          ...modalityDefaultMock,
+          label: modalityDefaultMock.description,
+          value: modalityDefaultMock.id.toString(),
+        },
+      ]);
     });
   });
 
   it('', async () => {
     const fetchModalitiesMock = jest
       .spyOn(ModalitySelecionApi, 'fetchModalities')
-      .mockImplementation(() => Promise.reject({ data: { message: 'error ao buscar as modalidades' } }));
-    store.dispatch(fetchModalities({ brokerFederalId: '123', policyholderFederalId: '123' }));
+      .mockImplementation(() =>
+        Promise.reject({ data: { message: 'error ao buscar as modalidades' } }),
+      );
+    store.dispatch(
+      fetchModalities({ brokerFederalId: '123', policyholderFederalId: '123' }),
+    );
     expect(fetchModalitiesMock).toHaveBeenCalledWith('123', '123');
     await waitFor(() => {
       const { modalitySelecion } = store.getState();

@@ -4,8 +4,7 @@ import { BrokerPlatformAuthService } from '@services';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export class BrokerInssuanceBaseApi {
-  private readonly BASE_URL =
-    process.env.NX_GLOBAL_ISSUER_PLATFORM_BFF || '';
+  private readonly BASE_URL = process.env.NX_GLOBAL_ISSUER_PLATFORM_BFF || '';
 
   private headers = {};
 
@@ -54,19 +53,24 @@ export class BrokerInssuanceBaseApi {
           (await BrokerPlatformAuthService.doRefreshToken()) as any;
         const { refresh_expires_in, expires_in, access_token, refresh_token } =
           refreshResponse;
+        const cookieExpiresIn = new Date(
+          new Date().getTime() + (refresh_expires_in || expires_in) * 1000,
+        );
         BrokerPlatformAuthService.setUserAccessCookie(
           {
-            access_token,
-            refresh_token,
-            expires_in,
-            refresh_expires_in
+            ...userCookie,
+            token: access_token,
+            refreshToken: refresh_token,
+            expiresIn: expires_in * 1000,
+            refreshExpiresIn: refresh_expires_in * 1000,
+            createAt: new Date().toISOString(),
           },
-          expires_in
+          cookieExpiresIn,
         );
-        originalRequest.headers.Authorization = `bearer ${access_token}`;
+        originalRequest.headers.authorization = `bearer ${access_token}`;
         this.headers = {
           'Content-Type': 'application/json',
-          Authorization: `bearer ${access_token}`,
+          authorization: `bearer ${access_token}`,
         };
         this.instance.instance.defaults.headers = this.headers;
         return Promise.resolve(axios.request(originalRequest));
@@ -91,4 +95,3 @@ export class BrokerInssuanceBaseApi {
 export const getInstance = () => new BrokerInssuanceBaseApi().getInstance();
 
 export default BrokerInssuanceBaseApi;
-

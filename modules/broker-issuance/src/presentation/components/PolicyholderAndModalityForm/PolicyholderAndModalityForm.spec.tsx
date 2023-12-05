@@ -2,17 +2,17 @@
 import '@testing-library/jest-dom';
 import { BrokerPlatformAuthService } from '@services';
 import { act } from 'react-dom/test-utils';
-import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
 import {
   brokerMock,
-  modalityMock,
+  modalityDefaultMock,
   policyholderDetailsMock,
   policyholderSearchMock,
 } from '../../../__mocks__';
-import ModalitySelecionApi from '../../../application/features/modalitySelection/ModalitySelecionApi';
 import { store } from '../../../config/store';
-import PolicyholderAndModalityForm from './PolicyholderAndModalityForm';
 import { fireEvent, render, waitFor } from '../../../config/testUtils';
+import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
+import ModalitySelecionApi from '../../../application/features/modalitySelection/ModalitySelecionApi';
+import PolicyholderAndModalityForm from './PolicyholderAndModalityForm';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -29,6 +29,7 @@ jest.mock('@shared/hooks', () => {
     ...originalModule,
     useFlow: () => ({
       advanceStep: advanceStepMock,
+      setSteps: jest.fn(),
     }),
   };
 });
@@ -69,7 +70,7 @@ describe('PolicyholderAndModalityForm', () => {
       .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const fetchModalitiesMock = jest
       .spyOn(ModalitySelecionApi, 'fetchModalities')
-      .mockImplementation(() => Promise.resolve([modalityMock]));
+      .mockImplementation(() => Promise.resolve([modalityDefaultMock]));
     const { getByTestId, getByText } = render(
       <PolicyholderAndModalityForm name="test" />,
     );
@@ -98,16 +99,16 @@ describe('PolicyholderAndModalityForm', () => {
         '99999999999999',
       );
     });
-    const modalityOption = getByText('Judicial');
+    const modalityOption = getByText('Executante Fornecedor');
     await act(async () => {
       await fireEvent.click(modalityOption);
     });
     await waitFor(() => {
       const state = store.getState();
       expect(state.quote.modality).toEqual({
-        ...modalityMock,
-        value: modalityMock.id.toString(),
-        label: modalityMock.description,
+        ...modalityDefaultMock,
+        value: modalityDefaultMock.id.toString(),
+        label: modalityDefaultMock.description,
       });
     });
   });
@@ -121,7 +122,7 @@ describe('PolicyholderAndModalityForm', () => {
       .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const fetchModalitiesMock = jest
       .spyOn(ModalitySelecionApi, 'fetchModalities')
-      .mockImplementation(() => Promise.resolve([modalityMock]));
+      .mockImplementation(() => Promise.resolve([modalityDefaultMock]));
     const { getByTestId, getByText } = render(
       <PolicyholderAndModalityForm name="test" />,
     );
@@ -150,7 +151,7 @@ describe('PolicyholderAndModalityForm', () => {
         '99999999999999',
       );
     });
-    const modalityOption = getByText('Judicial');
+    const modalityOption = getByText('Executante Fornecedor');
     await act(async () => {
       await fireEvent.click(modalityOption);
     });
