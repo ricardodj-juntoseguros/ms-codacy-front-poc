@@ -33,4 +33,5 @@ export const brokerInformationMock = {
   brokerUserName: '',
   signupDirect: false,
   showIss: true,
+  bankIsValid: false,
 };

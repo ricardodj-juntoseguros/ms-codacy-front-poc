@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { InputBase, SearchInput, Alert } from 'junto-design-system';
+import { Alert, InputBase, SearchInput } from 'junto-design-system';
 import { useOptionsMapper } from '@shared/hooks';
 import styles from './BankDetails.module.scss';
 import { BankDTO } from '../../../application/types/dto';
@@ -155,7 +155,7 @@ export function BankDetails({
         >
           <InputBase
             data-testid="account-number"
-            label="Conta"
+            label="Conta corrente"
             placeholder="00000000"
             value={brokerInformation.bankDetails.accounNumber}
             onChange={e => {

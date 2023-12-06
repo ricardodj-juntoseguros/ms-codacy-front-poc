@@ -48,6 +48,7 @@ const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
           handleGoNextClick={handleGoNextClick}
           hash={hash}
           token={token}
+          guid={guid}
         />
       </div>
       <div className={styles['create-user-access_container_illustration']}>

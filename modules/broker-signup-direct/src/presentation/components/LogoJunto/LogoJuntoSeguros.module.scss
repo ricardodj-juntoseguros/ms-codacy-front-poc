@@ -1,11 +1,12 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.container_section_form_logo{
+.container_section_form_logo {
   padding: spacing('xl') spacing('m') spacing('xl') spacing('xl');
 
   @media screen and (max-width: 680px) {
     padding: 12px spacing('m') spacing('m') spacing('l');
     & svg {
+      width: spacing('xxl-4');
       height: 28px;
     }
   }

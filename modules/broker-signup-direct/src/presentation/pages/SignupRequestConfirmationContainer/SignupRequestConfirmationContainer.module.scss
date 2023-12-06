@@ -5,31 +5,6 @@
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
-  text-align: center;
-  padding: 0px 24px;
-}
-
-.signup-request-confirmation-container__header {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  & svg {
-    width: 73px;
-    height: spacing('xl');
-    padding: spacing('xl') 0 spacing('xl');
-  }
-
-  @media screen and (max-width: 680px) {
-    padding: 0px;
-    height: 56px;
-
-    & svg {
-      padding: 12px 0px 16px 0px;
-      width: 64px;
-      height: spacing('xxl-3');
-    }
-  }
 }
 
 .signup-request-confirmation__signup-box {
@@ -39,9 +14,10 @@
   flex-direction: column;
   text-align: center;
   align-items: center;
-  padding-top: spacing('xxl-5');
+  padding: spacing('xxl') spacing('l') 0 spacing('l');
 
   @media screen and (max-width: 680px) {
+    padding-top: spacing('xl');
     & svg {
       width: spacing('xxl-7');
       height: spacing('xxl-7');

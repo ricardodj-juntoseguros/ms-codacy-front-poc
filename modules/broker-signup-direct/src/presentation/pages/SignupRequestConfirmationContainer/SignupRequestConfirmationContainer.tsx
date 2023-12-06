@@ -1,13 +1,11 @@
 import styles from './SignupRequestConfirmationContainer.module.scss';
 import { ReactComponent as FinishIcon } from '../../assets/finishIcon.svg';
-import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
+import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
 
 const SignupRequestConfirmationContainer = () => {
   return (
     <div className={styles['signup-request-confirmation-container__wrapper']}>
-      <div className={styles['signup-request-confirmation-container__header']}>
-        <LogoJunto />
-      </div>
+      <LogoJuntoSeguros />
       <div className={styles['signup-request-confirmation__signup-box']}>
         <FinishIcon />
         <div className={styles['signup-request-confirmation-container__title']}>

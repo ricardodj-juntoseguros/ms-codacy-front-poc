@@ -1,21 +1,29 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.bank_details_wrapper{
+.bank_details_wrapper {
   width: 640px;
-  & h1{
+  & h1 {
     @include font('base-emphasys');
     margin: 0;
     padding: spacing('xxl-3') 0 spacing('s') 0;
   }
 
-  @media screen and (max-width: 680px) {
-    width:  100%;
+  & h2 {
+    @include font('sm');
+    color: color('grey-600');
+    margin-bottom: spacing('l');
+  }
 
-    & h1{
+
+  @media screen and (max-width: 680px) {
+    width: 100%;
+
+    & h1 {
       padding: 30px 0 spacing('s') 0;
     }
+  }
 }
-}
+
 
 .bank_details_wrapper_alert_warning{
   padding:  spacing('m') 0 spacing('l') 0;
@@ -28,14 +36,18 @@
 .bank_details__form-field{
     width: 312px;
     padding: spacing('m') spacing('m') 0 0 ;
-
-    @media screen and (max-width: 680px) {
-      width:  100%;
-    }
-
 }
 
-.bank_details_grid_inputs{
+.bank_details__form-field {
+  width: 312px;
+  padding: spacing('m') spacing('m') 0 0;
+
+  @media screen and (max-width: 680px) {
+    width: 100%;
+  }
+}
+
+.bank_details_grid_inputs {
   display: grid;
   grid-template-columns: auto auto;
 
@@ -43,6 +55,3 @@
     display: contents;
   }
 }
-
-
-

@@ -1,6 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.broker_details_container__wrapper{
+.broker_details_container__wrapper {
   display: flex;
   flex-direction: row;
 
@@ -14,12 +14,12 @@
 
   @media screen and (max-width: 680px) {
     & > div:last-child {
-      height: 40vh;
+      height: 50vh;
     }
   }
 }
 
-.broker_details_container_section_form{
+.broker_details_container_section_form {
   width: 960px;
   display: flex;
   flex-direction: column;
@@ -31,20 +31,19 @@
 
   @media screen and (min-width: 1680px) {
     padding-top: 204px;
-    margin-left: 112px;
+    margin-left: 72px;
   }
-  @media screen and (min-width: 700px) and (max-width: 1000px)   {
+  @media screen and (min-width: 700px) and (max-width: 1000px) {
     margin-right: 250px;
   }
 
-
-  &  h1{
+  & h1 {
     @include font('xl-2-emphasys');
     color: color('dark');
     margin: 0 0 24px 0;
   }
 
-  &  h2{
+  & h2 {
     @include font('base');
     color: color('dark');
     margin: 0 0 56px 0;
@@ -52,25 +51,25 @@
 
   @media screen and (max-width: 680px) {
     width: 100%;
-    padding: 45px spacing('l') 0  spacing('l');
+    padding: 45px spacing('l') 0 spacing('l');
     height: 100%;
-    &  h1{
+    & h1 {
       @include font('xl-emphasys');
       color: color('dark');
-      margin: 0 0  spacing('l') 0;
-      width: 280px
+      margin: 0 0 spacing('l') 0;
+      width: 280px;
     }
 
-    &  h2{
+    & h2 {
       @include font('base');
       color: color('dark');
-      margin: 0 0  spacing('xxl-3') 0;
-      width: 312px
+      margin: 0 0 spacing('xxl-3') 0;
+      width: 312px;
     }
   }
 }
 
-.broker_details_container__button{
+.broker_details_container__button {
   width: 312px;
   padding-top: spacing('xxl-3');
   & button {
@@ -87,7 +86,6 @@
   }
 }
 
-.broker_details_container_section_form_show_text_helper{
+.broker_details_container_section_form_show_text_helper {
   padding: 0 0 32px 0;
 }
-

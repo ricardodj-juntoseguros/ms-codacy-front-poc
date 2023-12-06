@@ -20,6 +20,7 @@ const RegisterResponsibleContainer = ({ history }: RouteComponentProps) => {
     'Dê preferência ao seu e-mail profissional. E se possível, com o domínio próprio da sua empresa.',
     'Lembre-se de que esse será o e-mail da pessoa responsável pelo relacionamento com a plataforma.',
   ];
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (brokerInformation.information.federalId === '' || broker.codeIsValid) {
@@ -55,6 +56,7 @@ const RegisterResponsibleContainer = ({ history }: RouteComponentProps) => {
   };
 
   const onSubmit = async () => {
+    setIsSubmitting(true);
     fetchRegisterResponsibleBroker(responsibleInformation, broker.pathUpdate);
   };
 
@@ -69,7 +71,7 @@ const RegisterResponsibleContainer = ({ history }: RouteComponentProps) => {
         >
           <h1>Informe seu nome e e-mail</h1>
           <h2>Você receberá as credenciais de acesso no e-mail informado.</h2>
-          <BrokerEmail onSubmit={onSubmit} />
+          <BrokerEmail onSubmit={onSubmit} isSubmitting={isSubmitting} />
         </div>
         {sreenWidth <= 680 && (
           <div

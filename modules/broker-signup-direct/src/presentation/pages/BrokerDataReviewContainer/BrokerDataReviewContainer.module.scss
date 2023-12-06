@@ -1,13 +1,5 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.broker_data_review_container_wrapper {
-
-}
-
-.broker_data_review_container_container_logo{
-  padding: spacing('xl') spacing('m') spacing('xl') spacing('xl');
-  }
-
 .broker_data_review_container_section_form {
   display: flex;
   flex-wrap: wrap;
@@ -16,11 +8,11 @@
   text-align: center;
 }
 
-.broker_data_review_container_title{
+.broker_data_review_container_title {
   width: 604px;
   margin: 0 auto;
   padding: spacing('xxl-3') 0 spacing('xxl-3') 0;
-  & span{
+  & span {
     @include font('xl-2-emphasys');
   }
 
@@ -28,7 +20,7 @@
     width: 87%;
     padding: spacing('xxl-2') 0 spacing('xxl-3') 0;
 
-    & span{
+    & span {
       @include font('xl-emphasys');
     }
   }
@@ -38,7 +30,7 @@
   }
 }
 
-.broker_data_review_container_section_form_broker_data{
+.broker_data_review_container_section_form_broker_data {
   width: 640px;
   margin: 0 auto;
   border: 1px solid color('grey-200');
@@ -46,21 +38,21 @@
   text-align: left;
   margin-bottom: spacing('l');
 
-  & h1{
+  & h1 {
     @include font('l-emphasys');
     padding: 0 188px spacing('xl') spacing('xl');
-    margin: 0
+    margin: 0;
   }
 
-  & h3{
+  & h3 {
     @include font('xs');
     color: color('grey-600');
     padding: 0 188px 4px spacing('xl');
     margin-bottom: 2px;
-    margin: 0
+    margin: 0;
   }
 
-  & h5{
+  & h5 {
     @include font('l');
     color: color('dark');
     padding: 0 32px spacing('l') spacing('xl');
@@ -72,7 +64,7 @@
   @media screen and (max-width: 680px) {
     width: 87%;
 
-    & h1{
+    & h1 {
       @include font('l');
       padding: 0 0 0 spacing('xl');
       color: color('dark');
@@ -80,15 +72,15 @@
       font-weight: 600;
     }
 
-    & h3{
+    & h3 {
       @include font('xs');
       color: color('grey-600');
       padding: spacing('l') 86px 0 spacing('xl');
       margin-bottom: 2px;
-      margin: 0
+      margin: 0;
     }
 
-    & h5{
+    & h5 {
       @include font('l');
       color: color('dark');
       display: flex;
@@ -100,38 +92,54 @@
   }
 }
 
-.broker_data_review_container_section_form_broker_data_contet{
+.broker_data_review_container_section_form_broker_data_contet {
   padding: 40px 0 spacing('m') 0;
+
+  @media screen and (max-width: 680px) {
+    padding: spacing('xl') 0 spacing('xl') 0;
+  }
 }
 
-.broker_data_review_container_alert{
+.broker_data_review_container_alert {
   margin: 0 auto;
   text-align: left;
   padding-bottom: spacing('xxl-3');
+
+  & > div {
+    background-color: color('warning-light');
+  }
+
+  & i {
+    color: color('warning-base');
+  }
+
+  & p {
+    color: color('warning-base');
+  }
 }
 
-.broker_data_review_container_section_form_broker_data_contet_button{
+.broker_data_review_container_section_form_broker_data_contet_button {
   width: 65px;
   align-items: flex-start;
   display: flex;
-  padding-left:  spacing('xl');
+  padding-left: spacing('xl');
 
   & > button {
     width: 65px;
     color: color('dark');
-    height: 40px
+    height: 40px;
   }
 
   & > button > span {
-   padding-bottom: 18px
+    padding-bottom: 18px;
   }
 
-  & h5{
+  & h5 {
     @include font('xs');
     color: color('brand-primary');
     padding: 0 188px 40px 0;
     font-weight: 600;
-    margin: 0
+    margin: 0;
   }
 
   @media screen and (max-width: 680px) {
@@ -140,16 +148,16 @@
   }
 }
 
-.broker_data_review_container_section_form_broker_data_contet_header{
+.broker_data_review_container_section_form_broker_data_contet_header {
   display: grid;
   grid-template-columns: 4fr 1fr;
 }
 
-.broker_data_review_container_section_form_broker_data_contet_bank_information{
+.broker_data_review_container_section_form_broker_data_contet_bank_information {
   display: grid;
   grid-template-columns: 2fr 2fr;
 
-  & h5{
+  & h5 {
     @include font('l');
     color: color('dark');
     padding: 0 0 spacing('l') spacing('xl');
@@ -160,11 +168,9 @@
   }
 }
 
-.broker_data_review_button{
+.broker_data_review_button {
   & > button {
-  width: 312px;
+    width: 312px;
   }
   padding-bottom: 144px;
 }
-
-

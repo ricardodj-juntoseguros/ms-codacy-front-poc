@@ -25,18 +25,21 @@ import { BrokerEmailDataSchema } from '../../../application/features/validations
 import { TERMS_RESPONSIBILITY } from '../../../constants/termsResponsibility';
 import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
 import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
+import LoadingSpinner from '../LoadingSpinner';
 
 export interface BrokerEmailProps {
+  isSubmitting: boolean;
   onSubmit: () => void;
 }
 
-export function BrokerEmail({ onSubmit }: BrokerEmailProps) {
+export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
   const [isDisableGoNextStep, setIsDisableGoNextStep] = useState(true);
   const dispatch = useAppDispatch();
   const responsabileInformation = useSelector(selectResponsibleInformation);
   const { errors } = useSelector(selectValidation);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { nameResponsable, emailBroker } = responsabileInformation;
+  const privacyPolicyUrl = 'https://www.juntoseguros.com/politica-privacidade/';
 
   useEffect(() => {
     const hasNotInputEmpty = nameResponsable !== '' && emailBroker !== '';
@@ -69,6 +72,10 @@ export function BrokerEmail({ onSubmit }: BrokerEmailProps) {
 
   const handleCheckboxStatus = (value: boolean) => {
     dispatch(responsibleInformationSliceActions.setTermsResponsibility(value));
+  };
+
+  const handleGoToPrivacyPolicy = () => {
+    window.open(privacyPolicyUrl);
   };
 
   const validateName = async () => {
@@ -152,21 +159,30 @@ export function BrokerEmail({ onSubmit }: BrokerEmailProps) {
         errorMessage={errors.email && errors.email[0]}
       />
       <div
-        id="registerResponsible-termsResponsibility-checkbox"
         className={styles['broker_email_terms']}
+        id="registerResponsible-termsResponsibility-checkbox"
       >
         <Checkbox
           id="chk-select-all"
           checked={responsabileInformation.termsResponsibility}
           onChange={checked => handleCheckboxStatus(checked)}
         />
-        <span className={styles['span_terms']}>Li e aceito o&nbsp;</span>
-        <LinkButton
-          id="registerResponsible-termsResponsibility-linkButton"
-          onClick={() => setIsOpen(true)}
-          label="termo de responsabilidade"
-        />
+        <div>
+          <span className={styles['span_terms']}>Li e aceito o&nbsp;</span>
+          <LinkButton
+            id="registerResponsible-termsResponsibility-linkButton"
+            onClick={() => setIsOpen(true)}
+            label="termo de responsabilidade"
+          />
+          <span className={styles['span_terms']}>&nbsp;e&nbsp;</span>
+          <LinkButton
+            id="registerResponsible-privacyPolicy-linkButton"
+            onClick={() => handleGoToPrivacyPolicy()}
+            label="política de privacidade"
+          />
+        </div>
       </div>
+
       <div id="registerResponsible-termsResponsibility-modal">
         <Modal
           size="large"
@@ -183,7 +199,7 @@ export function BrokerEmail({ onSubmit }: BrokerEmailProps) {
           onClick={onSubmit}
           disabled={isDisableGoNextStep}
         >
-          Continuar
+          {isSubmitting ? ((<LoadingSpinner />) as any) : 'Continuar'}
         </Button>
       </div>
     </div>

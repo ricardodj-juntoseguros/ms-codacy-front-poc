@@ -20,10 +20,12 @@ export const BrokerGeneralInformation: React.FC = () => {
   const theme = useContext(ThemeContext);
   const { errors } = useSelector(selectValidation);
   const [issValue, setIssValue] = useState(0);
+  const dispatch = useDispatch();
 
   const helperMessageIss =
-    ' Se o valor não for informado, a alíquota máxima (5%) será aplicada, conforme Lei ISS do Simples Nacional.';
-  const dispatch = useDispatch();
+    !brokerInformation.simplesOptant && issValue !== null
+      ? '*Alíquota de acordo com a Receita Federal.'
+      : ' Se o valor não for informado, a alíquota máxima (5%) será aplicada, conforme Lei ISS do Simples Nacional.';
 
   const handleIss = (value: number) => {
     dispatch(brokerInformationSliceActions.setIss(value));
@@ -103,7 +105,7 @@ export const BrokerGeneralInformation: React.FC = () => {
             errorMessage={errors.iss && errors.iss[0]}
             onBlur={() => validateIss()}
             helperMessage={!errors.iss ? helperMessageIss : ''}
-            disabled={!brokerInformation.simplesOptant && issValue !== null}
+            readOnly={!brokerInformation.simplesOptant && issValue !== null}
           />
         </div>
       </div>

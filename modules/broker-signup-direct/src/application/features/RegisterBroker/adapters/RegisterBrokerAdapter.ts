@@ -1,6 +1,10 @@
 import { BrokerInformationModel } from '../../../types/model';
+import { SUSEP_CODE_SITUATION } from '../../../../constants/SusepCodeSituation';
 
-export const registerBrokerAdapter = (broker: BrokerInformationModel) => {
+export const registerBrokerAdapter = (
+  broker: BrokerInformationModel,
+  susepCodeSituation: string,
+) => {
   const {
     information,
     bankDetails,
@@ -43,5 +47,8 @@ export const registerBrokerAdapter = (broker: BrokerInformationModel) => {
     renewRegistration,
     hasProductDamageInsurance,
     email,
+    susepCodeSituation: (SUSEP_CODE_SITUATION as any)[
+      susepCodeSituation.toLowerCase()
+    ],
   };
 };

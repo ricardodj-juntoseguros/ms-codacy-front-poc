@@ -41,6 +41,7 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
     'Além disso, a comissão será depositada única e exclusivamente em uma conta jurídica, atrelada ao CNPJ da empresa.',
   ];
   const responsibleInformation = useSelector(selectResponsibleInformation);
+  const { cpfResponsable, phoneNumberResponsable } = responsibleInformation;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -60,14 +61,32 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
     const hasBankDetailsNotInputEmpty =
       name !== '' && bankNumber && accounNumber && accounDigit !== '';
 
+    const hasResponsibleInformationNotInputEmpty =
+      cpfResponsable !== '' && phoneNumberResponsable !== '';
+
     const hasInputError = Object.values(errors).length;
 
-    if (hasBankDetailsNotInputEmpty && hasInputError === 0) {
+    if (
+      hasResponsibleInformationNotInputEmpty &&
+      hasBankDetailsNotInputEmpty &&
+      hasInputError === 0
+    ) {
       setIsDisableGoNextStep(false);
+      setShowAlertErrorValidateBank(false);
     } else {
       setIsDisableGoNextStep(true);
+      setIsSubmitting(false);
+      setShowAlertErrorValidateBank(false);
     }
-  }, [accounDigit, accounNumber, bankNumber, errors, name]);
+  }, [
+    cpfResponsable,
+    phoneNumberResponsable,
+    accounDigit,
+    accounNumber,
+    bankNumber,
+    errors,
+    name,
+  ]);
 
   const fetchBanks = useCallback(async () => {
     await ListBankApi.getBanks()
@@ -78,7 +97,7 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
   }, []);
 
   const fetchRegisterResponsibleBroker = useCallback(
-    async (broker, responsibleInformation, pathUpdate) => {
+    async (broker, responsibleInformation, pathUpdate, bankIsValid) => {
       const payload = [
         {
           op: 'replace',
@@ -119,6 +138,11 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
           op: 'replace',
           path: '/digitalContactNumber',
           value: broker.bankDetails.accounDigit,
+        },
+        {
+          op: 'replace',
+          path: '/bankIsValid',
+          value: bankIsValid,
         },
         {
           op: 'replace',
@@ -203,17 +227,30 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
     await ListBankApi.validateBankAccount(payload)
       .then(response => {
         if (response.validation.valid) {
+          dispatch(brokerInformationSliceActions.setbankIsValid(true));
           fetchRegisterResponsibleBroker(
             brokerInformation,
             responsibleInformation,
             brokerInformation.pathUpdate,
+            true,
           );
         } else {
           setShowAlertErrorValidateBank(true);
+          setIsSubmitting(false);
           setIsDisableGoNextStep(true);
         }
       })
-      .catch(() => {
+      .catch(error => {
+        if (error.status === 504) {
+          dispatch(brokerInformationSliceActions.setbankIsValid(false));
+          dispatch(brokerInformationSliceActions.setSignupDirect(false));
+          fetchRegisterResponsibleBroker(
+            brokerInformation,
+            responsibleInformation,
+            brokerInformation.pathUpdate,
+            false,
+          );
+        }
         setIsSubmitting(false);
         setIsDisableGoNextStep(true);
         setShowAlertErrorValidateBank(true);

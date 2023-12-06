@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
 import { ChatUtils } from '@shared/utils';
+import TagManager from 'react-gtm-module';
 import styles from './LogoJuntoSeguros.module.scss';
 import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
 
 const LogoJuntoSeguros: React.FC = () => {
-  useEffect(() => {
-    ChatUtils.zenDesk.open();
-  });
-
   return (
     <div
       className={styles['container_section_form_logo']}

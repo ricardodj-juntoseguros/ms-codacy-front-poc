@@ -144,6 +144,16 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
       });
   };
 
+  const sendEmailSignupInternalized = async () => {
+    await RegisterBrokerApi.sendEmailSignupInternalized(
+      brokerInformation.pathUpdate,
+    ).then(() => {
+      setIsSubmitting(false);
+      setIsDisableGoNextStep(false);
+      handleGoNextClick();
+    });
+  };
+
   useEffect(() => {
     if (
       fileNameContractSocial &&
@@ -176,9 +186,7 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
       [...payload],
       brokerInformation.pathUpdate,
     ).then(() => {
-      setIsSubmitting(false);
-      setIsDisableGoNextStep(false);
-      handleGoNextClick();
+      sendEmailSignupInternalized();
     });
   };
 
@@ -213,6 +221,7 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
             types={types}
             errorMessage={VALIDATION_MESSAGES.typeDocument}
             showMaxFileSize={false}
+            width={640}
           />
         </div>
         {proofAddress.length > 0 && (
@@ -242,6 +251,7 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
             types={types}
             errorMessage={VALIDATION_MESSAGES.typeDocument}
             showMaxFileSize={false}
+            width={640}
           />
         </div>
         {proofBankDetails.length > 0 && (
@@ -272,6 +282,7 @@ export function UploadDocuments({ handleGoNextClick }: UploadDocumentsProps) {
             types={types}
             errorMessage={VALIDATION_MESSAGES.typeDocument}
             showMaxFileSize={false}
+            width={640}
           />
         </div>
         {contractSocial.length > 0 && (

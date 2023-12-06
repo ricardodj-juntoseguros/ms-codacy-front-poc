@@ -41,6 +41,7 @@ const initialState: BrokerInformationModel = {
   brokerUserName: '',
   signupDirect: false,
   showIss: true,
+  bankIsValid: false,
 };
 
 export const brokerInformationSlice = createSlice({
@@ -110,6 +111,9 @@ export const brokerInformationSlice = createSlice({
     },
     setShowIss: (state, action: PayloadAction<boolean>) => {
       state.showIss = action.payload;
+    },
+    setbankIsValid: (state, action: PayloadAction<boolean>) => {
+      state.bankIsValid = action.payload;
     },
   },
 });

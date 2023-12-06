@@ -24,12 +24,14 @@ export interface CreateUserFormProps {
   handleGoNextClick(): void;
   hash?: string;
   token?: string;
+  guid?: string;
 }
 
 export function CreateUserForm({
   handleGoNextClick,
   hash,
   token,
+  guid,
 }: CreateUserFormProps) {
   const dispatch = useAppDispatch();
   const brokerInformation = useSelector(selectBroker);
@@ -56,10 +58,15 @@ export function CreateUserForm({
       setShowValidation(true);
       validatePasswold();
     }
-    if (showAlert && brokerUserName !== '') {
+  }, [brokerUserName, password, confirmPassword]);
+
+  useEffect(() => {
+    if (showAlert && brokerUserName.length > 0 && !showErrorUserName) {
       setIsDisableButtonSignup(false);
+    } else {
+      setIsDisableButtonSignup(true);
     }
-  }, [password, confirmPassword]);
+  });
 
   useEffect(() => {
     validateBrokerUserName(brokerUserName);
@@ -68,15 +75,12 @@ export function CreateUserForm({
   const showErrorUser = () => {
     if (errorUserName !== '') {
       setShowErrorUserName(true);
-      setIsDisableButtonSignup(true);
     } else if (brokerUserName !== '' && showAlert) {
       setShowErrorUserName(false);
-      setIsDisableButtonSignup(false);
     }
   };
 
   const validateBrokerUserName = async (userName: string) => {
-    setIsDisableButtonSignup(true);
     const regex = /\W|_/;
     if (userName === '') {
       setErrorUserName('');
@@ -98,6 +102,7 @@ export function CreateUserForm({
   };
 
   const validateUserName = async (userName: string) => {
+    setIsDisableButtonSignup(true);
     await RegisterBrokerApi.validateUser(userName)
       .then(() => {
         setErrorUserName('');
@@ -128,10 +133,8 @@ export function CreateUserForm({
     if (isValidForm) {
       setShowAlert(true);
       setShowValidation(false);
-      setIsDisableButtonSignup(false);
     } else {
       setErrors(errors);
-      setIsDisableButtonSignup(true);
     }
   };
 
@@ -158,6 +161,8 @@ export function CreateUserForm({
   };
 
   const fetchRegisterBrokerInformation = async () => {
+    const brokerGuid =
+      brokerInformation.pathUpdate !== '' ? brokerInformation.pathUpdate : guid;
     const payload = [
       {
         op: 'replace',
@@ -167,7 +172,7 @@ export function CreateUserForm({
     ];
     await RegisterBrokerApi.updateRegisterBroker(
       [...payload],
-      brokerInformation.pathUpdate,
+      brokerGuid || '',
     );
   };
 
@@ -189,7 +194,7 @@ export function CreateUserForm({
     } else {
       payload = {
         ...payload,
-        _brokerExternalId: 0,
+        _brokerExternalId: brokerInformation.brokerExternalId,
       };
     }
 

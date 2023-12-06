@@ -82,7 +82,9 @@ export function SearchBrokerFederalId({
         statusBrokerRegistry?.status === RegisterBrokerTypeEnum.REGISTERED &&
         federalId.length === 14
       ) {
-        setAlertText('Esse CNPJ já possui cadastro conosco. ');
+        setAlertText(
+          'Esse CNPJ já possui cadastro conosco. Caso não lembre seu acesso entre em contato pelo Chat.',
+        );
         setShowAlert(true);
         setIsDisableButtonSignup(true);
         return;
@@ -149,7 +151,9 @@ export function SearchBrokerFederalId({
       brokerInformation.codeIsValid,
     );
     dispatch(brokerInformationSliceActions.setBrokerInformationModel(broker));
-    fetchRegisterBroker(registerBrokerAdapter(broker));
+    fetchRegisterBroker(
+      registerBrokerAdapter(broker, statusSusep.retorno.situacao),
+    );
     handleGoNextClick();
   };
 
@@ -191,7 +195,7 @@ export function SearchBrokerFederalId({
           }
           disabled={isDisableButtonSignup}
         >
-          {isSubmitting ? ((<LoadingSpinner />) as any) : 'Continuar'}
+          {isSubmitting ? ((<LoadingSpinner />) as any) : 'Iniciar cadastro'}
         </Button>
       </div>
     </div>

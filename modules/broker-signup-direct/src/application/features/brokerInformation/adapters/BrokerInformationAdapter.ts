@@ -38,5 +38,6 @@ export const brokerInformationAdapter = (
     brokerUserName: '',
     signupDirect: false,
     showIss: true,
+    bankIsValid: false,
   };
 };

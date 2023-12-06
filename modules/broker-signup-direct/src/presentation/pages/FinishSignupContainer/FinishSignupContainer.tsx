@@ -1,12 +1,13 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, LinkButton, Tooltip } from 'junto-design-system';
+import { RouteComponentProps } from 'react-router';
 import styles from './FinishSignupContainer.module.scss';
-import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
+import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
 import { ReactComponent as FinishIcon } from '../../assets/finishIcon.svg';
 import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 
-const FinishSignupContainer = () => {
+const FinishSignupContainer = ({ history }: RouteComponentProps) => {
   const brokerInformation = useSelector(selectBroker);
 
   const [copied, setCopied] = useState(false);
@@ -17,11 +18,11 @@ const FinishSignupContainer = () => {
 
   const loginPlatformUrl = process.env.NX_GLOBAL_BROKER_PLATFORM_URL || '';
 
-  // useEffect(() => {
-  //   if (brokerInformation.information.federalId === '') {
-  //     history.push('/');
-  //   }
-  // }, [brokerInformation.information.federalId, history]);
+  useEffect(() => {
+    if (brokerInformation.brokerUserName === '') {
+      history.push('/');
+    }
+  }, [brokerInformation.brokerUserName, history]);
 
   const handleCopyUsernameToClipboard = () => {
     navigator.clipboard
@@ -38,9 +39,7 @@ const FinishSignupContainer = () => {
 
   return (
     <div className={styles['finish-signup-container__wrapper']}>
-      <div className={styles['finish-signup-container__header']}>
-        <LogoJunto />
-      </div>
+      <LogoJuntoSeguros />
       <div className={styles['finish_signup_box']}>
         <FinishIcon />
         <div className={styles['finish-signup-container__title']}>
@@ -71,7 +70,7 @@ const FinishSignupContainer = () => {
               label=""
               onClick={handleCopyUsernameToClipboard}
               icon={copied ? 'check' : 'copy'}
-              name={copied ? 'Copiado' : 'Copiar nome de usuário'}
+              title="Copiar nome de usuário"
             />
           </div>
         </div>

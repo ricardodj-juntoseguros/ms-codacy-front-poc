@@ -14,6 +14,7 @@ describe('BrokerEmail', () => {
     onSubmit: {
       push: historyMock as any,
     } as any,
+    isSubmitting: false,
   };
 
   afterEach(() => {

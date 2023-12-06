@@ -100,6 +100,13 @@ class RegisterBrokerApi {
     };
     return await this.instance.get<verifyTokenDTO>(params);
   }
+
+  async sendEmailSignupInternalized(guid: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/brokers/signup/email?userId=${guid}`,
+    };
+    return await this.instance.post<boolean>(params);
+  }
 }
 
 const registerBrokerApi = new RegisterBrokerApi();

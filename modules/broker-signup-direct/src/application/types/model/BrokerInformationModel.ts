@@ -21,4 +21,5 @@ export interface BrokerInformationModel {
   brokerUserName: string;
   signupDirect: boolean;
   showIss: boolean;
+  bankIsValid: boolean;
 }

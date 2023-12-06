@@ -8,7 +8,7 @@
   position: relative;
 
   @media screen and (max-width: 680px) {
-    padding: spacing('xl') spacing('l') 0;
+    padding: spacing('xxl-2') spacing('l') 0;
 
     & div:nth-child(1) > div:nth-child(1) {
       width: auto;
@@ -20,9 +20,8 @@
 
   @media screen and (min-width: 1680px) {
     padding-top: 200px;
-    width: 608px;
     margin-right: calc(100% - 1480px);
-    margin-left: 120px;
+    margin-left: 111px;
   }
 }
 
@@ -72,11 +71,11 @@
   @include font('sm');
   color: color('grey-600');
   display: flex;
-  width: 624px;
+  width: 640px;
   padding: spacing('s') 0 0;
 
   @media screen and (max-width: 680px) {
-    width: 100%;
+    width: 96%;
     padding: spacing('s') 0px 0px spacing('m');
   }
 }

@@ -3,7 +3,6 @@ import { RouteComponentProps } from 'react-router';
 import { useState } from 'react';
 import { LinkButton } from 'junto-design-system';
 import styles from './SearchRegistrationContainer.module.scss';
-import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
 import SearchBrokerFederalId from '../../components/SearchBrokerFederalId/SearchBrokerFederalId';
 import { TextHelper } from '../../components/TextHelper/TextHelper';
 import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
@@ -35,8 +34,11 @@ const SearchRegistrationContainer = ({ history }: RouteComponentProps) => {
             styles['search_registration_container_section_form_section']
           }
         >
-          <h1>Qual é o CNPJ?</h1>
-          <h2>Informe o CNPJ de uma empresa cadastrada na Susep.</h2>
+          <h1>Cadastre sua Corretora</h1>
+          <h2>
+            Crie uma conta e contrate garantias para clientes de um jeito
+            simples e rápido
+          </h2>
           <SearchBrokerFederalId handleGoNextClick={handleGoNextClick} />
           <div
             className={

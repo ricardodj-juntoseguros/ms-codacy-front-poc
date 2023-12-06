@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import { RouteComponentProps } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Alert, Button, LinkButton } from 'junto-design-system';
 import styles from './BrokerDataReviewContainer.module.scss';
@@ -9,9 +9,10 @@ import {
   brokerInformationSliceActions,
 } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 import { selectResponsibleInformation } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
-import { ReactComponent as LogoJunto } from '../../assets/logoJunto.svg';
+import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
 import { useAppDispatch } from '../../../config/store';
 import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
   const dispatch = useAppDispatch();
@@ -19,8 +20,10 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
   const broker = useSelector(selectBroker);
   const brokerInformation = useSelector(selectBroker);
   const sreenWidth = window.screen.width;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (brokerInformation.information.federalId === '') {
       history.push('/');
     }
@@ -66,6 +69,7 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
   };
 
   const onSubmit = () => {
+    setIsSubmitting(true);
     fetchRegisterBrokerInformation();
     fetchRegisterResponsibleBrokerGv();
   };
@@ -99,9 +103,7 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
 
   return (
     <div className={styles['broker_data_review_container__wrapper']}>
-      <div className={styles['broker_data_review_container_container_logo']}>
-        <LogoJunto />
-      </div>
+      <LogoJuntoSeguros />
       <div className={styles['broker_data_review_container_section_form']}>
         <div className={styles['broker_data_review_container_title']}>
           <span>Antes de continuar, revise seus dados</span>
@@ -206,7 +208,7 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
                 </h5>
               </div>
               <div>
-                <h3>Conta</h3>
+                <h3>Conta corrente</h3>
                 <h5>
                   {broker.bankDetails.accounNumber}-
                   {broker.bankDetails.accounDigit}
@@ -228,10 +230,10 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
         </div>
         <div className={styles['broker_data_review_container_alert']}>
           <Alert
-            text="Importante: A conta bancária deve ser uma conta jurídica atrelada ao CNPJ da corretora. Por favor, reforçamos que verifique os dados bancários e caso necessário edite."
+            text="Importante: A conta corrente deve ser uma conta jurídica atrelada ao CNPJ da corretora. Por favor, reforçamos que verifique os dados bancários e caso necessário edite."
             variant="info"
             width={sreenWidth > 680 ? 640 : sreenWidth * 0.87}
-            icon="alert-circle"
+            icon="alert-triangle"
           />
         </div>
         <div className={styles['broker_data_review_button']}>
@@ -239,8 +241,9 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
             id="brokerDataReview-subimit-button"
             data-testid="button-broker-details"
             onClick={() => onSubmit()}
+            title="Continuar"
           >
-            Continuar
+            {isSubmitting ? ((<LoadingSpinner />) as any) : 'Continuar'}
           </Button>
         </div>
       </div>

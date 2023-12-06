@@ -2,9 +2,7 @@ import { useSelector } from 'react-redux';
 import { InputBase } from 'junto-design-system';
 import { cpfFormatter, phoneFormatter } from '@shared/utils';
 import { ValidationModel } from 'modules/broker-signup/src/application/types/model';
-import { VALIDATION_MESSAGES } from 'modules/broker-signup-direct/src/constants/validationMessages';
 import styles from './ResponsibleInformation.module.scss';
-import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 import {
   responsibleInformationSliceActions,
   selectResponsibleInformation,
@@ -42,10 +40,9 @@ export const ResponsibleInformation: React.FC = () => {
       validateForm({
         schema: ResponsibleInformationDataSchema,
         data: {
-          documentNumber: cpfResponsable,
           documentNumberIsNull: cpfResponsable,
+          documentNumber: cpfResponsable,
           phone: phoneNumberResponsable,
-          phoneIsNull: phoneNumberResponsable,
         },
       }),
     );
@@ -98,7 +95,7 @@ export const ResponsibleInformation: React.FC = () => {
           <InputBase
             data-testid="broker-phone"
             label="Telefone"
-            placeholder="|(00) 00000-0000"
+            placeholder="(00) 00000-0000"
             value={phoneNumberResponsable}
             onChange={e => {
               handlePhoneNumberChange(phoneFormatter(e.target.value));
