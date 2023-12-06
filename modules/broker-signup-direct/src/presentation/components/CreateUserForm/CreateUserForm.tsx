@@ -206,7 +206,7 @@ export function CreateUserForm({
         handleGoNextClick();
       })
       .catch(error => {
-        if (error.status === 504 && process.env.NX_GLOBAL_ENVIROMENT === 'qa') {
+        if (error.status === 504) {
           dispatch(
             brokerInformationSliceActions.setBrokerUserName(brokerUserName),
           );
