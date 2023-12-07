@@ -13,7 +13,7 @@ import BrokerInitialUploadDocumentsContainer from '../presentation/pages/BrokerI
 import ExpiredLinkContainer from '../presentation/pages/ExpiredLinkContainer/ExpiredLinkContainer';
 
 const Routes: React.FC = () => (
-  <BrowserRouter basename="direct">
+  <BrowserRouter basename="signup">
     <Switch>
       <Route path="/" exact component={SearchRegistrationContainer} />
       <Route

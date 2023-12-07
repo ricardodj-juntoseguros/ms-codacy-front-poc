@@ -202,6 +202,9 @@ export function CreateUserForm({
     setIsDisableButtonSignup(true);
     await RegisterBrokerApi.createNewUser(payload)
       .then(() => {
+        dispatch(
+          brokerInformationSliceActions.setBrokerUserName(brokerUserName),
+        );
         fetchRegisterBrokerInformation();
         handleGoNextClick();
       })

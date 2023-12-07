@@ -15,8 +15,7 @@ export default function Routes() {
           component={() => <Redirect to="/proposal" />}
         />
         <ProtectedRoute path="/proposal" component={BrokerIssuance} />
-        <Route path="/signup" component={BrokerSignup} />
-        <ProtectedRoute path="/direct" component={BrokerSignupDirect} />
+        <Route path="/signup" component={BrokerSignupDirect} />
       </Switch>
     </BrowserRouter>
   );
