@@ -9,10 +9,6 @@
   & > button {
     min-width: 19.5rem;
 
-    & > div {
-      justify-content: center;
-    }
-
     @media screen and (max-width: 768px) {
       width: 100%;
       min-width: 14.5rem;

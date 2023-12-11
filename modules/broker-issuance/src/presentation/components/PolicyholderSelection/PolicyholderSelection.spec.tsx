@@ -124,7 +124,7 @@ describe('PolicyholderSelection', () => {
       expect(policyholderSearchApiMock).toHaveBeenCalledWith('test');
     });
     await act(async () => {
-      await fireEvent.click(getByText('Test'));
+      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     const state = store.getState();
     expect(getPolicyholderDetails).toHaveBeenCalledWith(9999, '99999999999999');
@@ -160,7 +160,7 @@ describe('PolicyholderSelection', () => {
       expect(policyholderSearchApiMock).toHaveBeenCalledWith('test');
     });
     await act(async () => {
-      await fireEvent.click(getByText('Test'));
+      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetails).toHaveBeenCalledWith(
@@ -197,7 +197,7 @@ describe('PolicyholderSelection', () => {
       target: { value: '99999999999999' },
     });
     await act(async () => {
-      await fireEvent.click(getByText('Test'));
+      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetails).toHaveBeenCalledWith(
@@ -224,7 +224,7 @@ describe('PolicyholderSelection', () => {
       );
     });
     await act(async () => {
-      await fireEvent.click(getByText('Test'));
+      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetails).toHaveBeenCalledWith(
@@ -273,7 +273,7 @@ describe('PolicyholderSelection', () => {
       );
     });
     await act(async () => {
-      await fireEvent.click(getByText('Test'));
+      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetails).toHaveBeenCalledWith(

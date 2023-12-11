@@ -4,6 +4,7 @@ import {
   createSlice,
   nanoid,
 } from '@reduxjs/toolkit';
+import { federalIdFormatter } from '@shared/utils';
 import { RootState } from '../../../config/store';
 import {
   PolicyholderSearchModel,
@@ -28,7 +29,7 @@ export const searchPolicyholder = createAsyncThunk(
             id: policyholder.id,
             federalId: policyholder.federalId,
             companyName: policyholder.name,
-            label: policyholder.name,
+            label: `${federalIdFormatter(policyholder.federalId)} - ${policyholder.name}`,
             value: policyholder.federalId,
           }),
         );

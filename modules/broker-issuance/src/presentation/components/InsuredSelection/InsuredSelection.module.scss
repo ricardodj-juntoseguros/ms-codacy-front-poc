@@ -1,0 +1,30 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.insured-selection__type {
+  @include color('background-color', 'grey-100');
+  @include rounded('card');
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: spacing('m');
+}
+
+.insured-selection__type-description,
+.insured-selection__type-value {
+  @include color('color', 'dark');
+  margin: 0;
+}
+
+.insured-selection__type-description {
+  @include font('sm');
+}
+
+.insured-selection__type-value {
+  @include font('sm-emphasys');
+}
+
+.insured-selection__description {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  margin: spacing('xl') 0 spacing('m') 0;
+}

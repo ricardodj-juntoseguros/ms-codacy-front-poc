@@ -1,13 +1,24 @@
-import { AddressDTO } from './AddressDTO';
+import { InsuredAddressDTO } from './InsuredAddressDTO';
+
+export interface InsuredType {
+  id: number;
+  description: string;
+}
 
 export interface InsuredDTO {
-  id: number;
-  externalId: number;
+  insuredId: number;
   federalId: string;
-  addressId: number;
   name: string;
-  addresses: AddressDTO[];
-  insuredType: number;
-  insuredTypeDescription: string;
+  type: InsuredType;
   hasFederalId: boolean;
+  pending: boolean;
+  active: boolean;
+  justiceId: number;
+  courtId: number;
+  addresses: InsuredAddressDTO[];
+}
+
+export interface InsuredSearchDTO {
+  hasMore: boolean;
+  records: Array<InsuredDTO>;
 }

@@ -75,7 +75,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
       }
       setShowEmptyOptions(false);
     },
-    1250,
+    1350,
     [
       policyholderSearchValue,
       loadingSearchPolicyholder,
@@ -150,8 +150,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
   };
 
   const handlePolicyholderSelected = async (optionSelected: SearchOptions) => {
-    const { label, value } = optionSelected;
-    handleSearchPolicyholder(label);
+    const { value } = optionSelected;
     dispatch(setPolicyholderAffiliatesOptions([]));
     dispatch(resetModalitySelection());
     const broker = BrokerPlatformAuthService.getBroker();
@@ -215,7 +214,12 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
   };
 
   const renderPolicyholderDetailsLink = () => {
-    if (!policyholder || !BrokerPlatformAuthService.isBroker()) return null;
+    if (
+      !policyholder ||
+      !BrokerPlatformAuthService.isBroker() ||
+      needAppointmentLetter
+    )
+      return null;
     return (
       <LinkButton
         id="policyholderSelection-link-button-policyholder-details"
@@ -239,7 +243,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
           label="CNPJ ou Razão Social"
           placeholder="Pesquise o tomador pelo CNPJ ou Razão Social"
           onChange={handleSearchPolicyholder}
-          changeValueOnSelect={false}
+          changeValueOnSelect
           value={policyholderSearchValue}
           options={policyholderOptions}
           onValueSelected={handlePolicyholderSelected}

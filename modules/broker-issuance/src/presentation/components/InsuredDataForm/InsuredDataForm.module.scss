@@ -1,0 +1,56 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.insured-data-form__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l');
+}
+
+.insured-data-form__address,
+.insured-data-form__bidding-data {
+  margin: spacing('m') 0 0 0;
+}
+
+.insured-data-form__bidding-data-fields {
+  display: flex;
+  gap: spacing('l');
+
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+  }
+}
+
+.insured-data-form__description {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  margin: 0 0 spacing('m') 0;
+}
+
+.insured-data-form__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: spacing('l');
+  margin-top: spacing('xxl-4');
+
+  & > button {
+    max-width: 312px;
+  }
+
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+    margin-top: spacing('xxl');
+
+    & > button {
+      max-width: 100%;
+    }
+  }
+}
+
+.insured-data-form__numbers {
+  display: flex;
+
+  & span {
+    @include font('base-emphasys');
+    @include color('color', 'dark');
+  }
+}

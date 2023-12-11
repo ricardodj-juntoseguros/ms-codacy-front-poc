@@ -85,7 +85,7 @@ describe('PolicyholderAndModalityForm', () => {
     await waitFor(() => {
       expect(searchMock).toHaveBeenCalledTimes(1);
     });
-    const policyholderOption = getByText('Test');
+    const policyholderOption = getByText('99.999.999/9999-99 - Test');
     await act(async () => {
       await fireEvent.click(policyholderOption);
     });
@@ -137,7 +137,7 @@ describe('PolicyholderAndModalityForm', () => {
     await waitFor(() => {
       expect(searchMock).toHaveBeenCalledTimes(1);
     });
-    const policyholderOption = getByText('Test');
+    const policyholderOption = getByText('99.999.999/9999-99 - Test');
     await act(async () => {
       await fireEvent.click(policyholderOption);
     });
@@ -191,7 +191,7 @@ describe('PolicyholderAndModalityForm', () => {
       );
     });
     await act(async () => {
-      await fireEvent.click(getByText('Test'));
+      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetailsMock).toHaveBeenCalledWith(
@@ -261,7 +261,7 @@ describe('PolicyholderAndModalityForm', () => {
       expect(searchMock).toHaveBeenCalledTimes(1);
     });
     await act(async () => {
-      await fireEvent.click(getByText('Test'));
+      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetailsMock).toHaveBeenCalledWith(

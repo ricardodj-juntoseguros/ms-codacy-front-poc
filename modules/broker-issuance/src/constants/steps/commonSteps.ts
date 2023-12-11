@@ -1,5 +1,6 @@
 import { StepStatusEnum } from '@shared/hooks';
 import ValidityAndValueForm from '../../presentation/components/ValidityAndValueForm';
+import InsuredDataForm from '../../presentation/components/InsuredDataForm';
 
 export const COMMON_STEPS = [
   {
@@ -11,4 +12,13 @@ export const COMMON_STEPS = [
       boldWords: ['dados de vigência e valor'],
     },
   },
+  {
+    name: 'InsuredDataForm',
+    status: StepStatusEnum.HIDDEN,
+    component: InsuredDataForm,
+    title: {
+      text: 'Nessa etapa, indique os %STRONG% que irá fazer parte dessa garantia.',
+      boldWords: ['dados do segurado'],
+    },
+  }
 ];

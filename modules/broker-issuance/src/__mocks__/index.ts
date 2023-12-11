@@ -8,3 +8,5 @@ export * from './policyholderDetailsMock';
 export * from './createQuoteMock';
 export * from './quoteResultMock';
 export * from './brokerMock';
+export * from './insuredMock';
+export * from './proposalMock';

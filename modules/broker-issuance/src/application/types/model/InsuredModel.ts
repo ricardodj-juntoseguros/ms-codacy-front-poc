@@ -1,12 +1,5 @@
-import { AddressModel } from './AddressModel';
+import { SearchOptions } from 'junto-design-system';
+import { InsuredDTO } from '../dto';
 
-export interface InsuredModel {
-  id: number;
-  externalId: number;
-  name: string;
-  federalId?: string;
-  hasFederalId: boolean;
-  insuredType: number;
-  insuredTypeDescription: string;
-  addresses: AddressModel[];
-}
+export interface InsuredModel extends SearchOptions, InsuredDTO { }
+

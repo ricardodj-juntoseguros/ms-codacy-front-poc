@@ -15,14 +15,14 @@ describe('PolicyholderSelectionSlice', () => {
       companyName: 'Test',
       federalId: '99999999999999',
       id: 1,
-      label: 'Test',
+      label: '99.999.999/9999-99 - Test',
       value: '99999999999999',
     },
     {
       companyName: 'Test 2',
       federalId: '88888888888888',
       id: 2,
-      label: 'Test 2',
+      label: '88.888.888/8888-88 - Test 2',
       value: '88888888888888',
     },
   ];
