@@ -23,9 +23,12 @@ import {
 } from '../../../application/features/validation/ValidationSlice';
 import { BrokerEmailDataSchema } from '../../../application/features/validations/schemas/componentSchemas';
 import { TERMS_RESPONSIBILITY } from '../../../constants/termsResponsibility';
+import { VALIDATION_EMAIL_MODAL } from '../../../constants/validationEmailModal';
 import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
 import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
 import LoadingSpinner from '../LoadingSpinner';
+import { EMAIL_PROVIDER_LIST } from '../../../constants/emailProviderList';
+import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 
 export interface BrokerEmailProps {
   isSubmitting: boolean;
@@ -38,8 +41,12 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
   const responsabileInformation = useSelector(selectResponsibleInformation);
   const { errors } = useSelector(selectValidation);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [modalValidationEmail, setModalValidationEmail] =
+    useState<boolean>(false);
+
   const { nameResponsable, emailBroker } = responsabileInformation;
   const privacyPolicyUrl = 'https://www.juntoseguros.com/politica-privacidade/';
+  const broker = useSelector(selectBroker);
 
   useEffect(() => {
     const hasNotInputEmpty = nameResponsable !== '' && emailBroker !== '';
@@ -125,13 +132,81 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
             email: [VALIDATION_MESSAGES.emailExist],
           }),
         );
+        setIsDisableGoNextStep(true);
       }
     });
+  };
+  const handleSubmit = () => {
+    const validationEmailType = compareEmailBrokerToEmailResponsible();
+    setModalValidationEmail(!validationEmailType);
+
+    if (validationEmailType) {
+      onSubmit();
+    }
+  };
+  const compareEmailBrokerToEmailResponsible = () => {
+    if (
+      broker.information.email &&
+      responsabileInformation.emailBroker &&
+      broker.information.email === responsabileInformation.emailBroker
+    )
+      return true;
+
+    const brokerEmailDomain = broker.information.email.trim().split('@');
+    const responsibleEmailDomain = responsabileInformation.emailBroker
+      .trim()
+      .split('@');
+
+    if (brokerEmailDomain.length < 1 || responsibleEmailDomain.length < 1)
+      return false;
+
+    if (
+      brokerEmailDomain[1] === responsibleEmailDomain[1] &&
+      !EMAIL_PROVIDER_LIST.includes(responsibleEmailDomain[1].toUpperCase())
+    )
+      return true;
+
+    return false;
   };
   const templateModal = {
     title: { value: TERMS_RESPONSIBILITY.title },
     text: { value: TERMS_RESPONSIBILITY.text },
   };
+
+  const getModalButtons = () => {
+    const primaryText = 'Alterar e-mail';
+    const secondaryText = 'Manter e-mail informado';
+    const primaryAction = () => setModalValidationEmail(false);
+    const secondaryAction = () => onSubmit();
+
+    return {
+      primary: (
+        <Button
+          data-testid="modal-validation-email-handle-email-button"
+          onClick={primaryAction}
+        >
+          {primaryText}
+        </Button>
+      ),
+      secondary: (
+        <Button
+          data-testid="modal-validation-email-handle-email-button"
+          variant="secondary"
+          onClick={secondaryAction}
+          loading={isSubmitting}
+        >
+          {secondaryText}
+        </Button>
+      ),
+    };
+  };
+
+  const templateModalValidationEmail = {
+    title: { value: VALIDATION_EMAIL_MODAL.title, align: 'center' as any },
+    text: { value: VALIDATION_EMAIL_MODAL.text, align: 'center' as any },
+    buttons: getModalButtons(),
+  };
+
   return (
     <div className={styles['broker_email_wrapper']}>
       <InputBase
@@ -182,7 +257,19 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
           />
         </div>
       </div>
-
+      <div id="registerResponsible-termsResponsibility-modal">
+        <Modal
+          open={modalValidationEmail}
+          onClose={() => {
+            setModalValidationEmail(!modalValidationEmail);
+          }}
+          onBackdropClick={() => {
+            setModalValidationEmail(!modalValidationEmail);
+          }}
+          size="default"
+          template={templateModalValidationEmail}
+        />
+      </div>
       <div id="registerResponsible-termsResponsibility-modal">
         <Modal
           size="large"
@@ -196,7 +283,7 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
         <Button
           id="registerResponsible-submit-button"
           data-testid="button-responsible-information-registry"
-          onClick={onSubmit}
+          onClick={handleSubmit}
           disabled={isDisableGoNextStep}
         >
           {isSubmitting ? ((<LoadingSpinner />) as any) : 'Continuar'}

@@ -1,7 +1,5 @@
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import BrokerIssuance from '@modules/broker-issuance';
-import BrokerSignup from '@modules/broker-signup';
-
 import BrokerSignupDirect from '@modules/broker-signup-direct';
 import ProtectedRoute from '../presentation/components/ProtectedRoute/ProtectedRoute';
 
