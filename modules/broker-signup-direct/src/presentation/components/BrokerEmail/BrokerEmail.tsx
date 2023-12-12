@@ -148,7 +148,8 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
     if (
       broker.information.email &&
       responsabileInformation.emailBroker &&
-      broker.information.email === responsabileInformation.emailBroker
+      broker.information.email.toUpperCase() ===
+        responsabileInformation.emailBroker.toUpperCase()
     )
       return true;
 
@@ -161,7 +162,8 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
       return false;
 
     if (
-      brokerEmailDomain[1] === responsibleEmailDomain[1] &&
+      brokerEmailDomain[1].toUpperCase() ===
+        responsibleEmailDomain[1].toUpperCase() &&
       !EMAIL_PROVIDER_LIST.includes(responsibleEmailDomain[1].toUpperCase())
     )
       return true;
@@ -182,6 +184,7 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
     return {
       primary: (
         <Button
+          id="registerResponsible-updateEmail-modalButton"
           data-testid="modal-validation-email-handle-email-button"
           onClick={primaryAction}
         >
@@ -190,6 +193,7 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
       ),
       secondary: (
         <Button
+          id="registerResponsible-handleEmail-modalButton"
           data-testid="modal-validation-email-handle-email-button"
           variant="secondary"
           onClick={secondaryAction}
@@ -257,7 +261,7 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
           />
         </div>
       </div>
-      <div id="registerResponsible-termsResponsibility-modal">
+      <div id="registerResponsible-validationEmail-modal">
         <Modal
           open={modalValidationEmail}
           onClose={() => {

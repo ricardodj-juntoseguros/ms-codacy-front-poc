@@ -25,14 +25,14 @@ export const brokerInformationAdapter = (
       bankDigit: '',
       accounDigit: '',
     },
-    susepCode: susepInformation.retorno.numeroSusep.toString(),
+    susepCode: susepInformation?.retorno?.numeroSusep?.toString() || '0',
     iss: 0,
     simplesOptant: information.opcSimples,
-    susepSituation: susepInformation.retorno.situacao === 'Ativo',
-    renewRegistration: susepInformation.retorno.recadastrado,
+    susepSituation: susepInformation?.retorno?.situacao === 'Ativo' || false,
+    renewRegistration: susepInformation?.retorno?.recadastrado || false,
     hasProductDamageInsurance:
-      susepInformation.retorno.produtos.find(p => p.produtoId === 305) !==
-      undefined,
+      susepInformation?.retorno?.produtos.find(p => p.produtoId === 305) !==
+        undefined || false,
     codeIsValid,
     brokerExternalId: 0,
     brokerUserName: '',

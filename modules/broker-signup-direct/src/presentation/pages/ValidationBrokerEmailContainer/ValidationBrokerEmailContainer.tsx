@@ -67,7 +67,8 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
     if (
       broker.information.email &&
       responsibleInformation.emailBroker &&
-      broker.information.email === responsibleInformation.emailBroker
+      broker.information.email.toUpperCase() ===
+        responsibleInformation.emailBroker.toUpperCase()
     )
       return true;
 
@@ -80,7 +81,8 @@ const ValidationBrokerEmailContainer = ({ history }: RouteComponentProps) => {
       return false;
 
     if (
-      brokerEmailDomain[1] === responsibleEmailDomain[1] &&
+      brokerEmailDomain[1].toUpperCase() ===
+        responsibleEmailDomain[1].toUpperCase() &&
       !EMAIL_PROVIDER_LIST.includes(responsibleEmailDomain[1].toUpperCase())
     )
       return true;
