@@ -56,6 +56,8 @@ const initialState: QuoteModel = {
   securedAmount: NaN,
   toggleRateFlex: false,
   proposalFee: NaN,
+  feeFlex: NaN,
+  commissionFlex: NaN,
   paymentType: 0,
   additionalCoverage: [],
   hasAdditionalCoverageLabor: false,
@@ -100,6 +102,9 @@ export const quoteSlice = createSlice({
       } else {
         state.durationInDays = null;
       }
+      state.toggleRateFlex = false;
+      state.feeFlex = null;
+      state.commissionFlex = null;
       state.hasQuoteChanges = true;
     },
     setEndDateValidity: (state, action: PayloadAction<string | null>) => {
@@ -113,6 +118,9 @@ export const quoteSlice = createSlice({
       } else {
         state.durationInDays = null;
       }
+      state.toggleRateFlex = false;
+      state.feeFlex = null;
+      state.commissionFlex = null;
       state.hasQuoteChanges = true;
     },
     setDurationInDays: (state, action: PayloadAction<number>) => {
@@ -127,18 +135,40 @@ export const quoteSlice = createSlice({
           'dd/MM/yyyy',
         );
       }
+      state.toggleRateFlex = false;
+      state.feeFlex = null;
+      state.commissionFlex = null;
       state.hasQuoteChanges = true;
     },
     setSecuredAmount: (state, action: PayloadAction<number>) => {
       state.securedAmount = action.payload;
+      state.toggleRateFlex = false;
+      state.feeFlex = null;
+      state.commissionFlex = null;
       state.hasQuoteChanges = true;
     },
     setProposalFee: (state, action: PayloadAction<number>) => {
       state.proposalFee = action.payload;
+      state.toggleRateFlex = false;
+      state.feeFlex = null;
+      state.commissionFlex = null;
       state.hasQuoteChanges = true;
     },
     setToggleRateFlex: state => {
-      state.toggleRateFlex = !state.toggleRateFlex;
+      if (!state.currentQuote) return;
+      const valueToSet = !state.toggleRateFlex;
+      const { commissionFlex, feeFlex } = state;
+      state.toggleRateFlex = valueToSet;
+      if (!valueToSet && (!!commissionFlex || !!feeFlex)) {
+        state.hasQuoteChanges = true;
+      }
+    },
+    setFeeFlex: (state, action: PayloadAction<number>) => {
+      state.feeFlex = action.payload;
+      state.hasQuoteChanges = true;
+    },
+    setCommissionFlex: (state, action: PayloadAction<number>) => {
+      state.commissionFlex = action.payload;
       state.hasQuoteChanges = true;
     },
   },
@@ -153,12 +183,16 @@ export const quoteSlice = createSlice({
       .addCase(postQuotation.fulfilled, (state, action) => {
         state.currentQuote = action.payload;
         state.proposalFee = action.payload.proposalFee;
+        state.feeFlex = action.payload.pricing.feeFlex || NaN;
+        state.commissionFlex = action.payload.pricing.commissionFlex || NaN;
         state.loadingQuote = false;
         state.hasQuoteChanges = false;
       })
       .addCase(putQuotation.fulfilled, (state, action) => {
         state.currentQuote = action.payload;
         state.proposalFee = action.payload.proposalFee;
+        state.feeFlex = action.payload.pricing.feeFlex || NaN;
+        state.commissionFlex = action.payload.pricing.commissionFlex || NaN;
         state.loadingQuote = false;
         state.hasQuoteChanges = false;
       })

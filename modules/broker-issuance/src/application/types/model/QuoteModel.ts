@@ -16,6 +16,8 @@ export interface QuoteModel {
   securedAmount?: number;
   toggleRateFlex?: boolean;
   proposalFee?: number;
+  commissionFlex?: number | null;
+  feeFlex?: number | null;
   paymentType?: number;
   additionalCoverage?: [];
   hasAdditionalCoverageLabor?: boolean;

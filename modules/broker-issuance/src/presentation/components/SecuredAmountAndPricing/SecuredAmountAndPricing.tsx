@@ -1,11 +1,4 @@
-import {
-  Button,
-  CurrencyInput,
-  NumberInput,
-  Tag,
-  Toggle,
-  makeToast,
-} from 'junto-design-system';
+import { CurrencyInput, Tag, makeToast } from 'junto-design-system';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
@@ -18,27 +11,20 @@ import QuotationPricingApi from '../../../application/features/quotationPricing/
 import { PolicyholderBalanceLimitsDTO } from '../../../application/types/dto';
 import { selectValidation } from '../../../application/features/validation/ValidationSlice';
 import { useQuotation } from '../../hooks';
+import FlexRateToggle from '../FlexRateToggle';
 import { QuotationPricingSkeleton } from '../Skeletons';
 import styles from './SecuredAmountAndPricing.module.scss';
-import { MAX_STANDARD_FEE } from '../../../constants';
+import FeeCalculation from '../FeeCalculation';
 
 const SecuredAmountAndPricing: React.FC = () => {
   const dispatch = useDispatch();
-  const {
-    securedAmount,
-    policyholder,
-    modality,
-    currentQuote,
-    proposalFee,
-    toggleRateFlex,
-    loadingQuote,
-  } = useSelector(selectQuote);
+  const { securedAmount, policyholder, modality, currentQuote, loadingQuote } =
+    useSelector(selectQuote);
   const { errors } = useSelector(selectValidation);
   const createOrUpdateQuote = useQuotation();
   const [policyholderLimit, setPolicyholderLimit] =
     useState<PolicyholderBalanceLimitsDTO>();
-  const { setToggleRateFlex, setSecuredAmount, setProposalFee } =
-    quoteSliceActions;
+  const { setSecuredAmount } = quoteSliceActions;
 
   useEffect(() => {
     if (policyholder && modality) {
@@ -73,46 +59,58 @@ const SecuredAmountAndPricing: React.FC = () => {
     return `${displayLimit}`;
   }, [policyholderLimit]);
 
-  const calculateButtonDisabled = useMemo(() => {
-    return !(currentQuote && proposalFee && proposalFee <= MAX_STANDARD_FEE);
-  }, [currentQuote, proposalFee]);
-
   const handleSecuredAmount = (securedAmount: number) => {
     dispatch(setSecuredAmount(securedAmount));
   };
 
-  const handleChangeProposalFee = (value?: number) => {
-    dispatch(setProposalFee(value || NaN));
-  };
-
-  const renderRatesData = () => {
+  const renderPricingData = () => {
     if (!currentQuote) return null;
     const {
       totalPrize,
-      pricing: { comissionValue, commissionFee, fee },
+      proposalFee,
+      pricing: {
+        comissionValue,
+        commissionFee,
+        feeFlexEnabled,
+        feeFlex,
+        commissionFlexEnabled,
+        commissionFlex,
+      },
     } = currentQuote;
     return (
       <>
         <div
           className={classNames(
-            styles['secured-amount-pricing__rate-data-item'],
-            styles['secured-amount-pricing__rate-data-item--large'],
+            styles['secured-amount-pricing__pricing-data-item'],
+            styles['secured-amount-pricing__pricing-data-item--large'],
           )}
         >
           <p>Prêmio final</p>
           <p>{currencyFormatter(totalPrize)}</p>
         </div>
-        <div className={styles['secured-amount-pricing__rate-data-item']}>
+        <div className={styles['secured-amount-pricing__pricing-data-item']}>
           <p>Comissão final</p>
           <p>
             {currencyFormatter(comissionValue)}
             <Tag variant="neutral">{commissionFee}%</Tag>
           </p>
         </div>
-        <div className={styles['secured-amount-pricing__rate-data-item']}>
+        <div className={styles['secured-amount-pricing__pricing-data-item']}>
           <p>Taxa padrão</p>
-          <p>{thousandSeparator(fee, '.', 2)}%</p>
+          <p>{thousandSeparator(proposalFee, '.', 2)}%</p>
         </div>
+        {feeFlexEnabled && feeFlex && (
+          <div className={styles['secured-amount-pricing__pricing-data-item']}>
+            <p>Taxa flex</p>
+            <p>{thousandSeparator(feeFlex || 0, '.', 2)}%</p>
+          </div>
+        )}
+        {commissionFlexEnabled && commissionFlex && (
+          <div className={styles['secured-amount-pricing__pricing-data-item']}>
+            <p>Comissão flex</p>
+            <p>{currencyFormatter(commissionFlex || 0)}</p>
+          </div>
+        )}
       </>
     );
   };
@@ -134,42 +132,11 @@ const SecuredAmountAndPricing: React.FC = () => {
       />
       {loadingQuote && <QuotationPricingSkeleton />}
       {!loadingQuote && currentQuote && (
-        <div className={styles['secured-amount-pricing__rates-wrapper']}>
-          <div>
-            <Toggle
-              name="tgl-flexRate"
-              checked={toggleRateFlex || false}
-              label="Utilizar taxa flex"
-              onChange={() => dispatch(setToggleRateFlex())}
-            />
-          </div>
-          <div className={styles['secured-amount-pricing__rate-inputs']}>
-            <NumberInput
-              data-testid="securedAmountAndPricing-input-proposalFee"
-              allowLeadingZeros
-              fixedDecimalScale
-              label="Taxa padrão"
-              value={proposalFee}
-              maxValue={MAX_STANDARD_FEE}
-              suffix="%"
-              decimalScale={2}
-              decimalSeparator=","
-              onChange={v => handleChangeProposalFee(v)}
-              helperMessage="Taxa padrão máxima de 11,99%"
-              errorMessage={errors.proposalFee?.join('. ')}
-            />
-            <Button
-              mobileFullWidth
-              data-testid="securedAmountAndPricing-button-calculate"
-              variant="secondary"
-              disabled={calculateButtonDisabled}
-              onClick={() => createOrUpdateQuote()}
-            >
-              Calcular
-            </Button>
-          </div>
-          <div className={styles['secured-amount-pricing__rate-data']}>
-            {renderRatesData()}
+        <div className={styles['secured-amount-pricing__pricing-wrapper']}>
+          <FlexRateToggle />
+          <FeeCalculation onCalculateCallback={() => createOrUpdateQuote()} />
+          <div className={styles['secured-amount-pricing__pricing-data']}>
+            {renderPricingData()}
           </div>
         </div>
       )}

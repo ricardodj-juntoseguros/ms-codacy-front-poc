@@ -84,57 +84,10 @@ describe('SecuredAmountAndPricing', () => {
       .spyOn(QuoteApi, 'postQuotation')
       .mockImplementation(async () => quoteResulMock);
     await store.dispatch(postQuotation(createQuoteMock));
-    const { findByTestId, findByText } = render(<SecuredAmountAndPricing />);
+    const { findByText } = render(<SecuredAmountAndPricing />);
     expect(await findByText('R$ 190,00')).toBeInTheDocument();
     expect(await findByText('R$ 38,00')).toBeInTheDocument();
     expect(await findByText('20%')).toBeInTheDocument();
     expect(await findByText('0,26%')).toBeInTheDocument();
-    expect(
-      await findByTestId('securedAmountAndPricing-input-proposalFee'),
-    ).toHaveValue('0,26%');
-  });
-
-  it('Should dispatch proposalFee to store on fill', async () => {
-    jest
-      .spyOn(QuotationPricingApi, 'getPolicyholderBalanceLimits')
-      .mockImplementation(async () => ({
-        availableLimit: 10000,
-        availableFlexibilizationLimit: 15000,
-        showFlexibilizationLimit: true,
-      }));
-    jest
-      .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
-    await store.dispatch(postQuotation(createQuoteMock));
-    const { findByTestId } = render(<SecuredAmountAndPricing />);
-    const input = await findByTestId(
-      'securedAmountAndPricing-input-proposalFee',
-    );
-    fireEvent.change(input, { target: { value: '1,50' } });
-    expect(store.getState().quote.proposalFee).toEqual(1.5);
-  });
-
-  it('Should call useQuotation hook on calculate button click', async () => {
-    jest
-      .spyOn(QuotationPricingApi, 'getPolicyholderBalanceLimits')
-      .mockImplementation(async () => ({
-        availableLimit: 10000,
-        availableFlexibilizationLimit: 15000,
-        showFlexibilizationLimit: true,
-      }));
-    jest
-      .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
-    await store.dispatch(postQuotation(createQuoteMock));
-    const { findByTestId } = render(<SecuredAmountAndPricing />);
-    const input = await findByTestId(
-      'securedAmountAndPricing-input-proposalFee',
-    );
-    fireEvent.change(input, { target: { value: '1,50' } });
-    const button = await findByTestId(
-      'securedAmountAndPricing-button-calculate',
-    );
-    fireEvent.click(button);
-    expect(mockHook).toHaveBeenCalled();
   });
 });

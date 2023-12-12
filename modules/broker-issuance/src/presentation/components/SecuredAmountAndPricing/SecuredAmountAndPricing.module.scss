@@ -16,34 +16,20 @@
   margin: 0 0 spacing('l') 0;
 }
 
-.secured-amount-pricing__rates-wrapper {
+.secured-amount-pricing__pricing-wrapper {
   display: flex;
   flex-direction: column;
   gap: spacing('xl');
   margin-top: spacing('xl');
 }
 
-.secured-amount-pricing__rate-inputs {
-  display: flex;
-  flex-direction: row;
-  gap: spacing('m');
-
-  & > div:first-child {
-    max-width: 494px;
-  }
-
-  @media screen and (max-width: 486px) {
-    flex-direction: column;
-  }
-}
-
-.secured-amount-pricing__rate-data {
+.secured-amount-pricing__pricing-data {
   display: flex;
   flex-direction: column;
   gap: spacing('m');
 }
 
-.secured-amount-pricing__rate-data-item {
+.secured-amount-pricing__pricing-data-item {
   display: grid;
   grid-template-columns: 100px auto;
 

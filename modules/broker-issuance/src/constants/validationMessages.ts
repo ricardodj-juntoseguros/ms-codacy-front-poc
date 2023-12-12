@@ -13,4 +13,7 @@ export const VALIDATION_MESSAGES = {
   invalidBrokerFederalId: 'CNPJ do corretor inválido',
   invalidProposalFeeValue:
     'O valor da taxa padrão deve estar entre 0% e 11,99%',
+  invalidCommissionFlexValue:
+    'Você pode adicionar até %VALUE% de comissão flex',
+  invalidFeeFlexValue: 'O valor da taxa flex não pode ser maior que %VALUE% %',
 };

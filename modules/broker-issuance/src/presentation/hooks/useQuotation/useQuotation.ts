@@ -16,7 +16,7 @@ export const useQuotation = () => {
   const validate = useValidate();
   const dispatch = useDispatch();
   const quote = useSelector(selectQuote);
-  const { currentQuote, hasQuoteChanges } = quote;
+  const { currentQuote, hasQuoteChanges, loadingQuote } = quote;
 
   const createQuotation = async () => {
     const payload = quotationAdapter(quote, false);
@@ -40,7 +40,7 @@ export const useQuotation = () => {
       payload,
       ValidationTypesEnum.full,
       [],
-      false,
+      true,
     );
     if (valid) {
       const proposalId = currentQuote.identification.ProposalId;
@@ -49,6 +49,7 @@ export const useQuotation = () => {
   };
 
   const createOrUpdateQuotation = async () => {
+    if (loadingQuote) return;
     if (!quote.currentQuote) {
       createQuotation();
       return;

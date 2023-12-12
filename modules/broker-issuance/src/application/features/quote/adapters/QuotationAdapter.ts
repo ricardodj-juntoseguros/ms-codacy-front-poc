@@ -18,6 +18,9 @@ export const quotationAdapter = (
     securedAmount,
     hasAdditionalCoverageLabor,
     proposalFee,
+    commissionFlex,
+    feeFlex,
+    toggleRateFlex,
   } = quote;
 
   const brokerFederalId = BrokerPlatformAuthService.getBroker()?.federalId;
@@ -57,8 +60,8 @@ export const quotationAdapter = (
       ...basePayload,
       pricing: {
         proposalFee: proposalFee || null,
-        commissionFlex: null,
-        feeFlex: null,
+        commissionFlex: (toggleRateFlex && commissionFlex) || null,
+        feeFlex: (toggleRateFlex && feeFlex) || null,
       },
     };
   }

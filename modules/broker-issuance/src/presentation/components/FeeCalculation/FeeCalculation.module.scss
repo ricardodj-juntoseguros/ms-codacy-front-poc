@@ -1,0 +1,57 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+@keyframes animatedShow {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fee-calculation__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l');
+
+  & > div {
+    width: 100% !important;
+  }
+
+  & > div:nth-child(2) {
+    animation: fadeIn 400ms ease-out;
+  }
+}
+
+.fee-calculation__inputs {
+  display: flex;
+  flex-direction: row;
+  gap: spacing('m');
+
+  & > div:first-child {
+    max-width: 494px;
+  }
+
+  @media screen and (max-width: 486px) {
+    flex-direction: column;
+  }
+}
+
+.fee-calculation__flex-input {
+  overflow-x: hidden;
+  width: 100%;
+  & > div {
+    animation: animatedShow 400ms ease-in-out;
+  }
+}

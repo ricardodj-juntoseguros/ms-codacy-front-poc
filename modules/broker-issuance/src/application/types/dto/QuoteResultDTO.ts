@@ -11,10 +11,12 @@ export interface QuoteResultDTO {
     feeStandard: number;
     comissionValue: number;
     commissionFee: number;
-    hasFeeFlex: boolean;
-    hasCommissionFlex: boolean;
-    commissionFlex: number | null;
-    feeFlex: number | null;
+    feeFlexEnabled: boolean;
+    feeFlexMaxValue?: number | null;
+    feeFlex?: number | null;
+    commissionFlexEnabled: boolean;
+    commissionFlexMaxValue?: number | null;
+    commissionFlex?: number | null;
   };
   installmentOptions: {
     numberOfInstallments: number;

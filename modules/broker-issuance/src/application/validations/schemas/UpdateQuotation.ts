@@ -1,5 +1,6 @@
 import { number, object } from 'yup';
 import { CreateQuotationSchema } from './CreateQuotation';
+import { store } from '../../../config/store';
 import { MAX_STANDARD_FEE } from '../../../constants';
 
 export const UpdateQuotationSchema = CreateQuotationSchema.concat(
@@ -13,8 +14,60 @@ export const UpdateQuotationSchema = CreateQuotationSchema.concat(
           if (proposalFee > MAX_STANDARD_FEE || proposalFee === 0) return false;
           return true;
         }),
-      commissionFlex: number().nullable().notRequired(),
-      feeFlex: number().nullable().notRequired(),
+      commissionFlex: number()
+        .nullable()
+        .notRequired()
+        .test('required', function commissionFlexRequired() {
+          const { commissionFlex } = this.parent;
+          const { currentQuote, toggleRateFlex } = store.getState().quote;
+          if (!currentQuote) return false;
+          const {
+            pricing: { commissionFlexEnabled },
+          } = currentQuote;
+          if (!commissionFlexEnabled || !toggleRateFlex) return true;
+          return (
+            commissionFlex !== undefined &&
+            commissionFlex !== null &&
+            commissionFlex > 0
+          );
+        })
+        .test('invalidCommissionFlexValue', function commissionFlexValid() {
+          const { commissionFlex } = this.parent;
+          const { currentQuote } = store.getState().quote;
+          if (!currentQuote) return false;
+          const {
+            pricing: { commissionFlexEnabled, commissionFlexMaxValue },
+          } = currentQuote;
+          if (commissionFlexEnabled) {
+            return (commissionFlex || 0) <= (commissionFlexMaxValue || 0);
+          }
+          return true;
+        }),
+      feeFlex: number()
+        .nullable()
+        .notRequired()
+        .test('required', function commissionFlexRequired() {
+          const { feeFlex } = this.parent;
+          const { currentQuote, toggleRateFlex } = store.getState().quote;
+          if (!currentQuote) return false;
+          const {
+            pricing: { feeFlexEnabled },
+          } = currentQuote;
+          if (!feeFlexEnabled || !toggleRateFlex) return true;
+          return feeFlex !== undefined && feeFlex !== null && feeFlex > 0;
+        })
+        .test('invalidFeeFlexValue', function commissionFlexValid() {
+          const { feeFlex } = this.parent;
+          const { currentQuote } = store.getState().quote;
+          if (!currentQuote) return false;
+          const {
+            pricing: { feeFlexEnabled, feeFlexMaxValue },
+          } = currentQuote;
+          if (feeFlexEnabled) {
+            return (feeFlex || 0) <= (feeFlexMaxValue || 0);
+          }
+          return true;
+        }),
     }),
   }),
 );

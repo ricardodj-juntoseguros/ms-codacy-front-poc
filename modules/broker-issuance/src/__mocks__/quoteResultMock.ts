@@ -13,10 +13,12 @@ export const quoteResulMock = {
     feeStandard: 0.26,
     comissionValue: 38,
     commissionFee: 20,
-    hasFeeFlex: false,
-    hasCommissionFlex: false,
+    commissionFlexEnabled: true,
+    commissionFlexMaxValue: 100,
     commissionFlex: null,
+    feeFlexEnabled: false,
     feeFlex: null,
+    feeFlexMaxValue: null,
   },
   installmentOptions: [
     {
