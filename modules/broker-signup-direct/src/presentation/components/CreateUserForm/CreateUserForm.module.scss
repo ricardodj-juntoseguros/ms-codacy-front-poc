@@ -50,7 +50,6 @@
 
 .create-user-form-validation_password_rule_text_check{
   @include font('xs');
-  font-family: "Noto Sans";
   padding-left: spacing('s');
   color: color('grey-500');
   text-decoration: line-through;
@@ -58,7 +57,6 @@
 
 .create-user-form-validation_password_rule_text_not_check{
   @include font('xs');
-  font-family: "Noto Sans";
   padding-left: spacing('s');
 }
 

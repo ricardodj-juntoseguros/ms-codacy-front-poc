@@ -120,6 +120,7 @@ export function CreateUserForm({
         schema: PasswordSchema,
         data: {
           userName: brokerUserName,
+          name: brokerInformation.information.brokerCompanyName,
           password,
           confirmPassword,
         },
@@ -299,6 +300,23 @@ export function CreateUserForm({
               >
                 {' '}
                 Diferente do usuário{' '}
+              </span>
+            </div>
+            <div>
+              {renderIconCheckPassword(
+                VALIDATION_MESSAGES.differentCompanyName,
+              )}
+              <span
+                className={
+                  styles[
+                    renderStyleRuleChekPassword(
+                      VALIDATION_MESSAGES.differentCompanyName,
+                    )
+                  ]
+                }
+              >
+                {' '}
+                Diferente do nome ou parte do nome da corretora{' '}
               </span>
             </div>
             <div>

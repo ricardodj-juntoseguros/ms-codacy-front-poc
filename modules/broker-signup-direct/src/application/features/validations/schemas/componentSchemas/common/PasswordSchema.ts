@@ -55,6 +55,24 @@ export const PasswordSchema = object().shape({
         return true;
       },
     )
+    .test(
+      'differentCompanyName',
+      'differentCompanyName',
+      function validateDifferentCompanyName() {
+        const { name, password } = this.parent;
+        const nameVerify = name?.split(' ') || '';
+
+        for (let i = 0; i < nameVerify.length; i += 1) {
+          if (nameVerify[i].length > 2) {
+            if (password.toUpperCase().includes(nameVerify[i].toUpperCase())) {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      },
+    )
     .test('samePasswords', 'samePasswords', function validateSamePasswords() {
       const { confirmPassword, password } = this.parent;
       if (confirmPassword !== password) {

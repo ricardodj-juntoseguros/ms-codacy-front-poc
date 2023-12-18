@@ -115,6 +115,9 @@ export const brokerInformationSlice = createSlice({
     setbankIsValid: (state, action: PayloadAction<boolean>) => {
       state.bankIsValid = action.payload;
     },
+    setbrokerCompanyName: (state, action: PayloadAction<string>) => {
+      state.information.brokerCompanyName = action.payload;
+    },
   },
 });
 

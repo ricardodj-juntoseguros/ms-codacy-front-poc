@@ -15,6 +15,7 @@ export const VALIDATION_MESSAGES = {
   accounDigit: 'Informe o dígito da conta.',
   minChar: 'minChar',
   differentUserName: 'differentUserName',
+  differentCompanyName: 'differentCompanyName',
   notNumberSequence: 'notNumberSequence',
   specialChar: 'specialChar',
   min3charDifferent: 'min3charDifferent',

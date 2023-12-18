@@ -2,10 +2,14 @@ import { RouteComponentProps } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '../../../config/store';
 import styles from './CreateUserAccessContainer.module.scss';
 import CreateUserForm from '../../components/CreateUserForm/CreateUserForm';
 import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
-import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
+import {
+  selectBroker,
+  brokerInformationSliceActions,
+} from '../../../application/features/brokerInformation/BrokerInformationSlice';
 import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
 
 const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
@@ -14,6 +18,7 @@ const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
   const { signupDirect, guid } = useParams() as any;
   const [hash, setHash] = useState('');
   const [token, setToken] = useState('');
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (signupDirect) {
@@ -23,6 +28,11 @@ const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
         .then(response => {
           setHash(response.hash);
           setToken(response.token);
+          dispatch(
+            brokerInformationSliceActions.setbrokerCompanyName(
+              response.brokerCompanyName,
+            ),
+          );
         })
         .catch(() => history.push('/expired-link'));
     } else if (brokerInformation.information.federalId === '') {
