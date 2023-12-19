@@ -1,6 +1,10 @@
 import '@testing-library/jest-dom';
-import { proposalActions } from 'modules/broker-issuance/src/application/features/proposal/ProposalSlice';
-import { insuredMock } from 'modules/broker-issuance/src/__mocks__';
+import ProposalApi from '../../../application/features/proposal/ProposalApi';
+import {
+  proposalActions,
+  putProposal,
+} from '../../../application/features/proposal/ProposalSlice';
+import { insuredMock, proposalMock } from '../../../__mocks__';
 import { act, fireEvent, render } from '../../../config/testUtils';
 import { store } from '../../../config/store';
 import InsuredDataForm from './InsuredDataForm';
@@ -27,6 +31,29 @@ jest.mock('../../hooks', () => {
 });
 
 describe('InsuredDataForm', () => {
+  const mockResult = {
+    ProposalId: 12345,
+    PolicyId: 11111,
+    QuotationId: 12223,
+    NewQuoterId: 123333,
+  };
+
+  beforeAll(() => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+  });
+
   it('should be able to enter the bidding number in the store', async () => {
     const { getByTestId } = render(<InsuredDataForm name="InsuredDataForm" />);
     const biddingNumberInput = getByTestId(
@@ -56,6 +83,12 @@ describe('InsuredDataForm', () => {
   });
 
   it('should be able to call a hook to create a proposal and, if successful, proceed to the next step', async () => {
+    jest
+      .spyOn(ProposalApi, 'putProposal')
+      .mockImplementation(() => Promise.resolve(mockResult));
+    await store.dispatch(
+      putProposal({ proposalId: 12345, proposalData: proposalMock }),
+    );
     const { getByTestId, rerender } = render(
       <InsuredDataForm name="InsuredDataForm" />,
     );

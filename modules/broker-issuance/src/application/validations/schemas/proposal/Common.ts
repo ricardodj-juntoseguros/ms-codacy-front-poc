@@ -10,7 +10,7 @@ export const CommonProposalSchema = object().shape({
         if (!federalId) return false;
         return federalIdValidator(federalId, 'full');
       }),
-    addressId: number().required(),
+    addressId: number().required().min(1),
   }),
   selectedInstallmentOptions: object().shape({
     numberOfInstallments: number().required().min(1),

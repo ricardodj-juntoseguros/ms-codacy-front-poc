@@ -12,3 +12,5 @@ export * from './ModalitySelectionModel';
 export * from './ValidationModel';
 export * from './LimitModel';
 export * from './ValidationTypesEnum';
+export * from './CustomClauseRequestedByEnum';
+export * from './ContractualConditionModel';

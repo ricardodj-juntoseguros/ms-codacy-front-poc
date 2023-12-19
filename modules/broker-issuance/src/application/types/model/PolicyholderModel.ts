@@ -9,4 +9,9 @@ export interface PolicyholderModel {
   closingReferenceDay: number;
   economicGroupId: number;
   economicGroupName: string;
+  disabledFeatures: {
+    customClauses: boolean;
+    forcedInternalization: boolean;
+    policyInProgress: boolean;
+  }
 }

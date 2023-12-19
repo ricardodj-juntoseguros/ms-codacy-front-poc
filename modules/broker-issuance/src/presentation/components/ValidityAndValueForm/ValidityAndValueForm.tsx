@@ -62,7 +62,7 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
           Importante
         </h3>
         <p className={styles['validity-and-value-form__legal-terms-content']}>
-          {DISCLAIMERS.validityAndValue}
+          {DISCLAIMERS.resolutionCNSP382}
         </p>
       </div>
       <footer className={styles['validity-and-value-form__footer']}>

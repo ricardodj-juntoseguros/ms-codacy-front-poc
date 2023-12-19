@@ -1,7 +1,8 @@
-import { FunctionComponent, useEffect, useMemo } from 'react';
+import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { Button, InputBase } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
+import { selectContractualCondition } from '../../../application/features/contractualCondition/ContractualConditionSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import {
   proposalActions,
@@ -11,10 +12,14 @@ import InsuredSelection from '../InsuredSelection';
 import { useProposal } from '../../hooks';
 
 import styles from './InsuredDataForm.module.scss';
+import ContractualCondition from '../ContractualCondition';
+import ContractualConditionSkeleton from '../Skeletons/ContractualConditionSkeleton';
+import ObjectPreviewModal from '../ObjectPreviewModal';
 
 const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
   name,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { advanceStep } = useFlow();
   const updateProposal = useProposal();
@@ -27,7 +32,13 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     identification,
     createProposalSuccess,
   } = useSelector(selectProposal);
-  const { currentQuote } = useSelector(selectQuote);
+  const { currentQuote, policyholder } = useSelector(selectQuote);
+  const {
+    loadingContractualCondition,
+    openContractualConditions,
+    text,
+    requestedBy,
+  } = useSelector(selectContractualCondition);
   const { setBiddingNumber, setBiddingDescription, setCreateProposalSuccess } =
     proposalActions;
 
@@ -44,9 +55,33 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     setCreateProposalSuccess,
   ]);
 
-  const disabledButton = useMemo(
-    () => !insured || !insuredAddress || !biddingNumber,
-    [biddingNumber, insured, insuredAddress],
+  const disabledSubmitButton = useMemo(() => {
+    const hasDefaultFields =
+      insured?.federalId &&
+      insuredAddress?.addressId &&
+      biddingNumber &&
+      identification?.PolicyId;
+    const hasContratualCondition = text && requestedBy;
+    return (
+      !hasDefaultFields ||
+      (openContractualConditions && !hasContratualCondition)
+    );
+  }, [
+    biddingNumber,
+    identification?.PolicyId,
+    insured,
+    insuredAddress,
+    openContractualConditions,
+    requestedBy,
+    text,
+  ]);
+
+  const disabledObjectPreviewButton = useMemo(
+    () =>
+      !identification?.PolicyId ||
+      loadingProposal ||
+      loadingContractualCondition,
+    [identification?.PolicyId, loadingProposal, loadingContractualCondition],
   );
 
   const handleBiddingNumberChange = (biddingNumber: string) => {
@@ -57,9 +92,21 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     dispatch(setBiddingDescription(biddingDescription));
   };
 
+  const handleToggleModal = (isOpen: boolean) => {
+    setIsModalOpen(isOpen);
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     updateProposal();
+  };
+
+  const renderContractualCondition = () => {
+    const disabledCustomClauses = policyholder?.disabledFeatures.customClauses;
+    if (disabledCustomClauses) return null;
+    if (loadingProposal) return <ContractualConditionSkeleton />;
+    if (!identification?.PolicyId) return null;
+    return <ContractualCondition />;
   };
 
   return (
@@ -82,6 +129,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
             placeholder="Digite o número do edital"
             value={biddingNumber}
             onChange={e => handleBiddingNumberChange(e.target.value)}
+            onBlur={() => updateProposal()}
           />
           <InputBase
             id="insuredDataForm-biddingDescription-input"
@@ -90,9 +138,11 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
             placeholder="Digite o número do anexo do edital"
             value={biddingDescription}
             onChange={e => handleBiddingDescriptionChange(e.target.value)}
+            onBlur={() => updateProposal()}
           />
         </div>
       </div>
+      {renderContractualCondition()}
       <footer className={styles['insured-data-form__footer']}>
         <Button
           id="insuredDataForm-show-object-preview-button"
@@ -100,7 +150,8 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
           type="button"
           variant="secondary"
           fullWidth
-          disabled={loadingProposal}
+          onClick={() => handleToggleModal(true)}
+          disabled={disabledObjectPreviewButton}
         >
           Clique para visualizar o objeto
         </Button>
@@ -109,17 +160,21 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
           data-testid="insuredDataForm-submit-button"
           type="submit"
           fullWidth
-          disabled={disabledButton}
-          loading={loadingProposal}
+          disabled={disabledSubmitButton}
+          loading={loadingProposal || loadingContractualCondition}
         >
           Continuar
         </Button>
       </footer>
+      <ObjectPreviewModal
+        isModalOpen={isModalOpen}
+        onToggleModal={handleToggleModal}
+      />
       <p className={styles['insured-data-form__numbers']}>
         <span>Cotação: {currentQuote?.identification.QuotationId}</span>
         <span>Novo cotador: {currentQuote?.identification.NewQuoterId}</span>
         <span>Proposta V3: {currentQuote?.identification.ProposalId}</span>
-        <span>Número da proposta GV: {identification?.policyId}</span>
+        <span>Número da proposta GV: {identification?.PolicyId}</span>
       </p>
     </form>
   );

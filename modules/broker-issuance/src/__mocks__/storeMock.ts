@@ -1,4 +1,5 @@
 import {
+  ContractualConditionModel,
   ModalityModel,
   PolicyholderModel,
   PolicyholderSelectionModel,
@@ -31,6 +32,15 @@ export const storeMock = {
     loadingQuote: false,
     hasQuoteChanges: false,
   } as QuoteModel,
+  contractualCondition: {
+    loadingContractualCondition: false,
+    contractualCondition: null,
+    requestedBy: null,
+    text: '',
+    openContractualConditions: false,
+    currentContractualCondition: null,
+    hasContractualConditionsChanges: false,
+  } as ContractualConditionModel,
   validation: {
     isValidating: false,
     isValidForm: true,

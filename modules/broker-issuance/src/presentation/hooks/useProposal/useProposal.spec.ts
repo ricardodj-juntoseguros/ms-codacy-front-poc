@@ -36,13 +36,24 @@ describe('useProposal', () => {
       currentQuote: quoteResulMock,
     },
     proposal: {
-      identification: null,
+      identification: {
+        PolicyId: 12345,
+      },
       insured: insuredMock,
       insuredAddress: insuredMock.addresses[0],
       biddingNumber: '123456',
       biddingDescription: '12345',
       loadingProposal: false,
       createProposalSuccess: false,
+      hasProposalChanges: true,
+    },
+    contractualCondition: {
+      currentContractualCondition: null,
+      requestedBy: 1,
+      text: 'Teste',
+      openContractualConditions: true,
+      loadingContractualCondition: false,
+      hasContractualConditionsChanges: true,
     }
   };
 
@@ -60,13 +71,53 @@ describe('useProposal', () => {
 
   it('should be able to create a proposal if all information is filled in', async () => {
     useSelectorMock.mockImplementation(select =>
+      select({
+        ...updatedStoreMock,
+        contractualCondition: {
+          ...updatedStoreMock.contractualCondition,
+          text: '',
+          requestedBy: null,
+          currentContractualCondition: null,
+        }
+      }),
+    );
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const { result } = renderHook(() => useProposal());
+    await result.current();
+    expect(mockValidate).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+  });
+
+  it('should be able to create a proposal and custom clause if all information is filled in', async () => {
+    useSelectorMock.mockImplementation(select =>
       select({ ...updatedStoreMock }),
     );
     useDispatchMock.mockImplementation(() => mockDispatch);
     const { result } = renderHook(() => useProposal());
     await result.current();
-    expect(mockValidate).toHaveBeenCalled();
-    expect(mockDispatch).toHaveBeenCalled();
+    expect(mockValidate).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
+  });
+
+  it('should be able to create a proposal and update custom clause if all information is filled in', async () => {
+    useSelectorMock.mockImplementation(select =>
+      select({
+        ...updatedStoreMock,
+        contractualCondition: {
+          ...updatedStoreMock.contractualCondition,
+          currentContractualCondition: {
+            id: 12345,
+            requestedBy: 1,
+            text: 'Teste',
+          },
+        }
+      }),
+    );
+    useDispatchMock.mockImplementation(() => mockDispatch);
+    const { result } = renderHook(() => useProposal());
+    await result.current();
+    expect(mockValidate).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
   });
 
   it('should not create a proposal if there is no quote or modality selected', async () => {

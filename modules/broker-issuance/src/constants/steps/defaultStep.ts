@@ -1,5 +1,6 @@
 import { StepStatusEnum } from '@shared/hooks';
 import PolicyholderAndModalityForm from '../../presentation/components/PolicyholderAndModalityForm';
+import InsuredDataForm from '../../presentation/components/InsuredDataForm';
 
 export const DEFAULT_STEP = [
   {
@@ -11,4 +12,13 @@ export const DEFAULT_STEP = [
       boldWords: ['nome ou CNPJ do tomador e modalidade'],
     },
   },
+  // {
+  //   name: 'InsuredDataForm',
+  //   status: StepStatusEnum.EDITABLE,
+  //   component: InsuredDataForm,
+  //   title: {
+  //     text: 'Nessa etapa, indique os %STRONG% que irá fazer parte dessa garantia.',
+  //     boldWords: ['dados do segurado'],
+  //   },
+  // }
 ];

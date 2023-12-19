@@ -23,7 +23,7 @@ describe('ProposalSlice', () => {
     const { proposal } = store.getState();
     expect(putProposalMock).toHaveBeenCalled();
     expect(putProposalMock).toHaveBeenCalledWith(12345, proposalMock);
-    expect(proposal.identification?.policyId).toEqual(mockResult.PolicyId);
+    expect(proposal.identification?.PolicyId).toEqual(mockResult.PolicyId);
   });
 
   it('Should not update the store if the call returns an error', async () => {

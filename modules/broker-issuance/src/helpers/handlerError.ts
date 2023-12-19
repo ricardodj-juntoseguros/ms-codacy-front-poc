@@ -1,4 +1,4 @@
-export default function handleError(error: any, customMessage?: string) {
+export default function handleError(error: any, customMessage?: string): string {
   const errorMessage = customMessage || 'Houve um erro inesperado.';
   if (!error.data) return errorMessage;
   if (error.data && error.data.data && error.data.data.Message && typeof error.data.data.Message === 'string') return error.data.data.Message;

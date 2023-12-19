@@ -1,0 +1,4 @@
+export const objectPreviewResultMock = {
+  objectInsuranceText: "<p>\n  <p>Esta Apólice de riscos declarados garante Indenização, até o valor do Limite Máximo de Garantia, pelos Prejuízos decorrentes da recusa do Tomador adjudicatário em assinar o contrato administrativo licitado, conforme termos e condições descritos no <b>Edital 12345.</b></p>\n  <p>O presente documento é emitido em consonância com a Circular SUSEP 662, de 11 de abril de 2022.</p>\n  <p>\n    <b>ESTA APÓLICE NÃO PODERÁ SER UTILIZADA COMO COMPLEMENTO OU ENDOSSO DE APÓLICE ANTERIORMENTE FORNECIDA POR ESTA SEGURADORA REFERENTE AO MESMO EDITAL E/OU CONTRATO OBJETO DESTE SEGURO.</b>\n  </p>\n</p>\r\n\r\nEste Seguro é extensivo à Filial do Tomador: \r\nTEGMA GESTAO LOGISTICA S.A. \r\nCNPJ nº  \r\nEndereço AVENIDA PORTUGAL - 46 - ITAPEVI - SP - GALPAO14 \r\nCEP: 06696060",
+  objectInsuranceOrigin: "DocuSign"
+};

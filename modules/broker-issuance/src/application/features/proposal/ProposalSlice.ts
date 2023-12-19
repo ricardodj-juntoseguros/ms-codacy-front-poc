@@ -31,6 +31,7 @@ const initialState: ProposalModel = {
   biddingDescription: '',
   loadingProposal: false,
   createProposalSuccess: false,
+  hasProposalChanges: false,
 };
 
 export const proposaSlice = createSlice({
@@ -44,18 +45,23 @@ export const proposaSlice = createSlice({
       state.biddingNumber = '';
       state.biddingDescription = '';
       state.createProposalSuccess = false;
+      state.hasProposalChanges = false;
     },
     setInsured: (state, action) => {
       state.insured = action.payload;
+      state.hasProposalChanges = true;
     },
     setInsuredAddress: (state, action) => {
       state.insuredAddress = action.payload;
+      state.hasProposalChanges = true;
     },
     setBiddingNumber: (state, action) => {
       state.biddingNumber = action.payload;
+      state.hasProposalChanges = true;
     },
     setBiddingDescription: (state, action) => {
       state.biddingDescription = action.payload;
+      state.hasProposalChanges = true;
     },
     setCreateProposalSuccess: (state, action) => {
       state.createProposalSuccess = action.payload;
@@ -69,14 +75,16 @@ export const proposaSlice = createSlice({
       })
       .addCase(putProposal.fulfilled, (state, action) => {
         state.identification = {
-          policyId: action.payload.PolicyId,
+          PolicyId: action.payload.PolicyId,
         };
         state.loadingProposal = false;
         state.createProposalSuccess = true;
+        state.hasProposalChanges = false;
       })
       .addCase(putProposal.rejected, (state, action) => {
         state.loadingProposal = false;
         state.createProposalSuccess = false;
+        state.hasProposalChanges = true;
         if (action.payload) makeToast('error', action.payload);
       });
   },

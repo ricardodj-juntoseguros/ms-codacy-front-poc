@@ -14,6 +14,7 @@ module.exports = {
     '/src/constants/',
     '/src/application/types/',
     '/src/application/validations/',
+    '/src/presentation/components/Skeletons/',
     'index.ts',
     'index.tsx',
   ],

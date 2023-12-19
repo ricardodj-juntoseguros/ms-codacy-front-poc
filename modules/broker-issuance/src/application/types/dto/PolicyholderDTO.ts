@@ -12,6 +12,11 @@ export interface PolicyholderDTO {
     closingReferenceDay: number;
     economicGroupId: number;
     economicGroupName: string;
+    disabledFeatures: {
+      customClauses: boolean;
+      forcedInternalization: boolean;
+      policyInProgress: boolean;
+    }
   };
   affiliates: Array<PolicyholderAffiliatesDTO>;
 }

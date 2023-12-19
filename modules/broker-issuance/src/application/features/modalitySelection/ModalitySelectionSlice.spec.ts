@@ -13,7 +13,7 @@ describe('ModalitySelectionSlice', () => {
     store.dispatch(modalitySelectionActions.resetModalitySelection());
   });
 
-  it('', async () => {
+  it('should be able to get modalities', async () => {
     const fetchModalitiesMock = jest
       .spyOn(ModalitySelecionApi, 'fetchModalities')
       .mockImplementation(() => Promise.resolve([modalityDefaultMock]));
@@ -33,7 +33,7 @@ describe('ModalitySelectionSlice', () => {
     });
   });
 
-  it('', async () => {
+  it('should be able to display an error if the call fails', async () => {
     const fetchModalitiesMock = jest
       .spyOn(ModalitySelecionApi, 'fetchModalities')
       .mockImplementation(() =>

@@ -10,3 +10,6 @@ export * from './quoteResultMock';
 export * from './brokerMock';
 export * from './insuredMock';
 export * from './proposalMock';
+export * from './customClauseMock';
+export * from './objectPreviewMock';
+export * from './objectPreviewResultMock';

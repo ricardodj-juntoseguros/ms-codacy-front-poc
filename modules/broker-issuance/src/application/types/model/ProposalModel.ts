@@ -3,7 +3,7 @@ import { InsuredModel } from "./InsuredModel";
 
 export interface ProposalModel {
   identification: {
-    policyId?: number;
+    PolicyId: number;
   } | null;
   insured: InsuredModel | null;
   insuredAddress: InsuredAddressModel | null;
@@ -11,5 +11,5 @@ export interface ProposalModel {
   biddingDescription: string;
   loadingProposal: boolean;
   createProposalSuccess: boolean;
-
+  hasProposalChanges: boolean;
 }

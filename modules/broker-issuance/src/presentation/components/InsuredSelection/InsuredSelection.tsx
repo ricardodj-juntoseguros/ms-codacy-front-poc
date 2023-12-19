@@ -13,6 +13,7 @@ import {
   searchInsured,
   selectInsuredSelection,
 } from '../../../application/features/insuredSelection/InsuredSelectionSlice';
+import { useProposal } from '../../hooks';
 
 import styles from './InsuredSelection.module.scss';
 
@@ -28,6 +29,7 @@ const InsuredSelection: FunctionComponent = () => {
   const { setInsuredSearchValue, setInsuredAddressesOptions } =
     insuredSelectionActions;
   const { insured, insuredAddress } = useSelector(selectProposal);
+  const updateProposal = useProposal();
   const { setInsured, setInsuredAddress } = proposalActions;
 
   useDebounce(
@@ -51,6 +53,8 @@ const InsuredSelection: FunctionComponent = () => {
     1250,
     [insuredSearchValue, loadingSearchInsureds, insuredOptions],
   );
+
+  useDebounce(() => updateProposal(), 250, [insuredAddress]);
 
   const isCurrentValueFromOptions = useMemo(() => {
     return !!insuredOptions.find(opt => opt.label === insuredSearchValue);
@@ -83,6 +87,7 @@ const InsuredSelection: FunctionComponent = () => {
     dispatch(setInsuredAddress(null));
     dispatch(setInsured(optionSelected));
     onSetInsuredAddressesOptions(optionSelected.addresses);
+    updateProposal();
   };
 
   const handleSelectInsuredAddress = (optionSelected: InsuredModel) => {

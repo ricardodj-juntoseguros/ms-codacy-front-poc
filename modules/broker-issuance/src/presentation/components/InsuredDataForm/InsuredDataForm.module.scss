@@ -3,12 +3,7 @@
 .insured-data-form__wrapper {
   display: flex;
   flex-direction: column;
-  gap: spacing('l');
-}
-
-.insured-data-form__address,
-.insured-data-form__bidding-data {
-  margin: spacing('m') 0 0 0;
+  gap: spacing('xl');
 }
 
 .insured-data-form__bidding-data-fields {
@@ -30,7 +25,7 @@
   display: flex;
   justify-content: space-between;
   gap: spacing('l');
-  margin-top: spacing('xxl-4');
+  margin-top: spacing('m');
 
   & > button {
     max-width: 312px;
