@@ -29,9 +29,10 @@ export const quotationAdapter = (
       federalId: policyholder
         ? policyholder.federalId.replace(/[^\d]+/g, '')
         : undefined,
-      affiliateFederalId: policyholderAffiliate
-        ? policyholderAffiliate.federalId.replace(/[^\d]+/g, '')
-        : null,
+      affiliateFederalId:
+        policyholderAffiliate && policyholderAffiliate.id !== 0
+          ? policyholderAffiliate.federalId.replace(/[^\d]+/g, '')
+          : null,
     },
     modality: {
       id: modality?.id,

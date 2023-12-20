@@ -66,7 +66,7 @@ const ValidityFields: React.FC = () => {
 
   const retroactiveDays = useMemo(() => {
     if (modality && VARIANT_RETROACTIVE_DATE_MODALITIES.includes(modality.id)) {
-      return modality.retroactiveDays;
+      return modality.retroactiveDays || 1095;
     }
     return 1095;
   }, [modality]);

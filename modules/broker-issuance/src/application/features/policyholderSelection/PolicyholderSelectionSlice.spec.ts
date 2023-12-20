@@ -8,6 +8,7 @@ import {
   searchPolicyholder,
   policyholderSelectionActions,
 } from './PolicyholderSelectionSlice';
+import { PolicyholderSearchModel } from '../../types/model';
 
 describe('PolicyholderSelectionSlice', () => {
   const optionsMock = [
@@ -112,5 +113,23 @@ describe('PolicyholderSelectionSlice', () => {
     expect(policyholderSelection.policyholderOptions).toEqual([]);
     expect(policyholderSelection.loadingSearchPolicyholder).toEqual(false);
     expect(policyholderSelection.loadingGetSubsidiaries).toEqual(false);
+  });
+
+  it('Should be able to set policyholder options', () => {
+    const mockPayload: PolicyholderSearchModel[] = [
+      {
+        id: 1,
+        companyName: 'Tomador 1',
+        federalId: '11111111111111',
+        label: 'teste',
+        value: '11111111111111',
+      },
+    ];
+    store.dispatch(
+      policyholderSelectionActions.setPolicyholderOptions(mockPayload),
+    );
+    expect(
+      store.getState().policyholderSelection.policyholderOptions.length,
+    ).toBe(1);
   });
 });

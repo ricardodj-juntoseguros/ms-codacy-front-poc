@@ -53,6 +53,7 @@ describe('PolicyholderSelection', () => {
       <PolicyholderSelection
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
       />,
     );
     expect(baseElement).toBeTruthy();
@@ -65,6 +66,7 @@ describe('PolicyholderSelection', () => {
       <PolicyholderSelection
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
       />,
     );
     const input = getByTestId('policyholderSelection-input-search');
@@ -84,6 +86,7 @@ describe('PolicyholderSelection', () => {
       <PolicyholderSelection
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
       />,
     );
     fireEvent.change(getByTestId('policyholderSelection-input-search'), {
@@ -114,6 +117,7 @@ describe('PolicyholderSelection', () => {
       <PolicyholderSelection
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
       />,
     );
     fireEvent.change(getByTestId('policyholderSelection-input-search'), {
@@ -150,6 +154,7 @@ describe('PolicyholderSelection', () => {
       <PolicyholderSelection
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
       />,
     );
     fireEvent.change(getByTestId('policyholderSelection-input-search'), {
@@ -191,6 +196,7 @@ describe('PolicyholderSelection', () => {
       <PolicyholderSelection
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
       />,
     );
     fireEvent.change(getByTestId('policyholderSelection-input-search'), {
@@ -213,6 +219,7 @@ describe('PolicyholderSelection', () => {
       <PolicyholderSelection
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
       />,
     );
     await act(async () => {
@@ -262,6 +269,7 @@ describe('PolicyholderSelection', () => {
       <PolicyholderSelection
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
       />,
     );
     await act(async () => {

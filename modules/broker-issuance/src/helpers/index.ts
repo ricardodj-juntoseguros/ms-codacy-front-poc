@@ -4,3 +4,4 @@ export * from './parseDateToString';
 export * from './verifyDateIsSameOrBefore';
 export * from './handlerError';
 export * from './checkValidFederalId';
+export * from './mapPolicyholderSearchOptions';

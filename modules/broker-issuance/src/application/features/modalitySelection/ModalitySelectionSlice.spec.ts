@@ -7,6 +7,7 @@ import {
   fetchModalities,
   modalitySelectionActions,
 } from './ModalitySelectionSlice';
+import { ModalityModel } from '../../types/model';
 
 describe('ModalitySelectionSlice', () => {
   beforeEach(() => {
@@ -54,5 +55,20 @@ describe('ModalitySelectionSlice', () => {
     const { modalitySelecion } = store.getState();
     expect(modalitySelecion.modalityOptions).toEqual([]);
     expect(modalitySelecion.loadingModalities).toBe(false);
+  });
+
+  it('Should be able to set modality options', () => {
+    const mockPayload: ModalityModel[] = [
+      {
+        id: 99,
+        description: 'Licitante',
+        label: 'Licitante',
+        value: '99',
+        submodalities: [],
+      },
+    ];
+    store.dispatch(modalitySelectionActions.setModalityOptions(mockPayload));
+    const { modalitySelecion } = store.getState();
+    expect(modalitySelecion.modalityOptions.length).toBe(1);
   });
 });

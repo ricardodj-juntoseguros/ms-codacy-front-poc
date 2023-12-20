@@ -15,6 +15,7 @@ export * from './SubmodalityDTO';
 export * from './PolicyholderBalanceLimitsDTO';
 export * from './ProposalDTO';
 export * from './ProposalResultDTO';
+export * from './ProposalResumeDTO';
 export * from './CustomClauseDTO';
 export * from './ObjectPreviewDTO';
 export * from './ObjectPreviewResultDTO';

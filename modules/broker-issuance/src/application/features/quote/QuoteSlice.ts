@@ -14,7 +14,12 @@ import {
   QuoteModel,
 } from '../../types/model';
 import QuoteApi from './QuoteApi';
-import { QuotationDTO, QuoteResultDTO } from '../../types/dto';
+import {
+  ProposalResumeDTO,
+  QuotationDTO,
+  QuoteResultDTO,
+  SubmodalityDTO,
+} from '../../types/dto';
 import { parseStringToDate } from '../../../helpers';
 import { PolicyholderAffiliatesModel } from '../../types/model/PolicyholderAffiliatesModel';
 
@@ -65,6 +70,7 @@ const initialState: QuoteModel = {
   hasAdditionalCoverageVigilance: false,
   loadingQuote: false,
   hasQuoteChanges: false,
+  isQuoteResume: false,
 };
 
 export const quoteSlice = createSlice({
@@ -72,6 +78,21 @@ export const quoteSlice = createSlice({
   initialState,
   reducers: {
     resetQuote: () => initialState,
+    setQuoteResumeData: (state, action: PayloadAction<ProposalResumeDTO>) => {
+      const {
+        securedAmount,
+        proposalFee,
+        commissionFlex,
+        feeFlex,
+        durationInDays,
+      } = action.payload;
+      state.isQuoteResume = true;
+      state.securedAmount = securedAmount;
+      state.proposalFee = proposalFee;
+      state.commissionFlex = commissionFlex;
+      state.feeFlex = feeFlex;
+      state.durationInDays = durationInDays;
+    },
     setPolicyholder: (state, action: PayloadAction<PolicyholderModel>) => {
       state.policyholder = action.payload;
       state.hasQuoteChanges = true;

@@ -4,7 +4,6 @@ import {
   createSlice,
   nanoid,
 } from '@reduxjs/toolkit';
-import { federalIdFormatter } from '@shared/utils';
 import { RootState } from '../../../config/store';
 import {
   PolicyholderSearchModel,
@@ -12,7 +11,10 @@ import {
 } from '../../types/model';
 import PolicyholderSelectionApi from './PolicyholderSelectionApi';
 import { PolicyholderAffiliatesDTO } from '../../types/dto/PolicyholderAffiliatesDTO';
-import { checkValidFederalId } from '../../../helpers';
+import {
+  checkValidFederalId,
+  mapPolicyholderSearchOptions,
+} from '../../../helpers';
 import { AFFILIATE_DEFAULT_OPTIONS } from '../../../constants';
 
 export const searchPolicyholder = createAsyncThunk(
@@ -24,16 +26,8 @@ export const searchPolicyholder = createAsyncThunk(
     return PolicyholderSelectionApi.searchPolicyHolder(value)
       .then(response => {
         if (!response.records) return [];
-        const data: PolicyholderSearchModel[] = response.records.map(
-          policyholder => ({
-            id: policyholder.id,
-            federalId: policyholder.federalId,
-            companyName: policyholder.name,
-            label: `${federalIdFormatter(policyholder.federalId)} - ${policyholder.name}`,
-            value: policyholder.federalId,
-          }),
-        );
-
+        const data: PolicyholderSearchModel[] =
+          mapPolicyholderSearchOptions(response);
         return data;
       })
       .catch(error => rejectWithValue(error.data));
@@ -66,6 +60,12 @@ export const policyholderSelectionSlice = createSlice({
     setPolicyholderSearchValue: (state, action: PayloadAction<string>) => {
       if (!action.payload) state.policyholderOptions = [];
       state.policyholderSearchValue = action.payload;
+    },
+    setPolicyholderOptions: (
+      state,
+      action: PayloadAction<PolicyholderSearchModel[]>,
+    ) => {
+      state.policyholderOptions = action.payload;
     },
     setPolicyholderAffiliatesOptions: (
       state,

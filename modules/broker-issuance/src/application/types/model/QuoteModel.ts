@@ -25,4 +25,5 @@ export interface QuoteModel {
   hasAdditionalCoverageVigilance?: boolean;
   loadingQuote?: boolean;
   hasQuoteChanges: boolean;
+  isQuoteResume: boolean;
 }

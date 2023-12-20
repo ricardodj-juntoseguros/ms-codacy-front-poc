@@ -1,6 +1,13 @@
-import { IHttpClient, IHttpClientRequestParameters } from "@infrastructure/http-client";
-import BrokerInssuanceBaseApi from "../BrokerIssuanceBaseApi";
-import { ProposalDTO, ProposalResultDTO } from "../../types/dto";
+import {
+  IHttpClient,
+  IHttpClientRequestParameters,
+} from '@infrastructure/http-client';
+import BrokerInssuanceBaseApi from '../BrokerIssuanceBaseApi';
+import {
+  ProposalDTO,
+  ProposalResultDTO,
+  ProposalResumeDTO,
+} from '../../types/dto';
 
 class ProposalApi {
   private readonly httpClient: IHttpClient;
@@ -15,6 +22,16 @@ class ProposalApi {
       payload: proposalPayload,
     };
     return await this.httpClient.put<ProposalResultDTO>(params);
+  }
+
+  async getProposalResume(identification: number) {
+    const params: IHttpClientRequestParameters = {
+      url: `/v1/proposals/${identification}/details`,
+      params: {
+        format: 'resume',
+      },
+    };
+    return await this.httpClient.get<ProposalResumeDTO>(params);
   }
 }
 

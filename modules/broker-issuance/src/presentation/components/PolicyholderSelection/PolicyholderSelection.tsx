@@ -38,16 +38,15 @@ import styles from './PolicyholderSelection.module.scss';
 
 export interface PolicyholderSelectionProps {
   needAppointmentLetter: boolean;
+  readonlyFields: boolean;
   setNeedAppointmentLetter: (value: boolean) => void;
 }
 
 const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
   needAppointmentLetter,
+  readonlyFields,
   setNeedAppointmentLetter,
 }) => {
-  const [showEmptyOptions, setShowEmptyOptions] = useState(false);
-  const [loadingPolicyholderDetails, setLoadingPolicyholderDetails] =
-    useState(false);
   const dispatch = useDispatch();
   const {
     policyholderOptions,
@@ -57,6 +56,9 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     isValidFederalId,
   } = useSelector(selectPolicyholder);
   const { policyholderAffiliate, policyholder } = useSelector(selectQuote);
+  const [showEmptyOptions, setShowEmptyOptions] = useState(false);
+  const [loadingPolicyholderDetails, setLoadingPolicyholderDetails] =
+    useState(false);
   const { setPolicyholderSearchValue, setPolicyholderAffiliatesOptions } =
     policyholderSelectionActions;
   const { resetModalitySelection } = modalitySelectionActions;
@@ -251,6 +253,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
           showEmptyOptions={showEmptyOptions}
           loading={loadingSearchPolicyholder || loadingPolicyholderDetails}
           autoComplete="off"
+          readOnly={readonlyFields}
         />
         {renderPolicyholderDetailsLink()}
       </div>

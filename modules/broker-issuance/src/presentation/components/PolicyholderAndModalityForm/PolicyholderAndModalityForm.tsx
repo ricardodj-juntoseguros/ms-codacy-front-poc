@@ -1,4 +1,10 @@
-import { FunctionComponent, useCallback, useMemo, useState } from 'react';
+import {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
@@ -36,14 +42,22 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   const [appointmentLetter, setAppointmentLetter] = useState<UploadFile[]>([]);
   const [uploadAppointmentLetterLoading, setUploadAppointmentLetterLoading] =
     useState(false);
-  const { advanceStep, setSteps } = useFlow();
+  const { advanceStep, setSteps, steps } = useFlow();
   const { modalityOptions, loadingModalities } = useSelector(selectModality);
-  const { policyholder, modality } = useSelector(selectQuote);
+  const { policyholder, modality, isQuoteResume, currentQuote } =
+    useSelector(selectQuote);
   const { policyholderSearchValue } = useSelector(selectPolicyholder);
   const dispatch = useDispatch();
   const history = useHistory();
   const { clearPolicyholderSelection } = policyholderSelectionActions;
   const { setModality } = quoteSliceActions;
+
+  useEffect(() => {
+    if (modality && steps && steps.length === 1) {
+      setSteps(MODALITY_STEPS[modality.id]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modality, steps]);
 
   const disabledSubmitButton = useMemo(() => {
     if (needAppointmentLetter) {
@@ -51,6 +65,10 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
     }
     return !policyholder || !modality;
   }, [appointmentLetter, modality, needAppointmentLetter, policyholder]);
+
+  const isReadonlyFields = useMemo(() => {
+    return isQuoteResume || !!currentQuote;
+  }, [isQuoteResume, currentQuote]);
 
   const handleUploadFile = (files: UploadFile[]) => {
     setAppointmentLetter(files);
@@ -61,7 +79,6 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   };
 
   const handleModalitySelected = (optionSelected: ModalityModel) => {
-    setSteps(MODALITY_STEPS[optionSelected.id]);
     dispatch(setModality(optionSelected));
   };
 
@@ -138,6 +155,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
           onValueSelected={handleModalitySelected}
           disabled={modalityOptions.length === 0}
           loading={loadingModalities}
+          readOnly={isReadonlyFields}
         />
         {modalityOptions.length !== 0 && (
           <LinkButton
@@ -157,6 +175,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
       onSubmit={e => handleSubmit(e)}
     >
       <PolicyholderSelection
+        readonlyFields={isReadonlyFields}
         needAppointmentLetter={needAppointmentLetter}
         setNeedAppointmentLetter={setNeedAppointmentLetter}
       />

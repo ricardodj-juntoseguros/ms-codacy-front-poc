@@ -8,6 +8,7 @@ const Routes: React.FC = () => (
     <Switch>
       <Route path="/" exact component={QuoteContainer} />
       <Route path="/finish" exact component={QuoteFinishContainer} />
+      <Route path="/:identification" exact component={QuoteContainer} />
     </Switch>
   </BrowserRouter>
 );

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { makeToast } from 'junto-design-system';
 import handleError from '../../../helpers/handlerError';
 import { RootState } from '../../../config/store';
@@ -40,6 +40,10 @@ export const ModalitySelectionSlice = createSlice({
   reducers: {
     resetModalitySelection: state => {
       state.modalityOptions = [];
+      state.loadingModalities = false;
+    },
+    setModalityOptions: (state, action: PayloadAction<ModalityModel[]>) => {
+      state.modalityOptions = action.payload;
       state.loadingModalities = false;
     },
   },
