@@ -5,12 +5,18 @@ import {
   quoteSliceActions,
 } from '../../../application/features/quote/QuoteSlice';
 import { store } from '../../../config/store';
-import { act, fireEvent, render } from '../../../config/testUtils';
+import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
 import ValidityAndValueForm from './ValidityAndValueForm';
-import { createQuoteMock, quoteResulMock } from '../../../__mocks__';
+import {
+  createQuoteMock,
+  proposalResumeMock,
+  quoteResulMock,
+} from '../../../__mocks__';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
 
 const advanceStepMock = jest.fn();
+const mockHook = jest.fn();
+
 jest.mock('@shared/hooks', () => {
   const originalModule = jest.requireActual('@shared/hooks');
   return {
@@ -27,6 +33,13 @@ jest.mock('@shared/utils', () => {
     __esModule: true,
     ...originalModule,
     downloadFile: jest.fn(),
+  };
+});
+jest.mock('../../hooks', () => {
+  const rest = jest.requireActual('../../hooks');
+  return {
+    ...rest,
+    useQuotation: () => mockHook,
   };
 });
 
@@ -88,5 +101,17 @@ describe('ValidityAndValueForm', () => {
     });
     expect(downloadMock).toHaveBeenCalledWith(1868859);
     expect(downloadFile).toHaveBeenCalled();
+  });
+
+  it('Should call useQuotation hook on render if there is current quote without prize and isQuoteResume is true', async () => {
+    store.dispatch(quoteSliceActions.setQuoteResumeData(proposalResumeMock));
+    const { container } = render(
+      <ValidityAndValueForm name="validityAndValue" />,
+    );
+    expect(container).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(mockHook).toHaveBeenCalled();
+    });
   });
 });

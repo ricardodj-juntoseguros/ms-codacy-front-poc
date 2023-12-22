@@ -163,7 +163,9 @@ const ValidityFields: React.FC = () => {
           invalidMinDateMessage={
             VALIDATION_MESSAGES.initialValidityMaxRetroactive
           }
-          errorMessage={errors.validityStartDate?.join('. ')}
+          errorMessage={(errors.startDate || errors.validityStartDate)?.join(
+            '. ',
+          )}
           onBlur={() => createOrUpdateQuote()}
         />
         <DateInput

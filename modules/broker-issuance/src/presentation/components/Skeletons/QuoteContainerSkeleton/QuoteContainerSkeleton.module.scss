@@ -1,0 +1,65 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.quote-container-skeleton__wrapper {
+  display: flex;
+  flex-flow: column;
+
+  & > div:first-child {
+    display: block;
+
+    & > div:first-child {
+      margin-bottom: spacing('xxl-2');
+      display: flex;
+      flex-direction: row;
+      gap: spacing('m');
+    }
+
+    & > div:nth-child(2) {
+      margin-bottom: spacing('xl');
+      padding-left: spacing('m') + spacing('xxl');
+    }
+
+    & > div:nth-child(3) {
+      margin-bottom: spacing('xxl-3');
+      padding-left: spacing('m') + spacing('xxl');
+    }
+    & > div:last-child {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  }
+
+  & > div:last-child {
+    display: none;
+    flex-direction: column;
+
+    & > div:first-child {
+      margin-bottom: spacing('m');
+    }
+
+    & > div:nth-child(2) {
+      margin-bottom: spacing('xxl-2');
+    }
+
+    & > div:nth-child(3) {
+      margin-bottom: spacing('l');
+    }
+
+    & > div:nth-child(4) {
+      margin-bottom: spacing('xxl');
+    }
+  }
+
+  @media screen and (max-width: 712px) {
+    padding: 0px spacing('l');
+
+    & > div:first-child {
+      display: none;
+    }
+
+    & > div:last-child {
+      display: flex;
+    }
+  }
+}

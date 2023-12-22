@@ -19,8 +19,10 @@ export const UpdateQuotationSchema = CreateQuotationSchema.concat(
         .notRequired()
         .test('required', function commissionFlexRequired() {
           const { commissionFlex } = this.parent;
-          const { currentQuote, toggleRateFlex } = store.getState().quote;
+          const { currentQuote, toggleRateFlex, isQuoteResume } =
+            store.getState().quote;
           if (!currentQuote) return false;
+          if (isQuoteResume && !currentQuote.pricing) return true;
           const {
             pricing: { commissionFlexEnabled },
           } = currentQuote;
@@ -33,8 +35,9 @@ export const UpdateQuotationSchema = CreateQuotationSchema.concat(
         })
         .test('invalidCommissionFlexValue', function commissionFlexValid() {
           const { commissionFlex } = this.parent;
-          const { currentQuote } = store.getState().quote;
+          const { currentQuote, isQuoteResume } = store.getState().quote;
           if (!currentQuote) return false;
+          if (isQuoteResume && !currentQuote.pricing) return true;
           const {
             pricing: { commissionFlexEnabled, commissionFlexMaxValue },
           } = currentQuote;
@@ -48,8 +51,10 @@ export const UpdateQuotationSchema = CreateQuotationSchema.concat(
         .notRequired()
         .test('required', function commissionFlexRequired() {
           const { feeFlex } = this.parent;
-          const { currentQuote, toggleRateFlex } = store.getState().quote;
+          const { currentQuote, toggleRateFlex, isQuoteResume } =
+            store.getState().quote;
           if (!currentQuote) return false;
+          if (isQuoteResume && !currentQuote.pricing) return true;
           const {
             pricing: { feeFlexEnabled },
           } = currentQuote;
@@ -58,8 +63,9 @@ export const UpdateQuotationSchema = CreateQuotationSchema.concat(
         })
         .test('invalidFeeFlexValue', function commissionFlexValid() {
           const { feeFlex } = this.parent;
-          const { currentQuote } = store.getState().quote;
+          const { currentQuote, isQuoteResume } = store.getState().quote;
           if (!currentQuote) return false;
+          if (isQuoteResume && !currentQuote.pricing) return true;
           const {
             pricing: { feeFlexEnabled, feeFlexMaxValue },
           } = currentQuote;

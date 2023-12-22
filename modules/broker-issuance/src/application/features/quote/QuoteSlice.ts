@@ -5,6 +5,7 @@ import {
   differenceInCalendarDays,
   format,
   startOfDay,
+  parseISO,
 } from 'date-fns';
 import { DEFAULT_SUBMODALITY_ID } from '../../../constants';
 import { RootState } from '../../../config/store';
@@ -18,7 +19,6 @@ import {
   ProposalResumeDTO,
   QuotationDTO,
   QuoteResultDTO,
-  SubmodalityDTO,
 } from '../../types/dto';
 import { parseStringToDate } from '../../../helpers';
 import { PolicyholderAffiliatesModel } from '../../types/model/PolicyholderAffiliatesModel';
@@ -80,18 +80,40 @@ export const quoteSlice = createSlice({
     resetQuote: () => initialState,
     setQuoteResumeData: (state, action: PayloadAction<ProposalResumeDTO>) => {
       const {
+        proposalId,
+        metadata,
         securedAmount,
+        validityStartDate,
+        durationInDays,
         proposalFee,
         commissionFlex,
         feeFlex,
-        durationInDays,
       } = action.payload;
       state.isQuoteResume = true;
+      state.hasQuoteChanges = true;
+      state.currentQuote = {
+        identification: {
+          ProposalId: proposalId,
+          NewQuoterId: Number.parseInt(`${metadata.newquoterid || 0}`, 10),
+          QuotationId: Number.parseInt(`${metadata.quotationid || 0}`, 10),
+        },
+      } as QuoteResultDTO;
       state.securedAmount = securedAmount;
+      state.startDateValidity = format(
+        startOfDay(parseISO(validityStartDate)),
+        'dd/MM/yyyy',
+      );
+      state.endDateValidity = format(
+        addDays(startOfDay(parseISO(validityStartDate)), durationInDays),
+        'dd/MM/yyyy',
+      );
+      state.durationInDays = durationInDays;
       state.proposalFee = proposalFee;
       state.commissionFlex = commissionFlex;
       state.feeFlex = feeFlex;
-      state.durationInDays = durationInDays;
+      if (feeFlex || commissionFlex) {
+        state.toggleRateFlex = true;
+      }
     },
     setPolicyholder: (state, action: PayloadAction<PolicyholderModel>) => {
       state.policyholder = action.payload;
@@ -123,9 +145,12 @@ export const quoteSlice = createSlice({
       } else {
         state.durationInDays = null;
       }
-      state.toggleRateFlex = false;
-      state.feeFlex = null;
-      state.commissionFlex = null;
+      // Only clear flex fields if has already calculated prize
+      if (state.currentQuote && state.currentQuote.totalPrize) {
+        state.toggleRateFlex = false;
+        state.feeFlex = null;
+        state.commissionFlex = null;
+      }
       state.hasQuoteChanges = true;
     },
     setEndDateValidity: (state, action: PayloadAction<string | null>) => {
@@ -139,9 +164,12 @@ export const quoteSlice = createSlice({
       } else {
         state.durationInDays = null;
       }
-      state.toggleRateFlex = false;
-      state.feeFlex = null;
-      state.commissionFlex = null;
+      // Only clear flex fields if has already calculated prize
+      if (state.currentQuote && state.currentQuote.totalPrize) {
+        state.toggleRateFlex = false;
+        state.feeFlex = null;
+        state.commissionFlex = null;
+      }
       state.hasQuoteChanges = true;
     },
     setDurationInDays: (state, action: PayloadAction<number>) => {
@@ -156,9 +184,12 @@ export const quoteSlice = createSlice({
           'dd/MM/yyyy',
         );
       }
-      state.toggleRateFlex = false;
-      state.feeFlex = null;
-      state.commissionFlex = null;
+      // Only clear flex fields if has already calculated prize
+      if (state.currentQuote && state.currentQuote.totalPrize) {
+        state.toggleRateFlex = false;
+        state.feeFlex = null;
+        state.commissionFlex = null;
+      }
       state.hasQuoteChanges = true;
     },
     setSecuredAmount: (state, action: PayloadAction<number>) => {
@@ -202,20 +233,31 @@ export const quoteSlice = createSlice({
         state.loadingQuote = true;
       })
       .addCase(postQuotation.fulfilled, (state, action) => {
-        state.currentQuote = action.payload;
-        state.proposalFee = action.payload.proposalFee;
-        state.feeFlex = action.payload.pricing.feeFlex || NaN;
-        state.commissionFlex = action.payload.pricing.commissionFlex || NaN;
+        const { payload } = action;
+        const {
+          proposalFee,
+          pricing: { feeFlex, commissionFlex },
+        } = payload;
+        state.currentQuote = payload;
+        state.proposalFee = proposalFee;
+        state.feeFlex = feeFlex || NaN;
+        state.commissionFlex = commissionFlex || NaN;
         state.loadingQuote = false;
         state.hasQuoteChanges = false;
       })
       .addCase(putQuotation.fulfilled, (state, action) => {
-        state.currentQuote = action.payload;
-        state.proposalFee = action.payload.proposalFee;
-        state.feeFlex = action.payload.pricing.feeFlex || NaN;
-        state.commissionFlex = action.payload.pricing.commissionFlex || NaN;
+        const { payload } = action;
+        const {
+          proposalFee,
+          pricing: { feeFlex, commissionFlex },
+        } = payload;
+        state.currentQuote = payload;
+        state.proposalFee = proposalFee;
+        state.feeFlex = feeFlex || NaN;
+        state.commissionFlex = commissionFlex || NaN;
         state.loadingQuote = false;
         state.hasQuoteChanges = false;
+        state.toggleRateFlex = !!(feeFlex || commissionFlex);
       })
       .addCase(postQuotation.rejected, state => {
         state.loadingQuote = false;

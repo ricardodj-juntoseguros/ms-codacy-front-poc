@@ -2,6 +2,7 @@ import { FlowProvider } from '@shared/hooks';
 import * as ALL_STEPS from '../../../constants/steps';
 import styles from './QuoteContainer.module.scss';
 import { useProposalResume } from '../../hooks';
+import { QuoteContainerSkeleton } from '../../components/Skeletons';
 
 const QuoteContainer = () => {
   const finishedLoadingResume = useProposalResume();
@@ -15,7 +16,7 @@ const QuoteContainer = () => {
           showFinishedSteps={false}
         />
       ) : (
-        'Carregando'
+        <QuoteContainerSkeleton />
       )}
     </div>
   );

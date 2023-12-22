@@ -1,5 +1,8 @@
-import { federalIdValidator } from '@shared/utils';
 import { boolean, number, object, string } from 'yup';
+import { isAfter, isSameDay, parseISO, startOfDay, subDays } from 'date-fns';
+import { federalIdValidator, parseStringToDate } from '@shared/utils';
+import { store } from '../../../config/store';
+import { VARIANT_RETROACTIVE_DATE_MODALITIES } from '../../../constants';
 
 export const CreateQuotationSchema = object().shape({
   policyholder: object().shape({
@@ -24,7 +27,33 @@ export const CreateQuotationSchema = object().shape({
     subModalityId: number().required(),
   }),
   validity: object().shape({
-    startDate: string().required(),
+    startDate: string()
+      .required()
+      .test(
+        'initialValidityMaxRetroactive',
+        function startValidityMaxRetroactive() {
+          const { startDate } = this.parent;
+          const {
+            quote: { modality },
+          } = store.getState();
+          let retroactiveDays = 1095;
+          if (
+            modality &&
+            modality.retroactiveDays &&
+            VARIANT_RETROACTIVE_DATE_MODALITIES.includes(modality.id)
+          ) {
+            retroactiveDays = modality.retroactiveDays;
+          }
+          const parsedInitialValidity = parseISO(startDate);
+          const maxRetroactiveDate = startOfDay(
+            subDays(new Date(), retroactiveDays),
+          );
+          return (
+            isSameDay(parsedInitialValidity, maxRetroactiveDate) ||
+            isAfter(parsedInitialValidity, maxRetroactiveDate)
+          );
+        },
+      ),
     durationInDays: number().positive().required(),
   }),
   securedAmount: number().positive().required(),

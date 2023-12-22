@@ -9432,10 +9432,10 @@ jsx-ast-utils@^3.2.1:
     array-includes "^3.1.3"
     object.assign "^4.1.2"
 
-junto-design-system@2.3.6:
-  version "2.3.6"
-  resolved "https://registry.yarnpkg.com/junto-design-system/-/junto-design-system-2.3.6.tgz#62b7ffd9a3d2f7c8edd8f13287748b72bc431dd9"
-  integrity sha512-M8eeFAecxyuIgq+yIJhNZ/CtMz4SO3GL3muIJU9kKb1kzSxCnNyQZHxqnrMCXWRrOgOpTFvPHBPTG1tVzVT0Wg==
+junto-design-system@2.3.7:
+  version "2.3.7"
+  resolved "https://registry.yarnpkg.com/junto-design-system/-/junto-design-system-2.3.7.tgz#1c8e00879c66e09294bcf4428d97c1b33304b611"
+  integrity sha512-WEDWSxSo2YENwZHVIXN+dt7Bcf+maCoRcVVrZxRAoOmL088L4D/xu53XZEFGgVSpFq3tFRFgEtDMMDKtO5igFw==
   dependencies:
     "@floating-ui/react-dom" "^0.4.3"
     classnames "^2.3.1"

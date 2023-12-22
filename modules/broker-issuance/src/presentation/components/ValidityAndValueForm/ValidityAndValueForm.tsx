@@ -1,21 +1,35 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, makeToast } from 'junto-design-system';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
 import { downloadFile } from '@shared/utils';
 import ValidityFields from '../ValidityFields';
 import { DISCLAIMERS } from '../../../constants';
+import { useQuotation } from '../../hooks';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
+import QuoteApi from '../../../application/features/quote/QuoteApi';
 import SecuredAmountAndPricing from '../SecuredAmountAndPricing';
 import styles from './ValidityAndValueForm.module.scss';
-import QuoteApi from '../../../application/features/quote/QuoteApi';
 
 const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
   const { advanceStep } = useFlow();
+  const createOrUpdateQuote = useQuotation();
   const [loadingDownloadQuote, setLoadingDownloadQuote] =
     useState<boolean>(false);
-  const { currentQuote, loadingQuote, hasQuoteChanges } =
+  const { currentQuote, loadingQuote, hasQuoteChanges, isQuoteResume } =
     useSelector(selectQuote);
+
+  useEffect(() => {
+    if (
+      isQuoteResume &&
+      currentQuote &&
+      currentQuote.identification &&
+      !currentQuote.totalPrize
+    ) {
+      createOrUpdateQuote();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isQuoteResume, currentQuote]);
 
   const submitDisabled = useMemo(() => {
     return !currentQuote || hasQuoteChanges;

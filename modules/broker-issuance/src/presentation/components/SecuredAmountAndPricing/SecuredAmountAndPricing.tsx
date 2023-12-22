@@ -131,7 +131,7 @@ const SecuredAmountAndPricing: React.FC = () => {
         onBlur={() => createOrUpdateQuote()}
       />
       {loadingQuote && <QuotationPricingSkeleton />}
-      {!loadingQuote && currentQuote && (
+      {!loadingQuote && currentQuote?.totalPrize && (
         <div className={styles['secured-amount-pricing__pricing-wrapper']}>
           <FlexRateToggle />
           <FeeCalculation onCalculateCallback={() => createOrUpdateQuote()} />
