@@ -8,10 +8,6 @@ export const brokerInformationAdapter = (
   codeIsValid: boolean,
 ): BrokerInformationModel => {
   const { status, description, information } = broker;
-  /* Mock para teste de validação do email em QA */
-  if (process.env.NX_GLOBAL_ENVIROMENT === 'qa') {
-    information.email = 'cadastro@juntoseguros.com';
-  }
   return {
     pathUpdate: '',
     status,

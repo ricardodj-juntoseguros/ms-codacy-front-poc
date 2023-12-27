@@ -145,30 +145,35 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
     }
   };
   const compareEmailBrokerToEmailResponsible = () => {
-    if (
-      broker.information.email &&
-      responsabileInformation.emailBroker &&
-      broker.information.email.toUpperCase() ===
-        responsabileInformation.emailBroker.toUpperCase()
-    )
-      return true;
-
-    const brokerEmailDomain = broker.information.email.trim().split('@');
     const responsibleEmailDomain = responsabileInformation.emailBroker
       .trim()
       .split('@');
 
-    if (brokerEmailDomain.length < 1 || responsibleEmailDomain.length < 1)
+    if (broker.information.email.length > 0) {
+      if (
+        broker.information.email &&
+        responsabileInformation.emailBroker &&
+        broker.information.email?.toUpperCase() ===
+          responsabileInformation.emailBroker?.toUpperCase()
+      )
+        return true;
+
+      const brokerEmailDomain = broker.information.email.trim().split('@');
+
+      if (brokerEmailDomain.length < 1 || responsibleEmailDomain.length < 1)
+        return false;
+
+      if (
+        !EMAIL_PROVIDER_LIST.includes(responsibleEmailDomain[1].toUpperCase())
+      )
+        return true;
+
       return false;
+    }
 
-    if (
-      brokerEmailDomain[1].toUpperCase() ===
-        responsibleEmailDomain[1].toUpperCase() &&
-      !EMAIL_PROVIDER_LIST.includes(responsibleEmailDomain[1].toUpperCase())
-    )
-      return true;
-
-    return false;
+    return !EMAIL_PROVIDER_LIST.includes(
+      responsibleEmailDomain[1].toUpperCase(),
+    );
   };
   const templateModal = {
     title: { value: TERMS_RESPONSIBILITY.title },
