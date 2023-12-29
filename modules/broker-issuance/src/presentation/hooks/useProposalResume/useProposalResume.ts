@@ -6,14 +6,17 @@ import { BrokerPlatformAuthService } from '@services';
 import { nanoid } from 'nanoid/non-secure';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { ProposalResumeDTO } from '../../../application/types/dto';
-import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
-import { policyholderSelectionActions } from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
+import InsuredSelectionApi from '../../../application/features/insuredSelection/InsuredSelectionApi';
 import ModalitySelecionApi from '../../../application/features/modalitySelection/ModalitySelecionApi';
-import { ModalityModel } from '../../../application/types/model';
+import { InsuredModel, ModalityModel } from '../../../application/types/model';
+import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
+import { policyholderSelectionActions } from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
 import { modalitySelectionActions } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
-import handleError from '../../../helpers/handlerError';
+import { insuredSelectionActions } from '../../../application/features/insuredSelection/InsuredSelectionSlice';
+import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
 import { mapPolicyholderSearchOptions } from '../../../helpers';
+import handleError from '../../../helpers/handlerError';
 
 export const useProposalResume = () => {
   const dispatch = useDispatch();
@@ -31,6 +34,12 @@ export const useProposalResume = () => {
     setPolicyholderSearchValue,
   } = policyholderSelectionActions;
   const { setModalityOptions } = modalitySelectionActions;
+  const {
+    setInsuredAddressesOptions,
+    setInsuredSearchValue,
+    setInsuredOptions,
+  } = insuredSelectionActions;
+  const { setProposalResumeData } = proposalActions;
 
   useEffect(() => {
     if (identification) {
@@ -61,9 +70,16 @@ export const useProposalResume = () => {
 
   const rehydrateStoresWithProposalData = async (data: ProposalResumeDTO) => {
     const {
+      metadata,
+      policyholderId,
       policyholderFederalId,
       policyholderAffiliateFederalId,
       modalityId,
+      insuredId,
+      insuredFederalId,
+      insuredAddressId,
+      biddingNumber,
+      biddingDescription,
     } = data;
 
     const broker = BrokerPlatformAuthService.getBroker();
@@ -91,7 +107,10 @@ export const useProposalResume = () => {
           return null;
         });
 
-    if (!policyholderDetails) {
+    if (
+      !policyholderDetails ||
+      policyholderDetails.registrationData.id !== policyholderId
+    ) {
       makeToast(
         'error',
         'Houve um erro inesperado ao buscar os dados do tomador desta proposta.',
@@ -142,6 +161,53 @@ export const useProposalResume = () => {
 
     dispatch(setModality(modalityToSet));
     dispatch(setQuoteResumeData(data));
+
+    if (insuredId && insuredFederalId) {
+      const insureds = await InsuredSelectionApi.searchInsured(insuredFederalId)
+        .then(response => response.records)
+        .catch(() => {
+          return [];
+        });
+
+      const mappedInsureds = insureds.map(insured => ({
+        ...insured,
+        value: insured.insuredId.toString(),
+        label: insured.name,
+      })) as InsuredModel[];
+
+      const insuredToSet = mappedInsureds.find(
+        ({ federalId, insuredId: id }) =>
+          federalId === insuredFederalId && id === insuredId,
+      );
+      if (!insuredToSet) {
+        makeToast('error', 'Dados do segurado da proposta não encontrados.');
+        return;
+      }
+      const insuredAddress = insuredToSet.addresses.find(
+        address => address.addressId === insuredAddressId,
+      );
+
+      dispatch(setInsuredOptions(mappedInsureds));
+      dispatch(setInsuredSearchValue(insuredToSet.name));
+      dispatch(setInsuredAddressesOptions(insuredToSet.addresses));
+      dispatch(
+        setProposalResumeData({
+          insured: insuredToSet,
+          insuredAddress: insuredAddress
+            ? {
+                ...insuredAddress,
+                value: insuredAddress.addressId.toString(),
+                label: `${insuredAddress.street} - ${insuredAddress.city}, ${insuredAddress.state}`,
+              }
+            : null,
+          biddingNumber,
+          biddingDescription,
+          identification: {
+            PolicyId: Number.parseInt(`${metadata.policyid}`, 10),
+          },
+        }),
+      );
+    }
   };
 
   return finishedLoading;

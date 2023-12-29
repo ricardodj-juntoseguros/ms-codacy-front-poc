@@ -39,25 +39,26 @@ export const insuredMock = {
     {
       addressId: 114524,
       city: 'RIO DE JANEIRO',
-      state: null,
+      state: 'RJ',
       street: 'RUA AFONSO CAVALCANTI, 455 , 2° E 3° ANDARES',
     },
     {
       addressId: 118612,
       city: 'Rio de Janeiro - RJ',
-      state: null,
+      state: 'RJ',
       street: 'Rua Afonso Cavalcanti, 455, Sala 906, Cidade Nova',
     },
     {
       addressId: 119469,
       city: 'Rio de Janeiro/RJ',
-      state: null,
-      street: 'Rua Afonso Cavalcanti, nº 455, Bloco I, 7º Andar, Sala 701 - Cidade Nova',
+      state: 'RJ',
+      street:
+        'Rua Afonso Cavalcanti, nº 455, Bloco I, 7º Andar, Sala 701 - Cidade Nova',
     },
     {
       addressId: 123079,
       city: 'Rio de Janeiro - RJ',
-      state: null,
+      state: 'RJ',
       street: 'TRAVESSA DO OUVIDOR, Nº 4 - CEP: 20.040-040',
     },
   ],

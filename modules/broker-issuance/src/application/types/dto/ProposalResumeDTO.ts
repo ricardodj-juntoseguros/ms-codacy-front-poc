@@ -5,6 +5,7 @@ export interface ProposalResumeDTO {
     quotationid?: string | number;
     newquoterid?: string | number;
   };
+  policyholderId: number;
   policyholderFederalId: string;
   policyholderAffiliateFederalId: string | null;
   modalityId: number;
@@ -15,4 +16,12 @@ export interface ProposalResumeDTO {
   proposalFee: number;
   feeFlex: number | null;
   commissionFlex: number | null;
+  insuredId: number | null;
+  insuredFederalId: string | null;
+  insuredAddressId: number | null;
+  biddingNumber: string | null;
+  biddingDescription: string | null;
+  observations: string | null;
+  firstDueDate: string | null;
+  selectedNumberOfInstallments: number;
 }

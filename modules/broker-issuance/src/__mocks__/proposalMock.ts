@@ -22,7 +22,9 @@ export const proposalResumeMock = {
   metadata: {
     quotationid: '1870918',
     newquoterid: '1401096',
+    policyid: '4276847',
   },
+  policyholderId: 31832,
   policyholderFederalId: '97837181000147',
   policyholderAffiliateFederalId: '97837181002000',
   modalityId: 99,
@@ -33,4 +35,12 @@ export const proposalResumeMock = {
   proposalFee: 0.46,
   commissionFlex: null,
   feeFlex: null,
+  insuredId: 6455,
+  insuredFederalId: '42498733000148',
+  insuredAddressId: 5539,
+  biddingNumber: '12324',
+  biddingDescription: '40028922',
+  observations: '',
+  firstDueDate: '2024-01-02T00:00:00Z',
+  selectedNumberOfInstallments: 1,
 } as ProposalResumeDTO;

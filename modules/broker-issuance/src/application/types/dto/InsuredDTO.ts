@@ -20,5 +20,5 @@ export interface InsuredDTO {
 
 export interface InsuredSearchDTO {
   hasMore: boolean;
-  records: Array<InsuredDTO>;
+  records: InsuredDTO[];
 }

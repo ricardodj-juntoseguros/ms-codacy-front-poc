@@ -2,7 +2,10 @@ import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { Button, InputBase } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
-import { selectContractualCondition } from '../../../application/features/contractualCondition/ContractualConditionSlice';
+import {
+  getCustomClause,
+  selectContractualCondition,
+} from '../../../application/features/contractualCondition/ContractualConditionSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import {
   proposalActions,
@@ -55,6 +58,13 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     setCreateProposalSuccess,
   ]);
 
+  useEffect(() => {
+    if (identification && identification.PolicyId) {
+      dispatch(getCustomClause(identification.PolicyId));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const disabledSubmitButton = useMemo(() => {
     const hasDefaultFields =
       insured?.federalId &&
@@ -102,9 +112,13 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
   };
 
   const renderContractualCondition = () => {
-    const disabledCustomClauses = policyholder?.disabledFeatures.customClauses;
-    if (disabledCustomClauses) return null;
-    if (loadingProposal) return <ContractualConditionSkeleton />;
+    if (!policyholder) return null;
+    const {
+      disabledFeatures: { customClauses },
+    } = policyholder;
+    if (customClauses) return null;
+    if (loadingProposal || loadingContractualCondition)
+      return <ContractualConditionSkeleton />;
     if (!identification?.PolicyId) return null;
     return <ContractualCondition />;
   };

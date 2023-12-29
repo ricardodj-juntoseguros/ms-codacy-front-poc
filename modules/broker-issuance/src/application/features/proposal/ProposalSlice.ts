@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { makeToast } from "junto-design-system";
-import { RootState } from "../../../config/store";
-import handleError from "../../../helpers/handlerError";
-import { ProposalModel } from "../../types/model/ProposalModel";
-import { ProposalDTO, ProposalResultDTO } from "../../types/dto";
-import ProposalApi from "./ProposalApi";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { makeToast } from 'junto-design-system';
+import { RootState } from '../../../config/store';
+import handleError from '../../../helpers/handlerError';
+import { ProposalModel } from '../../types/model/ProposalModel';
+import { ProposalDTO, ProposalResultDTO } from '../../types/dto';
+import ProposalApi from './ProposalApi';
 
 export const putProposal = createAsyncThunk<
   ProposalResultDTO,
@@ -17,7 +17,9 @@ export const putProposal = createAsyncThunk<
       .then(response => response)
       .catch(error => {
         const defaultMessage = 'Ocorreu um erro ao gerar a proposta.';
-        const message = error.data ? handleError(error.data, defaultMessage) : defaultMessage;
+        const message = error.data
+          ? handleError(error.data, defaultMessage)
+          : defaultMessage;
         return rejectWithValue(message);
       });
   },
@@ -46,6 +48,22 @@ export const proposaSlice = createSlice({
       state.biddingDescription = '';
       state.createProposalSuccess = false;
       state.hasProposalChanges = false;
+    },
+    setProposalResumeData: (state, action) => {
+      const {
+        payload: {
+          insured,
+          insuredAddress,
+          biddingNumber,
+          biddingDescription,
+          identification,
+        },
+      } = action;
+      state.insured = insured;
+      state.insuredAddress = insuredAddress;
+      state.biddingNumber = biddingNumber;
+      state.biddingDescription = biddingDescription;
+      state.identification = identification;
     },
     setInsured: (state, action) => {
       state.insured = action.payload;
