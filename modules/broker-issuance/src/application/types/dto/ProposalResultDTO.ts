@@ -3,4 +3,5 @@ export interface ProposalResultDTO {
   PolicyId: number;
   QuotationId: number;
   NewQuoterId: number;
+  createdAt: string;
 }

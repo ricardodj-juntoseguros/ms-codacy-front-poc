@@ -1,0 +1,62 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.proposal-finish-container__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('xl');
+  margin-top: 170px;
+  align-items: center;
+
+  & > div {
+    text-align: center;
+  }
+
+  @media screen and (max-width: 430px) {
+    margin-top: spacing('xl');
+    padding: 0px spacing('l');
+    gap: spacing('m');
+
+    & > div:first-child > svg {
+      height: 72px;
+      width: 72px;
+    }
+  }
+}
+
+.proposal-finish-container__tag {
+  margin-bottom: spacing('m');
+}
+
+.proposal-finish-container__title {
+  @include font('xl-emphasys');
+  @include color('color', 'dark');
+  margin: 0px;
+  margin-bottom: spacing('s');
+  max-width: 400px;
+  text-align: center;
+
+  @media screen and (max-width: 430px) {
+    @include font('l-emphasys');
+  }
+}
+
+.proposal-finish-container__text {
+  @include font('base');
+  @include color('color', 'dark');
+  text-align: center;
+  max-width: 400px;
+  text-align: center;
+  margin: 0px;
+}
+
+.proposal-finish-container__buttons {
+  display: flex;
+  flex-direction: column;
+  width: 312px;
+  align-items: center;
+  gap: spacing('xl');
+
+  @media screen and (max-width: 430px) {
+    padding-top: spacing('m');
+  }
+}

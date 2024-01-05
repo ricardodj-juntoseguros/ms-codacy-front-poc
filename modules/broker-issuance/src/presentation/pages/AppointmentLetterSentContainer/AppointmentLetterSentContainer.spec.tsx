@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from '../../../config/testUtils';
-import QuoteFinishContainer from './QuoteFinishContainer';
+import AppointmentLetterSentContainer from './AppointmentLetterSentContainer';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router', () => ({
@@ -17,15 +17,17 @@ beforeAll(() => {
   });
 });
 
-describe('QuoteContainer component', () => {
+describe('AppointmentLetterSentContainer', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<QuoteFinishContainer />);
+    const { baseElement } = render(<AppointmentLetterSentContainer />);
     expect(baseElement).toBeTruthy();
   });
 
   it('should be able to redirect user for new quote', async () => {
-    const { getByTestId } = render(<QuoteFinishContainer />);
-    const button = getByTestId('quoteFinishContainer-new-quote-button');
+    const { getByTestId } = render(<AppointmentLetterSentContainer />);
+    const button = getByTestId(
+      'appointmentLetterSentContainer-new-quote-button',
+    );
     await act(async () => {
       await fireEvent.click(button);
     });
@@ -33,8 +35,10 @@ describe('QuoteContainer component', () => {
   });
 
   it('should be able to redirect user for new quote', async () => {
-    const { getByTestId } = render(<QuoteFinishContainer />);
-    const button = getByTestId('quoteFinishContainer-go-to-process-button');
+    const { getByTestId } = render(<AppointmentLetterSentContainer />);
+    const button = getByTestId(
+      'appointmentLetterSentContainer-go-to-process-button',
+    );
     await act(async () => {
       await fireEvent.click(button);
     });

@@ -223,7 +223,7 @@ describe('PolicyholderAndModalityForm', () => {
     await waitFor(() => {
       expect(state.policyholderSelection.policyholderSearchValue).toEqual('');
       expect(state.policyholderSelection.policyholderOptions).toEqual([]);
-      expect(mockHistoryPush).toHaveBeenCalledWith('/finish');
+      expect(mockHistoryPush).toHaveBeenCalledWith('/appointment-sent');
     });
   });
 

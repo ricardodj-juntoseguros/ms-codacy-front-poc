@@ -1,6 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.quote-finish-container__wrapper {
+.appointment-letter-sent-container__wrapper {
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
@@ -10,14 +10,14 @@
   align-items: center;
 }
 
-.quote-finish-container__header {
+.appointment-letter-sent-container__header {
   height: 4.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.quote-finish-container__content {
+.appointment-letter-sent-container__content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,20 +26,20 @@
   max-width: 31.81rem;
 }
 
-.quote-finish-container__title {
+.appointment-letter-sent-container__title {
   @include font('xl-emphasys');
   @include color('color', 'dark');
   text-align: center;
   margin: spacing('m') 0 spacing('s') 0;
 }
 
-.quote-finish-container__text {
+.appointment-letter-sent-container__text {
   @include font('base');
   @include color('color', 'dark');
   text-align: center;
 }
 
-.quote-finish-container__buttons-container {
+.appointment-letter-sent-container__buttons-container {
   display: flex;
   flex-direction: column;
   gap: spacing('l');

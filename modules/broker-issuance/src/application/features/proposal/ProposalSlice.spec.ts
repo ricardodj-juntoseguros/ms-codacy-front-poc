@@ -1,7 +1,7 @@
-import { insuredMock, proposalMock } from "../../../__mocks__";
-import { store } from "../../../config/store";
-import ProposalAPI from "./ProposalApi";
-import { proposalActions, putProposal } from "./ProposalSlice";
+import { insuredMock, proposalMock } from '../../../__mocks__';
+import { store } from '../../../config/store';
+import ProposalAPI from './ProposalApi';
+import { proposalActions, putProposal } from './ProposalSlice';
 
 describe('ProposalSlice', () => {
   const mockResult = {
@@ -9,6 +9,7 @@ describe('ProposalSlice', () => {
     PolicyId: 11111,
     QuotationId: 12223,
     NewQuoterId: 123333,
+    createdAt: '2024-01-01T12:00:00.000Z',
   };
 
   beforeEach(() => {
@@ -19,18 +20,23 @@ describe('ProposalSlice', () => {
     const putProposalMock = jest
       .spyOn(ProposalAPI, 'putProposal')
       .mockImplementation(() => Promise.resolve(mockResult));
-    await store.dispatch(putProposal({ proposalId: 12345, proposalData: proposalMock }));
+    await store.dispatch(
+      putProposal({ proposalId: 12345, proposalData: proposalMock }),
+    );
     const { proposal } = store.getState();
     expect(putProposalMock).toHaveBeenCalled();
     expect(putProposalMock).toHaveBeenCalledWith(12345, proposalMock);
     expect(proposal.identification?.PolicyId).toEqual(mockResult.PolicyId);
+    expect(proposal.createdAt).toBe('2024-01-01T12:00:00.000Z');
   });
 
   it('Should not update the store if the call returns an error', async () => {
     const putProposalMock = jest
       .spyOn(ProposalAPI, 'putProposal')
       .mockImplementation(() => Promise.reject(new Error('Not found')));
-    await store.dispatch(putProposal({ proposalId: 12345, proposalData: proposalMock }));
+    await store.dispatch(
+      putProposal({ proposalId: 12345, proposalData: proposalMock }),
+    );
     const { proposal } = store.getState();
     expect(putProposalMock).toHaveBeenCalled();
     expect(putProposalMock).toHaveBeenCalledWith(12345, proposalMock);

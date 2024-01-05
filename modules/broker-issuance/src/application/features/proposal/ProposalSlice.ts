@@ -27,6 +27,7 @@ export const putProposal = createAsyncThunk<
 
 const initialState: ProposalModel = {
   identification: null,
+  createdAt: null,
   insured: null,
   insuredAddress: null,
   biddingNumber: '',
@@ -92,9 +93,13 @@ export const proposaSlice = createSlice({
         state.createProposalSuccess = false;
       })
       .addCase(putProposal.fulfilled, (state, action) => {
+        const {
+          payload: { createdAt, PolicyId },
+        } = action;
         state.identification = {
-          PolicyId: action.payload.PolicyId,
+          PolicyId,
         };
+        state.createdAt = createdAt;
         state.loadingProposal = false;
         state.createProposalSuccess = true;
         state.hasProposalChanges = false;

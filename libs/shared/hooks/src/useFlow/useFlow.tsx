@@ -112,7 +112,7 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
         return null;
       }
       return (
-        <ComponentContainer key={nanoid(5)} index={index} {...step}>
+        <ComponentContainer key={`step-${step.name}`} index={index} {...step}>
           <Component name={step.name} />
         </ComponentContainer>
       );

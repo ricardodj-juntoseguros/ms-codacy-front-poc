@@ -105,7 +105,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
     )
       .then(() => {
         dispatch(clearPolicyholderSelection());
-        history.push('/finish');
+        history.push('/appointment-sent');
       })
       .catch(error => {
         const message = handleError(error);

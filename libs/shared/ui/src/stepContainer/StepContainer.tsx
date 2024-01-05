@@ -1,4 +1,5 @@
 import { useContext, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { LinkButton, ThemeContext } from 'junto-design-system';
 import className from 'classnames';
 import { nanoid } from '@reduxjs/toolkit';
@@ -74,34 +75,41 @@ export const StepContainer: React.FC<StepContainerProps> = ({
       data-testid={`stepContainer-wrapper-${index}`}
       className={styles['step-container__wrapper']}
     >
-      <header className={styles['step-container__header']}>
-        <span
-          data-testid={`stepContainer-identification-${index}`}
-          className={className(
-            styles['step-container__number'],
-            {
-              [styles['step-container__number--finished']]:
-                status === StepStatusEnum.FINISHED,
-            },
-            styles[theme],
-          )}
-        >
-          {renderIdentificationStep()}
-        </span>
-        <h2
-          className={className(
-            styles['step-container__title'],
-            {
-              [styles['step-container__title--finished']]:
-                status === StepStatusEnum.FINISHED,
-            },
-            styles[theme],
-          )}
-        >
-          {stepTitle}
-        </h2>
-      </header>
-      {status === StepStatusEnum.FINISHED ? renderFinishContent() : children}
+      <motion.div
+        initial={{ opacity: 0, translateY: 50 }}
+        whileInView={{ opacity: 1, translateY: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+      >
+        <header className={styles['step-container__header']}>
+          <span
+            data-testid={`stepContainer-identification-${index}`}
+            className={className(
+              styles['step-container__number'],
+              {
+                [styles['step-container__number--finished']]:
+                  status === StepStatusEnum.FINISHED,
+              },
+              styles[theme],
+            )}
+          >
+            {renderIdentificationStep()}
+          </span>
+          <h2
+            className={className(
+              styles['step-container__title'],
+              {
+                [styles['step-container__title--finished']]:
+                  status === StepStatusEnum.FINISHED,
+              },
+              styles[theme],
+            )}
+          >
+            {stepTitle}
+          </h2>
+        </header>
+        {status === StepStatusEnum.FINISHED ? renderFinishContent() : children}
+      </motion.div>
     </div>
   );
 };

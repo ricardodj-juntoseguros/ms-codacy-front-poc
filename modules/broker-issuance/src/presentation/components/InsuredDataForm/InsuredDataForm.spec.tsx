@@ -36,6 +36,7 @@ describe('InsuredDataForm', () => {
     PolicyId: 11111,
     QuotationId: 12223,
     NewQuoterId: 123333,
+    createdAt: '2024-01-01T12:00:00.000Z',
   };
 
   beforeAll(() => {
