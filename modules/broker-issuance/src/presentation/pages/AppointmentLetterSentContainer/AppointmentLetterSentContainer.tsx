@@ -1,8 +1,8 @@
 import { Button } from 'junto-design-system';
 import { FunctionComponent } from 'react';
 import { useHistory } from 'react-router';
+import { JuntoLogoDark } from '@shared/ui';
 import { ReactComponent as AnalysisIcon } from './assets/analysis-icon.svg';
-import { ReactComponent as JuntoLogo } from './assets/junto-logo.svg';
 import styles from './AppointmentLetterSentContainer.module.scss';
 
 const AppointmentLetterSentContainer: FunctionComponent = () => {
@@ -19,7 +19,7 @@ const AppointmentLetterSentContainer: FunctionComponent = () => {
   return (
     <section className={styles['appointment-letter-sent-container__wrapper']}>
       <header className={styles['appointment-letter-sent-container__header']}>
-        <JuntoLogo />
+        <JuntoLogoDark />
       </header>
       <div className={styles['appointment-letter-sent-container__content']}>
         <AnalysisIcon />

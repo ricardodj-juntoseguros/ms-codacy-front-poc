@@ -26,15 +26,23 @@ export const putProposal = createAsyncThunk<
 );
 
 const initialState: ProposalModel = {
+  currentProposal: null,
   identification: null,
   createdAt: null,
   insured: null,
   insuredAddress: null,
   biddingNumber: '',
   biddingDescription: '',
+  paymentType: null,
+  comments: '',
+  firstDueDate: '',
+  numberOfInstallments: null,
   loadingProposal: false,
   createProposalSuccess: false,
+  isAutomaticPolicy: true,
+  hasOnlyFinancialPending: false,
   hasProposalChanges: false,
+  issuedAt: '',
 };
 
 export const proposaSlice = createSlice({
@@ -47,7 +55,13 @@ export const proposaSlice = createSlice({
       state.insuredAddress = null;
       state.biddingNumber = '';
       state.biddingDescription = '';
+      state.paymentType = null;
+      state.comments = '';
+      state.firstDueDate = '';
+      state.numberOfInstallments = null;
       state.createProposalSuccess = false;
+      state.isAutomaticPolicy = true;
+      state.hasOnlyFinancialPending = false;
       state.hasProposalChanges = false;
     },
     setProposalResumeData: (state, action) => {
@@ -82,9 +96,40 @@ export const proposaSlice = createSlice({
       state.biddingDescription = action.payload;
       state.hasProposalChanges = true;
     },
+    setComments: (state, action) => {
+      state.comments = action.payload;
+      state.hasProposalChanges = true;
+    },
+    setPaymentType: (state, action) => {
+      state.paymentType = action.payload;
+      state.hasProposalChanges = true;
+    },
+    setFirstDueDate: (state, action) => {
+      state.firstDueDate = action.payload;
+      state.hasProposalChanges = true;
+    },
+    setNumberOfInstallments: (state, action) => {
+      state.numberOfInstallments = action.payload;
+      state.hasProposalChanges = true;
+    },
     setCreateProposalSuccess: (state, action) => {
       state.createProposalSuccess = action.payload;
     },
+    setIsAutomaticPolicy: (state, action) => {
+      state.isAutomaticPolicy = action.payload;
+    },
+    setHasOnlyFinancialPending: (state, action) => {
+      state.hasOnlyFinancialPending = action.payload;
+    },
+    setHasProposalChanges: (state, action) => {
+      state.hasProposalChanges = action.payload;
+    },
+    setCurrentProposal: (state, action) => {
+      state.currentProposal = action.payload;
+    },
+    setIssuedAt: (state, action) => {
+      state.issuedAt = action.payload;
+    }
   },
   extraReducers: builder => {
     builder
@@ -108,6 +153,7 @@ export const proposaSlice = createSlice({
         state.loadingProposal = false;
         state.createProposalSuccess = false;
         state.hasProposalChanges = true;
+        state.currentProposal = null;
         if (action.payload) makeToast('error', action.payload);
       });
   },

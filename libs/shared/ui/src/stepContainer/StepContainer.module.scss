@@ -68,11 +68,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .step-container__wrapper {
-    padding: spacing('l');
-    margin-top: spacing('xxl');
-  }
-
   .step-container__number {
     @include font('base-emphasys');
     width: 2rem;

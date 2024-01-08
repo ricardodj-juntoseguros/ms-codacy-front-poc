@@ -1,4 +1,4 @@
-export const downloadFile = (file: any, fileName?: string) => {
+export const downloadFile = (file: any, fileName?: string, targetBlank = false) => {
 
   const name = (typeof file === 'string' || fileName) ? fileName : file.name;
   const url = typeof file === 'string' ? file : URL.createObjectURL(file);
@@ -7,6 +7,7 @@ export const downloadFile = (file: any, fileName?: string) => {
   downloadButton.href = url;
   downloadButton.download = name || 'file';
   downloadButton.innerHTML = 'download';
+  if (targetBlank) downloadButton.target = '_blank';
 
   document.body.appendChild(downloadButton);
   downloadButton.click();

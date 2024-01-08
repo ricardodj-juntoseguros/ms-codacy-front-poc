@@ -101,6 +101,7 @@ const ValidityFields: React.FC = () => {
   };
 
   const handleChangeStartDate = (value: string, valid: boolean) => {
+    if (value === startDateValidity) return;
     setDates(prevDates => ({
       ...prevDates,
       validityStartDate: value,
@@ -124,6 +125,7 @@ const ValidityFields: React.FC = () => {
   };
 
   const handleChangeEndDate = (value: string, valid: boolean) => {
+    if (value === endDateValidity) return;
     setDates(prevDates => ({
       ...prevDates,
       validityEndDate: value,

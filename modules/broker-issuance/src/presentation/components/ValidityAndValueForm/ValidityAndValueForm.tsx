@@ -57,7 +57,7 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
         const file = new Blob([result], {
           type: 'application/pdf',
         });
-        downloadFile(file, `cotacao-${NewQuoterId}.pdf`);
+        downloadFile(file, `cotacao-${NewQuoterId}.pdf`, true);
       })
       .catch(error => makeToast('error', error.data.data.message))
       .finally(() => setLoadingDownloadQuote(false));

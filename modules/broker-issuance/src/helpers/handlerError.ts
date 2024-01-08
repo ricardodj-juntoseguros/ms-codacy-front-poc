@@ -6,5 +6,6 @@ export default function handleError(error: any, customMessage?: string): string 
   if (error.data && error.data.message && typeof error.data.message === 'string') return error.data.message;
   if (error.data && error.data.ErrorDescription && typeof error.data.ErrorDescription === 'string') return error.data.ErrorDescription;
   if (error.data && typeof error.data === 'string') return error.data;
+  if (error.data && error.data.data && typeof error.data === 'string') return error.data.data;
   return errorMessage;
 }

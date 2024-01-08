@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom';
+import ContractualConditionApi from '../../../application/features/contractualCondition/ContractualConditionApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import {
   proposalActions,
   putProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import { insuredMock, proposalMock } from '../../../__mocks__';
-import { act, fireEvent, render } from '../../../config/testUtils';
+import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
 import { store } from '../../../config/store';
 import InsuredDataForm from './InsuredDataForm';
 
@@ -38,6 +39,9 @@ describe('InsuredDataForm', () => {
     NewQuoterId: 123333,
     createdAt: '2024-01-01T12:00:00.000Z',
   };
+  const contractualConditionApiMock = jest
+    .spyOn(ContractualConditionApi, 'getCustomClause')
+    .mockImplementation(() => Promise.resolve([]));
 
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
@@ -94,6 +98,9 @@ describe('InsuredDataForm', () => {
       <InsuredDataForm name="InsuredDataForm" />,
     );
     const submitButton = getByTestId('insuredDataForm-submit-button');
+    await waitFor(async () => {
+      await expect(contractualConditionApiMock).toHaveBeenCalled();
+    });
     expect(submitButton).toBeDisabled();
     store.dispatch(proposalActions.setInsured(insuredMock));
     store.dispatch(proposalActions.setInsuredAddress(insuredMock.addresses[0]));
@@ -107,6 +114,6 @@ describe('InsuredDataForm', () => {
     const state = store.getState();
     expect(state.proposal.createProposalSuccess).toBeTruthy();
     rerender(<InsuredDataForm name="InsuredDataForm" />);
-    // expect(advanceStepMock).toHaveBeenCalledWith('InsuredDataForm');
+    expect(advanceStepMock).toHaveBeenCalledWith('InsuredDataForm');
   });
 });

@@ -1,4 +1,44 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
 .quote-container__wrapper {
-  max-width: 701px;
-  margin: 64px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > header {
+    width: calc(100% - 479px);
+    align-self: flex-start;
+  }
+
+  @media screen and (max-width: 1080px) {
+    & > header {
+      width: calc(100% - 359px);
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    & > header {
+      width: 100%;
+    }
+  }
+}
+
+.quote-container__flow-wrapper {
+  display: flex;
+  max-width: 887px;
+  flex-direction: column;
+  padding: spacing('xxl-4') spacing('xxl-8');
+  justify-self: center;
+  margin-right: 479px;
+  box-sizing: border-box;
+
+  @media screen and (max-width: 1080px) {
+    padding: spacing('xxl-4') spacing('xl');
+    margin-right: 364px;
+  }
+
+  @media screen and (max-width: 768px) {
+    margin-right: 0;
+    padding: spacing('xxl-4') spacing('xl') spacing('xxl-8') spacing('xl');
+  }
 }

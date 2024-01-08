@@ -1,0 +1,49 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.financial-pending-container__wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.financial-pending-container__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  max-width: 478px;
+  padding: 0 spacing('xl');
+
+  & > button {
+    min-width: 370px
+  }
+
+  @media screen and (max-width: 576px) {
+    & > button {
+      min-width: 100%
+    }
+  }
+}
+
+.financial-pending-container__title {
+  @include font('xl-emphasys');
+  @include color('color', 'dark');
+  text-align: center;
+}
+
+.financial-pending-container__text {
+  @include font('base');
+  @include color('color', 'dark');
+  text-align: center;
+  margin: 0 0 spacing('xl') 0;
+}
+
+.financial-pending-container__help-text {
+  @include font('sm');
+  @include color('color', 'dark');
+  text-align: center;
+  margin-top: spacing('xl');
+  max-width: 370px;
+}

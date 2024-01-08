@@ -19,4 +19,7 @@ export * from './ProposalResumeDTO';
 export * from './CustomClauseDTO';
 export * from './ObjectPreviewDTO';
 export * from './ObjectPreviewResultDTO';
+export * from './CanAuthorizeDTO';
 export * from './ProposalDocumentDTO';
+export * from './ProposalDraftDTO';
+export * from './IssuanceDTO';

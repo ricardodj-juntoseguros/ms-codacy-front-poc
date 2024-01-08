@@ -15,3 +15,4 @@ export * from './FileList';
 export * from './ticketIllustration';
 export * from './checkIconIllustration';
 export * from './alertTriangleIllustration';
+export * from './logos';

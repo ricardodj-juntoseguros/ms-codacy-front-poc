@@ -85,7 +85,7 @@ describe('useProposal', () => {
     const { result } = renderHook(() => useProposal());
     await result.current();
     expect(mockValidate).toHaveBeenCalledTimes(1);
-    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
   });
 
   it('should be able to create a proposal and custom clause if all information is filled in', async () => {
@@ -96,7 +96,7 @@ describe('useProposal', () => {
     const { result } = renderHook(() => useProposal());
     await result.current();
     expect(mockValidate).toHaveBeenCalledTimes(1);
-    expect(mockDispatch).toHaveBeenCalledTimes(2);
+    expect(mockDispatch).toHaveBeenCalledTimes(3);
   });
 
   it('should be able to create a proposal and update custom clause if all information is filled in', async () => {
@@ -117,7 +117,7 @@ describe('useProposal', () => {
     const { result } = renderHook(() => useProposal());
     await result.current();
     expect(mockValidate).toHaveBeenCalledTimes(1);
-    expect(mockDispatch).toHaveBeenCalledTimes(2);
+    expect(mockDispatch).toHaveBeenCalledTimes(3);
   });
 
   it('should not create a proposal if there is no quote or modality selected', async () => {

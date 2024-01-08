@@ -16,6 +16,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from '@shared/hooks';
 import { BrokerPlatformAuthService } from '@services';
+import { ChatUtils } from '@shared/utils';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
 import handleError from '../../../helpers/handlerError';
 import {
@@ -153,6 +154,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
 
   const handlePolicyholderSelected = async (optionSelected: SearchOptions) => {
     const { value } = optionSelected;
+    if (value === policyholder?.federalId) return;
     dispatch(setPolicyholderAffiliatesOptions([]));
     dispatch(resetModalitySelection());
     const broker = BrokerPlatformAuthService.getBroker();
@@ -208,7 +210,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
           arrow="top-start"
           text="Seguiremos sua proposta com os dados da Matriz. Caso necessite cadastrar uma nova filial, entre em contato %ACTION_BUTTON%"
           actionButtonText="via chat."
-          onActionButtonClick={() => alert('vai abrir o chat quando tiver')}
+          onActionButtonClick={() => ChatUtils.zenDesk.open()}
         />
       );
     }

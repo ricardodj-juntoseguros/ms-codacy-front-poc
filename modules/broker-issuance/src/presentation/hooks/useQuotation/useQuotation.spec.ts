@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { renderHook } from '@testing-library/react-hooks';
 import { Broker, BrokerPlatformAuthService } from '@services';
 import * as reactRedux from 'react-redux';
-import { quoteResulMock, storeMock } from '../../../__mocks__';
+import { insuredMock, quoteResulMock, storeMock } from '../../../__mocks__';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
 import { useQuotation } from './useQuotation';
 
@@ -32,6 +32,18 @@ describe('useQuotation Hook', () => {
       durationInDays: 365,
       securedAmount: 150000,
     },
+    proposal: {
+      identification: {
+        PolicyId: 12345,
+      },
+      insured: insuredMock,
+      insuredAddress: insuredMock.addresses[0],
+      biddingNumber: '123456',
+      biddingDescription: '12345',
+      loadingProposal: false,
+      createProposalSuccess: false,
+      hasProposalChanges: true,
+    }
   };
 
   beforeEach(() => {
@@ -68,6 +80,18 @@ describe('useQuotation Hook', () => {
         hasQuoteChanges: true,
         proposalFee: 0.26,
       },
+      proposal: {
+        identification: {
+          PolicyId: 12345,
+        },
+        insured: insuredMock,
+        insuredAddress: insuredMock.addresses[0],
+        biddingNumber: '123456',
+        biddingDescription: '12345',
+        loadingProposal: false,
+        createProposalSuccess: false,
+        hasProposalChanges: true,
+      }
     };
     jest
       .spyOn(QuoteApi, 'putQuotation')

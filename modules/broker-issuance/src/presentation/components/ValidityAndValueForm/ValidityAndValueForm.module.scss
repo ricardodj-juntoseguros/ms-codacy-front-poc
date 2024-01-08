@@ -32,9 +32,16 @@
   display: flex;
   justify-content: space-between;
   gap: spacing('m');
-  flex-wrap: wrap;
 
   & > button {
     max-width: 312px;
+  }
+
+  @media screen and (max-width: 1080px) {
+    flex-wrap: wrap;
+
+    & > button {
+      max-width: 100%;
+    }
   }
 }

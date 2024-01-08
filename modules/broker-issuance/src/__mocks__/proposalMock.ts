@@ -14,7 +14,7 @@ export const proposalMock = {
   biddingNumber: '12345',
   biddingDescription: '98765',
   contacts: [],
-  observations: 'teste',
+  observations: 'test',
 };
 
 export const proposalResumeMock = {

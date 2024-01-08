@@ -4,6 +4,7 @@ import {
   putQuotation,
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
+import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import { quotationAdapter } from '../../../application/features/quote/adapters';
 import { useValidate } from '../useValidate';
 import {
@@ -16,10 +17,11 @@ export const useQuotation = () => {
   const validate = useValidate();
   const dispatch = useDispatch();
   const quote = useSelector(selectQuote);
+  const { firstDueDate, hasProposalChanges } = useSelector(selectProposal);
   const { currentQuote, hasQuoteChanges, loadingQuote } = quote;
 
   const createQuotation = async () => {
-    const payload = quotationAdapter(quote, false);
+    const payload = quotationAdapter(quote, firstDueDate, false);
     const valid = await validate(
       CreateQuotationSchema,
       payload,
@@ -34,7 +36,7 @@ export const useQuotation = () => {
 
   const updateQuotation = async () => {
     if (!currentQuote) return;
-    const payload = quotationAdapter(quote, true);
+    const payload = quotationAdapter(quote, firstDueDate, true);
     const valid = await validate(
       UpdateQuotationSchema,
       payload,
@@ -54,7 +56,7 @@ export const useQuotation = () => {
       createQuotation();
       return;
     }
-    if (hasQuoteChanges) {
+    if (hasQuoteChanges || hasProposalChanges) {
       updateQuotation();
     }
   };

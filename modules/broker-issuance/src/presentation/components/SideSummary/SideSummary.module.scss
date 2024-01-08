@@ -1,0 +1,124 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.side-summary__wrapper {
+  @include color('background-color', 'grey-100');
+  width: 479px;
+  padding: spacing('xxl-4');
+  height: 100vh;
+  position: fixed;
+  right: 0;
+  top: 0;
+  box-sizing: border-box;
+
+  @media screen and (max-width: 1080px) {
+    padding: spacing('xxl-4') spacing('xl');
+    width: 360px;
+  }
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+    width: 100%;
+    padding: spacing('s') spacing('l') spacing('m') spacing('l');
+    border-radius: spacing('s');
+    height: 80px;
+    top: initial;
+    bottom: 0;
+    z-index: 1;
+    transition: all .3s ease-in-out;
+
+    &--open {
+      height: auto;
+    }
+  }
+}
+
+.side-summary__title {
+  @include font('l-emphasys');
+  @include color('color', 'dark');
+  margin: 0 0 spacing('xxl') 0;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+}
+
+.side-summary__mobile-indicator {
+  @include color('background-color', 'grey-200');
+  width: 40px;
+  height: 4px;
+  border-radius: spacing('s');
+  display: none;
+  margin: 0 auto;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+}
+
+.side-summary__list-steps {
+  list-style-type: none;
+  padding: 0;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.side-summary__list-step-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: spacing('xxl');
+
+  @media screen and (max-width: 768px) {
+    margin-bottom: spacing('m');
+    order: 2;
+
+    &--editable {
+      order: 1;
+      margin-bottom: spacing('xl');
+    }
+  }
+}
+
+.side-summary__step-identification {
+  @include font('base');
+  @include color('color', 'dark');
+  @include border(1, 'solid', 'dark');
+
+  display: flex;
+  width: 32px;
+  height: 32px;
+  padding: spacing('s') spacing('m');
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: spacing('s');
+  box-sizing: border-box;
+  margin-right: spacing('s');
+  border-radius: 50%;
+
+  &--finished {
+    @include color('color', 'white');
+    @include color('background-color', 'brand-primary');
+    @include border(1, 'solid', 'brand-primary');
+  }
+
+  &--disabled {
+    @include color('color', 'grey-400');
+    @include color('background-color', 'grey-100');
+    @include border(1, 'solid', 'grey-400');
+  }
+}
+
+.side-summary__step-text {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+
+  &--disabled {
+    @include color('color', 'grey-400');
+  }
+}

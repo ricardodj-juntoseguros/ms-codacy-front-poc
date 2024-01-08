@@ -28,6 +28,10 @@ export const modalityBidderMock = {
           id: 1,
           description: 'Boleto',
         },
+        {
+          id: 2,
+          description: 'Fatura',
+        }
       ],
       appealJudicialPremium: [],
     },

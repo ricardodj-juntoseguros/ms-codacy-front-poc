@@ -1,5 +1,5 @@
-import { customClauseMock } from "modules/broker-issuance/src/__mocks__";
 import { AxiosHttpClient } from "@infrastructure/http-client";
+import { customClauseMock } from "../../../__mocks__";
 import ContractualConditionApi from "./ContractualConditionApi";
 
 describe('ContractualConditionApi', () => {

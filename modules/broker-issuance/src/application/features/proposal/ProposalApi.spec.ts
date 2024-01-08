@@ -38,4 +38,16 @@ describe('ProposalApi', () => {
     });
     expect(result).toEqual(proposalResumeMock);
   });
+
+  it('getProposalDraft should call bff service correclty', async () => {
+    const mockResult = { draftLink: 'draftLink' };
+    const mockGet = jest
+      .spyOn(AxiosHttpClient.prototype, 'get')
+      .mockImplementation(async () => mockResult);
+    const result = await ProposalApi.getProposalDraft(12345);
+    expect(mockGet).toHaveBeenCalledWith({
+      url: '/v1/proposals/12345/draft',
+    });
+    expect(result).toEqual(mockResult);
+  });
 });

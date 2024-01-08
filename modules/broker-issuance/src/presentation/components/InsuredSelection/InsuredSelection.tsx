@@ -2,7 +2,7 @@ import { FunctionComponent, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, SearchInput } from 'junto-design-system';
 import { useDebounce } from '@shared/hooks';
-import { InsuredAddressDTO } from 'modules/broker-issuance/src/application/types/dto';
+import { InsuredAddressDTO } from '../../../application/types/dto';
 import { InsuredModel } from '../../../application/types/model';
 import {
   proposalActions,

@@ -6,6 +6,7 @@ import PolicyholderSelectionSlice from '../application/features/policyholderSele
 import InsuredSelectionSlice from '../application/features/insuredSelection/InsuredSelectionSlice';
 import ProposalSlice from '../application/features/proposal/ProposalSlice';
 import ContractualConditionSlice from '../application/features/contractualCondition/ContractualConditionSlice';
+import ProposalDocumentsSlice from '../application/features/proposalDocuments/ProposalDocumentsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     insuredSelection: InsuredSelectionSlice,
     proposal: ProposalSlice,
     contractualCondition: ContractualConditionSlice,
+    proposalDocuments: ProposalDocumentsSlice,
     validation: validationSlice,
   },
 });

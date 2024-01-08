@@ -72,4 +72,58 @@ describe('ProposalSlice', () => {
     const { proposal } = store.getState();
     expect(proposal.createProposalSuccess).toEqual(true);
   });
+
+  it('should be able to set comments', async () => {
+    store.dispatch(proposalActions.setComments('comments'));
+    const { proposal } = store.getState();
+    expect(proposal.comments).toEqual('comments');
+  });
+
+  it('should be able to set payment type', async () => {
+    store.dispatch(proposalActions.setPaymentType({ label: 'label', value: 'value' }));
+    const { proposal } = store.getState();
+    expect(proposal.paymentType).toEqual({ label: 'label', value: 'value' });
+  });
+
+  it('should be able to set first due date', async () => {
+    store.dispatch(proposalActions.setFirstDueDate('2024-01-01'));
+    const { proposal } = store.getState();
+    expect(proposal.firstDueDate).toEqual('2024-01-01');
+  });
+
+  it('should be able to set number of installments', async () => {
+    store.dispatch(proposalActions.setNumberOfInstallments({ label: 'label', value: 'value' }));
+    const { proposal } = store.getState();
+    expect(proposal.numberOfInstallments).toEqual({ label: 'label', value: 'value' });
+  });
+
+  it('should be able to set is automatic policy', async () => {
+    store.dispatch(proposalActions.setIsAutomaticPolicy(true));
+    const { proposal } = store.getState();
+    expect(proposal.isAutomaticPolicy).toEqual(true);
+  });
+
+  it('should be able to set has only financial pending', async () => {
+    store.dispatch(proposalActions.setHasOnlyFinancialPending(true));
+    const { proposal } = store.getState();
+    expect(proposal.hasOnlyFinancialPending).toEqual(true);
+  });
+
+  it('should be able to set has proposal changes', async () => {
+    store.dispatch(proposalActions.setHasProposalChanges(true));
+    const { proposal } = store.getState();
+    expect(proposal.hasProposalChanges).toEqual(true);
+  });
+
+  it('should be able to set current proposal', async () => {
+    store.dispatch(proposalActions.setCurrentProposal(proposalMock));
+    const { proposal } = store.getState();
+    expect(proposal.currentProposal).toEqual(proposalMock);
+  });
+
+  it('should be able to set issued at', async () => {
+    store.dispatch(proposalActions.setIssuedAt('2024-01-01'));
+    const { proposal } = store.getState();
+    expect(proposal.issuedAt).toEqual('2024-01-01');
+  });
 });

@@ -2,7 +2,7 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectQuote } from "../../../application/features/quote/QuoteSlice";
-import { putProposal, selectProposal } from "../../../application/features/proposal/ProposalSlice";
+import { proposalActions, putProposal, selectProposal } from "../../../application/features/proposal/ProposalSlice";
 import { proposalAdapter } from "../../../application/features/proposal/adapters";
 import { ValidationTypesEnum } from "../../../application/types/model";
 import { PROPOSAL_MODALITY_SCHEMAS } from "../../../application/validations";
@@ -14,7 +14,8 @@ export const useProposal = () => {
   const proposal = useSelector(selectProposal);
   const contractualCondition = useSelector(selectContractualCondition);
   const { currentQuote, modality } = quote;
-  const { hasProposalChanges } = proposal
+  const { hasProposalChanges, currentProposal } = proposal
+  const { setCurrentProposal } = proposalActions;
   const policyId = proposal.identification?.PolicyId;
   const dispatch = useDispatch();
   const validate = useValidate();
@@ -36,12 +37,13 @@ export const useProposal = () => {
     const isValid = await validate(schema, payload, ValidationTypesEnum.full, [], false);
     const proposalId = currentQuote?.identification.ProposalId;
     if (isValid) {
-      if (hasProposalChanges) dispatch(putProposal({ proposalId, proposalData: payload }));
+      dispatch(setCurrentProposal(payload));
+      if (hasProposalChanges && currentProposal !== payload) dispatch(putProposal({ proposalId, proposalData: payload }));
       createOrUpdateContractualCondition();
       return true;
     };
     return false;
-  }, [createOrUpdateContractualCondition, currentQuote, dispatch, hasProposalChanges, modality, proposal, quote, validate]);
+  }, [createOrUpdateContractualCondition, currentProposal, currentQuote, dispatch, hasProposalChanges, modality, proposal, quote, setCurrentProposal, validate]);
 
   return updateProposal;
 }

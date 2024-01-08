@@ -40,12 +40,3 @@
     }
   }
 }
-
-.insured-data-form__numbers {
-  display: flex;
-
-  & span {
-    @include font('base-emphasys');
-    @include color('color', 'dark');
-  }
-}

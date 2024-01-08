@@ -71,8 +71,7 @@ export class BrokerPlatformAuthService {
       domain: this.COOKIE_DOMAIN,
     });
     window.location.assign(
-      `${process.env['NX_GLOBAL_BROKER_PLATFORM_URL']}${
-        userTheme ? `/${userTheme}` : ''
+      `${process.env['NX_GLOBAL_BROKER_PLATFORM_URL']}${userTheme ? `/${userTheme}` : ''
       }`,
     );
   }
@@ -126,7 +125,7 @@ export class BrokerPlatformAuthService {
     return decodedToken.realm_access?.roles
       ? decodedToken.realm_access.roles.includes('broker')
       : decodedToken?.loginOwnerId !== null &&
-          decodedToken?.loginOwnerUserName !== null;
+      decodedToken?.loginOwnerUserName !== null;
   }
 
   getBroker(): Broker | null {
@@ -144,6 +143,14 @@ export class BrokerPlatformAuthService {
     const { username } = userCookie;
     return username;
   }
+
+  getUserType(): number | null {
+    const userCookie = this.getUserAccessCookie();
+    if (!userCookie) return null;
+
+    const { broker } = userCookie;
+    return broker && broker.user ? broker.user.userType : null;
+  };
 
   async logout() {
     const { token, refreshToken } = this.getUserAccessCookie();

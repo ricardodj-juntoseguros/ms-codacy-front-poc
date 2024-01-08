@@ -1,5 +1,6 @@
 export interface InstallmentDTO {
   numberOfInstallments: number;
+  firstDueDate: string;
   installments: {
     number: number;
     dueDate: string;
@@ -9,17 +10,4 @@ export interface InstallmentDTO {
     installmentValue: number;
     fractionationValue: number;
   }[];
-  totalFractionationValue: number;
-  commissionFee: number;
-  commissionValue: number;
-  commissions: {
-    brokerFederalId: string;
-    fee: number;
-    value: number;
-  }[];
-  totalPrize: number;
-  totalMainValue: number;
-  totalPolicyCost: number;
-  totalIOF: number;
-  firstDueDate: string;
 }

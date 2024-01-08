@@ -5,6 +5,7 @@ import {
 import BrokerInssuanceBaseApi from '../BrokerIssuanceBaseApi';
 import {
   ProposalDTO,
+  ProposalDraftDTO,
   ProposalResultDTO,
   ProposalResumeDTO,
 } from '../../types/dto';
@@ -33,6 +34,13 @@ class ProposalApi {
     };
     return await this.httpClient.get<ProposalResumeDTO>(params);
   }
+
+  async getProposalDraft(policyId: number): Promise<ProposalDraftDTO> {
+    const params: IHttpClientRequestParameters = {
+      url: `/v1/proposals/${policyId}/draft`,
+    };
+    return await this.httpClient.get<ProposalDraftDTO>(params);
+  };
 }
 
 export default new ProposalApi();

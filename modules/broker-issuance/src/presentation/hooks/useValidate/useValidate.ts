@@ -68,7 +68,7 @@ export function useValidate() {
                 [paramName]: [
                   ...previousErrorList[paramName],
                   (VALIDATION_MESSAGES as any)[type] ||
-                    VALIDATION_MESSAGES.required,
+                  VALIDATION_MESSAGES.required,
                 ],
               };
             }
@@ -76,7 +76,7 @@ export function useValidate() {
             return Object.assign(previousErrorList, {
               [paramName]: [
                 (VALIDATION_MESSAGES as any)[type] ||
-                  VALIDATION_MESSAGES.required,
+                VALIDATION_MESSAGES.required,
               ],
             });
           },

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { Button, InputBase } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +24,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
   name,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitByButton, setSubmitByButton] = useState(false);
   const dispatch = useDispatch();
   const { advanceStep } = useFlow();
   const updateProposal = useProposal();
@@ -33,9 +35,8 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     biddingDescription,
     loadingProposal,
     identification,
-    createProposalSuccess,
   } = useSelector(selectProposal);
-  const { currentQuote, policyholder } = useSelector(selectQuote);
+  const { policyholder } = useSelector(selectQuote);
   const {
     loadingContractualCondition,
     openContractualConditions,
@@ -46,17 +47,11 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     proposalActions;
 
   useEffect(() => {
-    if (createProposalSuccess) {
+    if (!loadingProposal && submitByButton) {
       dispatch(setCreateProposalSuccess(false));
-      // advanceStep(name);
+      advanceStep(name);
     }
-  }, [
-    advanceStep,
-    createProposalSuccess,
-    dispatch,
-    name,
-    setCreateProposalSuccess,
-  ]);
+  }, [submitByButton, loadingProposal]);
 
   useEffect(() => {
     if (identification && identification.PolicyId) {
@@ -74,13 +69,15 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     const hasContratualCondition = text && requestedBy;
     return (
       !hasDefaultFields ||
-      (openContractualConditions && !hasContratualCondition)
+      (openContractualConditions && !hasContratualCondition) ||
+      loadingContractualCondition
     );
   }, [
     biddingNumber,
     identification?.PolicyId,
-    insured,
-    insuredAddress,
+    insured?.federalId,
+    insuredAddress?.addressId,
+    loadingContractualCondition,
     openContractualConditions,
     requestedBy,
     text,
@@ -108,6 +105,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setSubmitByButton(true);
     updateProposal();
   };
 
@@ -175,7 +173,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
           type="submit"
           fullWidth
           disabled={disabledSubmitButton}
-          loading={loadingProposal || loadingContractualCondition}
+          loading={loadingProposal}
         >
           Continuar
         </Button>
@@ -184,12 +182,6 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
         isModalOpen={isModalOpen}
         onToggleModal={handleToggleModal}
       />
-      <p className={styles['insured-data-form__numbers']}>
-        <span>Cotação: {currentQuote?.identification.QuotationId}</span>
-        <span>Novo cotador: {currentQuote?.identification.NewQuoterId}</span>
-        <span>Proposta V3: {currentQuote?.identification.ProposalId}</span>
-        <span>Número da proposta GV: {identification?.PolicyId}</span>
-      </p>
     </form>
   );
 };
