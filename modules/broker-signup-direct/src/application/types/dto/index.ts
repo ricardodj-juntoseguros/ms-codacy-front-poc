@@ -5,3 +5,6 @@ export * from './StatusSusepDTO';
 export * from './RegisterBrokerNewUserDTO';
 export * from './ValidateBankAccountDTO';
 export * from './verifyTokenDTO';
+export * from './SimpleOptantDTO';
+export * from './IndecxInviteIdDTO';
+export * from './SurveyDTO';

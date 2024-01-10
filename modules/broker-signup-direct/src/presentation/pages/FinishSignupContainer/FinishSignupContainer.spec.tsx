@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import * as reactRedux from 'react-redux';
 import { Provider } from 'react-redux';
 import { fireEvent, render, act } from '@testing-library/react';
+import Router from 'react-router';
 import FinishSignupContainer from './FinishSignupContainer';
 import { store } from '../../../config/store';
 import { brokerInformationSliceActions } from '../../../application/features/brokerInformation/BrokerInformationSlice';
@@ -32,6 +33,12 @@ describe('FinishSignupContainer component', () => {
   });
 
   it('should render successfully', () => {
+    jest.spyOn(Router, 'useParams').mockReturnValue({
+      hash: 'asasasasasassa',
+      token: 'aasasaahsaushuhsa',
+      brokerEmail: 'teste@teste.com',
+      brokerCompanyName: 'teste',
+    });
     const { baseElement, getByText, getByTestId } = render(
       <Provider store={store}>
         <FinishSignupContainer {...props} />
@@ -45,7 +52,7 @@ describe('FinishSignupContainer component', () => {
     expect(
       getByText('Use seu usuário para acessar a plataforma:'),
     ).toBeInTheDocument();
-    expect(btn).toBeEnabled;
+    expect(btn).toBeEnabled();
   });
 
   it('Should go to login page on access now button click', async () => {

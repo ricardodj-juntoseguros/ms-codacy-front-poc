@@ -8,8 +8,10 @@ import {
   RegisterBrokerNewUserDTO,
   SearchRegisterBrokerDTO,
   verifyTokenDTO,
+  SimpleOptantDTO,
+  IndecxInviteIdDTO,
+  SurveyDTO,
 } from '../../types/dto';
-import { SimpleOptantDTO } from '../../types/dto/SimpleOptantDTO';
 
 class RegisterBrokerApi {
   private instance: AxiosHttpClient;
@@ -106,6 +108,21 @@ class RegisterBrokerApi {
       url: `/brokers/signup/email?userId=${guid}`,
     };
     return await this.instance.post<boolean>(params);
+  }
+
+  async getIndecxInviteId(actionId: string, email: string, name: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/ms-customer-surveys/api/v1/Actions/${actionId}?email=${email}&name=${name}`,
+    };
+    return await this.instance.get<IndecxInviteIdDTO>(params);
+  }
+
+  async sendSatisfactionSurvey(surveyPayload: SurveyDTO) {
+    const params: IHttpClientRequestParameters = {
+      url: `/ms-customer-surveys/api/v1/actions/${surveyPayload.actionId}/answers`,
+      payload: surveyPayload,
+    };
+    return await this.instance.post<string>(params);
   }
 }
 

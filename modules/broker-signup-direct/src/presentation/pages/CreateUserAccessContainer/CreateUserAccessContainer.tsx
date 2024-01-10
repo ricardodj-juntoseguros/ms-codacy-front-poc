@@ -11,6 +11,7 @@ import {
   brokerInformationSliceActions,
 } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
+import { responsibleInformationSliceActions } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
 
 const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
   const sreenWidth = window.screen.width;
@@ -21,6 +22,7 @@ const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(brokerInformationSliceActions.setSignupDirect(true));
     if (signupDirect) {
       RegisterBrokerApi.verifyTokenValiditySignupInternalized(
         guid.replace('target=', ''),
@@ -33,6 +35,10 @@ const CreateUserAccessContainer = ({ history }: RouteComponentProps) => {
               response.brokerCompanyName,
             ),
           );
+          dispatch(
+            responsibleInformationSliceActions.setEmail(response.brokerEmail),
+          );
+          dispatch(brokerInformationSliceActions.setSignupDirect(false));
         })
         .catch(() => history.push('/expired-link'));
     } else if (brokerInformation.information.federalId === '') {

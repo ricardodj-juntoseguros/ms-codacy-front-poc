@@ -133,7 +133,7 @@
 
 .finish-signup-container__button {
   display: flex;
-  margin: spacing('xxl') 0;
+  margin: spacing('xxl') 0 spacing('xxl-2');
   justify-content: center;
 
   & button {
@@ -149,4 +149,8 @@
       width: 100%;
     }
   }
+}
+
+.finish-signup-container__csat {
+  margin: auto;
 }
