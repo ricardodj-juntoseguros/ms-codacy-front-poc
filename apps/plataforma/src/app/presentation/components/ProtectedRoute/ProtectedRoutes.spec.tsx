@@ -20,11 +20,10 @@ describe('ProtectedRoute', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'location', {
       writable: true,
-      value: { assign: jest.fn(), href: 'corretor/emissão' },
-
+      value: { assign: jest.fn(), href: 'proposal' },
     });
   });
-  /*
+
   it('Should redirect to broker platform if user is not authenticated', () => {
     jest
       .spyOn(BrokerPlatformAuthService, 'isAuthenticated')
@@ -34,10 +33,10 @@ describe('ProtectedRoute', () => {
     renderComponent(componentToRender);
 
     expect(window.location.assign).toHaveBeenCalledWith(
-      '/test_broker_login?redirectUrl=corretor/emissão',
+      '/test_broker_login?redirectUrl=proposal',
     );
   });
-*/
+
   it('Should render the component if user is authenticated and is broker', () => {
     jest
       .spyOn(BrokerPlatformAuthService, 'isAuthenticated')

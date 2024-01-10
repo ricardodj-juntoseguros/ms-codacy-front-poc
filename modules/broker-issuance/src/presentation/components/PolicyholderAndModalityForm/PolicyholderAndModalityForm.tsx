@@ -17,7 +17,7 @@ import { GenericComponentProps, useFlow } from '@shared/hooks';
 import { BrokerPlatformAuthService } from '@services';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { HELP_ID } from '../../../constants';
+import { HELP_ID, REDIRECT_TO_V3_INFOS } from '../../../constants';
 import {
   policyholderSelectionActions,
   selectPolicyholder,
@@ -53,8 +53,25 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   const { setModality } = quoteSliceActions;
 
   useEffect(() => {
-    if (modality && steps && steps.length === 1) {
-      setSteps(MODALITY_STEPS[modality.id]);
+    if (!modality) return;
+    const modalitySteps = MODALITY_STEPS[modality.id];
+    if (!modalitySteps) {
+      const dateExpire = new Date(new Date().getTime() + 1000 * 60); // in 1 minute
+      Cookies.set(
+        REDIRECT_TO_V3_INFOS,
+        JSON.stringify({
+          policyholderFederalId: policyholder?.federalId,
+          modalityId: modality?.id,
+        }),
+        {
+          expires: dateExpire,
+          domain: `${process.env.NX_GLOBAL_COOKIE_DOMAIN}`,
+        },
+      );
+      window.location.href = process.env.NX_GLOBAL_MODALITIES_EXPRESS || '';
+    }
+    if (modalitySteps && steps.length === 1) {
+      setSteps(modalitySteps);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modality, steps]);

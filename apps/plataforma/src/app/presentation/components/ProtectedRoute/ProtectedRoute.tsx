@@ -22,7 +22,7 @@ const ProtectedRoute = ({
         const isAuthenticated = BrokerPlatformAuthService.isAuthenticated();
         const broker = BrokerPlatformAuthService.getBroker();
 
-        if (env !== 'qa' && !isAuthenticated) {
+        if (!isAuthenticated) {
           window.location.assign(
             `${brokerLoginUrl}?redirectUrl=${currentLocationUrl}`,
           );
