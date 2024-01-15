@@ -9432,10 +9432,10 @@ jsx-ast-utils@^3.2.1:
     array-includes "^3.1.3"
     object.assign "^4.1.2"
 
-junto-design-system@2.3.7:
-  version "2.3.7"
-  resolved "https://registry.yarnpkg.com/junto-design-system/-/junto-design-system-2.3.7.tgz#1c8e00879c66e09294bcf4428d97c1b33304b611"
-  integrity sha512-WEDWSxSo2YENwZHVIXN+dt7Bcf+maCoRcVVrZxRAoOmL088L4D/xu53XZEFGgVSpFq3tFRFgEtDMMDKtO5igFw==
+junto-design-system@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/junto-design-system/-/junto-design-system-2.4.0.tgz#57032c59699fa1c6086f41795c496e9efe707519"
+  integrity sha512-6qAy27pyADw1dSZtH7tZMiwldooCv+ECOQnmiCVN3Y3oonmbVUgo363ehlwk4P2PGm93Vlfw2jbod41O1Zu59w==
   dependencies:
     "@floating-ui/react-dom" "^0.4.3"
     classnames "^2.3.1"
@@ -11151,6 +11151,11 @@ react-loading-skeleton@^2.2.0:
   integrity sha512-HH37uj9aobrUJSqFglHqO9KQt5zGQe+Svutv8LIq7Iq6gpJqCwIzJOsEVfkQy7ReirbI2uLhCtKloBGQIDP0BQ==
   dependencies:
     "@emotion/core" "^10.0.22"
+
+react-microsoft-clarity@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-microsoft-clarity/-/react-microsoft-clarity-1.2.0.tgz#949f953cec4d4f9d7b4eaab01c240dfa48fb44c8"
+  integrity sha512-a1bsJR1uN1daWq3cBc7NheEGPXrotMRE0oFeRio7kXvHawzQfqu5iX9BoYFF9zRUL0dn+Mz57h1fNlcv3pqXEg==
 
 react-number-format@^4.6.3:
   version "4.9.4"
