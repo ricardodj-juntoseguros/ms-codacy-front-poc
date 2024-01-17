@@ -8,12 +8,12 @@
 
 Repositório em formato monorepo para as aplicações React front-end seguindo o novo padrão de arquitetura de micro-frontends, tendo como referência o [Guideline FrontEnd](https://github.com/GitJMSeguradora/guidelines/tree/master/frontend)
 
-O repositório conta atualmente com 2 aplicações:
+O repositório conta atualmente com 4 aplicações:
 
-- Fidelize
+- [Fidelize](https://github.com/GitJMSeguradora/platform-web/tree/master/apps/fidelize)
+- Fidelize Mapeamentos
 - Plataforma (corretor)
-
-Obs: Apenas o app Fidelize possui a esteira de pipeline completa até o momento dessa atualização (16 de março de 2022).
+- Vendors
 
 Esse projeto foi criado utilizando Nx. Para saber mais sobre a biblioteca, clique no link a seguir.(https://nx.dev)
 
@@ -54,18 +54,6 @@ Este repositório é dividido em 3 principais partes:
 
 ---
 
-## Ambientes
-
-- App Fidelize
-
-URL QAS: https://fidelize-qas-2.juntoseguros.com/
-
-URL STG: https://fidelize-stg.juntoseguros.com/
-
-URL PRD: https://fidelize.juntoseguros.com/
-
----
-
 ### Projeto exposto fora da rede da Junto?
 
 Sim
@@ -75,16 +63,6 @@ Sim
 ## Acesso a banco de Dados?
 
 Não
-
----
-
-## Serviços externos usado neste projeto
-
-- [fidelize-bff](https://app.circleci.com/pipelines/github/GitJMSeguradora/fidelize-bff)
-
-- [ms-plataforma-bff](https://app.circleci.com/pipelines/github/GitJMSeguradora/ms-plataforma-bff)
-
----
 
 ## Instalação
 
