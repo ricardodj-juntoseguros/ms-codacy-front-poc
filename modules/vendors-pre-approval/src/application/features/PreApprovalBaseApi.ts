@@ -23,7 +23,7 @@ class PreApprovalBaseAPI {
       this.headers,
       this.timeout,
     );
-    
+
     this.instance.setResponseInterceptors(
       this.handleSuccess.bind(this),
       this.handleErrors.bind(this),
@@ -47,7 +47,7 @@ class PreApprovalBaseAPI {
       // handle unauthorized error, try to refresh the user tokens
       const userCookie = VendorsAuthService.getUserAccessCookie();
       const vendorsLoginUrl = process.env.NX_GLOBAL_VENDORS_PLATFORM_URL || '';
-      if (!userCookie || !userCookie.refreshToken) {
+      if (!userCookie || !userCookie.refreshToken || !originalRequest) {
         window.location.assign(vendorsLoginUrl);
         return null;
       }
@@ -67,7 +67,7 @@ class PreApprovalBaseAPI {
           'Content-Type': 'application/json',
           Authorization: `bearer ${access_token}`,
         };
-        this.instance.instance.defaults.headers = this.headers;
+        this.instance.instance.defaults.headers.Authorization = `bearer ${access_token}`;
         return Promise.resolve(axios.request(originalRequest));
       } catch (err) {
         VendorsAuthService.clearAuthData();

@@ -12,3 +12,4 @@ export * from './parseStringToDate';
 export * from './currencyFormatter';
 export * from './downloadFile';
 export * from './chatUtils';
+export * from './stringToInt';

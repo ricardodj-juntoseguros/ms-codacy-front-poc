@@ -6,6 +6,7 @@ import {
   InputBase,
   makeToast,
 } from 'junto-design-system';
+import { stringToInt } from '@shared/utils';
 import {
   selectProposal,
   proposalActions,
@@ -24,8 +25,7 @@ const InsuredAddressSelector: React.FC = () => {
     if (insuredFederalId !== '') {
       const fetchAddresses = () => {
         setLoadingAddresses(true);
-        InsuredAndPolicyholderSelectionApi
-          .getInsuredAddresses(insuredFederalId)
+        InsuredAndPolicyholderSelectionApi.getInsuredAddresses(insuredFederalId)
           .then(data => {
             if (data.length === 1) {
               const { externalId } = data[0];
@@ -67,7 +67,7 @@ const InsuredAddressSelector: React.FC = () => {
   const handleAddressSelect = (option: DropdownOptions) => {
     const { value } = option;
     const address = addressesData.find(
-      addr => addr.externalId === Number.parseInt(value, 10),
+      addr => addr.externalId === stringToInt(value),
     );
     if (address)
       dispatch(proposalActions.setInsuredAddressId(address.externalId));

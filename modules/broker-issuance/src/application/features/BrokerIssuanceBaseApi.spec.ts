@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import { BrokerPlatformAuthService } from '@services';
 import axios, { AxiosResponse, AxiosError } from 'axios';
@@ -45,8 +46,12 @@ describe('BrokerIssuanceBaseApi', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: null },
+        headers: {},
       },
+      isAxiosError: false,
+      toJSON: () => {},
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
 
     let err = {} as any;
@@ -67,8 +72,14 @@ describe('BrokerIssuanceBaseApi', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: 'bearer any_token' },
+        headers: {
+          authorization: 'bearer any_token',
+        } as any,
       },
+      isAxiosError: false,
+      toJSON: () => {},
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
     jest
       .spyOn(BrokerPlatformAuthService, 'getUserAccessCookie')

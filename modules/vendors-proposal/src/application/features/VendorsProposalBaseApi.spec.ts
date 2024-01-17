@@ -45,8 +45,13 @@ describe('VendorsPreApprovalBaseApi', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: null },
+        headers: {},
       },
+      toJSON: () => {
+        console.log('JSON');
+      },
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
 
     let err = {} as any;
@@ -67,8 +72,13 @@ describe('VendorsPreApprovalBaseApi', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: 'bearer any_token' },
+        headers: { authorization: 'bearer any_token' } as any,
       },
+      toJSON: () => {
+        console.log('JSON');
+      },
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
     jest
       .spyOn(VendorsAuthService, 'getUserAccessCookie')

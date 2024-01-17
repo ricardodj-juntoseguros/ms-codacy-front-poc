@@ -47,8 +47,13 @@ describe('VendorsAuthenticationBaseApi', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: null },
+        headers: {},
       },
+      toJSON: () => {
+        console.log('JSON');
+      },
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
 
     let err = {} as any;

@@ -7,28 +7,32 @@ import {
   Skeleton,
 } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDateString } from '@shared/utils';
-import { addDays } from 'date-fns';
-import { mapInstallmentOptions } from '../../../helpers';
+import { format } from 'date-fns';
+import { formatDateString, stringToInt } from '@shared/utils';
+import {
+  getMaxFirstDueDate,
+  getMinFirstDueDate,
+  mapInstallmentOptions,
+} from '../../../helpers';
 import {
   proposalActions,
   selectProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import { useProposal, useQuotation } from '../../hooks';
-import { MAX_DAYS_FOR_FIRST_DUE_DATE } from '../../../constants';
-
 import styles from './PaymentFields.module.scss';
+import { selectValidation } from '../../../application/features/validation/ValidationSlice';
 
 const PaymentFields: FunctionComponent = () => {
   const [loadingField, setLoadingField] = useState('');
   const dispatch = useDispatch();
-  const createOrUpdateQuote = useQuotation();
+  const createOrUpdateQuotation = useQuotation();
   const updateProposal = useProposal();
   const { paymentType, numberOfInstallments, firstDueDate, loadingProposal } =
     useSelector(selectProposal);
-  const { currentQuote, submodality, durationInDays, loadingQuote } =
+  const { currentQuote, submodality, endDateValidity, loadingQuote } =
     useSelector(selectQuote);
+  const { errors } = useSelector(selectValidation);
   const {
     setPaymentType,
     setNumberOfInstallments,
@@ -52,64 +56,70 @@ const PaymentFields: FunctionComponent = () => {
     [currentQuote],
   );
 
-  const maxDateForFirstDueDate = useMemo(() => {
-    const daysToAdd =
-      durationInDays && durationInDays < MAX_DAYS_FOR_FIRST_DUE_DATE
-        ? durationInDays
-        : MAX_DAYS_FOR_FIRST_DUE_DATE;
-    return addDays(new Date(), daysToAdd);
-  }, [durationInDays]);
+  const maxDateForFirstDueDate = useMemo(
+    () => getMaxFirstDueDate(endDateValidity),
+    [endDateValidity],
+  );
 
-  useEffect(() => {
-    if (currentQuote) {
-      dispatch(
-        setFirstDueDate(
-          formatDateString(
-            currentQuote.installmentOptions[0].firstDueDate,
-            'dd/MM/yyyy',
-          ),
-        ),
-      );
-      dispatch(setNumberOfInstallments(installmentOptions[0]));
-      dispatch(setHasProposalChanges(false));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (currentQuote && numberOfInstallments) {
-      dispatch(
-        setNumberOfInstallments(
-          installmentOptions.find(
-            option => option.value === numberOfInstallments.value,
-          ),
-        ),
-      );
-    }
-  }, [currentQuote]);
+  const minDateForFirstDueDate = useMemo(
+    () => getMinFirstDueDate(endDateValidity),
+    [endDateValidity],
+  );
 
   useEffect(() => {
     if (loadingField !== '') updateProposal();
-    if (loadingField === 'firstDueDate') createOrUpdateQuote();
+    if (loadingField === 'firstDueDate') createOrUpdateQuotation(true);
   }, [loadingField]);
 
   useEffect(() => {
     if (loadingProposal === false) setLoadingField('');
   }, [loadingProposal]);
 
+  useEffect(() => {
+    if (currentQuote) {
+      if (!numberOfInstallments && !firstDueDate) {
+        dispatch(
+          setFirstDueDate(
+            formatDateString(
+              currentQuote.installmentOptions[0].firstDueDate,
+              'dd/MM/yyyy',
+            ),
+          ),
+        );
+        dispatch(
+          setNumberOfInstallments(stringToInt(installmentOptions[0].value)),
+        );
+        dispatch(setHasProposalChanges(false));
+        return;
+      }
+      const option = installmentOptions.find(
+        option => option.value === `${numberOfInstallments}`,
+      );
+      if (option) {
+        dispatch(setNumberOfInstallments(stringToInt(option.value)));
+      }
+      if (errors.firstDueDate) {
+        handleFirstDueDate(format(minDateForFirstDueDate, 'dd/MM/yyyy'), true);
+      }
+    }
+  }, [currentQuote]);
+
   const handlePaymentType = (optionSelected: DropdownOptions) => {
     setLoadingField('paymentType');
-    dispatch(setPaymentType(optionSelected));
+    dispatch(setPaymentType(stringToInt(optionSelected.value)));
   };
 
   const handleNumberOfInstallments = (optionSelected: DropdownOptions) => {
     setLoadingField('numberOfInstallments');
-    dispatch(setNumberOfInstallments(optionSelected));
+    dispatch(setNumberOfInstallments(stringToInt(optionSelected.value)));
   };
 
-  const handleFirstDueDate = (value: string) => {
+  const handleFirstDueDate = (value: string, valid: boolean) => {
     if (value === firstDueDate) return;
     dispatch(setFirstDueDate(value));
-    setLoadingField('firstDueDate');
+    if (valid) {
+      setLoadingField('firstDueDate');
+    }
   };
 
   const renderPaymentType = () => {
@@ -124,7 +134,11 @@ const PaymentFields: FunctionComponent = () => {
         label="Selecione a forma de pagamento"
         placeholder="Selecione uma opção"
         options={paymentTypeOptions}
-        value={paymentType}
+        value={
+          paymentTypeOptions.find(
+            option => option.value === `${paymentType}`,
+          ) || null
+        }
         onValueSelected={handlePaymentType}
         loading={false}
       />
@@ -145,7 +159,11 @@ const PaymentFields: FunctionComponent = () => {
         label="Quantidade de parcelas"
         placeholder="Selecione uma opção"
         options={installmentOptions}
-        value={numberOfInstallments}
+        value={
+          installmentOptions.find(
+            option => option.value === `${numberOfInstallments}`,
+          ) || null
+        }
         onValueSelected={handleNumberOfInstallments}
         readOnly={installmentOptions.length <= 1}
         loading={false}
@@ -159,11 +177,12 @@ const PaymentFields: FunctionComponent = () => {
     }
     return (
       <DateInput
-        id="paymentFields-first-due-date-input-dropdown"
-        data-testid="paymentFields-first-due-date-input-dropdown"
+        id="paymentFields-first-due-date-input"
+        data-testid="paymentFields-first-due-date-input"
         label="Primeira parcela"
-        value={firstDueDate}
-        onChange={handleFirstDueDate}
+        value={firstDueDate || ''}
+        onChange={(value, valid) => handleFirstDueDate(value, valid)}
+        minDate={minDateForFirstDueDate}
         maxDate={maxDateForFirstDueDate}
       />
     );

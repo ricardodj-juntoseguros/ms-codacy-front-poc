@@ -12,6 +12,7 @@ import {
 import QuoteApi from '../../../application/features/quote/QuoteApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { putProposal } from '../../../application/features/proposal/ProposalSlice';
+import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
 
 jest.mock('@shared/utils', () => {
@@ -34,6 +35,13 @@ describe('ProposalFinishContainer', () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
       .mockImplementation(async () => quoteResulMock);
+    jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
+      Promise.resolve({
+        isAutomaticPolicy: true,
+        issueMessage: '',
+        hasOnlyFinancialPending: false,
+      }),
+    );
     jest.spyOn(ProposalApi, 'putProposal').mockImplementation(async () => ({
       ProposalId: 90408,
       PolicyId: 11111,

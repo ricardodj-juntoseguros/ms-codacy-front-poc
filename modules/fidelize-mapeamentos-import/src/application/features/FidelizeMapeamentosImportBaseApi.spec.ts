@@ -56,8 +56,13 @@ describe('FidelizeImportMapeamentosBaseApi ', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: null },
+        headers: { authorization: null } as any,
       },
+      toJSON: () => {
+        console.log('JSON');
+      },
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
 
     const getToken = jest

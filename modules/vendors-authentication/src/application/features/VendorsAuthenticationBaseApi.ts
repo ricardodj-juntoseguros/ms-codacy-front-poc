@@ -40,50 +40,55 @@ class VendorsAuthenticationBaseApi {
 
   handleErrors(error: AxiosError) {
     const { config: originalRequest } = error;
-    const { url } = originalRequest;
-    if (error.response && error.response.status === 401) {
-      // handle unauthorized error, try to refresh the user tokens
-      const userCookie = VendorsAuthService.getUserAccessCookie();
-      const VendorsLoginUrl = process.env.NX_GLOBAL_VENDORS_PLATFORM_URL || '';
-      const currentLocationUrl = window.location.href;
-      const requestLogin = url === '/api/v1/login';
-      if (
-        !requestLogin &&
-        (!userCookie || !userCookie.refreshToken || !userCookie.useRefreshToken)
-      ) {
-        window.location.assign(
-          `${VendorsLoginUrl}?redirectUrl=${currentLocationUrl}`,
-        );
+    if (originalRequest) {
+      if (error.response && error.response.status === 401) {
+        // handle unauthorized error, try to refresh the user tokens
+        const userCookie = VendorsAuthService.getUserAccessCookie();
+        const VendorsLoginUrl =
+          process.env.NX_GLOBAL_VENDORS_PLATFORM_URL || '';
+        const currentLocationUrl = window.location.href;
+        const requestLogin = originalRequest.url === '/api/v1/login';
+        if (
+          !requestLogin &&
+          (!userCookie ||
+            !userCookie.refreshToken ||
+            !userCookie.useRefreshToken)
+        ) {
+          window.location.assign(
+            `${VendorsLoginUrl}?redirectUrl=${currentLocationUrl}`,
+          );
+        }
+
+        return new Promise((resolve, reject) => {
+          VendorsAuthService.doRefreshToken()
+            .then(response => {
+              const {
+                refresh_expires_in,
+                expires_in,
+                access_token,
+                refresh_token,
+              } = response as any;
+
+              VendorsAuthService.setUserAccessCookie(
+                access_token,
+                refresh_token,
+                expires_in,
+                refresh_expires_in,
+              );
+              originalRequest.headers.authorization = `bearer ${access_token}`;
+              resolve(axios.request(originalRequest));
+            })
+            .catch(e => {
+              VendorsAuthService.clearAuthData();
+              window.location.assign(
+                `${VendorsLoginUrl}?redirectUrl=${currentLocationUrl}`,
+              );
+              reject(e);
+            });
+        });
       }
-
-      return new Promise((resolve, reject) => {
-        VendorsAuthService.doRefreshToken()
-          .then(response => {
-            const {
-              refresh_expires_in,
-              expires_in,
-              access_token,
-              refresh_token,
-            } = response as any;
-
-            VendorsAuthService.setUserAccessCookie(
-              access_token,
-              refresh_token,
-              expires_in,
-              refresh_expires_in,
-            );
-            originalRequest.headers.authorization = `bearer ${access_token}`;
-            resolve(axios.request(originalRequest));
-          })
-          .catch(e => {
-            VendorsAuthService.clearAuthData();
-            window.location.assign(
-              `${VendorsLoginUrl}?redirectUrl=${currentLocationUrl}`,
-            );
-            reject(e);
-          });
-      });
     }
+
     return Promise.reject(error.response || error);
   }
 

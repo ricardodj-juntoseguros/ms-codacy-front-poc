@@ -7,7 +7,8 @@ import { QuoteModel } from '../../../types/model';
 
 export const quotationAdapter = (
   quote: QuoteModel,
-  firstDueDate: string,
+  firstDueDate: string | null,
+  numberOfInstallments: number | null,
   isUpdate: boolean,
 ): QuotationDTO => {
   const {
@@ -24,7 +25,9 @@ export const quotationAdapter = (
     feeFlex,
     toggleRateFlex,
   } = quote;
-  const firstDueDateFormatted = firstDueDate ? parseStringToDate(firstDueDate) : null;
+  const firstDueDateFormatted = firstDueDate
+    ? parseStringToDate(firstDueDate)
+    : null;
 
   const brokerFederalId = BrokerPlatformAuthService.getBroker()?.federalId;
   let basePayload = {
@@ -44,18 +47,21 @@ export const quotationAdapter = (
     validity: {
       startDate: startDateValidity
         ? formatISO(
-          startOfDay(
-            parse(startDateValidity, 'dd/MM/yyyy', new Date(), {
-              locale: brLocale,
-            }),
-          ),
-        )
+            startOfDay(
+              parse(startDateValidity, 'dd/MM/yyyy', new Date(), {
+                locale: brLocale,
+              }),
+            ),
+          )
         : undefined,
       durationInDays: Number.isNaN(durationInDays) ? undefined : durationInDays,
     },
     securedAmount: Number.isNaN(securedAmount) ? undefined : securedAmount,
-    numberOfInstallments: 1,
-    firstDueDate: firstDueDateFormatted ? firstDueDateFormatted.toISOString() : null,
+    numberOfInstallments:
+      isUpdate && numberOfInstallments ? numberOfInstallments : 1,
+    firstDueDate: firstDueDateFormatted
+      ? firstDueDateFormatted.toISOString()
+      : null,
     additionalLaborCoverage: hasAdditionalCoverageLabor || false,
     brokerFederalId,
   } as QuotationDTO;

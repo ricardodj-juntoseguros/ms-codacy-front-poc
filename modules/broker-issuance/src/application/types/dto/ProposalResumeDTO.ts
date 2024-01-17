@@ -1,5 +1,6 @@
 export interface ProposalResumeDTO {
   proposalId: number;
+  createdAt: string;
   metadata: {
     policyid?: string | number;
     quotationid?: string | number;
@@ -22,6 +23,7 @@ export interface ProposalResumeDTO {
   biddingNumber: string | null;
   biddingDescription: string | null;
   observations: string | null;
+  paymentType: number | null;
   firstDueDate: string | null;
   selectedNumberOfInstallments: number;
 }

@@ -8,6 +8,7 @@ import {
   makeToast,
 } from 'junto-design-system';
 import { VendorsAuthService } from '@services';
+import { stringToInt } from '@shared/utils';
 import { ProposalListDTO } from '../../../application/types/dto';
 import { ProcessListFilterParams } from '../../../application/types/model';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
@@ -88,7 +89,7 @@ const ProcessList: React.FC = () => {
           setOtherParams({});
           break;
         }
-        setOtherParams({ status: Number.parseInt(filterValue, 10) });
+        setOtherParams({ status: stringToInt(filterValue) });
         break;
       case 'insured':
         setOtherParams({ insuredFederalId: filterValue });

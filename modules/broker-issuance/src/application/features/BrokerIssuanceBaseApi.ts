@@ -44,7 +44,7 @@ export class BrokerInssuanceBaseApi {
     if (!error.response || error.response.status === 401) {
       const userCookie = BrokerPlatformAuthService.getUserAccessCookie();
       const brokerLoginUrl = process.env.NX_GLOBAL_BROKER_PLATFORM_URL || '';
-      if (!userCookie || !userCookie.refreshToken) {
+      if (!userCookie || !userCookie.refreshToken || !originalRequest) {
         window.location.assign(brokerLoginUrl);
         return null;
       }
@@ -72,7 +72,7 @@ export class BrokerInssuanceBaseApi {
           'Content-Type': 'application/json',
           authorization: `bearer ${access_token}`,
         };
-        this.instance.instance.defaults.headers = this.headers;
+        this.instance.instance.defaults.headers.authorization = `bearer ${access_token}`;
         return Promise.resolve(axios.request(originalRequest));
       } catch (err) {
         BrokerPlatformAuthService.clearAuthData();

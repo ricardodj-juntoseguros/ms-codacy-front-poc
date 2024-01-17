@@ -1,20 +1,32 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { makeToast } from 'junto-design-system';
+import brLocale from 'date-fns/locale/pt-BR';
+import { format, parse, startOfDay } from 'date-fns';
 import { RootState } from '../../../config/store';
 import handleError from '../../../helpers/handlerError';
 import { ProposalModel } from '../../types/model/ProposalModel';
-import { ProposalDTO, ProposalResultDTO } from '../../types/dto';
+import {
+  CanAuthorizeDTO,
+  ProposalDTO,
+  ProposalResultDTO,
+} from '../../types/dto';
+import CanAuthorizeApi from '../canAuthorize/CanAuthorizeApi';
 import ProposalApi from './ProposalApi';
 
 export const putProposal = createAsyncThunk<
-  ProposalResultDTO,
+  ProposalResultDTO & CanAuthorizeDTO,
   { proposalId: number; proposalData: ProposalDTO },
   { rejectValue: string }
 >(
   'proposal/putProposal',
   async ({ proposalId, proposalData }, { rejectWithValue }) => {
     return ProposalApi.putProposal(proposalId, proposalData)
-      .then(response => response)
+      .then(async response => {
+        const canAuthorizeResponse = await CanAuthorizeApi.getCanAuthorize(
+          response.PolicyId,
+        );
+        return { ...response, ...canAuthorizeResponse };
+      })
       .catch(error => {
         const defaultMessage = 'Ocorreu um erro ao gerar a proposta.';
         const message = error.data
@@ -42,7 +54,6 @@ const initialState: ProposalModel = {
   isAutomaticPolicy: true,
   hasOnlyFinancialPending: false,
   hasProposalChanges: false,
-  issuedAt: '',
 };
 
 export const proposaSlice = createSlice({
@@ -51,6 +62,7 @@ export const proposaSlice = createSlice({
   reducers: {
     clearProposal: state => {
       state.identification = null;
+      state.currentProposal = null;
       state.insured = null;
       state.insuredAddress = null;
       state.biddingNumber = '';
@@ -72,6 +84,11 @@ export const proposaSlice = createSlice({
           biddingNumber,
           biddingDescription,
           identification,
+          paymentType,
+          observations,
+          firstDueDate,
+          numberOfInstallments,
+          createdAt,
         },
       } = action;
       state.insured = insured;
@@ -79,6 +96,18 @@ export const proposaSlice = createSlice({
       state.biddingNumber = biddingNumber;
       state.biddingDescription = biddingDescription;
       state.identification = identification;
+      state.paymentType = paymentType;
+      state.comments = observations;
+      state.numberOfInstallments = numberOfInstallments;
+      state.createdAt = createdAt;
+      state.firstDueDate = format(
+        startOfDay(
+          parse(firstDueDate.split('T')[0], 'yyyy-MM-dd', new Date(), {
+            locale: brLocale,
+          }),
+        ),
+        'dd/MM/yyyy',
+      );
     },
     setInsured: (state, action) => {
       state.insured = action.payload;
@@ -88,27 +117,27 @@ export const proposaSlice = createSlice({
       state.insuredAddress = action.payload;
       state.hasProposalChanges = true;
     },
-    setBiddingNumber: (state, action) => {
+    setBiddingNumber: (state, action: PayloadAction<string>) => {
       state.biddingNumber = action.payload;
       state.hasProposalChanges = true;
     },
-    setBiddingDescription: (state, action) => {
+    setBiddingDescription: (state, action: PayloadAction<string>) => {
       state.biddingDescription = action.payload;
       state.hasProposalChanges = true;
     },
-    setComments: (state, action) => {
+    setComments: (state, action: PayloadAction<string>) => {
       state.comments = action.payload;
       state.hasProposalChanges = true;
     },
-    setPaymentType: (state, action) => {
+    setPaymentType: (state, action: PayloadAction<number>) => {
       state.paymentType = action.payload;
       state.hasProposalChanges = true;
     },
-    setFirstDueDate: (state, action) => {
+    setFirstDueDate: (state, action: PayloadAction<string | null>) => {
       state.firstDueDate = action.payload;
       state.hasProposalChanges = true;
     },
-    setNumberOfInstallments: (state, action) => {
+    setNumberOfInstallments: (state, action: PayloadAction<number>) => {
       state.numberOfInstallments = action.payload;
       state.hasProposalChanges = true;
     },
@@ -127,9 +156,6 @@ export const proposaSlice = createSlice({
     setCurrentProposal: (state, action) => {
       state.currentProposal = action.payload;
     },
-    setIssuedAt: (state, action) => {
-      state.issuedAt = action.payload;
-    }
   },
   extraReducers: builder => {
     builder
@@ -139,13 +165,20 @@ export const proposaSlice = createSlice({
       })
       .addCase(putProposal.fulfilled, (state, action) => {
         const {
-          payload: { createdAt, PolicyId },
+          payload: {
+            createdAt,
+            PolicyId,
+            isAutomaticPolicy,
+            hasOnlyFinancialPending,
+          },
         } = action;
         state.identification = {
           PolicyId,
         };
         state.createdAt = createdAt;
         state.loadingProposal = false;
+        state.hasOnlyFinancialPending = hasOnlyFinancialPending;
+        state.isAutomaticPolicy = isAutomaticPolicy;
         state.createProposalSuccess = true;
         state.hasProposalChanges = false;
       })

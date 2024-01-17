@@ -92,12 +92,14 @@ const ValidityFields: React.FC = () => {
     return { date, message };
   }, [startDateValidity]);
 
-  const validateForm = async (
-    validationType: ValidationTypesEnum,
-    formState: any,
-    fields: string[],
-  ) => {
-    await validate(ValiditySchema, formState, validationType, fields, false);
+  const validateForm = async (formState: any) => {
+    await validate(
+      ValiditySchema,
+      formState,
+      ValidationTypesEnum.partial,
+      ['validityStartDate', 'validityEndDate'],
+      false,
+    );
   };
 
   const handleChangeStartDate = (value: string, valid: boolean) => {
@@ -108,16 +110,12 @@ const ValidityFields: React.FC = () => {
       validStartDate: valid,
     }));
     if (valid) {
-      validateForm(
-        ValidationTypesEnum.partial,
-        {
-          ...dates,
-          validityStartDate: value,
-          validStartDate: valid,
-          retroactiveDays,
-        },
-        ['validityStartDate', 'validityEndDate'],
-      );
+      validateForm({
+        ...dates,
+        validityStartDate: value,
+        validStartDate: valid,
+        retroactiveDays,
+      });
       dispatch(setStartDateValidity(value));
     } else {
       dispatch(setStartDateValidity(null));
@@ -132,16 +130,12 @@ const ValidityFields: React.FC = () => {
       validEndDate: valid,
     }));
     if (valid) {
-      validateForm(
-        ValidationTypesEnum.partial,
-        {
-          ...dates,
-          validityEndDate: value,
-          validEndDate: valid,
-          retroactiveDays,
-        },
-        ['validityStartDate', 'validityEndDate'],
-      );
+      validateForm({
+        ...dates,
+        validityEndDate: value,
+        validEndDate: valid,
+        retroactiveDays,
+      });
       dispatch(setEndDateValidity(value));
     } else {
       dispatch(setEndDateValidity(null));

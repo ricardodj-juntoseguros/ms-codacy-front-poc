@@ -4,7 +4,10 @@ import {
   putQuotation,
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
-import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
+import {
+  selectProposal,
+  proposalActions,
+} from '../../../application/features/proposal/ProposalSlice';
 import { quotationAdapter } from '../../../application/features/quote/adapters';
 import { useValidate } from '../useValidate';
 import {
@@ -17,11 +20,20 @@ export const useQuotation = () => {
   const validate = useValidate();
   const dispatch = useDispatch();
   const quote = useSelector(selectQuote);
-  const { firstDueDate, hasProposalChanges } = useSelector(selectProposal);
+  const {
+    firstDueDate,
+    numberOfInstallments,
+    identification: proposalIdentification,
+  } = useSelector(selectProposal);
   const { currentQuote, hasQuoteChanges, loadingQuote } = quote;
 
   const createQuotation = async () => {
-    const payload = quotationAdapter(quote, firstDueDate, false);
+    const payload = quotationAdapter(
+      quote,
+      firstDueDate,
+      numberOfInstallments,
+      false,
+    );
     const valid = await validate(
       CreateQuotationSchema,
       payload,
@@ -36,7 +48,12 @@ export const useQuotation = () => {
 
   const updateQuotation = async () => {
     if (!currentQuote) return;
-    const payload = quotationAdapter(quote, firstDueDate, true);
+    const payload = quotationAdapter(
+      quote,
+      firstDueDate,
+      numberOfInstallments,
+      true,
+    );
     const valid = await validate(
       UpdateQuotationSchema,
       payload,
@@ -47,16 +64,19 @@ export const useQuotation = () => {
     if (valid) {
       const proposalId = currentQuote.identification.ProposalId;
       dispatch(putQuotation({ proposalId, quoteData: payload }));
+      if (proposalIdentification) {
+        dispatch(proposalActions.setHasProposalChanges(true));
+      }
     }
   };
 
-  const createOrUpdateQuotation = async () => {
+  const createOrUpdateQuotation = async (isSyncUpdate = false) => {
     if (loadingQuote) return;
     if (!quote.currentQuote) {
       createQuotation();
       return;
     }
-    if (hasQuoteChanges || hasProposalChanges) {
+    if (hasQuoteChanges || isSyncUpdate) {
       updateQuotation();
     }
   };

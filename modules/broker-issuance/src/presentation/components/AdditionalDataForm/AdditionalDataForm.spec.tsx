@@ -3,7 +3,6 @@ import '@testing-library/jest-dom';
 import { startOfDay } from 'date-fns';
 import { makeToast } from 'junto-design-system';
 import IssuanceApi from '../../../application/features/issuance/IssuanceApi';
-import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { store } from '../../../config/store';
 import {
@@ -20,6 +19,7 @@ import { postQuotation } from '../../../application/features/quote/QuoteSlice';
 import { parseDateToString } from '../../../helpers';
 import AdditionalDataForm from './AdditionalDataForm';
 import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
+import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 
 jest.mock('junto-design-system', () => {
   const original = jest.requireActual('junto-design-system');
@@ -60,7 +60,6 @@ jest.mock('../../hooks', () => {
 
 describe('AdditionalDataForm', () => {
   process.env.NX_GLOBAL_CERTIFICATE_REGULARITY = 'CERTIFICATE_REGULARITY';
-  let getCanAuthorizeMock: any = null;
   let getProposalDraftMock: any = null;
   const windowOpen = jest.fn();
   window.open = windowOpen;
@@ -79,6 +78,24 @@ describe('AdditionalDataForm', () => {
         dispatchEvent: jest.fn(),
       })),
     });
+  });
+
+  beforeEach(async () => {
+    jest.clearAllMocks();
+    getProposalDraftMock = jest
+      .spyOn(ProposalApi, 'getProposalDraft')
+      .mockImplementation(() =>
+        Promise.resolve({
+          draftLink: 'draftLink',
+        }),
+      );
+    jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
+      Promise.resolve({
+        isAutomaticPolicy: true,
+        issueMessage: '',
+        hasOnlyFinancialPending: false,
+      }),
+    );
     jest
       .spyOn(QuoteApi, 'postQuotation')
       .mockImplementation(async () => quoteResulMock);
@@ -95,40 +112,14 @@ describe('AdditionalDataForm', () => {
     await store.dispatch(
       putProposal({ proposalId: 12345, proposalData: proposalMock }),
     );
-    await store.dispatch(
-      proposalActions.setPaymentType({
-        label: 'Boleto',
-        value: '1',
-      }),
-    );
-    await store.dispatch(
-      proposalActions.setNumberOfInstallments({
-        label: 'À vista em R$ 190,00',
-        value: '1',
-      }),
-    );
+    store.dispatch(proposalActions.setPaymentType(1));
+    store.dispatch(proposalActions.setNumberOfInstallments(1));
     const todayFormatted = parseDateToString(startOfDay(new Date()));
     await store.dispatch(proposalActions.setFirstDueDate(todayFormatted));
   });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-    getCanAuthorizeMock = jest
-      .spyOn(CanAuthorizeApi, 'getCanAuthorize')
-      .mockImplementation(() =>
-        Promise.resolve({
-          isAutomaticPolicy: true,
-          issueMessage: '',
-          hasOnlyFinancialPending: false,
-        }),
-      );
-    getProposalDraftMock = jest
-      .spyOn(ProposalApi, 'getProposalDraft')
-      .mockImplementation(() =>
-        Promise.resolve({
-          draftLink: 'draftLink',
-        }),
-      );
+  afterEach(() => {
+    store.dispatch(proposalActions.clearProposal());
   });
 
   it('should be able to include a comment', () => {
@@ -157,18 +148,15 @@ describe('AdditionalDataForm', () => {
       <AdditionalDataForm name="AdditionalDataForm" />,
     );
     await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
       await expect(getProposalDraftMock).toHaveBeenCalled();
     });
     const submitButton = getByTestId('additionalDataForm-submit-button');
     await act(async () => {
       await fireEvent.click(submitButton);
     });
-    const state = store.getState();
     await waitFor(
       async () => await expect(postIssuanceMock).toHaveBeenCalled(),
     );
-    expect(state.proposal.issuedAt).toEqual(dateNow);
     expect(advanceStepMock).toHaveBeenCalledWith('AdditionalDataForm');
     expect(mockHistoryPush).toHaveBeenCalledWith('/success');
   });
@@ -186,18 +174,15 @@ describe('AdditionalDataForm', () => {
       <AdditionalDataForm name="AdditionalDataForm" />,
     );
     await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
       await expect(getProposalDraftMock).toHaveBeenCalled();
     });
     const submitButton = getByTestId('additionalDataForm-submit-button');
     await act(async () => {
       await fireEvent.click(submitButton);
     });
-    const state = store.getState();
     await waitFor(
       async () => await expect(postIssuanceMock).toHaveBeenCalled(),
     );
-    expect(state.proposal.issuedAt).toEqual(null);
     expect(advanceStepMock).toHaveBeenCalledWith('AdditionalDataForm');
     expect(mockHistoryPush).toHaveBeenCalledWith('/analysis');
   });
@@ -207,7 +192,6 @@ describe('AdditionalDataForm', () => {
       <AdditionalDataForm name="AdditionalDataForm" />,
     );
     await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
       await expect(getProposalDraftMock).toHaveBeenCalled();
     });
     const certificateRegularityButton = getByTestId(
@@ -224,7 +208,6 @@ describe('AdditionalDataForm', () => {
       <AdditionalDataForm name="AdditionalDataForm" />,
     );
     await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
       await expect(getProposalDraftMock).toHaveBeenCalled();
     });
     const termsModalButton = getByTestId(
@@ -238,21 +221,12 @@ describe('AdditionalDataForm', () => {
     ).toBeInTheDocument();
   });
 
-  it('should be able to render the internalization screen if the response is internalization', async () => {
-    getCanAuthorizeMock = jest
-      .spyOn(CanAuthorizeApi, 'getCanAuthorize')
-      .mockImplementation(() =>
-        Promise.resolve({
-          isAutomaticPolicy: true,
-          issueMessage: '',
-          hasOnlyFinancialPending: true,
-        }),
-      );
+  it('should be able to render the financial pending screen if the authorize response has financial pending', async () => {
+    store.dispatch(proposalActions.setHasOnlyFinancialPending(true));
     const { getByTestId } = render(
       <AdditionalDataForm name="AdditionalDataForm" />,
     );
     await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
       await expect(getProposalDraftMock).toHaveBeenCalled();
     });
     const submitButton = getByTestId('additionalDataForm-submit-button');
@@ -264,20 +238,11 @@ describe('AdditionalDataForm', () => {
   });
 
   it('should be able to render the internalization screen if the response is internalization', async () => {
-    getCanAuthorizeMock = jest
-      .spyOn(CanAuthorizeApi, 'getCanAuthorize')
-      .mockImplementation(() =>
-        Promise.resolve({
-          isAutomaticPolicy: false,
-          issueMessage: '',
-          hasOnlyFinancialPending: false,
-        }),
-      );
+    store.dispatch(proposalActions.setIsAutomaticPolicy(false));
     const { getByText } = render(
       <AdditionalDataForm name="AdditionalDataForm" />,
     );
     await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
       await expect(getProposalDraftMock).toHaveBeenCalled();
     });
     expect(getByText('Envio de documentos')).toBeInTheDocument();
@@ -288,25 +253,12 @@ describe('AdditionalDataForm', () => {
     ).toBeInTheDocument();
   });
 
-  it('should be able to render an error if get can authorize fails', async () => {
-    getCanAuthorizeMock = jest
-      .spyOn(CanAuthorizeApi, 'getCanAuthorize')
-      .mockImplementation(() => Promise.reject({ data: { message: 'error' } }));
-    render(<AdditionalDataForm name="AdditionalDataForm" />);
-    await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
-      await expect(getProposalDraftMock).toHaveBeenCalled();
-    });
-    expect(makeToast).toHaveBeenCalledWith('error', 'error');
-  });
-
   it('should be able to render an error if get proposal draft fails', async () => {
     getProposalDraftMock = jest
       .spyOn(ProposalApi, 'getProposalDraft')
       .mockImplementation(() => Promise.reject({ data: { message: 'error' } }));
     render(<AdditionalDataForm name="AdditionalDataForm" />);
     await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
       await expect(getProposalDraftMock).toHaveBeenCalled();
     });
     expect(makeToast).toHaveBeenCalledWith('error', 'error');
@@ -320,7 +272,6 @@ describe('AdditionalDataForm', () => {
       <AdditionalDataForm name="AdditionalDataForm" />,
     );
     await waitFor(async () => {
-      await expect(getCanAuthorizeMock).toHaveBeenCalled();
       await expect(getProposalDraftMock).toHaveBeenCalled();
     });
     const submitButton = getByTestId('additionalDataForm-submit-button');

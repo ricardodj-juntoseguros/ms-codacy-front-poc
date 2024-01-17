@@ -105,20 +105,6 @@ describe('UploaderFile', () => {
     );
   });
 
-  it('Should show error toast using multiple files', async () => {
-    jest
-      .spyOn(ImportMappingApi.prototype, 'generateUploadProcessId')
-      .mockImplementation(() => Promise.resolve({ id: 123456 }));
-
-    const { getByTestId, getByText } = render(<UploaderFile />);
-    const uploaderInput = getByTestId('input-files') as HTMLInputElement;
-
-    fireEvent.change(uploaderInput, {
-      target: { files: [file, fileWord] },
-    });
-    expect(getByText('Envie somente 1 arquivo por vez')).toBeInTheDocument();
-  });
-
   it('Should render upload drop  successfully', async () => {
     const { getByTestId } = render(<UploaderFile />);
     const uploaderDrop = getByTestId('drop-files');

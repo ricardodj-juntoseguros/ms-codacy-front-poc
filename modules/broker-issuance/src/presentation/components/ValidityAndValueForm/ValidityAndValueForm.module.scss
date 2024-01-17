@@ -6,11 +6,21 @@
   gap: spacing('m');
 }
 
+.validity-and-value-form__legal-terms {
+  margin-top: spacing('xl');
+
+  @media screen and (max-width: 568px) {
+    margin-top: spacing('l');
+  }
+}
+
 .validity-and-value-form__legal-terms-title {
   @include font('xs-emphasys');
   @include color('color', 'dark');
   display: flex;
   align-items: center;
+  margin: 0px;
+  margin-bottom: spacing('s');
 
   & > i {
     @include color('color', 'brand-primary');
@@ -43,5 +53,13 @@
     & > button {
       max-width: 100%;
     }
+  }
+}
+
+.validity-and-value-form__resume-alert {
+  margin-top: spacing('m');
+
+  & > div {
+    width: 100% !important;
   }
 }

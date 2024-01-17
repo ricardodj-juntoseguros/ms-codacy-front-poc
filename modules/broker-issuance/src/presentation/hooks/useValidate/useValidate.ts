@@ -1,6 +1,9 @@
 import { AnyObjectSchema, ValidationError } from 'yup';
-import { useDispatch } from 'react-redux';
-import { validationActions } from '../../../application/features/validation/ValidationSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectValidation,
+  validationActions,
+} from '../../../application/features/validation/ValidationSlice';
 import {
   ValidationErrorModel,
   ValidationTypesEnum,
@@ -9,6 +12,7 @@ import { VALIDATION_MESSAGES } from '../../../constants';
 
 export function useValidate() {
   const dispatch = useDispatch();
+  const validation = useSelector(selectValidation);
 
   const validate = async <T>(
     validationSchema: AnyObjectSchema,
@@ -68,7 +72,7 @@ export function useValidate() {
                 [paramName]: [
                   ...previousErrorList[paramName],
                   (VALIDATION_MESSAGES as any)[type] ||
-                  VALIDATION_MESSAGES.required,
+                    VALIDATION_MESSAGES.required,
                 ],
               };
             }
@@ -76,12 +80,38 @@ export function useValidate() {
             return Object.assign(previousErrorList, {
               [paramName]: [
                 (VALIDATION_MESSAGES as any)[type] ||
-                VALIDATION_MESSAGES.required,
+                  VALIDATION_MESSAGES.required,
               ],
             });
           },
           initialValue,
         );
+
+        if (validationType === ValidationTypesEnum.full) {
+          // Remove error messages of fields that passed validation
+          const { value: sourceObj, inner } = errors;
+
+          const allKeys = Object.keys(sourceObj)
+            .map(each => {
+              const value = errors.value[each];
+              if (value && typeof value === 'object') {
+                return Object.keys(value).map(key => `${each}.${key}`);
+              }
+              return each;
+            })
+            .flat();
+
+          allKeys.forEach(key => {
+            const field = key.substring(key.indexOf('.') + 1, key.length);
+            if (
+              inner.some((error: ValidationError) => error.path === key) ||
+              !Object.keys(validation.errors).includes(field)
+            ) {
+              return;
+            }
+            dispatch(validationActions.removeErrorMessage(field));
+          });
+        }
 
         if (Object.keys(filteredErrors).length === 0) {
           if (isPartial) {

@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import classNames from 'classnames';
-import { downloadFile } from '@shared/utils';
+import { downloadFile, stringToInt } from '@shared/utils';
 import {
   Button,
   LinkButton,
@@ -46,7 +46,7 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
   const handleDownloadPolicyDocument = () => {
     if (isLoadingPolicy) return;
     setIsLoadingPolicy(true);
-    DocumentAPI.getPolicyDocument(Number.parseInt(`${policyid}`, 10))
+    DocumentAPI.getPolicyDocument(stringToInt(`${policyid}`))
       .then((response: any) => {
         downloadFile(response.linkDocumento);
       })

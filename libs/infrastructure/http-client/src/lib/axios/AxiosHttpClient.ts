@@ -3,6 +3,7 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
+  InternalAxiosRequestConfig,
   Method,
 } from 'axios';
 import { IHttpClient } from '../IHttpClient';
@@ -50,8 +51,8 @@ export class AxiosHttpClient implements IHttpClient {
 
   public setRequestInterceptors(
     successHandler?: (
-      config: AxiosRequestConfig,
-    ) => AxiosRequestConfig | Promise<AxiosRequestConfig>,
+      config: InternalAxiosRequestConfig,
+    ) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>,
     errorHandler?: (error: any) => Promise<any>,
   ) {
     this.instance.interceptors.request.use(successHandler, errorHandler);

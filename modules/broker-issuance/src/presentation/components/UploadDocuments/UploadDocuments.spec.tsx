@@ -3,12 +3,12 @@ import '@testing-library/jest-dom';
 import { quoteSliceActions } from 'modules/broker-issuance/src/application/features/quote/QuoteSlice';
 import { BrokerPlatformAuthService } from '@services';
 import { makeToast } from 'junto-design-system';
+import { store } from '../../../config/store';
 import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
-
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
-import { store } from '../../../config/store';
 import { putProposal } from '../../../application/features/proposal/ProposalSlice';
+import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 import { proposalMock, modalityBidderMock } from '../../../__mocks__';
 import UploadDocuments from './UploadDocuments';
 
@@ -43,6 +43,13 @@ describe('UploadDocuments', () => {
         QuotationId: 12223,
         NewQuoterId: 123333,
         createdAt: new Date().toISOString(),
+      }),
+    );
+    jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
+      Promise.resolve({
+        isAutomaticPolicy: false,
+        issueMessage: '',
+        hasOnlyFinancialPending: false,
       }),
     );
     await store.dispatch(

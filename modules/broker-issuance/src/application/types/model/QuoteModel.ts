@@ -26,4 +26,5 @@ export interface QuoteModel {
   loadingQuote?: boolean;
   hasQuoteChanges: boolean;
   isQuoteResume: boolean;
+  hasQuoteErrors: boolean;
 }

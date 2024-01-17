@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { stringToInt } from '@shared/utils';
 import { makeToast } from 'junto-design-system';
 import {
   addDays,
@@ -71,6 +72,7 @@ const initialState: QuoteModel = {
   loadingQuote: false,
   hasQuoteChanges: false,
   isQuoteResume: false,
+  hasQuoteErrors: false,
 };
 
 export const quoteSlice = createSlice({
@@ -94,8 +96,8 @@ export const quoteSlice = createSlice({
       state.currentQuote = {
         identification: {
           ProposalId: proposalId,
-          NewQuoterId: Number.parseInt(`${metadata.newquoterid || 0}`, 10),
-          QuotationId: Number.parseInt(`${metadata.quotationid || 0}`, 10),
+          NewQuoterId: stringToInt(`${metadata.newquoterid || 0}`),
+          QuotationId: stringToInt(`${metadata.quotationid || 0}`),
         },
       } as QuoteResultDTO;
       state.securedAmount = securedAmount;
@@ -244,6 +246,7 @@ export const quoteSlice = createSlice({
         state.commissionFlex = commissionFlex || NaN;
         state.loadingQuote = false;
         state.hasQuoteChanges = false;
+        state.hasQuoteErrors = false;
       })
       .addCase(putQuotation.fulfilled, (state, action) => {
         const { payload } = action;
@@ -257,16 +260,19 @@ export const quoteSlice = createSlice({
         state.commissionFlex = commissionFlex || NaN;
         state.loadingQuote = false;
         state.hasQuoteChanges = false;
+        state.hasQuoteErrors = false;
         state.toggleRateFlex = !!(feeFlex || commissionFlex);
       })
       .addCase(postQuotation.rejected, state => {
         state.loadingQuote = false;
         state.hasQuoteChanges = true;
+        state.hasQuoteErrors = true;
         makeToast('error', 'Ocorreu um erro ao gerar a cotação');
       })
       .addCase(putQuotation.rejected, state => {
         state.loadingQuote = false;
         state.hasQuoteChanges = true;
+        state.hasQuoteErrors = true;
         makeToast('error', 'Ocorreu um erro ao atualizar os dados da cotação');
       });
   },

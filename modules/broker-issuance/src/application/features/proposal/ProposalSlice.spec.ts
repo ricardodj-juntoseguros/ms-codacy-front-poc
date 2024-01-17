@@ -1,5 +1,6 @@
 import { insuredMock, proposalMock } from '../../../__mocks__';
 import { store } from '../../../config/store';
+import CanAuthorizeApi from '../canAuthorize/CanAuthorizeApi';
 import ProposalAPI from './ProposalApi';
 import { proposalActions, putProposal } from './ProposalSlice';
 
@@ -16,18 +17,30 @@ describe('ProposalSlice', () => {
     store.dispatch(proposalActions.clearProposal());
   });
 
-  it('should be able to update a proposal', async () => {
+  it('should be able to update a proposal and get issue authorize status', async () => {
     const putProposalMock = jest
       .spyOn(ProposalAPI, 'putProposal')
       .mockImplementation(() => Promise.resolve(mockResult));
+    const canAuthorizeMock = jest
+      .spyOn(CanAuthorizeApi, 'getCanAuthorize')
+      .mockImplementation(() =>
+        Promise.resolve({
+          isAutomaticPolicy: true,
+          issueMessage: '',
+          hasOnlyFinancialPending: false,
+        }),
+      );
     await store.dispatch(
       putProposal({ proposalId: 12345, proposalData: proposalMock }),
     );
     const { proposal } = store.getState();
     expect(putProposalMock).toHaveBeenCalled();
     expect(putProposalMock).toHaveBeenCalledWith(12345, proposalMock);
+    expect(canAuthorizeMock).toHaveBeenCalledWith(11111);
     expect(proposal.identification?.PolicyId).toEqual(mockResult.PolicyId);
     expect(proposal.createdAt).toBe('2024-01-01T12:00:00.000Z');
+    expect(proposal.isAutomaticPolicy).toBe(true);
+    expect(proposal.hasOnlyFinancialPending).toBe(false);
   });
 
   it('Should not update the store if the call returns an error', async () => {
@@ -41,6 +54,7 @@ describe('ProposalSlice', () => {
     expect(putProposalMock).toHaveBeenCalled();
     expect(putProposalMock).toHaveBeenCalledWith(12345, proposalMock);
     expect(proposal.identification).toEqual(null);
+    expect(proposal.currentProposal).toEqual(null);
   });
 
   it('should be able to set insured', async () => {
@@ -80,9 +94,9 @@ describe('ProposalSlice', () => {
   });
 
   it('should be able to set payment type', async () => {
-    store.dispatch(proposalActions.setPaymentType({ label: 'label', value: 'value' }));
+    store.dispatch(proposalActions.setPaymentType(1));
     const { proposal } = store.getState();
-    expect(proposal.paymentType).toEqual({ label: 'label', value: 'value' });
+    expect(proposal.paymentType).toEqual(1);
   });
 
   it('should be able to set first due date', async () => {
@@ -92,9 +106,9 @@ describe('ProposalSlice', () => {
   });
 
   it('should be able to set number of installments', async () => {
-    store.dispatch(proposalActions.setNumberOfInstallments({ label: 'label', value: 'value' }));
+    store.dispatch(proposalActions.setNumberOfInstallments(2));
     const { proposal } = store.getState();
-    expect(proposal.numberOfInstallments).toEqual({ label: 'label', value: 'value' });
+    expect(proposal.numberOfInstallments).toEqual(2);
   });
 
   it('should be able to set is automatic policy', async () => {
@@ -119,11 +133,5 @@ describe('ProposalSlice', () => {
     store.dispatch(proposalActions.setCurrentProposal(proposalMock));
     const { proposal } = store.getState();
     expect(proposal.currentProposal).toEqual(proposalMock);
-  });
-
-  it('should be able to set issued at', async () => {
-    store.dispatch(proposalActions.setIssuedAt('2024-01-01'));
-    const { proposal } = store.getState();
-    expect(proposal.issuedAt).toEqual('2024-01-01');
   });
 });

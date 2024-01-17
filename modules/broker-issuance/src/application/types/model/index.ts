@@ -3,16 +3,14 @@ export * from './PolicyholderSearchModel';
 export * from './PolicyholderSelectionModel';
 export * from './ModalityModel';
 export * from './QuoteModel';
-export * from './RateCalculationModel';
 export * from './AddressModel';
 export * from './InsuredModel';
 export * from './SearchInsuredModel';
 export * from './ModalityTypeEnum';
 export * from './ModalitySelectionModel';
 export * from './ValidationModel';
-export * from './LimitModel';
 export * from './ValidationTypesEnum';
 export * from './CustomClauseRequestedByEnum';
 export * from './ContractualConditionModel';
 export * from './PaymentTypeEnum';
-export * from './ProposalDocumentsModel'
+export * from './ProposalDocumentsModel';

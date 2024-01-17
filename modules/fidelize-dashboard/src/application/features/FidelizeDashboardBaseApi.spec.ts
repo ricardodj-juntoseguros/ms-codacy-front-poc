@@ -55,8 +55,14 @@ describe('FidelizeDashboardBaseApi', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: 'bearer token' },
+        headers: { authorization: 'bearer token' } as any,
       },
+      isAxiosError: false,
+      toJSON: () => {
+        console.log('JSON');
+      },
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
 
     const getUserCookieMock = jest
@@ -98,8 +104,13 @@ describe('FidelizeDashboardBaseApi', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: 'bearer token' },
+        headers: { authorization: 'bearer token' } as any,
       },
+      toJSON: () => {
+        console.log('JSON');
+      },
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
 
     jest
@@ -122,8 +133,13 @@ describe('FidelizeDashboardBaseApi', () => {
       config: {
         baseURL: 'test_url',
         method: 'GET',
-        headers: { authorization: 'bearer token' },
+        headers: { authorization: 'bearer token' } as any,
       },
+      toJSON: () => {
+        console.log('JSON');
+      },
+      name: 'request',
+      message: 'Error',
     } as AxiosError;
 
     jest

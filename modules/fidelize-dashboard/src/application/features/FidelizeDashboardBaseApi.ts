@@ -55,7 +55,7 @@ class FidelizeDashboardBaseApi {
   handleErrors(error: AxiosError) {
     const { config: originalRequest } = error;
 
-    if (error.response && error.response.status === 401) {
+    if (originalRequest && error.response && error.response.status === 401) {
       // handle unauthorized error, try to refresh the user tokens
       const userCookie = BrokerPlatformAuthService.getUserAccessCookie();
       const brokerLoginUrl = process.env.NX_GLOBAL_BROKER_PLATFORM_URL || '';

@@ -1,8 +1,8 @@
 import { boolean, number, object, string } from 'yup';
-import { addDays, isAfter, isBefore, isSameDay, parseISO, startOfDay, subDays } from 'date-fns';
+import { isAfter, isSameDay, parseISO, startOfDay, subDays } from 'date-fns';
 import { federalIdValidator } from '@shared/utils';
 import { store } from '../../../config/store';
-import { VARIANT_RETROACTIVE_DATE_MODALITIES, MAX_DAYS_FOR_FIRST_DUE_DATE } from '../../../constants';
+import { VARIANT_RETROACTIVE_DATE_MODALITIES } from '../../../constants';
 
 export const CreateQuotationSchema = object().shape({
   policyholder: object().shape({
@@ -59,15 +59,7 @@ export const CreateQuotationSchema = object().shape({
   securedAmount: number().positive().required(),
   numberOfInstallments: number().required(),
   additionalLaborCoverage: boolean().required(),
-  firstDueDate: string().optional().nullable().test('invalidFirstDueDate', function validateFirstDueDate() {
-    const { validity, firstDueDate } = this.parent;
-    const { durationInDays } = validity;
-    if (!firstDueDate) return true;
-    const daysToAdd =
-      durationInDays && durationInDays < MAX_DAYS_FOR_FIRST_DUE_DATE ? durationInDays : MAX_DAYS_FOR_FIRST_DUE_DATE;
-    const maxDate = addDays(new Date(), daysToAdd);
-    return isBefore(new Date(firstDueDate), maxDate);
-  }),
+  firstDueDate: string().optional().nullable(),
   brokerFederalId: string()
     .required()
     .test('invalidBrokerFederalId', function federalIdValid() {

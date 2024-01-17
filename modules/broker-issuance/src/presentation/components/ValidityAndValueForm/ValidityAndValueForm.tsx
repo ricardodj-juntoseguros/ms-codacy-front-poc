@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, makeToast } from 'junto-design-system';
+import { Alert, Button, makeToast } from 'junto-design-system';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
 import { downloadFile } from '@shared/utils';
 import ValidityFields from '../ValidityFields';
@@ -16,8 +16,13 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
   const createOrUpdateQuote = useQuotation();
   const [loadingDownloadQuote, setLoadingDownloadQuote] =
     useState<boolean>(false);
-  const { currentQuote, loadingQuote, hasQuoteChanges, isQuoteResume } =
-    useSelector(selectQuote);
+  const {
+    currentQuote,
+    loadingQuote,
+    hasQuoteChanges,
+    isQuoteResume,
+    hasQuoteErrors,
+  } = useSelector(selectQuote);
 
   useEffect(() => {
     if (
@@ -32,8 +37,8 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
   }, [isQuoteResume, currentQuote]);
 
   const submitDisabled = useMemo(() => {
-    return !currentQuote || hasQuoteChanges;
-  }, [currentQuote, hasQuoteChanges]);
+    return !currentQuote || hasQuoteChanges || hasQuoteErrors;
+  }, [currentQuote, hasQuoteChanges, hasQuoteErrors]);
 
   const downloadDisabled = useMemo(() => {
     return (
@@ -70,6 +75,17 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
     >
       <ValidityFields />
       <SecuredAmountAndPricing />
+      {isQuoteResume && hasQuoteErrors && (
+        <div className={styles['validity-and-value-form__resume-alert']}>
+          <Alert
+            variant="error"
+            icon="x-circle"
+            text="Ops! Parece que tivemos um problema ao recarregar sua proposta. %ACTION_BUTTON%"
+            actionButtonText="Clique aqui para tentar novamente."
+            onActionButtonClick={() => createOrUpdateQuote()}
+          />
+        </div>
+      )}
       <div className={styles['validity-and-value-form__legal-terms']}>
         <h3 className={styles['validity-and-value-form__legal-terms-title']}>
           <i className="icon icon-alert-circle" />

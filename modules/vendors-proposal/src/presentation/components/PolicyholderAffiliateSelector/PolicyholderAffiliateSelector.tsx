@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, DropdownOptions } from 'junto-design-system';
-import { federalIdFormatter } from '@shared/utils';
+import { federalIdFormatter, stringToInt } from '@shared/utils';
 import { NO_AFFILIATE_OPTION } from '../../../constants';
 import {
   selectProposal,
@@ -33,7 +33,7 @@ const PolicyholderAffiliateSelector: React.FC = () => {
   const handleAffiliateSelect = (option: DropdownOptions) => {
     const { value } = option;
     const affiliate = policyholderAffiliateResults?.find(
-      aff => aff.id === Number.parseInt(value, 10),
+      aff => aff.id === stringToInt(value),
     );
     const formatedAffiliateFederalId =
       affiliate?.id === 0

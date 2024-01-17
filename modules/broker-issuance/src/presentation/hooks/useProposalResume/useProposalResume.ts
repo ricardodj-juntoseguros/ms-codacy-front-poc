@@ -4,6 +4,7 @@ import { makeToast } from 'junto-design-system';
 import { useParams } from 'react-router';
 import { BrokerPlatformAuthService } from '@services';
 import { nanoid } from 'nanoid/non-secure';
+import { stringToInt } from '@shared/utils';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { ProposalResumeDTO } from '../../../application/types/dto';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
@@ -43,7 +44,7 @@ export const useProposalResume = () => {
 
   useEffect(() => {
     if (identification) {
-      ProposalApi.getProposalResume(Number.parseInt(identification, 10))
+      ProposalApi.getProposalResume(stringToInt(identification))
         .then(response => rehydrateStoresWithProposalData(response))
         .catch(err => {
           if (err.status && err.status === 404) {
@@ -71,6 +72,7 @@ export const useProposalResume = () => {
   const rehydrateStoresWithProposalData = async (data: ProposalResumeDTO) => {
     const {
       metadata,
+      createdAt,
       policyholderId,
       policyholderFederalId,
       policyholderAffiliateFederalId,
@@ -80,6 +82,10 @@ export const useProposalResume = () => {
       insuredAddressId,
       biddingNumber,
       biddingDescription,
+      paymentType,
+      selectedNumberOfInstallments,
+      observations,
+      firstDueDate,
     } = data;
 
     const broker = BrokerPlatformAuthService.getBroker();
@@ -203,8 +209,13 @@ export const useProposalResume = () => {
           biddingNumber,
           biddingDescription,
           identification: {
-            PolicyId: Number.parseInt(`${metadata.policyid}`, 10),
+            PolicyId: stringToInt(`${metadata.policyid}`),
           },
+          paymentType,
+          numberOfInstallments: selectedNumberOfInstallments,
+          firstDueDate,
+          observations,
+          createdAt,
         }),
       );
     }

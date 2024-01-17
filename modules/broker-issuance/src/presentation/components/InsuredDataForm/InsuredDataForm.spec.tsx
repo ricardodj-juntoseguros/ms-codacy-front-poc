@@ -5,6 +5,7 @@ import {
   proposalActions,
   putProposal,
 } from '../../../application/features/proposal/ProposalSlice';
+import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 import { insuredMock, proposalMock } from '../../../__mocks__';
 import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
 import { store } from '../../../config/store';
@@ -91,6 +92,13 @@ describe('InsuredDataForm', () => {
     jest
       .spyOn(ProposalApi, 'putProposal')
       .mockImplementation(() => Promise.resolve(mockResult));
+    jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
+      Promise.resolve({
+        isAutomaticPolicy: true,
+        issueMessage: '',
+        hasOnlyFinancialPending: true,
+      }),
+    );
     await store.dispatch(
       putProposal({ proposalId: 12345, proposalData: proposalMock }),
     );

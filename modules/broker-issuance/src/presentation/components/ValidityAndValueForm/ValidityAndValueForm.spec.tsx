@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import { downloadFile } from '@shared/utils';
 import {
   postQuotation,
+  putQuotation,
   quoteSliceActions,
 } from '../../../application/features/quote/QuoteSlice';
 import { store } from '../../../config/store';
@@ -13,6 +14,7 @@ import {
   quoteResulMock,
 } from '../../../__mocks__';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
+import { QuotationDTO } from '../../../application/types/dto';
 
 const advanceStepMock = jest.fn();
 const mockHook = jest.fn();
@@ -42,7 +44,13 @@ jest.mock('../../hooks', () => {
     useQuotation: () => mockHook,
   };
 });
-
+jest.mock('junto-design-system', () => {
+  const original = jest.requireActual('junto-design-system');
+  return {
+    ...original,
+    makeToast: jest.fn(),
+  };
+});
 describe('ValidityAndValueForm', () => {
   beforeEach(() => {
     store.dispatch(quoteSliceActions.resetQuote());
@@ -113,5 +121,23 @@ describe('ValidityAndValueForm', () => {
     await waitFor(() => {
       expect(mockHook).toHaveBeenCalled();
     });
+  });
+
+  it('Should display error alert if is a quotation resume and quotation update fails', async () => {
+    store.dispatch(quoteSliceActions.setQuoteResumeData(proposalResumeMock));
+    jest
+      .spyOn(QuoteApi, 'putQuotation')
+      .mockImplementation(async () => Promise.reject());
+    const { findByText } = render(
+      <ValidityAndValueForm name="validityAndValue" />,
+    );
+    store.dispatch(
+      putQuotation({ proposalId: 90895, quoteData: {} as QuotationDTO }),
+    );
+    expect(
+      await findByText(
+        'Ops! Parece que tivemos um problema ao recarregar sua proposta.',
+      ),
+    ).toBeInTheDocument();
   });
 });

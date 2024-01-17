@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Dropdown, DropdownOptions, LinkButton } from 'junto-design-system';
+import { stringToInt } from '@shared/utils';
 import { PROCESS_STATUS } from '../../../constants';
 import ProcessListingApi from '../../../application/features/processListing/ProcessListingApi';
 import styles from './ProcessListStatusFilter.module.scss';
@@ -50,7 +51,7 @@ const ProcessListStatusFilter: React.FC<ProcessListStatusFilterProps> = ({
         value={statusOptions.find(opt => opt.value === selectedValue) || null}
         onValueSelected={option => {
           setSelectedValue(option.value);
-          changeStatusValueCallback(Number.parseInt(option.value, 10));
+          changeStatusValueCallback(stringToInt(option.value));
         }}
       />
       {showClearButton && (

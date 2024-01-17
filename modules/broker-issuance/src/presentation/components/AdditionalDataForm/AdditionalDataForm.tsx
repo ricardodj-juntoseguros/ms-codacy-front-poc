@@ -21,7 +21,6 @@ import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import { useProposal } from '../../hooks';
 import IssuanceApi from '../../../application/features/issuance/IssuanceApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
-import canAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 import handleError from '../../../helpers/handlerError';
 import { selectProposalDocuments } from '../../../application/features/proposalDocuments/ProposalDocumentsSlice';
 import {
@@ -41,7 +40,6 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
   const [openTermsModal, setOpenTermsModal] = useState(false);
   const [proposalDraft, setProposalDraft] = useState<string>('');
   const [loadingIssuance, setLoadingIssuance] = useState(false);
-  const [loadingCanAuthorize, setLoadingCanAuthorize] = useState(false);
   const { errors } = useSelector(selectValidation);
   const dispatch = useDispatch();
   const { loadingQuote } = useSelector(selectQuote);
@@ -59,15 +57,9 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
   const updateProposal = useProposal();
   const history = useHistory();
   const { advanceStep } = useFlow();
-  const {
-    setComments,
-    setIsAutomaticPolicy,
-    setHasOnlyFinancialPending,
-    setIssuedAt,
-  } = proposalActions;
+  const { setComments } = proposalActions;
 
   useEffect(() => {
-    getCanAuthorize();
     getProposalDraft();
   }, []);
 
@@ -83,8 +75,7 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
       Object.keys(errors).length > 0 ||
       (!isAutomaticPolicy && proposalDocuments.length === 0) ||
       loadingQuote ||
-      loadingProposal ||
-      loadingCanAuthorize
+      loadingProposal
     ) {
       return true;
     }
@@ -98,25 +89,6 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
     errors,
     loadingQuote,
     loadingProposal,
-    loadingCanAuthorize,
-  ]);
-
-  const getCanAuthorize = useCallback(() => {
-    if (!identification?.PolicyId) return;
-    setLoadingCanAuthorize(true);
-    canAuthorizeApi
-      .getCanAuthorize(identification.PolicyId)
-      .then(response => {
-        dispatch(setIsAutomaticPolicy(response.isAutomaticPolicy));
-        dispatch(setHasOnlyFinancialPending(response.hasOnlyFinancialPending));
-      })
-      .catch(error => makeToast('error', handleError(error)))
-      .finally(() => setLoadingCanAuthorize(false));
-  }, [
-    dispatch,
-    identification,
-    setHasOnlyFinancialPending,
-    setIsAutomaticPolicy,
   ]);
 
   const getProposalDraft = useCallback(() => {
@@ -133,7 +105,6 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
     if (!identification?.PolicyId) return;
     IssuanceApi.postIssuance(identification.PolicyId)
       .then(response => {
-        dispatch(setIssuedAt(response.issuedAt));
         advanceStep(name);
         response.issued ? history.push('/success') : history.push('/analysis');
       })
