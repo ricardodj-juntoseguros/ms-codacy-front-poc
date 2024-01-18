@@ -13,6 +13,7 @@ import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
 import { useAppDispatch } from '../../../config/store';
 import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import RDStationAPI from '../../../application/features/RDStation/RDStationAPI';
 
 const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
   const dispatch = useAppDispatch();
@@ -21,6 +22,7 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
   const brokerInformation = useSelector(selectBroker);
   const sreenWidth = window.screen.width;
   const [isSubmitting, setIsSubmitting] = useState(false);
+  let updateTokenRD = false;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,7 +70,56 @@ const BrokerDataReviewContainer = ({ history }: RouteComponentProps) => {
     });
   };
 
+  const getInternalizationReasonslConversion = () => {
+    if (brokerInformation.signupDirect) {
+      return '';
+    }
+    let InternalizationReasonslConversion = ' ';
+
+    if (!broker.susepSituation) {
+      InternalizationReasonslConversion += 'corretor não esta ativo na susep;';
+    }
+
+    if (!broker.renewRegistration) {
+      InternalizationReasonslConversion += 'corretor não possui reecadastro;';
+    }
+
+    if (!broker.hasProductDamageInsurance) {
+      InternalizationReasonslConversion += 'corretor não possui produto 305;';
+    }
+
+    if (!responsibleInformation.emailHasValidated) {
+      InternalizationReasonslConversion +=
+        'Não foi possível validar o e-mail do corretor';
+    }
+
+    return InternalizationReasonslConversion;
+  };
+
+  const fetchSendLeadBrokerSignup = async () => {
+    const leadBrokerSignup = {
+      LeadConversionIdentifier: 'Cadastro do Corretor - Aprovação',
+      Email: responsibleInformation.emailBroker,
+      phone: responsibleInformation.phoneNumberResponsable,
+      urlConversion: window.location.href,
+      internalizationReasons: getInternalizationReasonslConversion(),
+    };
+    await RDStationAPI.addLeadBrokerSignup(leadBrokerSignup).catch(() => {
+      if (!updateTokenRD) {
+        updateTokenRD = true;
+        fetchAuthRDBrokerSignup();
+      }
+    });
+  };
+
+  const fetchAuthRDBrokerSignup = async () => {
+    await RDStationAPI.authRDBrokerSignup().then(() => {
+      fetchSendLeadBrokerSignup();
+    });
+  };
+
   const onSubmit = () => {
+    fetchSendLeadBrokerSignup();
     setIsSubmitting(true);
     fetchRegisterBrokerInformation();
     fetchRegisterResponsibleBrokerGv();

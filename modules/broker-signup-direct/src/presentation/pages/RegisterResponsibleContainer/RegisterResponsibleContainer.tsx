@@ -6,6 +6,7 @@ import styles from './RegisterResponsibleContainer.module.scss';
 import BrokerEmail from '../../components/BrokerEmail';
 import { TextHelper } from '../../components/TextHelper';
 import RegisterBrokerApi from '../../../application/features/RegisterBroker/RegisterBrokerApi';
+import RDStationAPI from '../../../application/features/RDStation/RDStationAPI';
 import { selectBroker } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 import { selectResponsibleInformation } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
 import LogoJuntoSeguros from '../../components/LogoJunto/LogoJuntoSeguros';
@@ -21,7 +22,7 @@ const RegisterResponsibleContainer = ({ history }: RouteComponentProps) => {
     'Lembre-se de que esse será o e-mail da pessoa responsável pelo relacionamento com a plataforma.',
   ];
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  let updateTokenRD = false;
   useEffect(() => {
     if (brokerInformation.information.federalId === '' || broker.codeIsValid) {
       history.push('/');
@@ -55,7 +56,31 @@ const RegisterResponsibleContainer = ({ history }: RouteComponentProps) => {
       .catch(error => error);
   };
 
+  const fetchSendLeadBrokerSignup = async () => {
+    const leadBrokerSignup = {
+      LeadConversionIdentifier: 'Cadastro do Corretor - Iniciou',
+      brokerName: broker.information.brokerCompanyName,
+      name: responsibleInformation.nameResponsable,
+      Email: responsibleInformation.emailBroker,
+      federalId: broker.information.federalId,
+      urlConversion: window.location.href,
+    };
+    await RDStationAPI.addLeadBrokerSignup(leadBrokerSignup).catch(() => {
+      if (!updateTokenRD) {
+        updateTokenRD = true;
+        fetchAuthRDBrokerSignup();
+      }
+    });
+  };
+
+  const fetchAuthRDBrokerSignup = async () => {
+    await RDStationAPI.authRDBrokerSignup().then(() => {
+      fetchSendLeadBrokerSignup();
+    });
+  };
+
   const onSubmit = async () => {
+    fetchSendLeadBrokerSignup();
     setIsSubmitting(true);
     fetchRegisterResponsibleBroker(responsibleInformation, broker.pathUpdate);
   };

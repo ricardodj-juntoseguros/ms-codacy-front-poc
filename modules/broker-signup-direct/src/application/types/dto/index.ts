@@ -8,3 +8,4 @@ export * from './verifyTokenDTO';
 export * from './SimpleOptantDTO';
 export * from './IndecxInviteIdDTO';
 export * from './SurveyDTO';
+export * from './RDLeadBrokerSignupDTO';

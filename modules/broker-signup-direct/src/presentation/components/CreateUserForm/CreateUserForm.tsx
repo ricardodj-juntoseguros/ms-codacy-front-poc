@@ -9,6 +9,8 @@ import {
   selectBroker,
   brokerInformationSliceActions,
 } from '../../../application/features/brokerInformation/BrokerInformationSlice';
+import { selectResponsibleInformation } from '../../../application/features/responsibleInformation/ResponsibleInformationSlice';
+
 import { ReactComponent as RuleNotCheck } from '../../assets/circle-red.svg';
 import { ReactComponent as RuleCheck } from '../../assets/circle-green.svg';
 import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
@@ -19,6 +21,7 @@ import {
 } from '../../../application/types/model/ValidationModel';
 import { validateForm } from '../../../application/features/validation/ValidationSlice';
 import { RegisterBrokerNewUserDTO } from '../../../application/types/dto';
+import RDStationAPI from '../../../application/features/RDStation/RDStationAPI';
 
 export interface CreateUserFormProps {
   handleGoNextClick(): void;
@@ -35,6 +38,8 @@ export function CreateUserForm({
 }: CreateUserFormProps) {
   const dispatch = useAppDispatch();
   const brokerInformation = useSelector(selectBroker);
+  const responsibleInformation = useSelector(selectResponsibleInformation);
+
   const [brokerUserName, setBrokerUserNmae] = useState('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
@@ -52,6 +57,7 @@ export function CreateUserForm({
   const [errorUserName, setErrorUserName] = useState<string>('');
   const sreenWidthMobile = window.screen.width;
   const now = new Date();
+  let updateTokenRD = false;
 
   useEffect(() => {
     if (password !== '' || confirmPassword !== '') {
@@ -175,6 +181,32 @@ export function CreateUserForm({
       [...payload],
       brokerGuid || '',
     );
+
+    fetchSendLeadBrokerSignup();
+  };
+
+  const fetchSendLeadBrokerSignup = async () => {
+    const leadBrokerSignup = {
+      LeadConversionIdentifier: 'Cadastro do Corretor - Sucesso',
+      brokerName: brokerInformation.information.brokerCompanyName,
+      Email: responsibleInformation.emailBroker,
+      federalId: brokerInformation.information.federalId,
+      urlConversion: window.location.href,
+      login: brokerUserName,
+      phone: responsibleInformation.phoneNumberResponsable,
+    };
+    await RDStationAPI.addLeadBrokerSignup(leadBrokerSignup).catch(() => {
+      if (!updateTokenRD) {
+        updateTokenRD = true;
+        fetchAuthRDBrokerSignup();
+      }
+    });
+  };
+
+  const fetchAuthRDBrokerSignup = async () => {
+    await RDStationAPI.authRDBrokerSignup().then(() => {
+      fetchSendLeadBrokerSignup();
+    });
   };
 
   const onSubmit = async () => {
