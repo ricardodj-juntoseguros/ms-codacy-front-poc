@@ -135,13 +135,26 @@ describe('AdditionalDataForm', () => {
   });
 
   it('should be able to render the success screen if the response is success', async () => {
-    const dateNow = new Date().toISOString();
     const postIssuanceMock = jest
       .spyOn(IssuanceApi, 'postIssuance')
       .mockImplementation(() =>
         Promise.resolve({
+          createdAt: '2024-01-18T11:18:12.14',
           issued: true,
-          issuedAt: dateNow,
+          issuedAt: '2024-01-18T11:19:32.79',
+          protocols: [
+            {
+              number: '4280873',
+              dateTime: '2024-01-18T11:18:12.14',
+              text: 'Proposta 4280873, 18/01/2024 às 11h18',
+            },
+            {
+              number: '02-0775-0991427',
+              dateTime: '2024-01-18T11:19:32.79',
+              text: 'Contratada em 18/01/2024, às 11h18',
+            },
+          ],
+          status: 3,
         }),
       );
     const { getByTestId } = render(
@@ -166,8 +179,22 @@ describe('AdditionalDataForm', () => {
       .spyOn(IssuanceApi, 'postIssuance')
       .mockImplementation(() =>
         Promise.resolve({
+          createdAt: '2024-01-18T11:18:12.14',
           issued: false,
-          issuedAt: null,
+          issuedAt: '2024-01-18T11:19:32.79',
+          protocols: [
+            {
+              number: '4280873',
+              dateTime: '2024-01-18T11:18:12.14',
+              text: 'Proposta 4280873, 18/01/2024 às 11h18',
+            },
+            {
+              number: '02-0775-0991427',
+              dateTime: '2024-01-18T11:19:32.79',
+              text: 'Contratada em 18/01/2024, às 11h18',
+            },
+          ],
+          status: 3,
         }),
       );
     const { getByTestId } = render(

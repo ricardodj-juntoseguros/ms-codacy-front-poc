@@ -10,8 +10,8 @@ describe('IssuanceApi', () => {
     const mockPost = jest
       .spyOn(AxiosHttpClient.prototype, 'post')
       .mockImplementation(async () => mockResult);
-    const result = await IssuanceApi.postIssuance(12345);
-    expect(mockPost).toHaveBeenCalledWith({ url: "/v1/issuances/12345" });
+    const result = await IssuanceApi.postIssuance(12345, { test: 'test' });
+    expect(mockPost).toHaveBeenCalledWith({ url: "/v1/issuances/12345", payload: { test: 'test' } });
     expect(result).toEqual(mockResult);
   });
 });

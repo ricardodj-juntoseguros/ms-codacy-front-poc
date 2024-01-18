@@ -42,7 +42,7 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
   const [loadingIssuance, setLoadingIssuance] = useState(false);
   const { errors } = useSelector(selectValidation);
   const dispatch = useDispatch();
-  const { loadingQuote } = useSelector(selectQuote);
+  const { loadingQuote, currentQuote } = useSelector(selectQuote);
   const {
     comments,
     identification,
@@ -102,8 +102,16 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
 
   const postIssuance = useCallback(() => {
     setLoadingIssuance(true);
-    if (!identification?.PolicyId) return;
-    IssuanceApi.postIssuance(identification.PolicyId)
+    if (!currentQuote) return;
+    const payload = {
+      isAutomatic: true,
+      internalizedReason: '',
+      comments,
+      contacts: [],
+      acceptTermsId: null,
+      approvalContacts: [],
+    };
+    IssuanceApi.postIssuance(currentQuote?.identification.NewQuoterId, payload)
       .then(response => {
         advanceStep(name);
         response.issued ? history.push('/success') : history.push('/analysis');
