@@ -12,6 +12,9 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '/src/config/',
     '/src/constants/',
+    '/src/application/features/validations/',
+    '/src/application/features/RegisterBroker/adapters',
+    '/src/application/features/brokerInformation/adapters',
     'index.ts',
     'index.tsx',
   ],

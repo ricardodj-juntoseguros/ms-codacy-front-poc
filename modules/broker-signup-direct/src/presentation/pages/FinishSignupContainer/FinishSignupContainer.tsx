@@ -92,6 +92,7 @@ const FinishSignupContainer = ({ history }: RouteComponentProps) => {
           <div className={styles['finish-signup-container__copy_icon']}>
             <LinkButton
               id="finishSignup-copyBrokerLogin-button"
+              data-testid="copyBrokerLogin-button"
               ref={copyIconRef}
               onMouseEnter={() => setTooltipVisible(true)}
               onMouseLeave={() => setTooltipVisible(false)}

@@ -50,6 +50,7 @@ const SearchRegistrationContainer = ({ history }: RouteComponentProps) => {
             <p>Você não é corretor?</p>
             <LinkButton
               id="brokerFederalIdSignup-redirect-linkButton"
+              data-testid="redirect-linkButton"
               onClick={() => handleBackButtonClick()}
               label="Acesse sua plataforma"
               icon="arrow-right"

@@ -4,7 +4,6 @@ import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { store } from '../../../config/store';
 import { CreateUserForm } from './CreateUserForm';
-import { VALIDATION_MESSAGES } from '../../../constants/validationMessages';
 import { brokerInformationSliceActions } from '../../../application/features/brokerInformation/BrokerInformationSlice';
 
 describe('CreateUserForm', () => {

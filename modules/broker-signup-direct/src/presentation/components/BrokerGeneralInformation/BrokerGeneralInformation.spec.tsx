@@ -35,4 +35,20 @@ describe('BrokerGeneralInformation', () => {
 
     expect(inputIss).toHaveValue('1%');
   });
+
+  it('should validate iss on input blur', async () => {
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <BrokerGeneralInformation />
+      </Provider>,
+    );
+
+    const inputIss = getByTestId('broker-iss');
+
+    await act(async () => {
+      fireEvent.blur(inputIss, { target: { value: 1.0 } });
+    });
+
+    expect(inputIss).toHaveValue('1');
+  });
 });

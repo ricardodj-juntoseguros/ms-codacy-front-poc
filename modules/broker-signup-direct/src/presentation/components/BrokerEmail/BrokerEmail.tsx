@@ -82,7 +82,7 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
   };
 
   const handleGoToPrivacyPolicy = () => {
-    window.open(privacyPolicyUrl);
+    window.location.assign(privacyPolicyUrl);
   };
 
   const validateName = async () => {
@@ -125,6 +125,7 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
       );
       return;
     }
+
     await RegisterBrokerApi.checkEmailExists(emailBroker).then(response => {
       if (response) {
         dispatch(
@@ -261,6 +262,7 @@ export function BrokerEmail({ onSubmit, isSubmitting }: BrokerEmailProps) {
           <span className={styles['span_terms']}>&nbsp;e&nbsp;</span>
           <LinkButton
             id="registerResponsible-privacyPolicy-linkButton"
+            data-testid="privacy-policy-button"
             onClick={() => handleGoToPrivacyPolicy()}
             label="política de privacidade"
           />
