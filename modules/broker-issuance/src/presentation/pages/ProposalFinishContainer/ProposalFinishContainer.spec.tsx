@@ -1,6 +1,14 @@
 import '@testing-library/jest-dom';
 import { downloadFile } from '@shared/utils';
-import { render, fireEvent, act } from '../../../config/testUtils';
+import { Broker, BrokerPlatformAuthService } from '@services';
+import {
+  render,
+  fireEvent,
+  act,
+  waitFor,
+  getByText,
+  prettyDOM,
+} from '../../../config/testUtils';
 import ProposalFinishContainer from './ProposalFinishContainer';
 import { store } from '../../../config/store';
 import { postQuotation } from '../../../application/features/quote/QuoteSlice';
@@ -14,6 +22,8 @@ import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { putProposal } from '../../../application/features/proposal/ProposalSlice';
 import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
+import SurveysApi from '../../../application/features/surveys/SurveysApi';
+import { SurveyTypeEnum } from '../../../application/types/model';
 
 jest.mock('@shared/utils', () => {
   const original = jest.requireActual('@shared/utils');
@@ -33,6 +43,13 @@ describe('ProposalFinishContainer', () => {
       value: { assign: jest.fn() },
     });
     jest
+      .spyOn(BrokerPlatformAuthService, 'getBroker')
+      .mockImplementation(() => {
+        return {
+          name: 'Teste corretor',
+        } as Broker;
+      });
+    jest
       .spyOn(QuoteApi, 'postQuotation')
       .mockImplementation(async () => quoteResulMock);
     jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
@@ -49,10 +66,19 @@ describe('ProposalFinishContainer', () => {
       NewQuoterId: 123333,
       createdAt: '2024-01-01T12:00:00.000Z',
     }));
+    jest.spyOn(SurveysApi, 'getSurveyInvite').mockImplementation(async () => ({
+      inviteId: 'invite',
+      shouldAnswer: true,
+    }));
+    jest.spyOn(SurveysApi, 'answerSurvey').mockImplementation(async () => 'Ok');
     await store.dispatch(postQuotation(createQuoteMock));
     await store.dispatch(
       putProposal({ proposalId: 90408, proposalData: proposalMock }),
     );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('Should render accordingly with analysis feedback type', async () => {
@@ -146,5 +172,42 @@ describe('ProposalFinishContainer', () => {
     });
     expect(apiMock).toHaveBeenCalledWith(90408);
     expect(downloadFile).toHaveBeenCalledWith(new Blob(), 'proposta_11111.pdf');
+  });
+
+  it('Should call CSAT survey and answer it', async () => {
+    const { findByText, getByTestId, findByPlaceholderText } = render(
+      <ProposalFinishContainer
+        feedbackType="success"
+        history={{ push: mockHistoryPush } as any}
+        location={{} as any}
+        match={{} as any}
+      />,
+    );
+
+    await waitFor(async () => {
+      expect(
+        await findByText(
+          'Como você avalia a sua experiência no novo fluxo de emissão?',
+        ),
+      ).toBeInTheDocument();
+    });
+    const rating = getByTestId('csat-score-4');
+    fireEvent.click(rating);
+    const textarea = await findByPlaceholderText(
+      'Como foi sua experiência no novo fluxo?',
+    );
+    if (textarea) {
+      fireEvent.change(textarea, { target: { value: 'Bom' } });
+      fireEvent.blur(textarea);
+    }
+    const button = await findByText('Enviar');
+    fireEvent.click(button);
+    expect(SurveysApi.answerSurvey).toHaveBeenCalledWith(
+      SurveyTypeEnum.CSAT,
+      'invite',
+      'Teste corretor',
+      4,
+      'Bom',
+    );
   });
 });

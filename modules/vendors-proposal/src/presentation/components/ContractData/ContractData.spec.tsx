@@ -209,7 +209,7 @@ describe('ContractData', () => {
     });
 
     expect(button).not.toBeDisabled();
-    expect(handleNextStepMock).toHaveBeenCalledWith('12345 - R$ 12.345,00');
+    expect(handleNextStepMock).toHaveBeenCalledWith('12345 - R$ 12.345,00');
   });
 
   it('should allow the user to remove a file', async () => {

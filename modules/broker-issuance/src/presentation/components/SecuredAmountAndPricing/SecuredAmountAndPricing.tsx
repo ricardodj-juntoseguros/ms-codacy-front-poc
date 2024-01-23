@@ -92,7 +92,9 @@ const SecuredAmountAndPricing: React.FC = () => {
           <p>Comissão final</p>
           <p>
             {currencyFormatter(comissionValue)}
-            <Tag variant="neutral">{commissionFee}%</Tag>
+            <Tag variant="neutral">
+              {thousandSeparator(commissionFee, '.', 2)?.replace(',00', '')}%
+            </Tag>
           </p>
         </div>
         <div className={styles['secured-amount-pricing__pricing-data-item']}>

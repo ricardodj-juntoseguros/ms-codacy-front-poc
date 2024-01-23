@@ -5,3 +5,4 @@ export * from './validationMessages';
 export * from './disclaimers';
 export * from './termsAndConditions';
 export * from './documentsNecessary';
+export * from './surveys';

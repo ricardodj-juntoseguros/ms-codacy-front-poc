@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: spacing('xl');
-  margin-top: 170px;
+  margin-top: 140px;
   align-items: center;
 
   & > div {
@@ -58,5 +58,13 @@
 
   @media screen and (max-width: 430px) {
     padding-top: spacing('m');
+  }
+}
+
+.proposal-finish-container__csat-widget {
+  margin-top: spacing('m');
+
+  @media screen and (max-width: 430px) {
+    margin-top: spacing('xl');
   }
 }

@@ -23,3 +23,4 @@ export * from './CanAuthorizeDTO';
 export * from './ProposalDocumentDTO';
 export * from './ProposalDraftDTO';
 export * from './IssuanceDTO';
+export * from './SurveyInviteDTO';

@@ -12,7 +12,7 @@ import {
 } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { thousandSeparator } from '@shared/utils';
+import { currencyFormatter, thousandSeparator } from '@shared/utils';
 import className from 'classnames';
 import {
   fetchProjects,
@@ -91,9 +91,7 @@ const ContractData: React.FunctionComponent<GenericComponentProps> = ({
     const result = await validate(ContractDataSchema, payload);
     if (!result) return;
 
-    handleNextStep(
-      `${contractNumber} - R$ ${thousandSeparator(contractValue, '.', 2)}`,
-    );
+    handleNextStep(`${contractNumber} - ${currencyFormatter(contractValue)}`);
   };
 
   const handleSearchProjects = (value: string) => {

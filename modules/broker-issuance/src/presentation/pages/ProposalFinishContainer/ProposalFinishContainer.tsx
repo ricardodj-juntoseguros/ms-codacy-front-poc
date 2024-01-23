@@ -3,7 +3,13 @@ import { motion } from 'framer-motion';
 import { format, parse } from 'date-fns';
 import { downloadFile } from '@shared/utils';
 import { RouteComponentProps } from 'react-router';
-import { Button, LinkButton, Tag, makeToast } from 'junto-design-system';
+import {
+  Button,
+  CSATWidget,
+  LinkButton,
+  Tag,
+  makeToast,
+} from 'junto-design-system';
 import { useSelector } from 'react-redux';
 import { ReactComponent as AnalisysIcon } from './assets/analysis.svg';
 import { ReactComponent as SuccessIcon } from './assets/success.svg';
@@ -11,6 +17,8 @@ import styles from './ProposalFinishContainer.module.scss';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
+import { SurveyTypeEnum } from '../../../application/types/model';
+import { useSurvey } from '../../hooks';
 
 interface ProposalFinishContainerProps extends RouteComponentProps {
   feedbackType: 'success' | 'analysis';
@@ -22,13 +30,19 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
   const { identification, createdAt } = useSelector(selectProposal);
   const { currentQuote } = useSelector(selectQuote);
   const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
+  const [showWidget, widgetProps, getSurveyInvite, answerSurvey] = useSurvey(
+    SurveyTypeEnum.CSAT,
+  );
   const { PolicyId } = identification || { PolicyId: null };
 
   useEffect(() => {
     if (!identification || !currentQuote) {
       window.location.assign('/proposal');
+      return;
     }
-  }, [identification, currentQuote]);
+    getSurveyInvite();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const protocol = useMemo(() => {
     if (!createdAt) return null;
@@ -130,6 +144,22 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
           />
         )}
       </motion.div>
+      {showWidget && (
+        <motion.div
+          className={styles['proposal-finish-container__csat-widget']}
+          initial={{ opacity: 0, translateY: '50px' }}
+          whileInView={{ opacity: 1, translateY: '0px' }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
+          <CSATWidget
+            onFeedbackSubmit={(score, feedback) =>
+              answerSurvey(score, feedback)
+            }
+            {...widgetProps}
+          />
+        </motion.div>
+      )}
     </div>
   );
 };

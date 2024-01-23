@@ -89,7 +89,7 @@ jobs:
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
-            node --expose-gc ./node_modules/.bin/nx run-many --all --target=test --codeCoverage=true --runInBand=true --coverageReporters=lcov --no-passWithNoTests --ci -w=1 --logHeapUsage
+            node --expose-gc ./node_modules/.bin/nx run-many --all --target=test --codeCoverage=true --runInBand=true --silent --coverageReporters=lcov --no-passWithNoTests --ci -w=1 --logHeapUsage
             cat $(find ./coverage/* -type f -name lcov.info) > lcov-total.info
             ./cc-test-reporter format-coverage -t lcov -o codeclimate.total.json lcov-total.info
       - run:
