@@ -8,7 +8,7 @@
   height: 80px;
   padding: spacing('xl');
   box-sizing: border-box;
-  position: relative;
+  position: fixed;
   border-right: 0;
 
   @media screen and (max-width: 980px) {
@@ -25,6 +25,7 @@
     border: 0;
     padding: 0;
     margin: spacing('xl') 0 0 spacing('xl');
+    position: relative;
   }
 }
 

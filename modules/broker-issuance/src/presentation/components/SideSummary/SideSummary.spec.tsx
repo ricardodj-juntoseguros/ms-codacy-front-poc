@@ -65,24 +65,25 @@ describe('SideSummary', () => {
         <SideSummary />
       </FlowProvider>,
     );
-    const containerAside = getByTestId('sideSummary-container-aside');
+    const drawer = getByTestId('sideSummary-mobile-drawer');
+    const aside = getByTestId('sideSummary-container-aside');
     await act(async () => {
-      await fireEvent.touchStart(containerAside, {
+      await fireEvent.touchStart(drawer, {
         touches: [{ clientY: 972.3 }],
       });
-      await fireEvent.touchEnd(containerAside, {
+      await fireEvent.touchEnd(drawer, {
         changedTouches: [{ clientY: 764.76 }],
       });
     });
-    expect(containerAside).toHaveClass('side-summary__wrapper--open');
+    expect(aside).toHaveClass('side-summary__wrapper--open');
     await act(async () => {
-      await fireEvent.touchStart(containerAside, {
+      await fireEvent.touchStart(drawer, {
         touches: [{ clientY: 764.76 }],
       });
-      await fireEvent.touchEnd(containerAside, {
+      await fireEvent.touchEnd(drawer, {
         changedTouches: [{ clientY: 972.3 }],
       });
     });
-    expect(containerAside).not.toHaveClass('side-summary__wrapper--open');
+    expect(aside).not.toHaveClass('side-summary__wrapper--open');
   });
 });

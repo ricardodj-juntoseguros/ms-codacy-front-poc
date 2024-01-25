@@ -4,12 +4,13 @@
   display: flex;
   width: 100%;
   justify-content: center;
+  margin-top: spacing('xxl-6');
 }
 
 .quote-container-skeleton__step-wrapper {
   display: flex;
   max-width: 887px;
-  height: calc(100vh - 80px);
+  height: calc(100vh - spacing('xxl-6'));
   flex-direction: column;
   padding: spacing('xxl-4') spacing('xxl-8');
   justify-self: center;
@@ -18,7 +19,7 @@
 
   & > div:first-child {
     display: block;
-    height: calc(100vh - 80px);
+    height: calc(100vh - spacing('xxl-6'));
     position: relative;
 
     & > div:first-child {
@@ -101,7 +102,6 @@
   }
 
   @media screen and (max-width: 712px) {
-
     & > div:first-child {
       display: none;
     }
@@ -151,9 +151,9 @@
     width: 100%;
     padding: spacing('l');
     border-radius: spacing('s');
-    height: 80px;
+    height: spacing('xxl-6');
     top: initial;
     bottom: 0;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
   }
 }

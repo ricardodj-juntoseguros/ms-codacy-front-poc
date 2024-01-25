@@ -30,7 +30,15 @@
   padding: spacing('xxl-4') spacing('xxl-8');
   justify-self: center;
   margin-right: 479px;
+  margin-top: spacing('xxl-6');
   box-sizing: border-box;
+  max-height: calc(100vh - spacing('xxl-6'));
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @media screen and (max-width: 1080px) {
     padding: spacing('xxl-4') spacing('xl');
@@ -39,6 +47,17 @@
 
   @media screen and (max-width: 768px) {
     margin-right: 0;
-    padding: spacing('xxl-4') spacing('xl') spacing('xxl-8') spacing('xl');
+    padding: spacing('xxl-2') spacing('xl') spacing('xxl-4') spacing('xl');
+  }
+
+  @media screen and (max-width: 576px) {
+    margin-top: 0px;
+    max-height: 100%;
+    overflow-y: auto;
+    scrollbar-width: auto;
+
+    &::-webkit-scrollbar {
+      display: block;
+    }
   }
 }
