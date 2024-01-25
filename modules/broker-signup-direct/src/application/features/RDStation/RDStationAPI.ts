@@ -14,14 +14,14 @@ class RDStationAPI {
 
   async authRDBrokerSignup() {
     const params: IHttpClientRequestParameters = {
-      url: `${process.env.NX_GLOBAL_MS_LEADS_RD_STATION}/leads/token/brokerSignup`,
+      url: '/ms-leads-rdstation/leads/token/brokerSignup',
     };
     return await this.instance.get(params);
   }
 
   async addLeadBrokerSignup(rdLeadBrokerSignupDTO: RDLeadBrokerSignupDTO) {
     const params: IHttpClientRequestParameters = {
-      url: `${process.env.NX_GLOBAL_MS_LEADS_RD_STATION}/leads/leadSignupBroker`,
+      url: `/ms-leads-rdstation/leads/leadSignupBroker`,
       payload: rdLeadBrokerSignupDTO,
     };
     return await this.instance.post(params);
