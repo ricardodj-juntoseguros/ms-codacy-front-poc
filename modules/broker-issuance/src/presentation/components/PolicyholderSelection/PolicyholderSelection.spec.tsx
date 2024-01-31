@@ -8,10 +8,23 @@ import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
 import PolicyholderSelection from './PolicyholderSelection';
 import {
   brokerMock,
+  createQuoteMock,
   policyholderDetailsMock,
   policyholderSearchMock,
+  quoteResulMock,
 } from '../../../__mocks__';
 import { store } from '../../../config/store';
+import { postQuotation } from '../../../application/features/quote/QuoteSlice';
+import QuoteApi from '../../../application/features/quote/QuoteApi';
+
+const mockHook = jest.fn();
+jest.mock('../../hooks', () => {
+  const rest = jest.requireActual('../../hooks');
+  return {
+    ...rest,
+    useQuotation: () => mockHook,
+  };
+});
 
 describe('PolicyholderSelection', () => {
   const setNeedAppointmentLetterMock = jest.fn();
@@ -20,6 +33,9 @@ describe('PolicyholderSelection', () => {
   jest.spyOn(ModalitySelecionApi, 'fetchModalities').mockResolvedValue([]);
 
   beforeAll(() => {
+    jest
+      .spyOn(QuoteApi, 'postQuotation')
+      .mockImplementation(async () => quoteResulMock);
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: jest.fn().mockImplementation(query => ({
@@ -46,6 +62,7 @@ describe('PolicyholderSelection', () => {
     jest
       .spyOn(BrokerPlatformAuthService, 'getBroker')
       .mockReturnValue(brokerMock);
+    jest.spyOn(BrokerPlatformAuthService, 'isBroker').mockReturnValue(true);
   });
 
   it('should render successfully', () => {
@@ -177,44 +194,10 @@ describe('PolicyholderSelection', () => {
     expect(toast).toBeInTheDocument();
   });
 
-  it('should define the status for sending a letter with name if the policyholder is linked to another user', async () => {
+  it('should be able to select policyholder affiliate', async () => {
     getPolicyholderDetails = jest
       .spyOn(PolicyholderSelectionApi, 'getPolicyholderDetails')
-      .mockImplementation(() =>
-        Promise.reject({
-          data: {
-            message:
-              'Erro ao trazer detalhes do tomador, empresa está vinculada a outro corretor',
-          },
-        }),
-      );
-    jest
-      .spyOn(BrokerPlatformAuthService, 'getBroker')
-      .mockReturnValue(brokerMock);
-
-    const { getByTestId, getByText } = render(
-      <PolicyholderSelection
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
-    fireEvent.change(getByTestId('policyholderSelection-input-search'), {
-      target: { value: '99999999999999' },
-    });
-    await act(async () => {
-      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
-    });
-    await waitFor(() => {
-      expect(getPolicyholderDetails).toHaveBeenCalledWith(
-        9999,
-        '99999999999999',
-      );
-    });
-    expect(setNeedAppointmentLetterMock.mock.calls[1][0]).toEqual(true);
-  });
-
-  it('should be able to selecte policyholder affiliate', async () => {
+      .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const { getByTestId, getByText } = render(
       <PolicyholderSelection
         needAppointmentLetter={false}
@@ -223,15 +206,12 @@ describe('PolicyholderSelection', () => {
       />,
     );
     await act(async () => {
-      await fireEvent.change(
-        getByTestId('policyholderSelection-input-search'),
-        {
-          target: { value: 'test' },
-        },
-      );
+      fireEvent.change(getByTestId('policyholderSelection-input-search'), {
+        target: { value: 'test' },
+      });
     });
     await act(async () => {
-      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
+      fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetails).toHaveBeenCalledWith(
@@ -240,9 +220,7 @@ describe('PolicyholderSelection', () => {
       );
     });
     await act(async () => {
-      await fireEvent.click(
-        getByText('BOTUCATU - SP - CNPJ: 97.837.181/0020-00'),
-      );
+      fireEvent.click(getByText('BOTUCATU - SP - CNPJ: 97.837.181/0020-00'));
     });
     await waitFor(() => {
       const state = store.getState();
@@ -264,7 +242,39 @@ describe('PolicyholderSelection', () => {
     });
   });
 
+  it('Shoould update current quote on affiliate change', async () => {
+    store.dispatch(postQuotation(createQuoteMock));
+    const { getByTestId, getByText } = render(
+      <PolicyholderSelection
+        needAppointmentLetter={false}
+        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
+      />,
+    );
+    await act(async () => {
+      fireEvent.change(getByTestId('policyholderSelection-input-search'), {
+        target: { value: 'test' },
+      });
+    });
+    await act(async () => {
+      fireEvent.click(getByText('99.999.999/9999-99 - Test'));
+    });
+    await waitFor(() => {
+      expect(getPolicyholderDetails).toHaveBeenCalledWith(
+        9999,
+        '99999999999999',
+      );
+    });
+    await act(async () => {
+      fireEvent.click(getByText('BOTUCATU - SP - CNPJ: 97.837.181/0020-00'));
+    });
+    expect(mockHook).toHaveBeenCalled();
+  });
+
   it('should be able to render not found affiliate alert', async () => {
+    getPolicyholderDetails = jest
+      .spyOn(PolicyholderSelectionApi, 'getPolicyholderDetails')
+      .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const { getByTestId, getByText, findByText } = render(
       <PolicyholderSelection
         needAppointmentLetter={false}
@@ -300,5 +310,42 @@ describe('PolicyholderSelection', () => {
       AFFILIATE_DEFAULT_OPTIONS.notFoundAffiliate,
     );
     expect(alert).toBeInTheDocument();
+  });
+
+  it('should define the status for sending appointment letter if the policyholder is linked to another user', async () => {
+    getPolicyholderDetails = jest
+      .spyOn(PolicyholderSelectionApi, 'getPolicyholderDetails')
+      .mockImplementation(() =>
+        Promise.reject({
+          data: {
+            message:
+              'Erro ao trazer detalhes do tomador, empresa está vinculada a outro corretor',
+          },
+        }),
+      );
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getBroker')
+      .mockReturnValue(brokerMock);
+
+    const { getByTestId, getByText } = render(
+      <PolicyholderSelection
+        needAppointmentLetter={false}
+        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
+      />,
+    );
+    fireEvent.change(getByTestId('policyholderSelection-input-search'), {
+      target: { value: '99999999999999' },
+    });
+    await act(async () => {
+      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
+    });
+    await waitFor(() => {
+      expect(getPolicyholderDetails).toHaveBeenCalledWith(
+        9999,
+        '99999999999999',
+      );
+    });
+    expect(setNeedAppointmentLetterMock.mock.calls[1][0]).toEqual(true);
   });
 });

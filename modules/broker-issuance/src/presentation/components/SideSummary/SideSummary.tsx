@@ -1,8 +1,9 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import classNames from 'classnames';
 import { LinkButton } from 'junto-design-system';
+import classNames from 'classnames';
 import { StepStatusEnum, useFlow } from '@shared/hooks';
+import { useFormSummary } from '../../hooks';
 import styles from './SideSummary.module.scss';
 
 const SideSummary: FunctionComponent = () => {
@@ -12,6 +13,7 @@ const SideSummary: FunctionComponent = () => {
     [],
   );
   const { steps, setEditableStep } = useFlow();
+  const { getSummaryData, uploadedDocumentsSummary } = useFormSummary();
 
   useEffect(() => {
     const editableStep = steps.find(
@@ -46,7 +48,8 @@ const SideSummary: FunctionComponent = () => {
     });
   };
 
-  const renderStepDetails = () => {
+  const renderStepDetails = (stepName: string) => {
+    const data = getSummaryData(stepName);
     return (
       <motion.div
         initial={{ maxHeight: 0 }}
@@ -55,7 +58,15 @@ const SideSummary: FunctionComponent = () => {
         transition={{ duration: 0.6, ease: 'easeInOut' }}
         className={styles['side-summary__step-details']}
       >
-        <div className={styles['side-summary__step-details-row']} />
+        {data.map(({ key, label, value }) => (
+          <div
+            key={`summary-details-${key}`}
+            className={styles['side-summary__step-details-row']}
+          >
+            <span>{label}</span>
+            <span>{value}</span>
+          </div>
+        ))}
       </motion.div>
     );
   };
@@ -123,7 +134,7 @@ const SideSummary: FunctionComponent = () => {
                 )}
               </p>
             </div>
-            {!isHidden && false && (
+            {!isHidden && (
               <LinkButton
                 id={`sideSummary-toggle-details-button-${name}`}
                 data-testid={`sideSummary-toggle-details-button-${name}`}
@@ -135,11 +146,33 @@ const SideSummary: FunctionComponent = () => {
             )}
           </div>
           <AnimatePresence>
-            {isExpanded && false && renderStepDetails()}
+            {isExpanded && renderStepDetails(name)}
           </AnimatePresence>
         </li>
       );
     });
+  };
+
+  const renderUploadedDocuments = () => {
+    if (uploadedDocumentsSummary.length === 0) return null;
+    return (
+      <li className={styles['side-summary__uploaded-documents']}>
+        <p>Documentos enviados</p>
+        <div className={styles['side-summary__uploaded-documents-list']}>
+          {uploadedDocumentsSummary.map(({ filename, size }) => (
+            <div
+              className={styles['side-summary__uploaded-documents-listitem']}
+            >
+              <i className="icon-file" />
+              <div>
+                <p>{filename}</p>
+                <span>{size}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </li>
+    );
   };
 
   return (
@@ -162,6 +195,7 @@ const SideSummary: FunctionComponent = () => {
       </div>
       <ul className={styles['side-summary__list-steps']}>
         {renderSummarySteps()}
+        {renderUploadedDocuments()}
       </ul>
     </aside>
   );

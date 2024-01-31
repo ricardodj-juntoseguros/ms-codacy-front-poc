@@ -44,12 +44,13 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
     useState(false);
   const { advanceStep, setSteps, steps } = useFlow();
   const { modalityOptions, loadingModalities } = useSelector(selectModality);
-  const { policyholder, modality, isQuoteResume, currentQuote } =
+  const { policyholder, modality, isQuoteResume, currentQuote, loadingQuote } =
     useSelector(selectQuote);
   const { policyholderSearchValue } = useSelector(selectPolicyholder);
   const dispatch = useDispatch();
   const history = useHistory();
-  const { clearPolicyholderSelection } = policyholderSelectionActions;
+  const { clearPolicyholderSelection, setCurrentAppointmentLetter } =
+    policyholderSelectionActions;
   const { setModality } = quoteSliceActions;
 
   useEffect(() => {
@@ -89,10 +90,18 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
 
   const handleUploadFile = (files: UploadFile[]) => {
     setAppointmentLetter(files);
+    const { file } = files[0];
+    dispatch(
+      setCurrentAppointmentLetter({
+        filename: file.name,
+        size: file.size,
+      }),
+    );
   };
 
   const handleRemoveFile = (id: string) => {
     setAppointmentLetter(prev => prev.filter(item => item.id !== id));
+    dispatch(setCurrentAppointmentLetter(null));
   };
 
   const handleModalitySelected = (optionSelected: ModalityModel) => {
@@ -101,6 +110,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (loadingQuote) return;
     if (needAppointmentLetter && appointmentLetter.length !== 0) {
       handleUploadAppointmentLetter();
       return;
@@ -145,6 +155,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
     });
     window.open(`${process.env.NX_GLOBAL_BROKER_HELP_URL}`, '_blank');
   };
+
   const renderAppointmentLetter = () => {
     if (!needAppointmentLetter) return null;
     return (
@@ -203,7 +214,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
         data-testid="policyholderAndModality-submit-button"
         type="submit"
         disabled={disabledSubmitButton}
-        loading={uploadAppointmentLetterLoading}
+        loading={uploadAppointmentLetterLoading || loadingQuote}
       >
         Continuar
       </Button>

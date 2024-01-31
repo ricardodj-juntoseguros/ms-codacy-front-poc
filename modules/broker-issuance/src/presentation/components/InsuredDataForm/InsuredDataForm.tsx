@@ -62,7 +62,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
 
   const disabledSubmitButton = useMemo(() => {
     const hasDefaultFields =
-      insured?.federalId &&
+      insured?.insuredId &&
       insuredAddress?.addressId &&
       biddingNumber &&
       identification?.PolicyId;

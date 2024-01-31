@@ -24,6 +24,7 @@ export const quoteResulMock = {
     {
       numberOfInstallments: 1,
       firstDueDate: '2023-12-06T00:00:00+00:00',
+      totalPrize: 190,
       installments: [
         {
           number: 1,

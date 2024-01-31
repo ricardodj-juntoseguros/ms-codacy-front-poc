@@ -1,6 +1,12 @@
 import '@testing-library/jest-dom';
 import { FlowProvider, StepStatusEnum } from '@shared/hooks';
+import { modalityBidderMock, policyholderMock } from '../../../__mocks__';
+import { store } from '../../../config/store';
 import { act, fireEvent, render } from '../../../config/testUtils';
+import * as ALL_STEPS from '../../../constants/steps';
+import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
+import { PolicyholderAffiliatesModel } from '../../../application/types/model';
+import { policyholderSelectionActions } from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
 import SideSummary from './SideSummary';
 
 describe('SideSummary', () => {
@@ -85,5 +91,62 @@ describe('SideSummary', () => {
       });
     });
     expect(aside).not.toHaveClass('side-summary__wrapper--open');
+  });
+
+  it('Should be able to open and render step summary details', async () => {
+    store.dispatch(quoteSliceActions.setPolicyholder(policyholderMock));
+    store.dispatch(
+      quoteSliceActions.setPolicyholderAffiliate({
+        id: 1234,
+        companyName: 'TOMADOR TESTE – SQUAD DESACOPLAMENTO',
+        city: 'CURITIBA',
+        state: 'PR',
+        federalId: '97.837.181/0020-00',
+      } as PolicyholderAffiliatesModel),
+    );
+    store.dispatch(quoteSliceActions.setModality(modalityBidderMock));
+    const { getByTestId, getByText } = render(
+      <FlowProvider
+        allSteps={Object.values(ALL_STEPS).flat()}
+        initialSteps={ALL_STEPS.DEFAULT_STEP}
+        showFinishedSteps={false}
+      >
+        <SideSummary />
+      </FlowProvider>,
+    );
+    const button = getByTestId(
+      'sideSummary-toggle-details-button-PolicyholderAndModalityForm',
+    );
+    expect(button).toBeInTheDocument();
+    fireEvent.click(button);
+    expect(getByText('CNPJ')).toBeInTheDocument();
+    expect(getByText('91.833.813/0001-18')).toBeInTheDocument();
+    expect(getByText('Razão Social')).toBeInTheDocument();
+    expect(
+      getByText('TOMADOR TESTE – SQUAD DESACOPLAMENTO'),
+    ).toBeInTheDocument();
+    expect(getByText('Modalidade')).toBeInTheDocument();
+    expect(getByText('Licitante')).toBeInTheDocument();
+  });
+
+  it('Should be able to render document summary', async () => {
+    store.dispatch(
+      policyholderSelectionActions.setCurrentAppointmentLetter({
+        filename: 'carta-nomeacao.pdf',
+        size: 200000,
+      }),
+    );
+    const { getByText } = render(
+      <FlowProvider
+        allSteps={Object.values(ALL_STEPS).flat()}
+        initialSteps={ALL_STEPS.DEFAULT_STEP}
+        showFinishedSteps={false}
+      >
+        <SideSummary />
+      </FlowProvider>,
+    );
+    expect(getByText('Documentos enviados')).toBeInTheDocument();
+    expect(getByText('carta-nomeacao.pdf')).toBeInTheDocument();
+    expect(getByText('0.19 MB')).toBeInTheDocument();
   });
 });

@@ -42,6 +42,7 @@ const initialState: PolicyholderSelectionModel = {
   affiliatesOptions: [],
   loadingDetails: false,
   loadingGetSubsidiaries: false,
+  currentAppointmentLetter: null,
 };
 
 export const policyholderSelectionSlice = createSlice({
@@ -83,11 +84,19 @@ export const policyholderSelectionSlice = createSlice({
         );
       }
     },
+    setCurrentAppointmentLetter: (
+      state,
+      action: PayloadAction<{ filename: string; size: number } | null>,
+    ) => {
+      const { payload } = action;
+      state.currentAppointmentLetter = payload;
+    },
   },
   extraReducers: builder => {
     builder
       .addCase(searchPolicyholder.pending, state => {
         state.isValidFederalId = false;
+        state.currentAppointmentLetter = null;
         state.loadingSearchPolicyholder = true;
       })
       .addCase(searchPolicyholder.fulfilled, (state, action) => {

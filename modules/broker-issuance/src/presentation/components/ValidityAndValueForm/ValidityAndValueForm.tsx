@@ -75,12 +75,16 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
     >
       <ValidityFields />
       <SecuredAmountAndPricing />
-      {isQuoteResume && hasQuoteErrors && (
+      {hasQuoteErrors && (
         <div className={styles['validity-and-value-form__resume-alert']}>
           <Alert
             variant="error"
             icon="x-circle"
-            text="Ops! Parece que tivemos um problema ao recarregar sua proposta. %ACTION_BUTTON%"
+            text={
+              isQuoteResume
+                ? 'Ops! Parece que tivemos um problema ao recarregar sua proposta. %ACTION_BUTTON%'
+                : 'Ops! Parece que tivemos um problema ao gerar a sua cotação. %ACTION_BUTTON%'
+            }
             actionButtonText="Clique aqui para tentar novamente."
             onActionButtonClick={() => createOrUpdateQuote()}
           />

@@ -20,6 +20,7 @@ export const storeMock = {
     affiliatesOptions: [],
     loadingDetails: false,
     loadingGetSubsidiaries: false,
+    currentAppointmentLetter: null,
   } as PolicyholderSelectionModel,
   modalitySelecion: {
     modalityOptions: [modalityDefaultMock] as Array<ModalityModel>,

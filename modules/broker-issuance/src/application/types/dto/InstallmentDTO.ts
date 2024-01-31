@@ -1,6 +1,7 @@
 export interface InstallmentDTO {
   numberOfInstallments: number;
   firstDueDate: string;
+  totalPrize: number;
   installments: {
     number: number;
     dueDate: string;

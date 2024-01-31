@@ -76,6 +76,12 @@ const PaymentFields: FunctionComponent = () => {
   }, [loadingProposal]);
 
   useEffect(() => {
+    if (paymentType === null && paymentTypeOptions.length > 0) {
+      dispatch(setPaymentType(stringToInt(paymentTypeOptions[0].value)));
+    }
+  }, [paymentType, paymentTypeOptions]);
+
+  useEffect(() => {
     if (currentQuote) {
       if (!numberOfInstallments && !firstDueDate) {
         dispatch(

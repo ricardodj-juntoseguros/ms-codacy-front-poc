@@ -23,7 +23,10 @@ import {
   quoteSliceActions,
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
-import { PolicyholderAffiliatesModel } from '../../../application/types/model/PolicyholderAffiliatesModel';
+import {
+  PolicyholderModel,
+  PolicyholderAffiliatesModel,
+} from '../../../application/types/model';
 import { AFFILIATE_DEFAULT_OPTIONS } from '../../../constants';
 import { checkValidFederalId } from '../../../helpers';
 import {
@@ -36,6 +39,7 @@ import {
   modalitySelectionActions,
 } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
 import styles from './PolicyholderSelection.module.scss';
+import { useQuotation } from '../../hooks';
 
 export interface PolicyholderSelectionProps {
   needAppointmentLetter: boolean;
@@ -49,6 +53,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
   setNeedAppointmentLetter,
 }) => {
   const dispatch = useDispatch();
+  const createOrUpdateQuotation = useQuotation();
   const {
     policyholderOptions,
     policyholderSearchValue,
@@ -56,7 +61,8 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     loadingSearchPolicyholder,
     isValidFederalId,
   } = useSelector(selectPolicyholder);
-  const { policyholderAffiliate, policyholder } = useSelector(selectQuote);
+  const { policyholderAffiliate, policyholder, currentQuote } =
+    useSelector(selectQuote);
   const [showEmptyOptions, setShowEmptyOptions] = useState(false);
   const [loadingPolicyholderDetails, setLoadingPolicyholderDetails] =
     useState(false);
@@ -110,6 +116,13 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidFederalId]);
 
+  useEffect(() => {
+    if (currentQuote && currentQuote.totalPrize) {
+      createOrUpdateQuotation();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [policyholderAffiliate]);
+
   const isCurrentValueFromOptions = useMemo(() => {
     return !!policyholderOptions.find(
       opt => opt.label === policyholderSearchValue,
@@ -132,12 +145,14 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
           const message = handleError(error);
           if (message.indexOf('empresa está vinculada a outro corretor') > 0) {
             setNeedAppointmentLetter(true);
+            dispatch(setPolicyholder({ federalId } as PolicyholderModel));
             return;
           }
           makeToast('error', 'Houve um erro ao buscar os dados do tomador');
         })
         .finally(() => setLoadingPolicyholderDetails(false));
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setNeedAppointmentLetter],
   );
 

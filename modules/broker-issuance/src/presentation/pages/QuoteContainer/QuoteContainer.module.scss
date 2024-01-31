@@ -4,6 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   & > header {
     width: calc(100% - 479px);
@@ -32,13 +39,6 @@
   margin-right: 479px;
   margin-top: spacing('xxl-6');
   box-sizing: border-box;
-  max-height: calc(100vh - spacing('xxl-6'));
-  overflow-y: auto;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   @media screen and (max-width: 1080px) {
     padding: spacing('xxl-4') spacing('xl');

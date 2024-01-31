@@ -4,7 +4,7 @@ import { BrokerPlatformAuthService } from '@services';
 import { act } from 'react-dom/test-utils';
 import {
   brokerMock,
-  modalityDefaultMock,
+  modalityBidderMock,
   policyholderDetailsMock,
   policyholderSearchMock,
 } from '../../../__mocks__';
@@ -13,6 +13,7 @@ import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
 import ModalitySelecionApi from '../../../application/features/modalitySelection/ModalitySelecionApi';
 import PolicyholderAndModalityForm from './PolicyholderAndModalityForm';
+import { DEFAULT_STEP } from '../../../constants/steps';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -30,6 +31,7 @@ jest.mock('@shared/hooks', () => {
     useFlow: () => ({
       advanceStep: advanceStepMock,
       setSteps: jest.fn(),
+      steps: [DEFAULT_STEP],
     }),
   };
 });
@@ -70,7 +72,7 @@ describe('PolicyholderAndModalityForm', () => {
       .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const fetchModalitiesMock = jest
       .spyOn(ModalitySelecionApi, 'fetchModalities')
-      .mockImplementation(() => Promise.resolve([modalityDefaultMock]));
+      .mockImplementation(() => Promise.resolve([modalityBidderMock]));
     const { getByTestId, getByText } = render(
       <PolicyholderAndModalityForm name="test" />,
     );
@@ -99,16 +101,16 @@ describe('PolicyholderAndModalityForm', () => {
         '99999999999999',
       );
     });
-    const modalityOption = getByText('Executante Fornecedor');
+    const modalityOption = getByText('Licitante');
     await act(async () => {
       await fireEvent.click(modalityOption);
     });
     await waitFor(() => {
       const state = store.getState();
       expect(state.quote.modality).toEqual({
-        ...modalityDefaultMock,
-        value: modalityDefaultMock.id.toString(),
-        label: modalityDefaultMock.description,
+        ...modalityBidderMock,
+        value: modalityBidderMock.id.toString(),
+        label: modalityBidderMock.description,
       });
     });
   });
@@ -122,7 +124,7 @@ describe('PolicyholderAndModalityForm', () => {
       .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const fetchModalitiesMock = jest
       .spyOn(ModalitySelecionApi, 'fetchModalities')
-      .mockImplementation(() => Promise.resolve([modalityDefaultMock]));
+      .mockImplementation(() => Promise.resolve([modalityBidderMock]));
     const { getByTestId, getByText } = render(
       <PolicyholderAndModalityForm name="test" />,
     );
@@ -151,7 +153,7 @@ describe('PolicyholderAndModalityForm', () => {
         '99999999999999',
       );
     });
-    const modalityOption = getByText('Executante Fornecedor');
+    const modalityOption = getByText('Licitante');
     await act(async () => {
       await fireEvent.click(modalityOption);
     });
@@ -230,7 +232,9 @@ describe('PolicyholderAndModalityForm', () => {
   it('should be able to display an error if the document is not sent successfully', async () => {
     const searchMock = jest
       .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
-      .mockImplementation(() => Promise.resolve(policyholderSearchMock));
+      .mockImplementation(() =>
+        Promise.resolve({ ...policyholderSearchMock, records: [] }),
+      );
     const getPolicyholderDetailsMock = jest
       .spyOn(PolicyholderSelectionApi, 'getPolicyholderDetails')
       .mockImplementation(() =>
@@ -250,18 +254,12 @@ describe('PolicyholderAndModalityForm', () => {
       <PolicyholderAndModalityForm name="test" />,
     );
     await act(async () => {
-      await fireEvent.change(
-        getByTestId('policyholderSelection-input-search'),
-        {
-          target: { value: '99999999999999' },
-        },
-      );
+      fireEvent.change(getByTestId('policyholderSelection-input-search'), {
+        target: { value: '99999999999999' },
+      });
     });
     await waitFor(() => {
       expect(searchMock).toHaveBeenCalledTimes(1);
-    });
-    await act(async () => {
-      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetailsMock).toHaveBeenCalledWith(

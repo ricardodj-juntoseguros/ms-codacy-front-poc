@@ -33,6 +33,7 @@ export const proposalAdapter = (
 
   return {
     insured: {
+      id: insured ? insured.insuredId : 0,
       federalId: insured ? insured.federalId : '',
       addressId: insuredAddress ? insuredAddress.addressId : 0,
     },

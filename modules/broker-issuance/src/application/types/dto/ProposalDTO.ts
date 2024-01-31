@@ -1,5 +1,6 @@
 export interface ProposalDTO {
   insured: {
+    id: number;
     federalId: string;
     addressId: number;
   };

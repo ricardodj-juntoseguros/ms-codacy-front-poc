@@ -123,8 +123,7 @@ describe('ValidityAndValueForm', () => {
     });
   });
 
-  it('Should display error alert if is a quotation resume and quotation update fails', async () => {
-    store.dispatch(quoteSliceActions.setQuoteResumeData(proposalResumeMock));
+  it('Should display error alert if a quotation update or create fails', async () => {
     jest
       .spyOn(QuoteApi, 'putQuotation')
       .mockImplementation(async () => Promise.reject());
@@ -136,7 +135,7 @@ describe('ValidityAndValueForm', () => {
     );
     expect(
       await findByText(
-        'Ops! Parece que tivemos um problema ao recarregar sua proposta.',
+        'Ops! Parece que tivemos um problema ao gerar a sua cotação.',
       ),
     ).toBeInTheDocument();
   });

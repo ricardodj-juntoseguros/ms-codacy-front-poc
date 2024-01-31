@@ -1,3 +1,5 @@
+import { InstallmentDTO } from './InstallmentDTO';
+
 export interface QuoteResultDTO {
   identification: {
     ProposalId: number;
@@ -18,19 +20,5 @@ export interface QuoteResultDTO {
     commissionFlexMaxValue?: number | null;
     commissionFlex?: number | null;
   };
-  installmentOptions: {
-    numberOfInstallments: number;
-    firstDueDate: string;
-    installments: [
-      {
-        number: number;
-        dueDate: string;
-        mainValue: number;
-        iof: number;
-        policyCost: number;
-        installmentValue: number;
-        fractionationValue: number;
-      },
-    ];
-  }[];
+  installmentOptions: InstallmentDTO[];
 }

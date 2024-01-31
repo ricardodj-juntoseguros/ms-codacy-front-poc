@@ -2,6 +2,7 @@ import { ProposalResumeDTO } from '../application/types/dto';
 
 export const proposalMock = {
   insured: {
+    id: 12345,
     federalId: '29468014000116',
     addressId: 30451,
   },
