@@ -7,3 +7,4 @@ export * from './mapPolicyholderSearchOptions';
 export * from './mapInstallmentOptions';
 export * from './getMaxFirstDueDate';
 export * from './getMinFirstDueDate';
+export * from './mapInsuredAddressesOption';

@@ -15,11 +15,12 @@ import {
   makeToast,
 } from 'junto-design-system';
 import { useHistory } from 'react-router';
-import { GenericComponentProps, useFlow } from '@shared/hooks';
+import { GenericComponentProps } from '@shared/hooks';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
+import { selectCommercialAuthorization } from '../../../application/features/CommercialAuthorization/CommercialAuthorizationSlice';
 import { selectValidation } from '../../../application/features/validation/ValidationSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import { useProposal } from '../../hooks';
-import IssuanceApi from '../../../application/features/issuance/IssuanceApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import handleError from '../../../helpers/handlerError';
 import { selectProposalDocuments } from '../../../application/features/proposalDocuments/ProposalDocumentsSlice';
@@ -29,20 +30,22 @@ import {
 } from '../../../application/features/proposal/ProposalSlice';
 import TermsOfAcceptanceModal from '../TermsOfAcceptanceModal';
 import PaymentFields from '../PaymentFields';
-import UploadDocuments from '../UploadDocuments';
-import styles from './AdditionalDataForm.module.scss';
+import ProposalDocuments from '../ProposalDocuments';
 import DraftDownload from '../DraftDownload';
+import CommercialAuthorization from '../CommercialAuthorization';
+import { useIssuance } from '../../hooks/useIssuance';
+import CommercialAuthorizationModal from '../CommercialAuthorizationModal';
+import styles from './AdditionalDataForm.module.scss';
 
 const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
   name,
 }) => {
   const [loadingField, setLoadingField] = useState('');
-  const [openTermsModal, setOpenTermsModal] = useState(false);
+  const [openModal, setOpenModal] = useState('');
   const [proposalDraft, setProposalDraft] = useState<string>('');
-  const [loadingIssuance, setLoadingIssuance] = useState(false);
   const { errors } = useSelector(selectValidation);
   const dispatch = useDispatch();
-  const { loadingQuote, currentQuote } = useSelector(selectQuote);
+  const { loadingQuote } = useSelector(selectQuote);
   const {
     comments,
     identification,
@@ -54,10 +57,13 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
     currentProposal,
   } = useSelector(selectProposal);
   const { proposalDocuments } = useSelector(selectProposalDocuments);
+  const { approvalContacts, documentsForAuthorization, typeOfAuthorization } =
+    useSelector(selectCommercialAuthorization);
   const updateProposal = useProposal();
+  const [createIssuanceOrSubmitToApproval, loadingIssuance] = useIssuance();
   const history = useHistory();
-  const { advanceStep } = useFlow();
   const { setComments } = proposalActions;
+  const userProfile = BrokerPlatformAuthService.getUserProfile();
 
   useEffect(() => {
     getProposalDraft();
@@ -75,7 +81,13 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
       Object.keys(errors).length > 0 ||
       (!isAutomaticPolicy && proposalDocuments.length === 0) ||
       loadingQuote ||
-      loadingProposal
+      loadingProposal ||
+      (userProfile === ProfileEnum.COMMERCIAL &&
+        isAutomaticPolicy &&
+        ((typeOfAuthorization === 'hasAuthorization' &&
+          documentsForAuthorization.length === 0) ||
+          (typeOfAuthorization === 'sendToApproval' &&
+            approvalContacts.length === 0)))
     ) {
       return true;
     }
@@ -89,6 +101,9 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
     errors,
     loadingQuote,
     loadingProposal,
+    typeOfAuthorization,
+    approvalContacts,
+    documentsForAuthorization,
   ]);
 
   const getProposalDraft = useCallback(() => {
@@ -99,26 +114,6 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
       })
       .catch(error => makeToast('error', handleError(error)));
   }, [identification]);
-
-  const postIssuance = useCallback(() => {
-    setLoadingIssuance(true);
-    if (!currentQuote) return;
-    const payload = {
-      isAutomatic: true,
-      internalizedReason: '',
-      comments,
-      contacts: [],
-      acceptTermsId: null,
-      approvalContacts: [],
-    };
-    IssuanceApi.postIssuance(currentQuote?.identification.NewQuoterId, payload)
-      .then(response => {
-        advanceStep(name);
-        response.issued ? history.push('/success') : history.push('/analysis');
-      })
-      .catch(error => makeToast('error', handleError(error)))
-      .finally(() => setLoadingIssuance(false));
-  }, [advanceStep, history, identification, name]);
 
   const handleComments = (comments: string) => {
     dispatch(setComments(comments));
@@ -137,13 +132,17 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isAutomaticPolicy && userProfile === ProfileEnum.COMMERCIAL) {
+      setOpenModal('commercialAuthorization');
+      return;
+    }
     if (hasOnlyFinancialPending) history.push('/financial-pending');
-    postIssuance();
+    createIssuanceOrSubmitToApproval(name);
   };
 
-  const renderUploadDocuments = () => {
+  const renderProposalDocuments = () => {
     if (isAutomaticPolicy) return null;
-    return <UploadDocuments />;
+    return <ProposalDocuments />;
   };
 
   const renderComments = () => {
@@ -164,12 +163,31 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
     );
   };
 
+  const renderCommercialAuthorization = () => {
+    if (isAutomaticPolicy && userProfile === ProfileEnum.COMMERCIAL) {
+      return <CommercialAuthorization />;
+    }
+    return null;
+  };
+
+  const renderLabelButton = () => {
+    let label = 'Emitir';
+    if (!isAutomaticPolicy) label = 'Finalizar inclusão';
+    if (
+      isAutomaticPolicy &&
+      typeOfAuthorization === 'sendToApproval' &&
+      userProfile === ProfileEnum.COMMERCIAL
+    )
+      label = 'Enviar para aprovação';
+    return label;
+  };
+
   return (
     <form
       className={styles['additional-data-form__wrapper']}
       onSubmit={e => handleSubmit(e)}
     >
-      {renderUploadDocuments()}
+      {renderProposalDocuments()}
       <PaymentFields />
       <section className={styles['additional-data-form__comments-wrapper']}>
         <p className={styles['additional-data-form__comments-text']}>
@@ -177,6 +195,7 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
         </p>
         {renderComments()}
       </section>
+      {renderCommercialAuthorization()}
       <DraftDownload
         proposalDraft={proposalDraft}
         isAutomaticPolicy={isAutomaticPolicy}
@@ -194,7 +213,7 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
           <LinkButton
             id="additionalDataForm-terms-modal-button"
             data-testid="additionalDataForm-terms-modal-button"
-            onClick={() => setOpenTermsModal(true)}
+            onClick={() => setOpenModal('terms')}
             label="Termos e condições"
             icon="download"
             iconPosition="left"
@@ -208,11 +227,17 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
           disabled={disabledSubmitButton}
           loading={loadingIssuance}
         >
-          {isAutomaticPolicy ? 'Emitir' : 'Finalizar inclusão'}
+          {renderLabelButton()}
         </Button>
         <TermsOfAcceptanceModal
-          isModalOpen={openTermsModal}
-          onToggleModal={setOpenTermsModal}
+          isModalOpen={openModal === 'terms'}
+          onToggleModal={setOpenModal}
+        />
+        <CommercialAuthorizationModal
+          isModalOpen={openModal === 'commercialAuthorization'}
+          onToggleModal={setOpenModal}
+          onConfirm={() => createIssuanceOrSubmitToApproval(name)}
+          modalType={typeOfAuthorization}
         />
       </footer>
     </form>

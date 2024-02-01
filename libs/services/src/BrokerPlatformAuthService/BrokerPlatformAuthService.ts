@@ -5,6 +5,7 @@ import jwtDecode from 'jwt-decode';
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import UserAccessToken from './types/UserAccessToken';
 import { Broker } from './types/Broker';
+import { ProfileEnum } from './enums/ProfileEnum';
 
 export class BrokerPlatformAuthService {
   private readonly USER_ACCESS_COOKIE =
@@ -150,6 +151,24 @@ export class BrokerPlatformAuthService {
 
     const { broker } = userCookie;
     return broker && broker.user ? broker.user.userType : null;
+  };
+
+  getUserProfile(): ProfileEnum | null {
+    let userProfile: ProfileEnum | null = null;
+    const userCookie = this.getUserAccessCookie();
+    if (!userCookie) return null;
+    const { token } = userCookie;
+    const decodedToken = jwtDecode<UserAccessToken>(token);
+    const isSuperUser = decodedToken && decodedToken.loginOwnerUserName;
+    const isUserBroker = decodedToken && decodedToken.realm_access?.roles.includes('broker');
+    if (isSuperUser) {
+      userProfile = ProfileEnum.COMMERCIAL;
+    } else if (isUserBroker) {
+      userProfile = ProfileEnum.BROKER;
+    } else {
+      userProfile = ProfileEnum.POLICYHOLDER;
+    }
+    return userProfile;
   };
 
   async logout() {

@@ -78,6 +78,7 @@ export const useProposalResume = () => {
       policyholderAffiliateFederalId,
       modalityId,
       insuredId,
+      insuredName,
       insuredFederalId,
       insuredAddressId,
       biddingNumber,
@@ -168,8 +169,8 @@ export const useProposalResume = () => {
     dispatch(setModality(modalityToSet));
     dispatch(setQuoteResumeData(data));
 
-    if (insuredId && insuredFederalId) {
-      const insureds = await InsuredSelectionApi.searchInsured(insuredFederalId)
+    if (insuredId && insuredName) {
+      const insureds = await InsuredSelectionApi.searchInsured(insuredName)
         .then(response => response.records)
         .catch(() => {
           return [];
@@ -201,10 +202,10 @@ export const useProposalResume = () => {
           insured: insuredToSet,
           insuredAddress: insuredAddress
             ? {
-                ...insuredAddress,
-                value: insuredAddress.addressId.toString(),
-                label: `${insuredAddress.street} - ${insuredAddress.city}, ${insuredAddress.state}`,
-              }
+              ...insuredAddress,
+              value: insuredAddress.addressId.toString(),
+              label: `${insuredAddress.street} - ${insuredAddress.city}, ${insuredAddress.state}`,
+            }
             : null,
           biddingNumber,
           biddingDescription,

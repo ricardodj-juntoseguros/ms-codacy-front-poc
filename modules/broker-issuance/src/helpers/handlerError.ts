@@ -7,5 +7,6 @@ export default function handleError(error: any, customMessage?: string): string 
   if (error.data && error.data.ErrorDescription && typeof error.data.ErrorDescription === 'string') return error.data.ErrorDescription;
   if (error.data && typeof error.data === 'string') return error.data;
   if (error.data && error.data.data && typeof error.data === 'string') return error.data.data;
+  if(error.data && error.data.code === 'UNDEFINED_0') return 'Ocorreu um erro ao conectar com o servidor. Tente novamente mais tarde.';
   return errorMessage;
 }

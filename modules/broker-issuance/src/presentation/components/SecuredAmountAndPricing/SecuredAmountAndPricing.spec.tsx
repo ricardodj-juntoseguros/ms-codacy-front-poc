@@ -4,7 +4,7 @@ import {
   createQuoteMock,
   modalityBidderMock,
   policyholderMock,
-  quoteResulMock,
+  quoteResultMock,
 } from '../../../__mocks__';
 import { store } from '../../../config/store';
 import {
@@ -82,7 +82,7 @@ describe('SecuredAmountAndPricing', () => {
       }));
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     const { findByText } = render(<SecuredAmountAndPricing />);
     expect(await findByText('R$ 190,00')).toBeInTheDocument();

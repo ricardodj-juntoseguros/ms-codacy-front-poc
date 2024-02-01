@@ -97,7 +97,7 @@ describe('PolicyholderAndModalityForm', () => {
         '99999999999999',
       );
       expect(fetchModalitiesMock).toHaveBeenCalledWith(
-        '9999',
+        '06465132135429',
         '99999999999999',
       );
     });
@@ -149,7 +149,7 @@ describe('PolicyholderAndModalityForm', () => {
         '99999999999999',
       );
       expect(fetchModalitiesMock).toHaveBeenCalledWith(
-        '9999',
+        '06465132135429',
         '99999999999999',
       );
     });

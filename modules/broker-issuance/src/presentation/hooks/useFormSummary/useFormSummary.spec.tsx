@@ -10,7 +10,7 @@ import {
   insuredMock,
   modalityBidderMock,
   policyholderMock,
-  quoteResulMock,
+  quoteResultMock,
 } from '../../../__mocks__';
 import { PolicyholderAffiliatesModel } from '../../../application/types/model';
 import { useFormSummary } from './useFormSummary';
@@ -58,10 +58,10 @@ describe('UseFormSummary hook', () => {
   });
 
   it('Should return correct summary data for ValidityAndValueForm', async () => {
-    const quoteResultMock: QuoteResultDTO = {
-      ...quoteResulMock,
+    const quoteResultMockUpdated: QuoteResultDTO = {
+      ...quoteResultMock,
       pricing: {
-        ...quoteResulMock.pricing,
+        ...quoteResultMock.pricing,
         feeFlexEnabled: true,
         feeFlex: 10,
         commissionFlexEnabled: true,
@@ -70,7 +70,7 @@ describe('UseFormSummary hook', () => {
     };
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResultMock);
+      .mockImplementation(async () => quoteResultMockUpdated);
     store.dispatch(quoteSliceActions.setStartDateValidity('01/01/2024'));
     store.dispatch(quoteSliceActions.setEndDateValidity('31/01/2024'));
     store.dispatch(quoteSliceActions.setSecuredAmount(120000));
@@ -137,7 +137,7 @@ describe('UseFormSummary hook', () => {
   it('Should return correct summary data for AdditionalDataForm', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     store.dispatch(proposalActions.setNumberOfInstallments(1));
     store.dispatch(proposalActions.setPaymentType(1));
@@ -169,9 +169,7 @@ describe('UseFormSummary hook', () => {
         {
           size: 200000,
           url: 'test_url',
-          extension: 'pdf',
-          filename: 'documento-proposta.pdf',
-          metadata: 'teste',
+          name: 'documento-proposta.pdf',
         },
       ]),
     );

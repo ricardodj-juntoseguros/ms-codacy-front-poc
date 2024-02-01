@@ -1,7 +1,7 @@
 export interface ProposalDTO {
   insured: {
     id: number;
-    federalId: string;
+    federalId: string | null;
     addressId: number;
   };
   selectedInstallmentOptions: {

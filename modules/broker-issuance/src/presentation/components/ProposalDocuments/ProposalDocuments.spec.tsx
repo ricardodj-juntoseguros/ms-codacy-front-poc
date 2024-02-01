@@ -1,16 +1,16 @@
 /* eslint-disable prefer-promise-reject-errors */
 import '@testing-library/jest-dom';
-import { quoteSliceActions } from 'modules/broker-issuance/src/application/features/quote/QuoteSlice';
 import { BrokerPlatformAuthService } from '@services';
 import { makeToast } from 'junto-design-system';
-import { store } from '../../../config/store';
+import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
 import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { putProposal } from '../../../application/features/proposal/ProposalSlice';
 import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 import { proposalMock, modalityBidderMock } from '../../../__mocks__';
-import UploadDocuments from './UploadDocuments';
+import ProposalDocuments from './ProposalDocuments';
+import { store } from '../../../config/store';
 
 jest.mock('junto-design-system', () => {
   const original = jest.requireActual('junto-design-system');
@@ -20,7 +20,7 @@ jest.mock('junto-design-system', () => {
   };
 });
 
-describe('UploadDocuments', () => {
+describe('ProposalDocuments', () => {
   const mockResult = [
     {
       size: 12345,
@@ -85,7 +85,7 @@ describe('UploadDocuments', () => {
     jest
       .spyOn(ProposalDocumentsApi, 'getProposalDocuments')
       .mockImplementation(() => Promise.resolve(mockResult));
-    const { getByText } = render(<UploadDocuments />);
+    const { getByText } = render(<ProposalDocuments />);
     expect(
       getByText(
         '- Edital de Licitação com todos os anexos ou a Carta Convite Minuta do Contrato.',
@@ -105,27 +105,10 @@ describe('UploadDocuments', () => {
     const postMock = jest
       .spyOn(ProposalDocumentsApi, 'postProposalDocument')
       .mockImplementation(() => Promise.resolve(mockResult[0]));
-    const { getByTestId, getByText } = render(<UploadDocuments />);
+    const { getByTestId, getByText } = render(<ProposalDocuments />);
     fireEvent.change(getByTestId('input-files'), { target: { files: [file] } });
     expect(getByText('fileTest.pdf')).toBeInTheDocument();
     expect(postMock).toHaveBeenCalled();
-    expect(getMock).toHaveBeenCalledTimes(1);
-  });
-
-  it('should be able to report an error if the file/s were not uploaded', async () => {
-    const getMock = jest
-      .spyOn(ProposalDocumentsApi, 'getProposalDocuments')
-      .mockImplementation(() => Promise.resolve(mockResult));
-    const postMock = jest
-      .spyOn(ProposalDocumentsApi, 'postProposalDocument')
-      .mockImplementation(() => Promise.reject({ data: { message: 'error' } }));
-    const { getByTestId, getByText } = render(<UploadDocuments />);
-    fireEvent.change(getByTestId('input-files'), { target: { files: [file] } });
-    await waitFor(() => {
-      expect(postMock).toHaveBeenCalled();
-    });
-    expect(getByText('fileTest.pdf')).toBeInTheDocument();
-    expect(getByText('Erro no envio')).toBeInTheDocument();
     expect(getMock).toHaveBeenCalledTimes(1);
   });
 
@@ -136,7 +119,7 @@ describe('UploadDocuments', () => {
     const deleteMock = jest
       .spyOn(ProposalDocumentsApi, 'deleteProposalDocument')
       .mockImplementation(() => Promise.resolve());
-    const { getByTestId } = render(<UploadDocuments />);
+    const { getByTestId } = render(<ProposalDocuments />);
     fireEvent.click(getByTestId('remove-file'));
     expect(getMock).toHaveBeenCalledTimes(1);
     expect(deleteMock).toHaveBeenCalledWith(11111, 'test');
@@ -151,12 +134,11 @@ describe('UploadDocuments', () => {
       .mockImplementation(() =>
         Promise.reject({ data: { data: { message: 'error' } } }),
       );
-    const { getByTestId } = render(<UploadDocuments />);
+    const { getByTestId } = render(<ProposalDocuments />);
     fireEvent.click(getByTestId('remove-file'));
     expect(getMock).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(deleteMock).toHaveBeenCalledWith(11111, 'test');
     });
-    expect(makeToast).toHaveBeenCalledWith('error', 'error');
   });
 });

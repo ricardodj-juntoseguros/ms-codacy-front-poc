@@ -11,7 +11,7 @@ import {
   createQuoteMock,
   policyholderDetailsMock,
   policyholderSearchMock,
-  quoteResulMock,
+  quoteResultMock,
 } from '../../../__mocks__';
 import { store } from '../../../config/store';
 import { postQuotation } from '../../../application/features/quote/QuoteSlice';
@@ -35,7 +35,7 @@ describe('PolicyholderSelection', () => {
   beforeAll(() => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: jest.fn().mockImplementation(query => ({

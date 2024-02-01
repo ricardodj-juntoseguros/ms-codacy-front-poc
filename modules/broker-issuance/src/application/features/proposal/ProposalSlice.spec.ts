@@ -1,6 +1,5 @@
 import { insuredMock, proposalMock } from '../../../__mocks__';
 import { store } from '../../../config/store';
-import CanAuthorizeApi from '../canAuthorize/CanAuthorizeApi';
 import ProposalAPI from './ProposalApi';
 import { proposalActions, putProposal } from './ProposalSlice';
 
@@ -21,22 +20,12 @@ describe('ProposalSlice', () => {
     const putProposalMock = jest
       .spyOn(ProposalAPI, 'putProposal')
       .mockImplementation(() => Promise.resolve(mockResult));
-    const canAuthorizeMock = jest
-      .spyOn(CanAuthorizeApi, 'getCanAuthorize')
-      .mockImplementation(() =>
-        Promise.resolve({
-          isAutomaticPolicy: true,
-          issueMessage: '',
-          hasOnlyFinancialPending: false,
-        }),
-      );
     await store.dispatch(
       putProposal({ proposalId: 12345, proposalData: proposalMock }),
     );
     const { proposal } = store.getState();
     expect(putProposalMock).toHaveBeenCalled();
     expect(putProposalMock).toHaveBeenCalledWith(12345, proposalMock);
-    expect(canAuthorizeMock).toHaveBeenCalledWith(11111);
     expect(proposal.identification?.PolicyId).toEqual(mockResult.PolicyId);
     expect(proposal.createdAt).toBe('2024-01-01T12:00:00.000Z');
     expect(proposal.isAutomaticPolicy).toBe(true);

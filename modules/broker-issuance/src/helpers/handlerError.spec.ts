@@ -1,4 +1,4 @@
-import handleError from "./handlerError";
+import handleError from './handlerError';
 
 describe('handlerError', () => {
   it('should return the error message data -> data -> Message', () => {

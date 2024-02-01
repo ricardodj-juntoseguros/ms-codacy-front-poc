@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { format, parse } from 'date-fns';
 import { downloadFile } from '@shared/utils';
 import { RouteComponentProps } from 'react-router';
 import {
@@ -11,49 +10,63 @@ import {
   makeToast,
 } from 'junto-design-system';
 import { useSelector } from 'react-redux';
-import { ReactComponent as AnalisysIcon } from './assets/analysis.svg';
-import { ReactComponent as SuccessIcon } from './assets/success.svg';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
+import {
+  ProposalFinishEnum,
+  SurveyTypeEnum,
+} from '../../../application/types/model';
+import { PROPOSAL_FINISH_DATA } from '../../../constants/proposalFinish';
 import styles from './ProposalFinishContainer.module.scss';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
-import { SurveyTypeEnum } from '../../../application/types/model';
 import { useSurvey } from '../../hooks';
 
 interface ProposalFinishContainerProps extends RouteComponentProps {
-  feedbackType: 'success' | 'analysis';
+  feedbackType: ProposalFinishEnum;
 }
 
 const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
   feedbackType,
 }) => {
-  const { identification, createdAt } = useSelector(selectProposal);
+  const { identification, protocols } = useSelector(selectProposal);
   const { currentQuote } = useSelector(selectQuote);
   const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
   const [showWidget, widgetProps, getSurveyInvite, answerSurvey] = useSurvey(
     SurveyTypeEnum.CSAT,
   );
   const { PolicyId } = identification || { PolicyId: null };
+  const userProfile = BrokerPlatformAuthService.getUserProfile();
+
+  const componentData = useMemo(
+    () => PROPOSAL_FINISH_DATA[feedbackType],
+    [feedbackType],
+  );
+
+  const protocol = useMemo(() => {
+    if (protocols.length === 1) return protocols[0].text;
+    return (
+      protocols.find(protocol => protocol.text.includes('Contratada'))?.text ||
+      ''
+    );
+  }, [protocols]);
 
   useEffect(() => {
     if (!identification || !currentQuote) {
       window.location.assign('/proposal');
       return;
     }
-    getSurveyInvite();
+    if (userProfile !== ProfileEnum.COMMERCIAL) getSurveyInvite();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const protocol = useMemo(() => {
-    if (!createdAt) return null;
-    return `Proposta ${PolicyId} - ${format(
-      parse(createdAt.split('.')[0], "yyyy-MM-dd'T'HH:mm:ss", new Date()),
-      "dd/MM/yyyy 'às' HH'h'mm",
-    )}`;
-  }, [PolicyId, createdAt]);
-
   const handleGoToProcessList = () => {
     window.location.assign(process.env.NX_GLOBAL_BROKER_PROCESSES_URL || '');
+  };
+
+  const renderIcon = () => {
+    const Icon = componentData.icon;
+    return <Icon />;
   };
 
   const handleDownloadProposalClick = () => {
@@ -82,11 +95,10 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
         viewport={{ once: true }}
         transition={{ duration: 0.3 }}
       >
-        {feedbackType === 'analysis' && <AnalisysIcon />}
-        {feedbackType === 'success' && <SuccessIcon />}
+        {renderIcon()}
       </motion.div>
       <div>
-        {feedbackType === 'analysis' && (
+        {protocol && (
           <motion.div
             initial={{ opacity: 0, translateY: '-10px' }}
             whileInView={{ opacity: 1, translateY: 0 }}
@@ -104,9 +116,7 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
           transition={{ duration: 0.3, delay: 0.7 }}
           className={styles['proposal-finish-container__title']}
         >
-          {feedbackType === 'success'
-            ? 'Sua apólice foi emitida!'
-            : 'Sua solicitação está em análise'}
+          {componentData.title}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, translateY: '-20px' }}
@@ -115,9 +125,7 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
           transition={{ duration: 0.3, delay: 0.9 }}
           className={styles['proposal-finish-container__text']}
         >
-          {feedbackType === 'success'
-            ? 'Em alguns instantes você receberá via email sua apólice de seguro e o boleto para pagamento.'
-            : 'Em breve você receberá o retorno da nossa equipe.'}
+          {componentData.description}
         </motion.p>
       </div>
       <motion.div
@@ -134,7 +142,7 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
         >
           Ir para a lista de processos
         </Button>
-        {feedbackType === 'analysis' && (
+        {feedbackType === ProposalFinishEnum.analysis && (
           <LinkButton
             data-testid="proposalFinishContainer-download-button"
             loading={loadingDownload}

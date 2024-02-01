@@ -15,7 +15,7 @@ import {
 } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from '@shared/hooks';
-import { BrokerPlatformAuthService } from '@services';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { ChatUtils } from '@shared/utils';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
 import handleError from '../../../helpers/handlerError';
@@ -235,7 +235,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
   const renderPolicyholderDetailsLink = () => {
     if (
       !policyholder ||
-      !BrokerPlatformAuthService.isBroker() ||
+      BrokerPlatformAuthService.getUserProfile() !== ProfileEnum.BROKER ||
       needAppointmentLetter
     )
       return null;

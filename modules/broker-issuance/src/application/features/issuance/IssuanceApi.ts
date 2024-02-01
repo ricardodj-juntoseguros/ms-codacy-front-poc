@@ -1,6 +1,6 @@
 import { AxiosHttpClient } from "@infrastructure/http-client";
 import BrokerInssuanceBaseApi from "../BrokerIssuanceBaseApi";
-import { IssuanceDTO } from "../../types/dto";
+import { SubmitToApprovalOrIssuanceDTO, SubmitToApprovalOrIssuanceResultDTO } from "../../types/dto";
 
 class IssuanceApi {
   private instance: AxiosHttpClient;
@@ -9,12 +9,12 @@ class IssuanceApi {
     this.instance = new BrokerInssuanceBaseApi().getInstance();
   }
 
-  async postIssuance(newQuoterId: number, payload: any): Promise<IssuanceDTO> {
+  async postIssuance(newQuoterId: number, payload: SubmitToApprovalOrIssuanceDTO): Promise<SubmitToApprovalOrIssuanceResultDTO> {
     const params = {
       url: `/v1/issuances/${newQuoterId}`,
       payload,
     };
-    return this.instance.post<IssuanceDTO>(params);
+    return this.instance.post<SubmitToApprovalOrIssuanceResultDTO>(params);
   }
 }
 

@@ -16,5 +16,6 @@ export const VALIDATION_MESSAGES = {
   invalidCommissionFlexValue:
     'Você pode adicionar até %VALUE% de comissão flex',
   invalidFeeFlexValue: 'O valor da taxa flex não pode ser maior que %VALUE% %',
+  invalidEmail: 'Por favor digite um E-mail válido.',
   invalidFirstDueDate: 'Data informada não está no intervalo permitido!',
 };

@@ -5,7 +5,7 @@ import {
 } from '../../../application/features/quote/QuoteSlice';
 import { store } from '../../../config/store';
 import { fireEvent, render } from '../../../config/testUtils';
-import { createQuoteMock, quoteResulMock } from '../../../__mocks__';
+import { createQuoteMock, quoteResultMock } from '../../../__mocks__';
 import { QuoteResultDTO } from '../../../application/types/dto';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
 import FlexRateToggle from './FlexRateToggle';
@@ -17,9 +17,9 @@ describe('FlexRateToggle', () => {
 
   it('Should disable the toggle if both current quote pricing flags are set to false', async () => {
     const modifiedResultMock = {
-      ...quoteResulMock,
+      ...quoteResultMock,
       pricing: {
-        ...quoteResulMock.pricing,
+        ...quoteResultMock.pricing,
         commissionFlexEnabled: false,
         commissionFlexMaxValue: null,
         feeFlexEnabled: false,
@@ -45,7 +45,7 @@ describe('FlexRateToggle', () => {
   it('Should disable the toggle if current quote proposalFee is different from input ProposalFee', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     store.dispatch(quoteSliceActions.setProposalFee(1.5));
     const { getByTestId, getByText } = render(<FlexRateToggle />);
@@ -63,7 +63,7 @@ describe('FlexRateToggle', () => {
   it('Should change store value on toggle check', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     const { getByTestId } = render(<FlexRateToggle />);
     const toggle = getByTestId('flexRateToggle-toggle-input');

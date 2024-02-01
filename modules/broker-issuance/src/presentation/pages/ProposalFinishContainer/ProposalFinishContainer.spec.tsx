@@ -1,29 +1,28 @@
 import '@testing-library/jest-dom';
 import { downloadFile } from '@shared/utils';
 import { Broker, BrokerPlatformAuthService } from '@services';
-import {
-  render,
-  fireEvent,
-  act,
-  waitFor,
-  getByText,
-  prettyDOM,
-} from '../../../config/testUtils';
+import { render, fireEvent, act, waitFor } from '../../../config/testUtils';
 import ProposalFinishContainer from './ProposalFinishContainer';
 import { store } from '../../../config/store';
 import { postQuotation } from '../../../application/features/quote/QuoteSlice';
 import {
   createQuoteMock,
   proposalMock,
-  quoteResulMock,
+  quoteResultMock,
 } from '../../../__mocks__';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
-import { putProposal } from '../../../application/features/proposal/ProposalSlice';
+import {
+  proposalActions,
+  putProposal,
+} from '../../../application/features/proposal/ProposalSlice';
 import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
 import SurveysApi from '../../../application/features/surveys/SurveysApi';
-import { SurveyTypeEnum } from '../../../application/types/model';
+import {
+  ProposalFinishEnum,
+  SurveyTypeEnum,
+} from '../../../application/types/model';
 
 jest.mock('@shared/utils', () => {
   const original = jest.requireActual('@shared/utils');
@@ -51,7 +50,7 @@ describe('ProposalFinishContainer', () => {
       });
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
       Promise.resolve({
         isAutomaticPolicy: true,
@@ -75,16 +74,25 @@ describe('ProposalFinishContainer', () => {
     await store.dispatch(
       putProposal({ proposalId: 90408, proposalData: proposalMock }),
     );
+    await store.dispatch(
+      proposalActions.setProtocols([
+        {
+          number: 1,
+          dateTime: new Date().toISOString(),
+          text: 'Proposta 11111 - 01/01/2024 às 12h00',
+        },
+      ]),
+    );
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('Should render accordingly with analysis feedback type', async () => {
+  it('should render accordingly with analysis feedback type', async () => {
     const { getByText, getByTestId } = render(
       <ProposalFinishContainer
-        feedbackType="analysis"
+        feedbackType={ProposalFinishEnum.analysis}
         history={{ push: mockHistoryPush } as any}
         location={{} as any}
         match={{} as any}
@@ -108,7 +116,7 @@ describe('ProposalFinishContainer', () => {
   it('Should render accordingly with success feedback type', async () => {
     const { getByText, getByTestId } = render(
       <ProposalFinishContainer
-        feedbackType="success"
+        feedbackType={ProposalFinishEnum.success}
         history={{ push: mockHistoryPush } as any}
         location={{} as any}
         match={{} as any}
@@ -128,7 +136,7 @@ describe('ProposalFinishContainer', () => {
   it('Should go to process list on button click', async () => {
     const { getByTestId } = render(
       <ProposalFinishContainer
-        feedbackType="success"
+        feedbackType={ProposalFinishEnum.success}
         history={{ push: mockHistoryPush } as any}
         location={{} as any}
         match={{} as any}
@@ -160,7 +168,7 @@ describe('ProposalFinishContainer', () => {
 
     const { getByTestId } = render(
       <ProposalFinishContainer
-        feedbackType="analysis"
+        feedbackType={ProposalFinishEnum.analysis}
         history={{ push: mockHistoryPush } as any}
         location={{} as any}
         match={{} as any}
@@ -177,7 +185,7 @@ describe('ProposalFinishContainer', () => {
   it('Should call CSAT survey and answer it', async () => {
     const { findByText, getByTestId, findByPlaceholderText } = render(
       <ProposalFinishContainer
-        feedbackType="success"
+        feedbackType={ProposalFinishEnum.success}
         history={{ push: mockHistoryPush } as any}
         location={{} as any}
         match={{} as any}

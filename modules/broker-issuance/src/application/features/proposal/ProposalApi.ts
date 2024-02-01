@@ -8,6 +8,8 @@ import {
   ProposalDraftDTO,
   ProposalResultDTO,
   ProposalResumeDTO,
+  SubmitToApprovalOrIssuanceDTO,
+  SubmitToApprovalOrIssuanceResultDTO,
 } from '../../types/dto';
 
 class ProposalApi {
@@ -23,6 +25,14 @@ class ProposalApi {
       payload: proposalPayload,
     };
     return await this.httpClient.put<ProposalResultDTO>(params);
+  }
+
+  async submitToApproval(newQuoterId: number, payload: SubmitToApprovalOrIssuanceDTO): Promise<SubmitToApprovalOrIssuanceResultDTO> {
+    const params = {
+      url: `/v1/proposals/${newQuoterId}/submitToApproval`,
+      payload,
+    };
+    return this.httpClient.post<SubmitToApprovalOrIssuanceResultDTO>(params);
   }
 
   async getProposalResume(identification: number) {

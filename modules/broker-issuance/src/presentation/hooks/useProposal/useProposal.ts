@@ -1,14 +1,20 @@
 /* eslint-disable consistent-return */
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFlow } from '@shared/hooks';
+import { AppDispatch } from '../../../config/store';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import {
   proposalActions,
   putProposal,
+  canAuthorizeProposal,
   selectProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import { proposalAdapter } from '../../../application/features/proposal/adapters';
-import { ValidationTypesEnum } from '../../../application/types/model';
+import {
+  CustomClauseRequestedByEnum,
+  ValidationTypesEnum,
+} from '../../../application/types/model';
 import { PROPOSAL_MODALITY_SCHEMAS } from '../../../application/validations';
 import { useValidate } from '../useValidate';
 import {
@@ -22,74 +28,127 @@ export const useProposal = () => {
   const proposal = useSelector(selectProposal);
   const contractualCondition = useSelector(selectContractualCondition);
   const { currentQuote, modality } = quote;
-  const { hasProposalChanges, currentProposal } = proposal;
-  const { setCurrentProposal } = proposalActions;
+  const { hasProposalChanges, loadingProposal } = proposal;
+  const {
+    currentContractualCondition,
+    requestedBy,
+    text,
+    hasContractualConditionsChanges,
+  } = contractualCondition;
+  const { setCurrentProposal, setCreateProposalSuccess } = proposalActions;
   const policyId = proposal.identification?.PolicyId;
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const validate = useValidate();
+  const { advanceStep } = useFlow();
 
-  const createOrUpdateContractualCondition = useCallback(() => {
-    const {
-      currentContractualCondition,
-      requestedBy,
-      text,
-      hasContractualConditionsChanges,
-    } = contractualCondition;
+  const hasUsavedContractualCondition = useMemo(
+    () => !!policyId && !!requestedBy && !!text && !currentContractualCondition,
+    [currentContractualCondition, policyId, requestedBy, text],
+  );
+  const hasContractualConditionUpdate = useMemo(
+    () =>
+      hasContractualConditionsChanges &&
+      currentContractualCondition &&
+      currentContractualCondition.id,
+    [currentContractualCondition, hasContractualConditionsChanges],
+  );
 
-    if (!policyId || !requestedBy || !text) return;
+  const onNext = useCallback(
+    (stepName: string) => {
+      dispatch(setCreateProposalSuccess(false));
+      advanceStep(stepName);
+    },
+    [advanceStep, dispatch, setCreateProposalSuccess],
+  );
 
-    if (!currentContractualCondition)
-      return dispatch(postCustomClause({ policyId, requestedBy, text }));
-
-    const { id: clauseId } = currentContractualCondition;
-
-    if (hasContractualConditionsChanges && clauseId) {
+  const createOrUpdateContractualCondition = useCallback(
+    (
+      policyId: number,
+      requestedBy: CustomClauseRequestedByEnum,
+      text: string,
+      stepName?: string,
+    ) => {
+      if (!currentContractualCondition) {
+        return dispatch(postCustomClause({ policyId, requestedBy, text })).then(
+          () => {
+            dispatch(canAuthorizeProposal({ policyId }));
+            if (stepName) onNext(stepName);
+          },
+        );
+      }
+      const { id: clauseId } = currentContractualCondition;
       return dispatch(
         patchCustomClause({ clauseId, isDelete: false, requestedBy, text }),
+      ).then(() => {
+        dispatch(canAuthorizeProposal({ policyId }));
+        if (stepName) onNext(stepName);
+      });
+    },
+    [currentContractualCondition, dispatch, onNext],
+  );
+
+  const updateProposal = useCallback(
+    async (stepName?: string) => {
+      if (!modality || !currentQuote) return;
+      const schema = PROPOSAL_MODALITY_SCHEMAS[modality.id];
+      const payload = proposalAdapter(proposal, quote);
+      const isValid = await validate(
+        schema,
+        payload,
+        ValidationTypesEnum.full,
+        [],
+        false,
       );
-    }
-  }, [contractualCondition, dispatch, policyId]);
-
-  const updateProposal = useCallback(async () => {
-    if (!modality || !currentQuote) return;
-
-    const schema = PROPOSAL_MODALITY_SCHEMAS[modality.id];
-
-    const payload = proposalAdapter(proposal, quote);
-
-    const isValid = await validate(
-      schema,
-      payload,
-      ValidationTypesEnum.full,
-      [],
-      false,
-    );
-
-    const proposalId = currentQuote?.identification.ProposalId;
-
-    if (isValid) {
+      const proposalId = currentQuote?.identification.ProposalId;
+      if (!isValid) return;
       dispatch(setCurrentProposal(payload));
-
-      if (hasProposalChanges && currentProposal !== payload)
-        dispatch(putProposal({ proposalId, proposalData: payload }));
-
-      createOrUpdateContractualCondition();
-      return true;
-    }
-
-    return false;
-  }, [
-    createOrUpdateContractualCondition,
-    currentProposal,
-    currentQuote,
-    dispatch,
-    hasProposalChanges,
-    modality,
-    proposal,
-    quote,
-    setCurrentProposal,
-    validate,
-  ]);
+      if (hasProposalChanges && !loadingProposal) {
+        dispatch(putProposal({ proposalId, proposalData: payload })).then(
+          async (response: any) => {
+            if (
+              !hasUsavedContractualCondition &&
+              !hasContractualConditionUpdate
+            ) {
+              dispatch(
+                canAuthorizeProposal({ policyId: response.payload.PolicyId }),
+              );
+              if (stepName) onNext(stepName);
+            }
+          },
+        );
+      }
+      if (
+        policyId &&
+        (hasUsavedContractualCondition || hasContractualConditionUpdate)
+      ) {
+        return createOrUpdateContractualCondition(
+          policyId,
+          requestedBy as number,
+          text,
+          stepName,
+        );
+      }
+      if (stepName) onNext(stepName);
+    },
+    [
+      createOrUpdateContractualCondition,
+      currentQuote,
+      dispatch,
+      hasUsavedContractualCondition,
+      hasContractualConditionUpdate,
+      hasProposalChanges,
+      loadingProposal,
+      modality,
+      onNext,
+      policyId,
+      proposal,
+      quote,
+      requestedBy,
+      setCurrentProposal,
+      text,
+      validate,
+    ],
+  );
 
   return updateProposal;
 };

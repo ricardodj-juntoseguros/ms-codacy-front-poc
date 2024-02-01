@@ -1,4 +1,4 @@
-export interface IssuanceDTO {
+export interface SubmitToApprovalOrIssuanceResultDTO {
   createdAt: string;
   issued: boolean;
   issuedAt: string | null;

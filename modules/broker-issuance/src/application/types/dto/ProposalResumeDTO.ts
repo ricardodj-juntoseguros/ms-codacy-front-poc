@@ -18,6 +18,7 @@ export interface ProposalResumeDTO {
   feeFlex: number | null;
   commissionFlex: number | null;
   insuredId: number | null;
+  insuredName: string | null;
   insuredFederalId: string | null;
   insuredAddressId: number | null;
   biddingNumber: string | null;

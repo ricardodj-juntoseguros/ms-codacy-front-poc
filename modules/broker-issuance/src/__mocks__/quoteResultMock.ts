@@ -1,6 +1,6 @@
 import { QuoteResultDTO } from '../application/types/dto';
 
-export const quoteResulMock = {
+export const quoteResultMock = {
   identification: {
     ProposalId: 90408,
     QuotationId: 1868859,
@@ -23,12 +23,12 @@ export const quoteResulMock = {
   installmentOptions: [
     {
       numberOfInstallments: 1,
-      firstDueDate: '2023-12-06T00:00:00+00:00',
+      firstDueDate: new Date().toISOString(),
       totalPrize: 190,
       installments: [
         {
           number: 1,
-          dueDate: '2023-12-06T00:00:00+00:00',
+          dueDate: new Date().toISOString(),
           mainValue: 190,
           iof: 0,
           policyCost: 0,

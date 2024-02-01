@@ -7,13 +7,7 @@ import { store } from '../../../../config/store';
 
 export const CommonProposalSchema = object().shape({
   insured: object().shape({
-    federalId: string()
-      .required()
-      .test('invalidInsuredFederalId', function federalIdValid() {
-        const { federalId } = this.parent;
-        if (!federalId) return false;
-        return federalIdValidator(federalId, 'full');
-      }),
+    id: number().required().min(1),
     addressId: number().required().min(1),
   }),
   selectedInstallmentOptions: object().shape({

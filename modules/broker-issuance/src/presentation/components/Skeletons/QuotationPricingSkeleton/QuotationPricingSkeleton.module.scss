@@ -9,7 +9,8 @@
     gap: spacing('xl');
 
     & > div:nth-child(2) {
-      display: flex;
+      display: grid;
+      grid-template-columns: 4fr 1fr;
       flex-direction: row;
       gap: spacing('m');
 
@@ -21,14 +22,18 @@
     }
 
     & > div:last-child {
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 50% 50%;
       justify-content: space-between;
-
+      gap: spacing('m');
+      
       & > div {
-        display: flex;
-        flex-direction: column;
+        display: grid;
         gap: spacing('m');
+      }
+      
+      & > div:last-child {
+        justify-content: flex-end;
       }
     }
   }

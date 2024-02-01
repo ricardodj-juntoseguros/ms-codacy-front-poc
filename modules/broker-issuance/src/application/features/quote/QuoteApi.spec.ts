@@ -1,6 +1,6 @@
 import { AxiosHttpClient } from '@infrastructure/http-client';
 import QuoteApi from './QuoteApi';
-import { quoteResulMock, createQuoteMock } from '../../../__mocks__';
+import { quoteResultMock, createQuoteMock } from '../../../__mocks__';
 
 describe('QuoteApi', () => {
   beforeAll(() => {
@@ -15,7 +15,7 @@ describe('QuoteApi', () => {
     const mockPost = jest
       .spyOn(AxiosHttpClient.prototype, 'post')
       .mockImplementation(async () => {
-        return quoteResulMock;
+        return quoteResultMock;
       });
 
     const result = await QuoteApi.postQuotation(createQuoteMock);
@@ -24,14 +24,14 @@ describe('QuoteApi', () => {
       url: `/v1/quotation`,
       payload: createQuoteMock,
     });
-    expect(result).toBe(quoteResulMock);
+    expect(result).toBe(quoteResultMock);
   });
 
   it('putQuotation should call bff service correctly', async () => {
     const mockPut = jest
       .spyOn(AxiosHttpClient.prototype, 'put')
       .mockImplementation(async () => {
-        return quoteResulMock;
+        return quoteResultMock;
       });
 
     const result = await QuoteApi.putQuotation(12345, createQuoteMock);
@@ -40,7 +40,7 @@ describe('QuoteApi', () => {
       url: '/v1/quotation/12345',
       payload: createQuoteMock,
     });
-    expect(result).toBe(quoteResulMock);
+    expect(result).toBe(quoteResultMock);
   });
 
   it('getQuotationDocument should call bff service correctly', async () => {

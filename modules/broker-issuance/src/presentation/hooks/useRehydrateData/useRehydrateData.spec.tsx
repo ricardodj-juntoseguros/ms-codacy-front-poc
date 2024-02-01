@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import Cookies from 'js-cookie';
 import { waitFor } from '@testing-library/react';
 import { BrokerPlatformAuthService } from '@services';
-import { modalitySelectionActions } from 'modules/broker-issuance/src/application/features/modalitySelection/ModalitySelectionSlice';
+import { modalitySelectionActions } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
 import { brokerMock, modalityBidderMock } from '../../../__mocks__';
 import { useRehydrateData } from './useRehydrateData';
 import { store } from '../../../config/store';

@@ -7,6 +7,7 @@ import InsuredSelectionSlice from '../application/features/insuredSelection/Insu
 import ProposalSlice from '../application/features/proposal/ProposalSlice';
 import ContractualConditionSlice from '../application/features/contractualCondition/ContractualConditionSlice';
 import ProposalDocumentsSlice from '../application/features/proposalDocuments/ProposalDocumentsSlice';
+import CommercialAuthorizationSlice from '../application/features/CommercialAuthorization/CommercialAuthorizationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -17,8 +18,10 @@ export const store = configureStore({
     proposal: ProposalSlice,
     contractualCondition: ContractualConditionSlice,
     proposalDocuments: ProposalDocumentsSlice,
+    commercialAuthorization: CommercialAuthorizationSlice,
     validation: validationSlice,
   },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

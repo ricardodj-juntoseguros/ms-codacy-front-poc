@@ -11,7 +11,7 @@ import ValidityAndValueForm from './ValidityAndValueForm';
 import {
   createQuoteMock,
   proposalResumeMock,
-  quoteResulMock,
+  quoteResultMock,
 } from '../../../__mocks__';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
 import { QuotationDTO } from '../../../application/types/dto';
@@ -66,7 +66,7 @@ describe('ValidityAndValueForm', () => {
   it('Should have submit button disabled if hasQuoteChanges flag in store is true', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     store.dispatch(quoteSliceActions.setProposalFee(0.5));
 
@@ -79,7 +79,7 @@ describe('ValidityAndValueForm', () => {
   it('Should call advanceStep on useFlow hook on submit', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     const { findByTestId } = render(
       <ValidityAndValueForm name="validityAndValue" />,
     );
@@ -95,7 +95,7 @@ describe('ValidityAndValueForm', () => {
   it('Should be able to download quotation document if there is a valid current quote', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     const downloadMock = jest
       .spyOn(QuoteApi, 'getQuotationDocument')
       .mockImplementation(async () => 'Ok');

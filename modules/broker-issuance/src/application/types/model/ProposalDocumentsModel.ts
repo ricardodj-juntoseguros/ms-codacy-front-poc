@@ -1,6 +1,8 @@
-import { ProposalDocumentDTO } from "../dto/ProposalDocumentDTO";
-
 export interface ProposalDocumentsModel {
-  proposalDocuments: ProposalDocumentDTO[];
+  proposalDocuments: {
+    name: string;
+    url: string;
+    size: number;
+  }[];
   loadingDocuments: boolean;
 }

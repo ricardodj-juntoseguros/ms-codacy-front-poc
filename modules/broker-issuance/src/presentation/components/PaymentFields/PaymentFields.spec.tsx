@@ -11,7 +11,7 @@ import {
   createQuoteMock,
   modalityBidderMock,
   proposalMock,
-  quoteResulMock,
+  quoteResultMock,
 } from '../../../__mocks__';
 import {
   postQuotation,
@@ -40,7 +40,7 @@ describe('PaymentFields', () => {
     await store.dispatch(quoteSliceActions.setModality(modalityBidderMock));
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     jest.spyOn(ProposalApi, 'putProposal').mockImplementation(() =>
       Promise.resolve({

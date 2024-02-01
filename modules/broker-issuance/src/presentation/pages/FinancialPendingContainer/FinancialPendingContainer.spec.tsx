@@ -3,7 +3,7 @@ import { fireEvent, render } from '../../../config/testUtils';
 import {
   insuredMock,
   modalityBidderMock,
-  quoteResulMock,
+  quoteResultMock,
   storeMock,
 } from '../../../__mocks__';
 import FinancialPendingContainer from './FinancialPendingContainer';
@@ -35,7 +35,7 @@ describe('TermsOfAcceptanceModal', () => {
       endDateValidity: '14/11/2024',
       startDateValidity: '14/11/2023',
       totalPrize: 2600,
-      currentQuote: quoteResulMock,
+      currentQuote: quoteResultMock,
       modality: modalityBidderMock,
       policyholder: {
         ...storeMock.quote.policyholder,

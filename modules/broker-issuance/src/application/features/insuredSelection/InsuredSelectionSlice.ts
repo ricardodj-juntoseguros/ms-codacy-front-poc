@@ -1,8 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from 'modules/broker-issuance/src/config/store';
+import { mapInsuredAddressesOption } from '../../../helpers';
+import { RootState } from '../../../config/store';
 import { InsuredSelectionModel } from '../../types/model/InsuredSelectionModel';
 import InsuredSelectionApi from './InsuredSelectionApi';
 import { InsuredModel } from '../../types/model';
+import { InsuredAddressDTO } from '../../types/dto';
 import { InsuredAddressModel } from '../../types/model/InsuredAddressModel';
 
 export const searchInsured = createAsyncThunk(
@@ -45,14 +47,9 @@ export const insuredSelectionSlice = createSlice({
       if (!action.payload) state.insuredOptions = [];
       state.insuredSearchValue = action.payload;
     },
-    setInsuredAddressesOptions: (state, action) => {
-      state.insuredAddressesOptions = action.payload.map(
-        (address: InsuredAddressModel) => ({
-          ...address,
-          value: address.addressId.toString(),
-          label: `${address.street} - ${address.city}, ${address.state}`,
-        }),
-      );
+    setInsuredAddressesOptions: (state, action: PayloadAction<InsuredAddressDTO[]>) => {
+      state.insuredAddressesOptions = action.payload.map((address: InsuredAddressDTO) =>
+        mapInsuredAddressesOption(address)) as InsuredAddressModel[];
     },
   },
   extraReducers: builder => {

@@ -37,6 +37,8 @@ export const proposalResumeMock = {
   commissionFlex: null,
   feeFlex: null,
   insuredId: 6455,
+  insuredName:
+    'PREFEITURA DA CIDADE DO RIO DE JANEIRO - PROCURADORIA GERAL DO MUNICIPIO',
   insuredFederalId: '42498733000148',
   insuredAddressId: 5539,
   biddingNumber: '12324',

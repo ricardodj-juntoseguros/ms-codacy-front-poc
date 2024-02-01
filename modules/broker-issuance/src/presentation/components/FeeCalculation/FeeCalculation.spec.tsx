@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { fireEvent, render } from '../../../config/testUtils';
 import { store } from '../../../config/store';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
-import { createQuoteMock, quoteResulMock } from '../../../__mocks__';
+import { createQuoteMock, quoteResultMock } from '../../../__mocks__';
 import {
   postQuotation,
   quoteSliceActions,
@@ -28,7 +28,7 @@ describe('FeeCalculation', () => {
     const mockFn = jest.fn();
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     const { findByTestId } = render(
       <FeeCalculation onCalculateCallback={mockFn} />,
@@ -43,7 +43,7 @@ describe('FeeCalculation', () => {
   it('Should display commission flex input correctly and dispatch value to store on fill', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     store.dispatch(quoteSliceActions.setToggleRateFlex());
     const { findByTestId, getByText } = render(
@@ -59,9 +59,9 @@ describe('FeeCalculation', () => {
 
   it('Should display fee flex input correctly and dispatch value to store on fill', async () => {
     const modifiedResultMock = {
-      ...quoteResulMock,
+      ...quoteResultMock,
       pricing: {
-        ...quoteResulMock.pricing,
+        ...quoteResultMock.pricing,
         commissionFlexEnabled: false,
         commissionFlexMaxValue: null,
         feeFlexEnabled: true,

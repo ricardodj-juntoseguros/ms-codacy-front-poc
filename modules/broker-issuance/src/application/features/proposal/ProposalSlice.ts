@@ -5,28 +5,19 @@ import { format, parse, startOfDay } from 'date-fns';
 import { RootState } from '../../../config/store';
 import handleError from '../../../helpers/handlerError';
 import { ProposalModel } from '../../types/model/ProposalModel';
-import {
-  CanAuthorizeDTO,
-  ProposalDTO,
-  ProposalResultDTO,
-} from '../../types/dto';
-import CanAuthorizeApi from '../canAuthorize/CanAuthorizeApi';
+import { CanAuthorizeDTO, ProposalDTO, ProposalResultDTO } from '../../types/dto';
 import ProposalApi from './ProposalApi';
+import CanAuthorizeApi from '../canAuthorize/CanAuthorizeApi';
 
 export const putProposal = createAsyncThunk<
-  ProposalResultDTO & CanAuthorizeDTO,
+  ProposalResultDTO,
   { proposalId: number; proposalData: ProposalDTO },
   { rejectValue: string }
 >(
   'proposal/putProposal',
   async ({ proposalId, proposalData }, { rejectWithValue }) => {
     return ProposalApi.putProposal(proposalId, proposalData)
-      .then(async response => {
-        const canAuthorizeResponse = await CanAuthorizeApi.getCanAuthorize(
-          response.PolicyId,
-        );
-        return { ...response, ...canAuthorizeResponse };
-      })
+      .then(async response => response)
       .catch(error => {
         const defaultMessage = 'Ocorreu um erro ao gerar a proposta.';
         const message = error.data
@@ -35,6 +26,19 @@ export const putProposal = createAsyncThunk<
         return rejectWithValue(message);
       });
   },
+);
+
+export const canAuthorizeProposal = createAsyncThunk<
+  CanAuthorizeDTO,
+  { policyId: number },
+  { rejectValue: string }
+>(
+  'proposal/canAuthorizeProposal',
+  async ({ policyId }, { rejectWithValue }) => {
+    return CanAuthorizeApi.getCanAuthorize(policyId)
+      .then(response => response)
+      .catch(error => rejectWithValue(handleError(error)));
+  }
 );
 
 const initialState: ProposalModel = {
@@ -54,6 +58,9 @@ const initialState: ProposalModel = {
   isAutomaticPolicy: true,
   hasOnlyFinancialPending: false,
   hasProposalChanges: false,
+  issuedAt: '',
+  protocols: [],
+  loadingCanAuthorize: false,
 };
 
 export const proposaSlice = createSlice({
@@ -75,6 +82,9 @@ export const proposaSlice = createSlice({
       state.isAutomaticPolicy = true;
       state.hasOnlyFinancialPending = false;
       state.hasProposalChanges = false;
+      state.issuedAt = '';
+      state.protocols = [];
+      state.loadingCanAuthorize = false;
     },
     setProposalResumeData: (state, action) => {
       const {
@@ -130,14 +140,17 @@ export const proposaSlice = createSlice({
       state.hasProposalChanges = true;
     },
     setPaymentType: (state, action: PayloadAction<number>) => {
+      if(state.paymentType === action.payload) return;
       state.paymentType = action.payload;
       state.hasProposalChanges = true;
     },
     setFirstDueDate: (state, action: PayloadAction<string | null>) => {
+      if(state.firstDueDate === action.payload) return;
       state.firstDueDate = action.payload;
       state.hasProposalChanges = true;
     },
     setNumberOfInstallments: (state, action: PayloadAction<number>) => {
+      if(state.numberOfInstallments === action.payload) return;
       state.numberOfInstallments = action.payload;
       state.hasProposalChanges = true;
     },
@@ -150,11 +163,20 @@ export const proposaSlice = createSlice({
     setHasOnlyFinancialPending: (state, action) => {
       state.hasOnlyFinancialPending = action.payload;
     },
+    setLoadingProposal: (state, action) => {
+      state.loadingProposal = action.payload;
+    },
     setHasProposalChanges: (state, action) => {
       state.hasProposalChanges = action.payload;
     },
     setCurrentProposal: (state, action) => {
       state.currentProposal = action.payload;
+    },
+    setIssuedAt: (state, action) => {
+      state.issuedAt = action.payload;
+    },
+    setProtocols: (state, action) => {
+      state.protocols = action.payload;
     },
   },
   extraReducers: builder => {
@@ -168,8 +190,6 @@ export const proposaSlice = createSlice({
           payload: {
             createdAt,
             PolicyId,
-            isAutomaticPolicy,
-            hasOnlyFinancialPending,
           },
         } = action;
         state.identification = {
@@ -177,8 +197,6 @@ export const proposaSlice = createSlice({
         };
         state.createdAt = createdAt;
         state.loadingProposal = false;
-        state.hasOnlyFinancialPending = hasOnlyFinancialPending;
-        state.isAutomaticPolicy = isAutomaticPolicy;
         state.createProposalSuccess = true;
         state.hasProposalChanges = false;
       })
@@ -187,6 +205,19 @@ export const proposaSlice = createSlice({
         state.createProposalSuccess = false;
         state.hasProposalChanges = true;
         state.currentProposal = null;
+        if (action.payload) makeToast('error', action.payload);
+      })
+      .addCase(canAuthorizeProposal.pending, state => {
+        state.loadingCanAuthorize = true;
+      })
+      .addCase(canAuthorizeProposal.fulfilled, (state, action) => {
+        const { isAutomaticPolicy, hasOnlyFinancialPending } = action.payload;
+        state.isAutomaticPolicy = isAutomaticPolicy;
+        state.hasOnlyFinancialPending = hasOnlyFinancialPending;
+        state.loadingCanAuthorize = false;
+      })
+      .addCase(canAuthorizeProposal.rejected, (state, action) => {
+        state.loadingCanAuthorize = false;
         if (action.payload) makeToast('error', action.payload);
       });
   },

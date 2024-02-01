@@ -9,11 +9,13 @@ import {
 import { DISCLAIMERS } from '../../../constants';
 import { CustomClauseRequestedByEnum } from '../../../application/types/model';
 import { RadioButton } from '../RadioButton';
+import { AppDispatch } from '../../../config/store';
+import { canAuthorizeProposal, selectProposal } from '../../../application/features/proposal/ProposalSlice';
 
 import styles from './ContractualCondition.module.scss';
 
 const ContractualCondition: FunctionComponent = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const {
     currentContractualCondition,
     requestedBy,
@@ -22,6 +24,7 @@ const ContractualCondition: FunctionComponent = () => {
   } = useSelector(selectContractualCondition);
   const { setOpenContractualConditions, setRequestedBy, setText } =
     contractualConditionActions;
+    const { identification } = useSelector(selectProposal);
 
   useEffect(() => {
     const removeContractualConditions = () => {
@@ -33,16 +36,10 @@ const ContractualCondition: FunctionComponent = () => {
           requestedBy: requestedBy || currentContractualCondition.requestedBy,
           isDelete: true,
         }),
-      );
+      ).then(() => identification && dispatch(canAuthorizeProposal({ policyId: identification?.PolicyId})));
     };
     if (!openContractualConditions) removeContractualConditions();
-  }, [
-    currentContractualCondition,
-    dispatch,
-    openContractualConditions,
-    requestedBy,
-    text,
-  ]);
+  }, [currentContractualCondition, dispatch, identification, openContractualConditions, requestedBy, text]);
 
   const handleToogleContractualConditions = () => {
     dispatch(setOpenContractualConditions(!openContractualConditions));

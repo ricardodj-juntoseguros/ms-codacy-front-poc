@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { renderHook } from '@testing-library/react-hooks';
 import { Broker, BrokerPlatformAuthService } from '@services';
 import * as reactRedux from 'react-redux';
-import { insuredMock, quoteResulMock, storeMock } from '../../../__mocks__';
+import { insuredMock, quoteResultMock, storeMock } from '../../../__mocks__';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
 import { useQuotation } from './useQuotation';
 
@@ -43,7 +43,7 @@ describe('useQuotation Hook', () => {
       loadingProposal: false,
       createProposalSuccess: false,
       hasProposalChanges: true,
-    }
+    },
   };
 
   beforeEach(() => {
@@ -61,7 +61,7 @@ describe('useQuotation Hook', () => {
   it('Should validate and create a new quotation if store does not have a current quote', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     useSelectorMock.mockImplementation(select =>
       select({ ...updatedStoreMock }),
     );
@@ -76,7 +76,7 @@ describe('useQuotation Hook', () => {
     const updatedStoreMockWithCurrentQuote = {
       ...updatedStoreMock,
       quote: {
-        currentQuote: quoteResulMock,
+        currentQuote: quoteResultMock,
         hasQuoteChanges: true,
         proposalFee: 0.26,
       },
@@ -91,11 +91,11 @@ describe('useQuotation Hook', () => {
         loadingProposal: false,
         createProposalSuccess: false,
         hasProposalChanges: true,
-      }
+      },
     };
     jest
       .spyOn(QuoteApi, 'putQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
     useSelectorMock.mockImplementation(select =>
       select({ ...updatedStoreMockWithCurrentQuote }),
     );

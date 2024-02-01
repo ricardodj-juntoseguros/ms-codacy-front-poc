@@ -208,7 +208,7 @@ describe('UseProposalResume Hook', () => {
     expect(quote.durationInDays).toEqual(120);
 
     // Asserts insured selection rehydrate
-    expect(insuredSearchMock).toHaveBeenLastCalledWith('42498733000148');
+    expect(insuredSearchMock).toHaveBeenLastCalledWith(insuredMock.name);
     expect(insuredSelection.insuredOptions).toHaveLength(1);
     expect(insuredSelection.insuredAddressesOptions).toHaveLength(8);
     expect(insuredSelection.insuredSearchValue).toBe(
@@ -401,7 +401,9 @@ describe('UseProposalResume Hook', () => {
     });
 
     expect(getProposalMock).toHaveBeenLastCalledWith(1401096);
-    expect(insuredSearchMock).toHaveBeenLastCalledWith('42498733000148');
+    expect(insuredSearchMock).toHaveBeenLastCalledWith(
+      'PREFEITURA DA CIDADE DO RIO DE JANEIRO - PROCURADORIA GERAL DO MUNICIPIO',
+    );
     expect(makeToast).toHaveBeenLastCalledWith(
       'error',
       'Dados do segurado da proposta não encontrados.',

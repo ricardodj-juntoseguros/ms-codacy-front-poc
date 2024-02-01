@@ -22,5 +22,6 @@ export * from './ObjectPreviewResultDTO';
 export * from './CanAuthorizeDTO';
 export * from './ProposalDocumentDTO';
 export * from './ProposalDraftDTO';
-export * from './IssuanceDTO';
+export * from './SubmitToApprovalOrIssuanceDTO';
+export * from './SubmitToApprovalOrIssuanceResultDTO';
 export * from './SurveyInviteDTO';

@@ -2,6 +2,7 @@ import { FunctionComponent, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, SearchInput } from 'junto-design-system';
 import { useDebounce } from '@shared/hooks';
+import { mapInsuredAddressesOption } from '../../../helpers';
 import { InsuredAddressDTO } from '../../../application/types/dto';
 import { InsuredModel } from '../../../application/types/model';
 import {
@@ -63,14 +64,11 @@ const InsuredSelection: FunctionComponent = () => {
   const onSetInsuredAddressesOptions = (
     selectionOptions: InsuredAddressDTO[],
   ) => {
-    dispatch(setInsuredAddressesOptions(selectionOptions));
-    if (selectionOptions.length === 1) {
+    const filteredOptions = selectionOptions.filter(option => option.street);
+    dispatch(setInsuredAddressesOptions(filteredOptions));
+    if (filteredOptions.length === 1) {
       dispatch(
-        setInsuredAddress({
-          ...selectionOptions[0],
-          value: selectionOptions[0].addressId.toString(),
-          label: `${selectionOptions[0].street} - ${selectionOptions[0].city}, ${selectionOptions[0].state}`,
-        }),
+        setInsuredAddress(mapInsuredAddressesOption(filteredOptions[0])),
       );
     }
   };

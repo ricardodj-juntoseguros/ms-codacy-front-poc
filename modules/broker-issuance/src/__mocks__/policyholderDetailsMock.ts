@@ -1,4 +1,4 @@
-import { PolicyholderDTO } from "../application/types/dto";
+import { PolicyholderDTO } from '../application/types/dto';
 
 export const policyholderDetailsMock = {
   registrationData: {
@@ -12,6 +12,11 @@ export const policyholderDetailsMock = {
     closingReferenceDay: 30,
     economicGroupId: 20428,
     economicGroupName: 'GRUPO DEXCO',
+    disabledFeatures: {
+      customClauses: false,
+      forcedInternalization: false,
+      policyInProgress: false,
+    },
   },
   affiliates: [
     {
@@ -21,5 +26,5 @@ export const policyholderDetailsMock = {
       state: 'SP',
       federalId: '97.837.181/0020-00',
     },
-  ]
+  ],
 } as PolicyholderDTO;

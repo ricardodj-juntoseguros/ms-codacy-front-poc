@@ -2,7 +2,7 @@ import {
   policyholderMock,
   storeMock,
   policyholderAffiliateMock,
-  quoteResulMock,
+  quoteResultMock,
   createQuoteMock,
 } from '../../../__mocks__';
 import { store } from '../../../config/store';
@@ -53,7 +53,7 @@ describe('QuoteSlice', () => {
   it('postQuotation thunk should call api and alter store with values', async () => {
     const apiMock = jest
       .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
 
     await store.dispatch(postQuotation(createQuoteMock));
 
@@ -82,7 +82,7 @@ describe('QuoteSlice', () => {
   it('putQuotation thunk should call api and alter store with values', async () => {
     const apiMock = jest
       .spyOn(QuoteApi, 'putQuotation')
-      .mockImplementation(async () => quoteResulMock);
+      .mockImplementation(async () => quoteResultMock);
 
     await store.dispatch(
       putQuotation({

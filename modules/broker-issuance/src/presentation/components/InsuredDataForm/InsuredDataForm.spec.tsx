@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom';
+import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
+import { contractualConditionActions } from '../../../application/features/contractualCondition/ContractualConditionSlice';
 import ContractualConditionApi from '../../../application/features/contractualCondition/ContractualConditionApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import {
@@ -6,10 +8,17 @@ import {
   putProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
-import { insuredMock, proposalMock } from '../../../__mocks__';
+import {
+  customClauseMock,
+  insuredMock,
+  objectPreviewResultMock,
+  policyholderDetailsMock,
+  proposalMock,
+} from '../../../__mocks__';
 import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
 import { store } from '../../../config/store';
 import InsuredDataForm from './InsuredDataForm';
+import ObjectPreviewApi from '../../../application/features/objectPreview/ObjectPreviewApi';
 
 const advanceStepMock = jest.fn();
 jest.mock('@shared/hooks', () => {
@@ -43,6 +52,13 @@ describe('InsuredDataForm', () => {
   const contractualConditionApiMock = jest
     .spyOn(ContractualConditionApi, 'getCustomClause')
     .mockImplementation(() => Promise.resolve([]));
+  jest
+    .spyOn(ContractualConditionApi, 'getCustomClause')
+    .mockImplementation(() => Promise.resolve(customClauseMock));
+
+  beforeEach(() => {
+    store.dispatch(contractualConditionActions.clearContractualConditions());
+  });
 
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
@@ -69,9 +85,11 @@ describe('InsuredDataForm', () => {
       await fireEvent.change(biddingNumberInput, {
         target: { value: '123456' },
       });
+      await fireEvent.blur(biddingNumberInput);
     });
     const state = store.getState();
     expect(state.proposal.biddingNumber).toEqual('123456');
+    expect(createProposalMock).toHaveBeenCalled();
   });
 
   it('should be able to enter the bidding description in the store', async () => {
@@ -83,12 +101,14 @@ describe('InsuredDataForm', () => {
       await fireEvent.change(biddingDescriptionInput, {
         target: { value: '12345' },
       });
+      await fireEvent.blur(biddingDescriptionInput);
     });
     const state = store.getState();
     expect(state.proposal.biddingDescription).toEqual('12345');
+    expect(createProposalMock).toHaveBeenCalled();
   });
 
-  it('should be able to call a hook to create a proposal and, if successful, proceed to the next step', async () => {
+  it('should be able to call a hook to create a proposal', async () => {
     jest
       .spyOn(ProposalApi, 'putProposal')
       .mockImplementation(() => Promise.resolve(mockResult));
@@ -100,11 +120,14 @@ describe('InsuredDataForm', () => {
       }),
     );
     await store.dispatch(
+      quoteSliceActions.setPolicyholder(
+        policyholderDetailsMock.registrationData,
+      ),
+    );
+    await store.dispatch(
       putProposal({ proposalId: 12345, proposalData: proposalMock }),
     );
-    const { getByTestId, rerender } = render(
-      <InsuredDataForm name="InsuredDataForm" />,
-    );
+    const { getByTestId } = render(<InsuredDataForm name="InsuredDataForm" />);
     const submitButton = getByTestId('insuredDataForm-submit-button');
     await waitFor(async () => {
       await expect(contractualConditionApiMock).toHaveBeenCalled();
@@ -118,10 +141,105 @@ describe('InsuredDataForm', () => {
       await fireEvent.click(submitButton);
     });
     expect(createProposalMock).toHaveBeenCalled();
-    store.dispatch(proposalActions.setCreateProposalSuccess(true));
-    const state = store.getState();
-    expect(state.proposal.createProposalSuccess).toBeTruthy();
-    rerender(<InsuredDataForm name="InsuredDataForm" />);
-    expect(advanceStepMock).toHaveBeenCalledWith('InsuredDataForm');
+  });
+
+  it('should be able to open object preview modal', async () => {
+    jest
+      .spyOn(ObjectPreviewApi, 'getObjectPreview')
+      .mockImplementation(() => Promise.resolve(objectPreviewResultMock));
+    jest
+      .spyOn(ProposalApi, 'putProposal')
+      .mockImplementation(() => Promise.resolve(mockResult));
+    jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
+      Promise.resolve({
+        isAutomaticPolicy: true,
+        issueMessage: '',
+        hasOnlyFinancialPending: true,
+      }),
+    );
+    await store.dispatch(
+      quoteSliceActions.setPolicyholder(
+        policyholderDetailsMock.registrationData,
+      ),
+    );
+    await store.dispatch(
+      putProposal({ proposalId: 12345, proposalData: proposalMock }),
+    );
+    const { getByTestId } = render(<InsuredDataForm name="InsuredDataForm" />);
+    const objectPreviewButton = getByTestId(
+      'insuredDataForm-show-object-preview-button',
+    );
+    await waitFor(async () => {
+      await expect(contractualConditionApiMock).toHaveBeenCalled();
+    });
+    store.dispatch(proposalActions.setInsured(insuredMock));
+    store.dispatch(proposalActions.setInsuredAddress(insuredMock.addresses[0]));
+    store.dispatch(proposalActions.setBiddingNumber('123456'));
+    expect(objectPreviewButton).not.toBeDisabled();
+    await act(async () => {
+      await fireEvent.click(objectPreviewButton);
+    });
+    expect(getByTestId('modal-backdrop')).toBeInTheDocument();
+  });
+
+  it('should be able to display the insertion of contractual conditions', async () => {
+    jest
+      .spyOn(ProposalApi, 'putProposal')
+      .mockImplementation(() => Promise.resolve(mockResult));
+    await store.dispatch(
+      putProposal({ proposalId: 12345, proposalData: proposalMock }),
+    );
+    jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
+      Promise.resolve({
+        isAutomaticPolicy: true,
+        issueMessage: '',
+        hasOnlyFinancialPending: true,
+      }),
+    );
+    await store.dispatch(
+      quoteSliceActions.setPolicyholder(
+        policyholderDetailsMock.registrationData,
+      ),
+    );
+    const { getByTestId } = render(<InsuredDataForm name="InsuredDataForm" />);
+    await waitFor(async () => {
+      await expect(
+        getByTestId('contractualConditions-toggle-show'),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should be able to not display the insertion of contractual conditions', async () => {
+    jest
+      .spyOn(ProposalApi, 'putProposal')
+      .mockImplementation(() => Promise.resolve(mockResult));
+    await store.dispatch(
+      putProposal({ proposalId: 12345, proposalData: proposalMock }),
+    );
+    jest.spyOn(CanAuthorizeApi, 'getCanAuthorize').mockImplementation(() =>
+      Promise.resolve({
+        isAutomaticPolicy: true,
+        issueMessage: '',
+        hasOnlyFinancialPending: true,
+      }),
+    );
+    await store.dispatch(
+      quoteSliceActions.setPolicyholder({
+        ...policyholderDetailsMock.registrationData,
+        disabledFeatures: {
+          forcedInternalization: false,
+          policyInProgress: false,
+          customClauses: true,
+        },
+      }),
+    );
+    const { queryByTestId } = render(
+      <InsuredDataForm name="InsuredDataForm" />,
+    );
+    await waitFor(async () => {
+      await expect(
+        queryByTestId('contractualConditions-toggle-show'),
+      ).not.toBeInTheDocument();
+    });
   });
 });

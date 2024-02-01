@@ -2,7 +2,7 @@
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { Button, InputBase } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
-import { GenericComponentProps, useFlow } from '@shared/hooks';
+import { GenericComponentProps } from '@shared/hooks';
 import {
   getCustomClause,
   selectContractualCondition,
@@ -24,9 +24,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
   name,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [submitByButton, setSubmitByButton] = useState(false);
   const dispatch = useDispatch();
-  const { advanceStep } = useFlow();
   const updateProposal = useProposal();
   const {
     insured,
@@ -34,6 +32,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     biddingNumber,
     biddingDescription,
     loadingProposal,
+    loadingCanAuthorize,
     identification,
   } = useSelector(selectProposal);
   const { policyholder } = useSelector(selectQuote);
@@ -43,15 +42,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     text,
     requestedBy,
   } = useSelector(selectContractualCondition);
-  const { setBiddingNumber, setBiddingDescription, setCreateProposalSuccess } =
-    proposalActions;
-
-  useEffect(() => {
-    if (!loadingProposal && submitByButton) {
-      dispatch(setCreateProposalSuccess(false));
-      advanceStep(name);
-    }
-  }, [submitByButton, loadingProposal]);
+  const { setBiddingNumber, setBiddingDescription } = proposalActions;
 
   useEffect(() => {
     if (identification && identification.PolicyId) {
@@ -105,8 +96,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setSubmitByButton(true);
-    updateProposal();
+    updateProposal(name);
   };
 
   const renderContractualCondition = () => {
@@ -173,7 +163,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
           type="submit"
           fullWidth
           disabled={disabledSubmitButton}
-          loading={loadingProposal}
+          loading={loadingProposal || loadingCanAuthorize}
         >
           Continuar
         </Button>

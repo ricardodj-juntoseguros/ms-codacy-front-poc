@@ -1,8 +1,8 @@
-import { ProposalDocumentDTO } from '../../../types/dto';
+import { ProposalDocumentsModel } from '../../../types/model';
 
 export const documentsSummaryAdapter = (
   appointmentLetter: { filename: string; size: number } | null,
-  proposalDocuments: ProposalDocumentDTO[],
+  proposalDocuments: ProposalDocumentsModel['proposalDocuments'],
 ) => {
   const result = [] as { filename: string; size: string }[];
   const sizeCalc = (size: number) => `${(size / 1048576).toFixed(2)} MB`;
@@ -14,9 +14,9 @@ export const documentsSummaryAdapter = (
       size: sizeCalc(size),
     });
   }
-  proposalDocuments.forEach(({ filename, size }) => {
+  proposalDocuments.forEach(({ name, size }) => {
     result.push({
-      filename,
+      filename: name,
       size: sizeCalc(size),
     });
   });

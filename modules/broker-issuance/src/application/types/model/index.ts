@@ -14,5 +14,8 @@ export * from './CustomClauseRequestedByEnum';
 export * from './ContractualConditionModel';
 export * from './PaymentTypeEnum';
 export * from './ProposalDocumentsModel';
+export * from './CommercialAuthorizationModel';
+export * from './CommercialAuthorizationTypeEnum';
+export * from './ProposalFinishEnum';
 export * from './SurveyTypeEnum';
 export * from './PolicyholderAffiliatesModel';

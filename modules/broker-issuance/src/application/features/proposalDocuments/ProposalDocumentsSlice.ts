@@ -43,7 +43,11 @@ export const proposalDocumentsSlice = createSlice({
       })
       .addCase(getProposalDocuments.fulfilled, (state, action) => {
         state.loadingDocuments = false;
-        state.proposalDocuments = action.payload;
+        state.proposalDocuments = action.payload.map(document => ({
+          name: document.filename,
+          url: document.url,
+          size: document.size,
+        }));
       })
       .addCase(getProposalDocuments.rejected, (state, action) => {
         state.loadingDocuments = false;

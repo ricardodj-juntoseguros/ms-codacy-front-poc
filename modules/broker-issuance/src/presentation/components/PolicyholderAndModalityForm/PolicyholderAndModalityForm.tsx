@@ -14,7 +14,7 @@ import {
   makeToast,
 } from 'junto-design-system';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
-import { BrokerPlatformAuthService } from '@services';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { HELP_ID, REDIRECT_TO_V3_INFOS } from '../../../constants';
@@ -52,6 +52,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   const { clearPolicyholderSelection, setCurrentAppointmentLetter } =
     policyholderSelectionActions;
   const { setModality } = quoteSliceActions;
+  const userProfile = BrokerPlatformAuthService.getUserProfile();
 
   useEffect(() => {
     if (!modality) return;
@@ -185,7 +186,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
           loading={loadingModalities}
           readOnly={isReadonlyFields}
         />
-        {modalityOptions.length !== 0 && (
+        {modalityOptions.length !== 0 && userProfile === ProfileEnum.BROKER && (
           <LinkButton
             label="Sobre as modalidades"
             onClick={() => handleRedirectModalityHelp()}

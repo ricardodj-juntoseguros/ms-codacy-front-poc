@@ -31,7 +31,11 @@ describe('ProposalDocumentsSlice', () => {
     const { proposalDocuments } = store.getState();
     expect(getProposalDocumentsMock).toHaveBeenCalled();
     expect(getProposalDocumentsMock).toHaveBeenCalledWith(12345);
-    expect(proposalDocuments.proposalDocuments).toEqual(mockResult);
+    expect(proposalDocuments.proposalDocuments).toEqual([{
+      size: 12321312321,
+      url: 'url',
+      name: 'test',
+    }]);
   });
 
   it('Should not update the store if the call returns an error', async () => {

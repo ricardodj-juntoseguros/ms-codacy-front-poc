@@ -19,6 +19,7 @@
   @include font('base-emphasys');
   @include color('color', 'dark');
   margin: 0;
+  margin-right: spacing('m');
   max-width: 254px;
 
   @media screen and (max-width: 680px) {

@@ -14,7 +14,7 @@ export const objectPreviewAdapter = (quote: QuoteModel, proposal: ProposalModel)
     },
     policyholder: {
       federalId: policyholder?.federalId,
-      ...(policyholderAffiliate && { affiliateFederalId: policyholderAffiliate.federalId.replace(/[^\d]+/g, '') }),
+      ...(policyholderAffiliate && policyholderAffiliate.federalId.length !== 0 && { affiliateFederalId: policyholderAffiliate.federalId.replace(/[^\d]+/g, '') }),
       economicGroupId: policyholder?.economicGroupId,
       economicGroupName: policyholder?.economicGroupName,
     },
