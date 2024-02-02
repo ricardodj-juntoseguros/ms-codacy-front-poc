@@ -4,8 +4,8 @@ import {
   createContext,
   useMemo,
   useCallback,
+  useRef,
 } from 'react';
-import { nanoid } from 'nanoid/non-secure';
 import { StepContainer } from '@shared/ui';
 import { FlowContextProps, FlowProviderProps, StepModel } from './types';
 import { StepStatusEnum } from './enums';
@@ -19,7 +19,9 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
   showFinishedSteps = true,
   ComponentContainer = StepContainer,
   children,
+  wrapperRef,
 }) => {
+  const stepRef = useRef<HTMLDivElement>(null);
   const [currentSteps, setCurrentSteps] = useState<StepModel[]>(
     getStepList(initialSteps),
   );
@@ -71,6 +73,17 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
       }),
     );
     if (infoText) setInfoText(stepName, infoText);
+
+    // UX request - if there is only one step on screen,
+    // scroll to top of wrapper if user scrolled a third of step
+    if (wrapperRef && wrapperRef.current && stepRef && stepRef.current) {
+      const wrapperScroll = wrapperRef.current.scrollTop;
+      const stepY = stepRef.current.offsetTop;
+      const stepHeight = stepRef.current.clientHeight;
+      if (wrapperScroll > stepY + stepHeight / 3) {
+        wrapperRef.current.scrollTo({ behavior: 'smooth', top: 0 });
+      }
+    }
   };
 
   const setEditableStep = (stepName: string) => {
@@ -112,9 +125,14 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
         return null;
       }
       return (
-        <ComponentContainer key={`step-${step.name}`} index={index} {...step}>
-          <Component name={step.name} />
-        </ComponentContainer>
+        <div
+          key={`step-${step.name}`}
+          ref={!showFinishedSteps ? stepRef : undefined}
+        >
+          <ComponentContainer index={index} {...step}>
+            <Component name={step.name} />
+          </ComponentContainer>
+        </div>
       );
     });
   }, [ComponentContainer, currentSteps, getComponent, showFinishedSteps]);

@@ -49,15 +49,8 @@
     margin-right: 0;
     padding: spacing('xxl-2') spacing('xl') spacing('xxl-4') spacing('xl');
   }
-
   @media screen and (max-width: 576px) {
     margin-top: 0px;
-    max-height: 100%;
-    overflow-y: auto;
-    scrollbar-width: auto;
-
-    &::-webkit-scrollbar {
-      display: block;
-    }
+    padding: spacing('xxl-2') spacing('xl') spacing('xxl-8') spacing('xl');
   }
 }

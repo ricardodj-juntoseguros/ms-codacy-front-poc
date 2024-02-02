@@ -118,9 +118,9 @@ const FeeCalculation: React.FC<FeeCalculationProps> = ({
         <Alert
           variant="success"
           icon="coin"
-          text={`Você pode adicionar até ${currencyFormatter(
+          text={`Você pode ter uma comissão de até ${currencyFormatter(
             commissionFlexMaxValue || 0,
-          )} de comissão flex.`}
+          )}.`}
         />
       )}
     </div>

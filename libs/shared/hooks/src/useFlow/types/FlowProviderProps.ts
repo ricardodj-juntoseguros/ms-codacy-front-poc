@@ -1,12 +1,13 @@
 import { FunctionComponent } from 'react';
-import { StepComponentModel } from "./StepComponentModel";
-import { StepContainerProps } from "./StepContainerProps";
+import { StepComponentModel } from './StepComponentModel';
+import { StepContainerProps } from './StepContainerProps';
 
 export interface FlowProviderProps {
   initialSteps: StepComponentModel[];
   allSteps: StepComponentModel[];
   showFinishedSteps?: boolean;
   ComponentContainer?:
-  | (() => JSX.Element)
-  | FunctionComponent<StepContainerProps>;
+    | (() => JSX.Element)
+    | FunctionComponent<StepContainerProps>;
+  wrapperRef?: React.RefObject<HTMLDivElement>;
 }

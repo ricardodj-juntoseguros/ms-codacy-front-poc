@@ -53,7 +53,7 @@ describe('FeeCalculation', () => {
     fireEvent.change(input, { target: { value: 'R$ 75,00' } });
     expect(store.getState().quote.commissionFlex).toEqual(75);
     expect(
-      getByText('Você pode adicionar até R$ 100,00 de comissão flex.'),
+      getByText('Você pode ter uma comissão de até R$ 100,00.'),
     ).toBeInTheDocument();
   });
 

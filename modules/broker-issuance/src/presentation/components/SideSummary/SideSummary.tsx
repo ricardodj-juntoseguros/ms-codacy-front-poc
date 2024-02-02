@@ -64,7 +64,7 @@ const SideSummary: FunctionComponent = () => {
             className={styles['side-summary__step-details-row']}
           >
             <span>{label}</span>
-            <span>{value}</span>
+            <span title={value}>{value}</span>
           </div>
         ))}
       </motion.div>

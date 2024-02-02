@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FlowProvider } from '@shared/hooks';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 import { REDIRECT_TO_V3_INFOS } from '../../../constants';
 import * as ALL_STEPS from '../../../constants/steps';
@@ -12,6 +12,7 @@ import SideSummary from '../../components/SideSummary';
 import { useRehydrateData } from '../../hooks/useRehydrateData';
 
 const QuoteContainer = () => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const finishedLoadingResume = useProposalResume();
   const rehydrateData = useRehydrateData();
 
@@ -21,7 +22,7 @@ const QuoteContainer = () => {
   }, []);
 
   return (
-    <div className={styles['quote-container__wrapper']}>
+    <div ref={wrapperRef} className={styles['quote-container__wrapper']}>
       <Header />
       {finishedLoadingResume ? (
         <>
@@ -30,6 +31,7 @@ const QuoteContainer = () => {
               allSteps={Object.values(ALL_STEPS).flat()}
               initialSteps={ALL_STEPS.DEFAULT_STEP}
               showFinishedSteps={false}
+              wrapperRef={wrapperRef}
             >
               <SideSummary />
             </FlowProvider>
