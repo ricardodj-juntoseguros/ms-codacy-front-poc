@@ -47,12 +47,12 @@ export const validityAndValueSummaryAdapter = (
     result.push(
       {
         key: 'prize',
-        label: 'Prêmio final',
+        label: 'Prêmio',
         value: currencyFormatter(totalPrize),
       },
       {
         key: 'commission',
-        label: 'Comissão final',
+        label: 'Comissão',
         value: `${currencyFormatter(comissionValue)} (${thousandSeparator(
           commissionFee,
           '.',

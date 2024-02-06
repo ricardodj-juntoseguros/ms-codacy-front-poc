@@ -86,9 +86,9 @@ describe('UseFormSummary hook', () => {
     expect(data[1].value).toEqual('30 dias');
     expect(data[2].label).toEqual('Total da cobertura');
     expect(data[2].value).toEqual('R$ 120.000,00');
-    expect(data[3].label).toEqual('Prêmio final');
+    expect(data[3].label).toEqual('Prêmio');
     expect(data[3].value).toEqual('R$ 190,00');
-    expect(data[4].label).toEqual('Comissão final');
+    expect(data[4].label).toEqual('Comissão');
     expect(data[4].value).toEqual('R$ 38,00 (20%)');
     expect(data[5].label).toEqual('Taxa padrão');
     expect(data[5].value).toEqual('0,26%');

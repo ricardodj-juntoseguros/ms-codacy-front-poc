@@ -61,7 +61,9 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     return (
       !hasDefaultFields ||
       (openContractualConditions && !hasContratualCondition) ||
-      loadingContractualCondition
+      loadingContractualCondition ||
+      loadingProposal ||
+      loadingCanAuthorize
     );
   }, [
     biddingNumber,
@@ -69,6 +71,8 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     insured?.federalId,
     insuredAddress?.addressId,
     loadingContractualCondition,
+    loadingProposal,
+    loadingCanAuthorize,
     openContractualConditions,
     requestedBy,
     text,

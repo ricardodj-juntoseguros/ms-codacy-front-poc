@@ -85,11 +85,11 @@ const SecuredAmountAndPricing: React.FC = () => {
             styles['secured-amount-pricing__pricing-data-item--large'],
           )}
         >
-          <p>Prêmio final</p>
+          <p>Prêmio</p>
           <p>{currencyFormatter(totalPrize)}</p>
         </div>
         <div className={styles['secured-amount-pricing__pricing-data-item']}>
-          <p>Comissão final</p>
+          <p>Comissão</p>
           <p>
             {currencyFormatter(comissionValue)}
             <Tag variant="neutral">
