@@ -11,8 +11,6 @@ const ProtectedRoute = ({
   ...rest
 }: ProtectedRouteProps) => {
   const brokerLoginUrl = process.env.NX_GLOBAL_BROKER_PLATFORM_URL || '';
-  const brokerProcessesUrl = process.env.NX_GLOBAL_BROKER_PROCESSES_URL || '';
-  const env = process.env.NX_PLAT_ENV || '';
   const currentLocationUrl = window.location.href;
 
   return (
@@ -20,17 +18,11 @@ const ProtectedRoute = ({
       {...rest}
       render={renderProps => {
         const isAuthenticated = BrokerPlatformAuthService.isAuthenticated();
-        const broker = BrokerPlatformAuthService.getBroker();
 
         if (!isAuthenticated) {
           window.location.assign(
             `${brokerLoginUrl}?redirectUrl=${currentLocationUrl}`,
           );
-          return null;
-        }
-
-        if (env !== 'qa' && broker?.user.userName !== 'testecorretor_cor') {
-          window.location.assign(brokerProcessesUrl);
           return null;
         }
 
