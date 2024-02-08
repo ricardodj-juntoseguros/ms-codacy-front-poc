@@ -83,7 +83,7 @@ const UploadDocument: FunctionComponent<UploadDocumentProps> = ({
     <div className={styles['upload-document__wrapper']}>
       <Upload
         fullWidth
-        maxFileSize={100}
+        maxFileSize={30}
         multipleFiles={multipleFiles}
         types={FILE_TYPES.default}
         showMaxFileSize={false}
