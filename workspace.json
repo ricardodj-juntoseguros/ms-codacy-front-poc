@@ -9,16 +9,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "modules/broker-signup/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["modules/broker-signup/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/broker-signup"
-          ],
+          "outputs": ["coverage/modules/broker-signup"],
           "options": {
             "jestConfig": "modules/broker-signup/jest.config.js",
             "passWithNoTests": true
@@ -42,9 +38,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/broker-signup-direct"
-          ],
+          "outputs": ["coverage/modules/broker-signup-direct"],
           "options": {
             "jestConfig": "modules/broker-signup-direct/jest.config.js",
             "passWithNoTests": true
@@ -61,18 +55,38 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
+            "lintFilePatterns": ["modules/broker-issuance/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/modules/broker-issuance"],
+          "options": {
+            "jestConfig": "modules/broker-issuance/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "broker-campaigns": {
+      "root": "modules/broker-campaigns",
+      "sourceRoot": "modules/broker-campaigns/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
             "lintFilePatterns": [
-              "modules/broker-issuance/**/*.{ts,tsx,js,jsx}"
+              "modules/broker-campaigns/**/*.{ts,tsx,js,jsx}"
             ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/broker-issuance"
-          ],
+          "outputs": ["coverage/modules/broker-campaigns"],
           "options": {
-            "jestConfig": "modules/broker-issuance/jest.config.js",
+            "jestConfig": "modules/broker-campaigns/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -86,21 +100,15 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:webpack",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/fidelize",
             "index": "apps/fidelize/src/index.html",
             "main": "apps/fidelize/src/main.tsx",
             "polyfills": "apps/fidelize/src/polyfills.ts",
             "tsConfig": "apps/fidelize/tsconfig.app.json",
-            "assets": [
-              "apps/fidelize/src/favicon.ico"
-            ],
-            "styles": [
-              "apps/fidelize/src/styles.scss"
-            ],
+            "assets": ["apps/fidelize/src/favicon.ico"],
+            "styles": ["apps/fidelize/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "apps/fidelize/webpack.config.js"
           },
@@ -161,16 +169,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/fidelize/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["apps/fidelize/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/fidelize"
-          ],
+          "outputs": ["coverage/apps/fidelize"],
           "options": {
             "jestConfig": "apps/fidelize/jest.config.js",
             "passWithNoTests": true
@@ -187,9 +191,7 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": [
               "modules/fidelize-dashboard/**/*.{ts,tsx,js,jsx}"
@@ -198,9 +200,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/fidelize-dashboard"
-          ],
+          "outputs": ["coverage/modules/fidelize-dashboard"],
           "options": {
             "jestConfig": "modules/fidelize-dashboard/jest.config.js",
             "passWithNoTests": true
@@ -245,16 +245,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/fidelize-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/fidelize-e2e/**/*.{js,ts}"]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": [
-        "fidelize"
-      ]
+      "implicitDependencies": ["fidelize"]
     },
     "fidelize-mapeamentos": {
       "root": "apps/fidelize-mapeamentos",
@@ -263,21 +259,15 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:webpack",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/mapeamentos-fidelize",
             "index": "apps/fidelize-mapeamentos/src/index.html",
             "main": "apps/fidelize-mapeamentos/src/main.tsx",
             "polyfills": "apps/fidelize-mapeamentos/src/polyfills.ts",
             "tsConfig": "apps/fidelize-mapeamentos/tsconfig.app.json",
-            "assets": [
-              "apps/fidelize-mapeamentos/src/favicon.ico"
-            ],
-            "styles": [
-              "apps/fidelize-mapeamentos/src/styles.scss"
-            ],
+            "assets": ["apps/fidelize-mapeamentos/src/favicon.ico"],
+            "styles": ["apps/fidelize-mapeamentos/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "apps/fidelize-mapeamentos/webpack.config.js"
           },
@@ -339,9 +329,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/fidelize-mapeamentos"
-          ],
+          "outputs": ["coverage/apps/fidelize-mapeamentos"],
           "options": {
             "jestConfig": "apps/fidelize-mapeamentos/jest.config.js",
             "passWithNoTests": true
@@ -358,9 +346,7 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": [
               "modules/fidelize-mapeamentos-import/**/*.{ts,tsx,js,jsx}"
@@ -369,9 +355,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/fidelize-mapeamentos-import"
-          ],
+          "outputs": ["coverage/modules/fidelize-mapeamentos-import"],
           "options": {
             "jestConfig": "modules/fidelize-mapeamentos-import/jest.config.js",
             "passWithNoTests": true
@@ -387,16 +371,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/infrastructure/http-client/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/infrastructure/http-client/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/infrastructure/http-client"
-          ],
+          "outputs": ["coverage/libs/infrastructure/http-client"],
           "options": {
             "jestConfig": "libs/infrastructure/http-client/jest.config.js",
             "passWithNoTests": true
@@ -412,21 +392,15 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:webpack",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/plataforma",
             "index": "apps/plataforma/src/index.html",
             "main": "apps/plataforma/src/main.tsx",
             "polyfills": "apps/plataforma/src/polyfills.ts",
             "tsConfig": "apps/plataforma/tsconfig.app.json",
-            "assets": [
-              "apps/plataforma/src/favicon.ico"
-            ],
-            "styles": [
-              "apps/plataforma/src/styles.scss"
-            ],
+            "assets": ["apps/plataforma/src/favicon.ico"],
+            "styles": ["apps/plataforma/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "apps/plataforma/webpack.config.js"
           },
@@ -485,16 +459,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/plataforma/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["apps/plataforma/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/plataforma"
-          ],
+          "outputs": ["coverage/apps/plataforma"],
           "options": {
             "jestConfig": "apps/plataforma/jest.config.js",
             "passWithNoTests": true
@@ -539,20 +509,14 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/plataforma-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/plataforma-e2e/**/*.{js,ts}"]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": [
-        "plataforma"
-      ]
+      "implicitDependencies": ["plataforma"]
     },
     "services": {
       "root": "libs/services",
@@ -561,20 +525,14 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "libs/services/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/services/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/services"
-          ],
+          "outputs": ["coverage/libs/services"],
           "options": {
             "jestConfig": "libs/services/jest.config.js",
             "passWithNoTests": true
@@ -591,16 +549,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/shared/hooks/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/shared/hooks/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/shared/hooks"
-          ],
+          "outputs": ["coverage/libs/shared/hooks"],
           "options": {
             "jestConfig": "libs/shared/hooks/jest.config.js",
             "passWithNoTests": true
@@ -617,16 +571,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/shared/ui/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/shared/ui/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/shared/ui"
-          ],
+          "outputs": ["coverage/libs/shared/ui"],
           "options": {
             "jestConfig": "libs/shared/ui/jest.config.js",
             "passWithNoTests": true
@@ -642,20 +592,14 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "libs/shared/utils/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/shared/utils/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/shared/utils"
-          ],
+          "outputs": ["coverage/libs/shared/utils"],
           "options": {
             "jestConfig": "libs/shared/utils/jest.config.js",
             "passWithNoTests": true
@@ -671,21 +615,15 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:webpack",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/vendors",
             "index": "apps/vendors/src/index.html",
             "main": "apps/vendors/src/main.tsx",
             "polyfills": "apps/vendors/src/polyfills.ts",
             "tsConfig": "apps/vendors/tsconfig.app.json",
-            "assets": [
-              "apps/vendors/src/favicon.ico"
-            ],
-            "styles": [
-              "apps/vendors/src/styles.scss"
-            ],
+            "assets": ["apps/vendors/src/favicon.ico"],
+            "styles": ["apps/vendors/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "apps/vendors/webpack.config.js"
           },
@@ -746,16 +684,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/vendors/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["apps/vendors/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/vendors"
-          ],
+          "outputs": ["coverage/apps/vendors"],
           "options": {
             "jestConfig": "apps/vendors/jest.config.js",
             "passWithNoTests": false
@@ -772,9 +706,7 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": [
               "modules/vendors-authentication/**/*.{ts,tsx,js,jsx}"
@@ -783,9 +715,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/vendors-authentication"
-          ],
+          "outputs": ["coverage/modules/vendors-authentication"],
           "options": {
             "jestConfig": "modules/vendors-authentication/jest.config.js",
             "passWithNoTests": true
@@ -829,20 +759,14 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/vendors-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/vendors-e2e/**/*.{js,ts}"]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": [
-        "vendors"
-      ]
+      "implicitDependencies": ["vendors"]
     },
     "vendors-proposal": {
       "root": "modules/vendors-proposal",
@@ -852,9 +776,7 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": [
               "modules/vendors-proposal/**/*.{ts,tsx,js,jsx}"
@@ -863,9 +785,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/vendors-proposal"
-          ],
+          "outputs": ["coverage/modules/vendors-proposal"],
           "options": {
             "jestConfig": "modules/vendors-proposal/jest.config.js",
             "passWithNoTests": true
@@ -881,9 +801,7 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": [
               "modules/vendors-pre-approval/**/*.{ts,tsx,js,jsx}"
@@ -892,9 +810,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/vendors-pre-approval"
-          ],
+          "outputs": ["coverage/modules/vendors-pre-approval"],
           "options": {
             "jestConfig": "modules/vendors-pre-approval/jest.config.js",
             "passWithNoTests": true
@@ -910,9 +826,7 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": [
               "modules/vendors-policies/**/*.{ts,tsx,js,jsx}"
@@ -921,9 +835,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/modules/vendors-policies"
-          ],
+          "outputs": ["coverage/modules/vendors-policies"],
           "options": {
             "jestConfig": "modules/vendors-policies/jest.config.js",
             "passWithNoTests": true

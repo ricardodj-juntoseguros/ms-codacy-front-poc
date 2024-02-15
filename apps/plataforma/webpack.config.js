@@ -61,6 +61,14 @@ module.exports = (config, context) => {
           'broker-signup-direct',
           'src',
         ),
+        '@modules/broker-campaigns': path.resolve(
+          __dirname,
+          '..',
+          '..',
+          'modules',
+          'broker-campaigns',
+          'src',
+        ),
         '@infrastructure/http-client': path.resolve(
           __dirname,
           '..',

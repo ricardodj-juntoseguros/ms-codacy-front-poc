@@ -7,6 +7,7 @@ module.exports = {
     '<rootDir>/modules/broker-issuance',
     '<rootDir>/modules/broker-signup',
     '<rootDir>/modules/broker-signup-direct',
+    '<rootDir>/modules/broker-campaigns',
     '<rootDir>/modules/fidelize-dashboard',
     '<rootDir>/modules/fidelize-mapeamentos-import',
     '<rootDir>/modules/vendors-proposal',

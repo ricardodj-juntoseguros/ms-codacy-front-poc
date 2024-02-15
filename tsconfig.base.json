@@ -23,6 +23,7 @@
       "@modules/broker-signup": ["modules/broker-signup/src/index.tsx"],
       "@modules/broker-signup-direct": ["modules/broker-signup-direct/src/index.tsx"],
       "@modules/broker-issuance": ["modules/broker-issuance/src/index.tsx"],
+      "@modules/broker-campaigns": ["modules/broker-campaigns/src/index.tsx"],
       "@modules/fidelize-dashboard": [
         "modules/fidelize-dashboard/src/index.tsx"
       ],
