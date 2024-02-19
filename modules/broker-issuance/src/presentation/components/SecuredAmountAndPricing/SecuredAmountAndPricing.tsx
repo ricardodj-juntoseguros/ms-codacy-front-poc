@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { currencyFormatter, thousandSeparator } from '@shared/utils';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import {
   selectQuote,
   quoteSliceActions,
@@ -25,6 +26,7 @@ const SecuredAmountAndPricing: React.FC = () => {
   const [policyholderLimit, setPolicyholderLimit] =
     useState<PolicyholderBalanceLimitsDTO>();
   const { setSecuredAmount } = quoteSliceActions;
+  const profile = BrokerPlatformAuthService.getUserProfile();
 
   useEffect(() => {
     if (policyholder && modality) {
@@ -61,6 +63,28 @@ const SecuredAmountAndPricing: React.FC = () => {
 
   const handleSecuredAmount = (securedAmount: number) => {
     dispatch(setSecuredAmount(securedAmount));
+  };
+
+  const renderPricing = () => {
+    if (loadingQuote && profile !== ProfileEnum.POLICYHOLDER) {
+      return <QuotationPricingSkeleton />;
+    }
+    if (
+      !loadingQuote &&
+      currentQuote?.totalPrize &&
+      profile !== ProfileEnum.POLICYHOLDER
+    ) {
+      return (
+        <div className={styles['secured-amount-pricing__pricing-wrapper']}>
+          <FlexRateToggle />
+          <FeeCalculation onCalculateCallback={() => createOrUpdateQuote()} />
+          <div className={styles['secured-amount-pricing__pricing-data']}>
+            {renderPricingData()}
+          </div>
+        </div>
+      );
+    }
+    return null;
   };
 
   const renderPricingData = () => {
@@ -132,16 +156,7 @@ const SecuredAmountAndPricing: React.FC = () => {
         errorMessage={errors.securedAmount?.join('. ')}
         onBlur={() => createOrUpdateQuote()}
       />
-      {loadingQuote && <QuotationPricingSkeleton />}
-      {!loadingQuote && currentQuote?.totalPrize && (
-        <div className={styles['secured-amount-pricing__pricing-wrapper']}>
-          <FlexRateToggle />
-          <FeeCalculation onCalculateCallback={() => createOrUpdateQuote()} />
-          <div className={styles['secured-amount-pricing__pricing-data']}>
-            {renderPricingData()}
-          </div>
-        </div>
-      )}
+      {renderPricing()}
     </div>
   );
 };

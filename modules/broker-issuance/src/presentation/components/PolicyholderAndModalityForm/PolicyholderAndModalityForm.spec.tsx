@@ -15,13 +15,6 @@ import ModalitySelecionApi from '../../../application/features/modalitySelection
 import PolicyholderAndModalityForm from './PolicyholderAndModalityForm';
 import { DEFAULT_STEP } from '../../../constants/steps';
 
-const mockHistoryPush = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...(jest.requireActual('react-router-dom') as any),
-  useHistory: () => ({
-    push: mockHistoryPush,
-  }),
-}));
 const advanceStepMock = jest.fn();
 jest.mock('@shared/hooks', () => {
   const originalModule = jest.requireActual('@shared/hooks');
@@ -37,9 +30,6 @@ jest.mock('@shared/hooks', () => {
 });
 
 describe('PolicyholderAndModalityForm', () => {
-  const file = new File(['(⌐□_□)'], 'file.pdf', {
-    type: 'application/pdf',
-  });
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
@@ -164,7 +154,7 @@ describe('PolicyholderAndModalityForm', () => {
     expect(advanceStepMock).toHaveBeenCalledWith('test');
   });
 
-  it('should be able to submit an appointment letter correctly', async () => {
+  it('should be able to render appointment letter upload when linked broker error', async () => {
     jest
       .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
       .mockImplementation(() => Promise.resolve(policyholderSearchMock));
@@ -178,79 +168,7 @@ describe('PolicyholderAndModalityForm', () => {
           },
         }),
       );
-    jest
-      .spyOn(PolicyholderSelectionApi, 'postAppointmentLetter')
-      .mockImplementation(() => Promise.resolve());
-    const { getByText, getByTestId, queryByTestId } = render(
-      <PolicyholderAndModalityForm name="test" />,
-    );
-    await act(async () => {
-      await fireEvent.change(
-        getByTestId('policyholderSelection-input-search'),
-        {
-          target: { value: '99999999999999' },
-        },
-      );
-    });
-    await act(async () => {
-      await fireEvent.click(getByText('99.999.999/9999-99 - Test'));
-    });
-    await waitFor(() => {
-      expect(getPolicyholderDetailsMock).toHaveBeenCalledWith(
-        9999,
-        '99999999999999',
-      );
-    });
-    await act(async () => {
-      await fireEvent.change(getByTestId('input-files'), {
-        target: { files: [file] },
-      });
-    });
-    await act(async () => {
-      await fireEvent.click(getByTestId('remove-file'));
-    });
-    const fileList = await queryByTestId('list-files');
-    expect(fileList).not.toBeInTheDocument();
-    await act(async () => {
-      await fireEvent.change(getByTestId('input-files'), {
-        target: { files: [file] },
-      });
-    });
-    await act(async () => {
-      await fireEvent.click(
-        getByTestId('policyholderAndModality-submit-button'),
-      );
-    });
-    const state = store.getState();
-    await waitFor(() => {
-      expect(state.policyholderSelection.policyholderSearchValue).toEqual('');
-      expect(state.policyholderSelection.policyholderOptions).toEqual([]);
-      expect(mockHistoryPush).toHaveBeenCalledWith('/appointment-sent');
-    });
-  });
-
-  it('should be able to display an error if the document is not sent successfully', async () => {
-    const searchMock = jest
-      .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
-      .mockImplementation(() =>
-        Promise.resolve({ ...policyholderSearchMock, records: [] }),
-      );
-    const getPolicyholderDetailsMock = jest
-      .spyOn(PolicyholderSelectionApi, 'getPolicyholderDetails')
-      .mockImplementation(() =>
-        Promise.reject({
-          data: {
-            message:
-              'Erro ao trazer detalhes do tomador, empresa está vinculada a outro corretor',
-          },
-        }),
-      );
-    jest
-      .spyOn(PolicyholderSelectionApi, 'postAppointmentLetter')
-      .mockImplementation(() =>
-        Promise.reject({ data: { message: 'Erro ao enviar do documento' } }),
-      );
-    const { getByText, getByTestId, getAllByText } = render(
+    const { getByTestId, getByText } = render(
       <PolicyholderAndModalityForm name="test" />,
     );
     await act(async () => {
@@ -258,8 +176,8 @@ describe('PolicyholderAndModalityForm', () => {
         target: { value: '99999999999999' },
       });
     });
-    await waitFor(() => {
-      expect(searchMock).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      fireEvent.click(getByText('99.999.999/9999-99 - Test'));
     });
     await waitFor(() => {
       expect(getPolicyholderDetailsMock).toHaveBeenCalledWith(
@@ -267,16 +185,8 @@ describe('PolicyholderAndModalityForm', () => {
         '99999999999999',
       );
     });
-    await act(async () => {
-      await fireEvent.change(getByTestId('input-files'), {
-        target: { files: [file] },
-      });
-    });
-    await act(async () => {
-      await fireEvent.click(
-        getByTestId('policyholderAndModality-submit-button'),
-      );
-    });
-    expect(getAllByText('Erro ao enviar do documento')[0]).toBeInTheDocument();
+    expect(
+      getByTestId('policyholderAppointmentLetter-submit-button'),
+    ).toBeInTheDocument();
   });
 });

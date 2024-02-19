@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
 import Cookies from 'js-cookie';
 import { waitFor } from '@testing-library/react';
-import { BrokerPlatformAuthService } from '@services';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { modalitySelectionActions } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
 import { brokerMock, modalityBidderMock } from '../../../__mocks__';
 import { useRehydrateData } from './useRehydrateData';
@@ -23,6 +23,9 @@ describe('useRehydrateData', () => {
     jest
       .spyOn(BrokerPlatformAuthService, 'getBroker')
       .mockReturnValue(brokerMock);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.BROKER);
     jest.spyOn(Cookies, 'get').mockReturnValue(
       JSON.stringify({
         policyholderFederalId: '99999999999',

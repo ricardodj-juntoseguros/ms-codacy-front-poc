@@ -2,6 +2,7 @@
 import '@testing-library/jest-dom';
 import { startOfDay } from 'date-fns';
 import { makeToast } from 'junto-design-system';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import IssuanceApi from '../../../application/features/issuance/IssuanceApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { store } from '../../../config/store';
@@ -309,5 +310,19 @@ describe('AdditionalDataForm', () => {
       async () => await expect(postIssuanceMock).toHaveBeenCalled(),
     );
     expect(makeToast).toHaveBeenCalledWith('error', 'error');
+  });
+
+  it('should render send to approval label on submit button if user profile is POLICYHOLDER and doesn`t have issue permission', async () => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.POLICYHOLDER);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'userHasPermission')
+      .mockImplementation(() => false);
+    const { getByTestId } = render(
+      <AdditionalDataForm name="AdditionalDataForm" />,
+    );
+    const submitButton = getByTestId('additionalDataForm-submit-button');
+    expect(submitButton).toHaveTextContent('Enviar para aprovação');
   });
 });

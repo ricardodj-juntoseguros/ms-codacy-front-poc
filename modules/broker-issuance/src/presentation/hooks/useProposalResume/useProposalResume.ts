@@ -90,7 +90,8 @@ export const useProposalResume = () => {
     } = data;
 
     const broker = BrokerPlatformAuthService.getBroker();
-    if (!broker) return;
+    const profile = BrokerPlatformAuthService.getUserProfile();
+    if (!broker || !profile) return;
 
     const policyholderSearch =
       await PolicyholderSelectionApi.searchPolicyHolder(policyholderFederalId);
@@ -126,7 +127,18 @@ export const useProposalResume = () => {
     }
     const { affiliates, registrationData } = policyholderDetails;
     dispatch(setPolicyholder(registrationData));
-    dispatch(setPolicyholderSearchValue(policyholderSearchOptions[0].label));
+
+    const policyholderOption = policyholderSearchOptions.find(
+      option => option.federalId === policyholderFederalId,
+    );
+    if (policyholderOption) {
+      dispatch(
+        setPolicyholderSearchValue({
+          value: policyholderOption.label,
+          profile,
+        }),
+      );
+    }
     dispatch(setPolicyholderAffiliatesOptions(affiliates));
 
     if (affiliates.length > 0 && policyholderAffiliateFederalId) {
@@ -202,10 +214,10 @@ export const useProposalResume = () => {
           insured: insuredToSet,
           insuredAddress: insuredAddress
             ? {
-              ...insuredAddress,
-              value: insuredAddress.addressId.toString(),
-              label: `${insuredAddress.street} - ${insuredAddress.city}, ${insuredAddress.state}`,
-            }
+                ...insuredAddress,
+                value: insuredAddress.addressId.toString(),
+                label: `${insuredAddress.street} - ${insuredAddress.city}, ${insuredAddress.state}`,
+              }
             : null,
           biddingNumber,
           biddingDescription,

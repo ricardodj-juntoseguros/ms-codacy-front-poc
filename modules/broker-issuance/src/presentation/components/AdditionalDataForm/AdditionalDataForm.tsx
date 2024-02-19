@@ -24,6 +24,7 @@ import { useProposal } from '../../hooks';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import handleError from '../../../helpers/handlerError';
 import { selectProposalDocuments } from '../../../application/features/proposalDocuments/ProposalDocumentsSlice';
+import { POLICYHOLDER_ISSUE_PERMISSION } from '../../../constants';
 import {
   proposalActions,
   selectProposal,
@@ -174,9 +175,13 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
     let label = 'Emitir';
     if (!isAutomaticPolicy) label = 'Finalizar inclusão';
     if (
-      isAutomaticPolicy &&
-      typeOfAuthorization === 'sendToApproval' &&
-      userProfile === ProfileEnum.COMMERCIAL
+      (userProfile === ProfileEnum.COMMERCIAL &&
+        isAutomaticPolicy &&
+        typeOfAuthorization === 'sendToApproval') ||
+      (userProfile === ProfileEnum.POLICYHOLDER &&
+        !BrokerPlatformAuthService.userHasPermission(
+          POLICYHOLDER_ISSUE_PERMISSION,
+        ))
     )
       label = 'Enviar para aprovação';
     return label;

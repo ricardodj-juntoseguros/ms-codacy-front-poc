@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { store } from '../../../config/store';
 import {
   postQuotation,
@@ -96,6 +97,40 @@ describe('UseFormSummary hook', () => {
     expect(data[6].value).toEqual('R$ 100,00');
     expect(data[7].label).toEqual('Taxa flex');
     expect(data[7].value).toEqual('10,00%');
+  });
+
+  it('Should return correct summary data for ValidityAndValueForm profile policyholder', async () => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockReturnValue(ProfileEnum.POLICYHOLDER);
+    const quoteResultMockUpdated: QuoteResultDTO = {
+      ...quoteResultMock,
+      pricing: {
+        ...quoteResultMock.pricing,
+        feeFlexEnabled: true,
+        feeFlex: 10,
+        commissionFlexEnabled: true,
+        commissionFlex: 100,
+      },
+    };
+    jest
+      .spyOn(QuoteApi, 'postQuotation')
+      .mockImplementation(async () => quoteResultMockUpdated);
+    store.dispatch(quoteSliceActions.setStartDateValidity('01/01/2024'));
+    store.dispatch(quoteSliceActions.setEndDateValidity('31/01/2024'));
+    store.dispatch(quoteSliceActions.setSecuredAmount(120000));
+    await store.dispatch(postQuotation(createQuoteMock));
+    const { result } = renderHook(() => useFormSummary(), {
+      wrapper: HookWrapper,
+    });
+    const data = result.current.getSummaryData('ValidityAndValueForm');
+    expect(data.length).toBe(3);
+    expect(data[0].label).toEqual('Vigência');
+    expect(data[0].value).toEqual('01/01/2024 - 31/01/2024');
+    expect(data[1].label).toEqual('Total de dias');
+    expect(data[1].value).toEqual('30 dias');
+    expect(data[2].label).toEqual('Total da cobertura');
+    expect(data[2].value).toEqual('R$ 120.000,00');
   });
 
   it('Should return correct summary data for InsuredDataForm', async () => {

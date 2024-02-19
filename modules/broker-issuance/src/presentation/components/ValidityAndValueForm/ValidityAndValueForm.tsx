@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Alert, Button, makeToast } from 'junto-design-system';
+import className from 'classnames';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
 import { downloadFile } from '@shared/utils';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import ValidityFields from '../ValidityFields';
 import { DISCLAIMERS } from '../../../constants';
 import { useQuotation } from '../../hooks';
@@ -23,6 +25,7 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
     isQuoteResume,
     hasQuoteErrors,
   } = useSelector(selectQuote);
+  const profile = BrokerPlatformAuthService.getUserProfile();
 
   useEffect(() => {
     if (
@@ -99,25 +102,33 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
           {DISCLAIMERS.resolutionCNSP382}
         </p>
       </div>
-      <footer className={styles['validity-and-value-form__footer']}>
-        <Button
-          data-testid="validityAndValue-button-download"
-          type="button"
-          variant="secondary"
-          fullWidth
-          mobileFullWidth
-          disabled={downloadDisabled}
-          onClick={() => handleDownloadQuote()}
-          loading={loadingDownloadQuote}
-        >
-          Baixar cotação
-        </Button>
+      <footer
+        className={className(styles['validity-and-value-form__footer'], {
+          [styles['validity-and-value-form__footer--policyholder']]:
+            profile === ProfileEnum.POLICYHOLDER,
+        })}
+      >
+        {profile !== ProfileEnum.POLICYHOLDER && (
+          <Button
+            data-testid="validityAndValue-button-download"
+            type="button"
+            variant="secondary"
+            fullWidth
+            mobileFullWidth
+            disabled={downloadDisabled}
+            onClick={() => handleDownloadQuote()}
+            loading={loadingDownloadQuote}
+          >
+            Baixar cotação
+          </Button>
+        )}
         <Button
           data-testid="validityAndValue-button-submit"
           type="submit"
           fullWidth
           mobileFullWidth
           disabled={submitDisabled}
+          loading={profile === ProfileEnum.POLICYHOLDER && loadingQuote}
         >
           Continuar
         </Button>

@@ -1,6 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 import '@testing-library/jest-dom';
-import { BrokerPlatformAuthService } from '@services';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { AFFILIATE_DEFAULT_OPTIONS } from '../../../constants';
 import ModalitySelecionApi from '../../../application/features/modalitySelection/ModalitySelecionApi';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
@@ -68,6 +68,7 @@ describe('PolicyholderSelection', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}
@@ -76,11 +77,12 @@ describe('PolicyholderSelection', () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should not dispatch searchPolicyholders thunk if inputted search value is less than 3 chars length', async () => {
+  it('[AS BROKER] should not dispatch searchPolicyholders thunk if inputted search value is less than 3 chars length', async () => {
     jest.useFakeTimers();
     jest.spyOn(PolicyholderSelectionApi, 'searchPolicyHolder');
     const { getByTestId } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}
@@ -94,13 +96,14 @@ describe('PolicyholderSelection', () => {
     );
   });
 
-  it('Should search policyholders, set store values', async () => {
+  it('[AS BROKER] Should search policyholders, set store values', async () => {
     jest.useFakeTimers();
     policyholderSearchApiMock = jest
       .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
       .mockImplementation(() => Promise.resolve(policyholderSearchMock));
     const { getByTestId } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}
@@ -118,7 +121,7 @@ describe('PolicyholderSelection', () => {
     ).toEqual('test');
   });
 
-  it('Should search policyholders, set details on store', async () => {
+  it('[AS BROKER] Should search policyholders, set details on store', async () => {
     jest.useFakeTimers();
     policyholderSearchApiMock = jest
       .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
@@ -132,6 +135,7 @@ describe('PolicyholderSelection', () => {
 
     const { getByTestId, getByText } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}
@@ -155,6 +159,46 @@ describe('PolicyholderSelection', () => {
     expect(state.policyholderSelection.affiliatesOptions.length).toEqual(3);
   });
 
+  it('[AS POLICYHOLDER] should call search policyholder thunk on mount and autoselect policyholder if only one returns', async () => {
+    policyholderSearchApiMock = jest
+      .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
+      .mockImplementation(() =>
+        Promise.resolve({
+          hasMore: false,
+          records: [
+            {
+              id: 1,
+              federalId: '99999999999999',
+              name: 'Test',
+            },
+          ],
+        }),
+      );
+    getPolicyholderDetails = jest
+      .spyOn(PolicyholderSelectionApi, 'getPolicyholderDetails')
+      .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getBroker')
+      .mockReturnValue(brokerMock);
+    const { getByTestId } = render(
+      <PolicyholderSelection
+        userProfile={ProfileEnum.POLICYHOLDER}
+        needAppointmentLetter={false}
+        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
+        readonlyFields={false}
+      />,
+    );
+    await waitFor(() => {
+      expect(policyholderSearchApiMock).toHaveBeenCalledTimes(1);
+    });
+    const input = getByTestId('policyholderSelection-input-search');
+    expect(input).toHaveAttribute('readonly');
+    expect(input).toHaveValue('99.999.999/9999-99 - Test');
+    await waitFor(() => {
+      expect(store.getState().quote.policyholder).not.toBeNull();
+    });
+  });
+
   it('should be able a render toast error if policyholder details call fails', async () => {
     jest.useFakeTimers();
     policyholderSearchApiMock = jest
@@ -167,8 +211,9 @@ describe('PolicyholderSelection', () => {
       .spyOn(BrokerPlatformAuthService, 'getBroker')
       .mockReturnValue(brokerMock);
 
-    const { getByTestId, getByText } = render(
+    const { getByTestId, getByText, getAllByText } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}
@@ -190,7 +235,9 @@ describe('PolicyholderSelection', () => {
         '99999999999999',
       );
     });
-    const toast = getByText('Houve um erro ao buscar os dados do tomador');
+    const toast = getAllByText(
+      'Houve um erro ao buscar os dados do tomador',
+    )[0];
     expect(toast).toBeInTheDocument();
   });
 
@@ -200,6 +247,7 @@ describe('PolicyholderSelection', () => {
       .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const { getByTestId, getByText } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}
@@ -242,10 +290,11 @@ describe('PolicyholderSelection', () => {
     });
   });
 
-  it('Shoould update current quote on affiliate change', async () => {
+  it('Should update current quote on affiliate change', async () => {
     store.dispatch(postQuotation(createQuoteMock));
     const { getByTestId, getByText } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}
@@ -277,6 +326,7 @@ describe('PolicyholderSelection', () => {
       .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const { getByTestId, getByText, findByText } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}
@@ -329,6 +379,7 @@ describe('PolicyholderSelection', () => {
 
     const { getByTestId, getByText } = render(
       <PolicyholderSelection
+        userProfile={ProfileEnum.BROKER}
         needAppointmentLetter={false}
         setNeedAppointmentLetter={setNeedAppointmentLetterMock}
         readonlyFields={false}

@@ -117,7 +117,10 @@ export const quoteSlice = createSlice({
         state.toggleRateFlex = true;
       }
     },
-    setPolicyholder: (state, action: PayloadAction<PolicyholderModel>) => {
+    setPolicyholder: (
+      state,
+      action: PayloadAction<PolicyholderModel | null>,
+    ) => {
       state.policyholder = action.payload;
       state.hasQuoteChanges = true;
     },

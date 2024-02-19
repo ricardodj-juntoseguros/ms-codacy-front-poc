@@ -47,6 +47,10 @@
     max-width: 312px;
   }
 
+  &--policyholder {
+    justify-content: flex-end;
+  }
+
   @media screen and (max-width: 1080px) {
     flex-wrap: wrap;
 

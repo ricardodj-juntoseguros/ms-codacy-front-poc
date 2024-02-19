@@ -1,4 +1,5 @@
 import { currencyFormatter, thousandSeparator } from '@shared/utils';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { QuoteResultDTO } from '../../../types/dto';
 
 export const validityAndValueSummaryAdapter = (
@@ -9,6 +10,7 @@ export const validityAndValueSummaryAdapter = (
   currentQuote?: QuoteResultDTO | null,
 ) => {
   const result = [] as { key: string; label: string; value: string }[];
+  const profile = BrokerPlatformAuthService.getUserProfile();
 
   if (startDateValidity && endDateValidity) {
     result.push({
@@ -31,7 +33,11 @@ export const validityAndValueSummaryAdapter = (
       value: currencyFormatter(securedAmount),
     });
   }
-  if (currentQuote && currentQuote.totalPrize) {
+  if (
+    currentQuote &&
+    currentQuote.totalPrize &&
+    profile !== ProfileEnum.POLICYHOLDER
+  ) {
     const {
       totalPrize,
       proposalFee,

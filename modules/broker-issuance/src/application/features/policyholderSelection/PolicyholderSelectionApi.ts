@@ -12,9 +12,12 @@ class PolicyholderSelectionApi {
     this.httpClient = new BrokerInssuanceBaseApi().getInstance();
   }
 
-  async searchPolicyHolder(policyHolderLabel: string) {
+  async searchPolicyHolder(policyHolderLabel?: string) {
     const params: IHttpClientRequestParameters = {
-      url: `/v1/policyholders/search?q=${policyHolderLabel}`,
+      url: `/v1/policyholders/search`,
+      params: {
+        q: policyHolderLabel,
+      },
     };
     return this.httpClient.get<PolicyholderSearchDTO>(params);
   }

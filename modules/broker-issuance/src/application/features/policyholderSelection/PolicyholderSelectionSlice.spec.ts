@@ -1,3 +1,4 @@
+import { ProfileEnum } from '@services';
 import { store } from '../../../config/store';
 import PolicyholderSelectionApi from './PolicyholderSelectionApi';
 import {
@@ -63,12 +64,18 @@ describe('PolicyholderSelectionSlice', () => {
 
   it('should be able to change the search value and if it is blank text you must clear the selection options', async () => {
     await store.dispatch(
-      policyholderSelectionActions.setPolicyholderSearchValue('Test'),
+      policyholderSelectionActions.setPolicyholderSearchValue({
+        value: 'Test',
+        profile: ProfileEnum.BROKER,
+      }),
     );
     let { policyholderSelection } = store.getState();
     expect(policyholderSelection.policyholderSearchValue).toEqual('Test');
     await store.dispatch(
-      policyholderSelectionActions.setPolicyholderSearchValue(''),
+      policyholderSelectionActions.setPolicyholderSearchValue({
+        value: '',
+        profile: ProfileEnum.BROKER,
+      }),
     );
     policyholderSelection = store.getState().policyholderSelection;
     expect(policyholderSelection.policyholderSearchValue).toEqual('');

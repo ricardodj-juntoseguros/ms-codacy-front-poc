@@ -4,7 +4,6 @@ import {
   createContext,
   useMemo,
   useCallback,
-  useRef,
 } from 'react';
 import { StepContainer } from '@shared/ui';
 import { FlowContextProps, FlowProviderProps, StepModel } from './types';
@@ -21,7 +20,6 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
   children,
   wrapperRef,
 }) => {
-  const stepRef = useRef<HTMLDivElement>(null);
   const [currentSteps, setCurrentSteps] = useState<StepModel[]>(
     getStepList(initialSteps),
   );
@@ -74,15 +72,9 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
     );
     if (infoText) setInfoText(stepName, infoText);
 
-    // UX request - if there is only one step on screen,
-    // scroll to top of wrapper if user scrolled a third of step
-    if (wrapperRef && wrapperRef.current && stepRef && stepRef.current) {
-      const wrapperScroll = wrapperRef.current.scrollTop;
-      const stepY = stepRef.current.offsetTop;
-      const stepHeight = stepRef.current.clientHeight;
-      if (wrapperScroll > stepY + stepHeight / 3) {
-        wrapperRef.current.scrollTo({ behavior: 'smooth', top: 0 });
-      }
+    // UX request - if there is only one step on screen, scroll to top of wrapper
+    if (wrapperRef && wrapperRef.current && !showFinishedSteps) {
+      wrapperRef.current.scrollTo({ behavior: 'smooth', top: 0 });
     }
   };
 
@@ -125,10 +117,7 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
         return null;
       }
       return (
-        <div
-          key={`step-${step.name}`}
-          ref={!showFinishedSteps ? stepRef : undefined}
-        >
+        <div key={`step-${step.name}`}>
           <ComponentContainer index={index} {...step}>
             <Component name={step.name} />
           </ComponentContainer>

@@ -31,7 +31,8 @@ describe('PolicyholderSelectionApi', () => {
     const result = await PolicyholderSelectionApi.searchPolicyHolder('test');
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/v1/policyholders/search?q=test',
+      url: '/v1/policyholders/search',
+      params: { q: 'test' },
     });
     expect(result).toBe(mockData);
   });

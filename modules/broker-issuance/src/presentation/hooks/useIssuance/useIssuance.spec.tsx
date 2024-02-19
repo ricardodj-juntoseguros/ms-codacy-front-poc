@@ -1,10 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
-import {
-  ThemeProvider,
-  Themes,
-  ToastContainer,
-  makeToast,
-} from 'junto-design-system';
+import { ThemeProvider, Themes, ToastContainer } from 'junto-design-system';
 import { Provider } from 'react-redux';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { renderHook } from '@testing-library/react-hooks';
@@ -94,7 +89,7 @@ describe('useIssuance', () => {
     store.dispatch(proposalActions.setComments('comments'));
   });
 
-  it('should be able to successfully issuance a proposal', async () => {
+  it('should be able to successfully issue a proposal', async () => {
     const { result } = renderHook(() => useIssuance(), {
       wrapper: HookWrapper,
     });
@@ -224,5 +219,57 @@ describe('useIssuance', () => {
     expect(state.proposal.issuedAt).toEqual('');
     expect(state.proposal.protocols).toEqual([]);
     expect(mockHistoryPush).not.toHaveBeenCalledWith();
+  });
+
+  it('Should send proposal to approval if user profile is POLICYHOLDER and does not have issue permission', async () => {
+    submitToApprovalMock = jest
+      .spyOn(ProposalApi, 'submitToApproval')
+      .mockImplementation(async () => mockResult);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.POLICYHOLDER);
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserAccessCookie')
+      .mockImplementation(() => ({
+        token: 'token',
+        refreshToken: 'refreshtoken',
+        tokenType: 'Bearer',
+        createAt: '2024-02-15T17:12:53.587Z',
+        useRefreshToken: true,
+        expiresIn: 900000,
+        refreshExpiresIn: 1800000,
+        userId: '65508672-5b7b-410b-84c2-be129daa86d1',
+        email: 'ti_homologacao@juntoseguros.com',
+        username: 'falcaocwb_tom',
+        userTheme: null,
+        permissions: ['permission.policyholder.reports'],
+        broker: {
+          id: 1,
+          externalId: 268010,
+          name: 'teste corretor 1 (PR)',
+          userId: 1,
+          federalId: '06465132135429',
+          susepId: '2000000000',
+          user: {
+            id: 8569,
+            userName: 'falcaocwb_tom',
+            userType: 1,
+            userTypeDescription: 'Tomador',
+          },
+        },
+        isSusepValidated: false,
+      }));
+    const { result } = renderHook(() => useIssuance(), {
+      wrapper: HookWrapper,
+    });
+    await result.current[0]('stepName');
+    expect(submitToApprovalMock).toHaveBeenCalledWith(1397190, {
+      acceptTermsId: null,
+      approvalContacts: [],
+      comments: 'comments',
+      contacts: [],
+      internalizedReason: '',
+      isAutomatic: true,
+    });
   });
 });

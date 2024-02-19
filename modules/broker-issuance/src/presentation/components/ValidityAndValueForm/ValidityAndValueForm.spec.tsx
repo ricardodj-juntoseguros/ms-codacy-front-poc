@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { downloadFile } from '@shared/utils';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import {
   postQuotation,
   putQuotation,
@@ -109,6 +110,21 @@ describe('ValidityAndValueForm', () => {
     });
     expect(downloadMock).toHaveBeenCalledWith(1868859);
     expect(downloadFile).toHaveBeenCalled();
+  });
+
+  it('should be able to not display the quotation download button if the profile is a policyholder', async () => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockReturnValue(ProfileEnum.POLICYHOLDER);
+    jest
+      .spyOn(QuoteApi, 'postQuotation')
+      .mockImplementation(async () => quoteResultMock);
+    const { queryByTestId } = render(
+      <ValidityAndValueForm name="validityAndValue" />,
+    );
+    await store.dispatch(postQuotation(createQuoteMock));
+    const download = await queryByTestId('validityAndValue-button-download');
+    expect(download).not.toBeInTheDocument();
   });
 
   it('Should call useQuotation hook on render if there is current quote without prize and isQuoteResume is true', async () => {

@@ -8,7 +8,7 @@ import {
   ToastContainer,
   makeToast,
 } from 'junto-design-system';
-import { Broker, BrokerPlatformAuthService } from '@services';
+import { Broker, BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { store } from '../../../config/store';
 import { useProposalResume } from './useProposalResume';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
@@ -54,6 +54,9 @@ describe('UseProposalResume Hook', () => {
           federalId: '11111111111111',
         } as Broker;
       });
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.BROKER);
     store.dispatch(policyholderSelectionActions.clearPolicyholderSelection());
     store.dispatch(quoteSliceActions.resetQuote());
   });

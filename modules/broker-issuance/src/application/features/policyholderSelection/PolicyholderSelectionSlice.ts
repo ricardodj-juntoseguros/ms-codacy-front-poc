@@ -4,6 +4,8 @@ import {
   createSlice,
   nanoid,
 } from '@reduxjs/toolkit';
+import { ProfileEnum } from '@services';
+import { federalIdValidator } from '@shared/utils';
 import { RootState } from '../../../config/store';
 import {
   PolicyholderSearchModel,
@@ -11,18 +13,16 @@ import {
 } from '../../types/model';
 import PolicyholderSelectionApi from './PolicyholderSelectionApi';
 import { PolicyholderAffiliatesDTO } from '../../types/dto/PolicyholderAffiliatesDTO';
-import {
-  checkValidFederalId,
-  mapPolicyholderSearchOptions,
-} from '../../../helpers';
+import { mapPolicyholderSearchOptions } from '../../../helpers';
 import { AFFILIATE_DEFAULT_OPTIONS } from '../../../constants';
 
 export const searchPolicyholder = createAsyncThunk(
   'policyholderSelection/searchPolicyholder',
-  async (policyholderLabel: string, { rejectWithValue }) => {
-    const value = checkValidFederalId(policyholderLabel)
-      ? policyholderLabel.toString().replace(/[^\d]/g, '')
-      : policyholderLabel;
+  async (policyholderLabel: string | undefined, { rejectWithValue }) => {
+    const value =
+      policyholderLabel && federalIdValidator(policyholderLabel, 'full')
+        ? policyholderLabel.toString().replace(/[^\d]/g, '')
+        : policyholderLabel;
     return PolicyholderSelectionApi.searchPolicyHolder(value)
       .then(response => {
         if (!response.records) return [];
@@ -57,10 +57,17 @@ export const policyholderSelectionSlice = createSlice({
       state.affiliatesOptions = [];
       state.loadingDetails = false;
       state.loadingGetSubsidiaries = false;
+      state.currentAppointmentLetter = null;
     },
-    setPolicyholderSearchValue: (state, action: PayloadAction<string>) => {
-      if (!action.payload) state.policyholderOptions = [];
-      state.policyholderSearchValue = action.payload;
+    setPolicyholderSearchValue: (
+      state,
+      action: PayloadAction<{ value: string; profile: ProfileEnum | null }>,
+    ) => {
+      const { value, profile } = action.payload;
+      if (profile !== ProfileEnum.POLICYHOLDER) {
+        if (!action.payload) state.policyholderOptions = [];
+      }
+      state.policyholderSearchValue = value;
     },
     setPolicyholderOptions: (
       state,
@@ -100,7 +107,7 @@ export const policyholderSelectionSlice = createSlice({
         state.loadingSearchPolicyholder = true;
       })
       .addCase(searchPolicyholder.fulfilled, (state, action) => {
-        if (checkValidFederalId(state.policyholderSearchValue)) {
+        if (federalIdValidator(state.policyholderSearchValue, 'full')) {
           state.policyholderSearchValue =
             action.payload[0]?.label || state.policyholderSearchValue;
           state.isValidFederalId = true;

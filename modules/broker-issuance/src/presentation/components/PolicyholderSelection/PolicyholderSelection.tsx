@@ -16,7 +16,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from '@shared/hooks';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
-import { ChatUtils } from '@shared/utils';
+import { ChatUtils, federalIdValidator } from '@shared/utils';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
 import handleError from '../../../helpers/handlerError';
 import {
@@ -26,9 +26,10 @@ import {
 import {
   PolicyholderModel,
   PolicyholderAffiliatesModel,
+  PolicyholderSearchModel,
 } from '../../../application/types/model';
+import { AppDispatch } from '../../../config/store';
 import { AFFILIATE_DEFAULT_OPTIONS } from '../../../constants';
-import { checkValidFederalId } from '../../../helpers';
 import {
   policyholderSelectionActions,
   searchPolicyholder,
@@ -38,21 +39,23 @@ import {
   fetchModalities,
   modalitySelectionActions,
 } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
-import styles from './PolicyholderSelection.module.scss';
 import { useQuotation } from '../../hooks';
+import styles from './PolicyholderSelection.module.scss';
 
 export interface PolicyholderSelectionProps {
+  userProfile: ProfileEnum | null;
   needAppointmentLetter: boolean;
   readonlyFields: boolean;
   setNeedAppointmentLetter: (value: boolean) => void;
 }
 
 const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
+  userProfile,
   needAppointmentLetter,
   readonlyFields,
   setNeedAppointmentLetter,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const createOrUpdateQuotation = useQuotation();
   const {
     policyholderOptions,
@@ -61,7 +64,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     loadingSearchPolicyholder,
     isValidFederalId,
   } = useSelector(selectPolicyholder);
-  const { policyholderAffiliate, policyholder, currentQuote } =
+  const { policyholderAffiliate, policyholder, currentQuote, isQuoteResume } =
     useSelector(selectQuote);
   const [showEmptyOptions, setShowEmptyOptions] = useState(false);
   const [loadingPolicyholderDetails, setLoadingPolicyholderDetails] =
@@ -74,10 +77,11 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
   useDebounce(
     () => {
       if (
-        policyholderSearchValue.length >= 3 &&
-        !loadingSearchPolicyholder &&
-        !loadingPolicyholderDetails &&
-        needAppointmentLetter === false
+        userProfile === ProfileEnum.POLICYHOLDER ||
+        (policyholderSearchValue.length >= 3 &&
+          !loadingSearchPolicyholder &&
+          !loadingPolicyholderDetails &&
+          needAppointmentLetter === false)
       ) {
         setShowEmptyOptions(true);
         return;
@@ -95,7 +99,11 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
 
   useDebounce(
     () => {
-      if (policyholderSearchValue.length >= 3 && !isCurrentValueFromOptions) {
+      if (
+        userProfile !== ProfileEnum.POLICYHOLDER &&
+        policyholderSearchValue.length >= 3 &&
+        !isCurrentValueFromOptions
+      ) {
         setNeedAppointmentLetter(false);
         dispatch(searchPolicyholder(policyholderSearchValue));
       }
@@ -103,6 +111,25 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     1000,
     [policyholderSearchValue],
   );
+
+  useEffect(() => {
+    if (userProfile === ProfileEnum.POLICYHOLDER && !isQuoteResume) {
+      dispatch(searchPolicyholder()).then(response => {
+        const payload = response.payload as PolicyholderSearchModel[];
+        if (payload.length === 1) {
+          const policyholderToSet = payload[0];
+          handlePolicyholderSelected(policyholderToSet);
+          dispatch(
+            setPolicyholderSearchValue({
+              value: policyholderToSet.label,
+              profile: userProfile,
+            }),
+          );
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userProfile, dispatch, isQuoteResume]);
 
   useEffect(() => {
     if (isValidFederalId) {
@@ -129,11 +156,28 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     );
   }, [policyholderOptions, policyholderSearchValue]);
 
+  const filteredPolicyholderOptions = useMemo(() => {
+    if (userProfile !== ProfileEnum.POLICYHOLDER || !policyholderSearchValue)
+      return null;
+    const aux = policyholderOptions.filter(({ label }) =>
+      label.toLowerCase().includes(policyholderSearchValue.toLowerCase()),
+    );
+    return aux;
+  }, [policyholderOptions, policyholderSearchValue, userProfile]);
+
+  const isSearchReadonly = useMemo(() => {
+    return (
+      (userProfile === ProfileEnum.POLICYHOLDER &&
+        policyholderOptions.length === 1) ||
+      readonlyFields
+    );
+  }, [userProfile, policyholderOptions, readonlyFields]);
+
   const getPolicyholderDetails = useCallback(
     (brokerExternalId: number, federalId: string) => {
       setLoadingPolicyholderDetails(true);
       setNeedAppointmentLetter(false);
-      const searchValue = checkValidFederalId(federalId)
+      const searchValue = federalIdValidator(federalId, 'full')
         ? federalId.toString().replace(/[^\d]/g, '')
         : federalId;
       return PolicyholderSelectionApi.getPolicyholderDetails(
@@ -158,16 +202,17 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
 
   const handleSearchPolicyholder = (search: string) => {
     let value = search;
-    if (checkValidFederalId(search)) {
+    if (federalIdValidator(search, 'full')) {
       value = search.replace(
         /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
         '$1.$2.$3/$4-$5',
       );
     }
-    dispatch(setPolicyholderSearchValue(value));
+    dispatch(setPolicyholderSearchValue({ value, profile: userProfile }));
   };
 
   const handlePolicyholderSelected = async (optionSelected: SearchOptions) => {
+    if (!optionSelected) return;
     const { value } = optionSelected;
     if (value === policyholder?.federalId) return;
     dispatch(setPolicyholderAffiliatesOptions([]));
@@ -235,7 +280,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
   const renderPolicyholderDetailsLink = () => {
     if (
       !policyholder ||
-      BrokerPlatformAuthService.getUserProfile() !== ProfileEnum.BROKER ||
+      userProfile !== ProfileEnum.BROKER ||
       needAppointmentLetter
     )
       return null;
@@ -264,13 +309,13 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
           onChange={handleSearchPolicyholder}
           changeValueOnSelect
           value={policyholderSearchValue}
-          options={policyholderOptions}
+          options={filteredPolicyholderOptions || policyholderOptions}
           onValueSelected={handlePolicyholderSelected}
           emptyMessage="Tomador não encontrado..."
           showEmptyOptions={showEmptyOptions}
           loading={loadingSearchPolicyholder || loadingPolicyholderDetails}
           autoComplete="off"
-          readOnly={readonlyFields}
+          readOnly={isSearchReadonly}
         />
         {renderPolicyholderDetailsLink()}
       </div>

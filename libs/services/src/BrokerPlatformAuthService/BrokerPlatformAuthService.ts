@@ -72,7 +72,8 @@ export class BrokerPlatformAuthService {
       domain: this.COOKIE_DOMAIN,
     });
     window.location.assign(
-      `${process.env['NX_GLOBAL_BROKER_PLATFORM_URL']}${userTheme ? `/${userTheme}` : ''
+      `${process.env['NX_GLOBAL_BROKER_PLATFORM_URL']}${
+        userTheme ? `/${userTheme}` : ''
       }`,
     );
   }
@@ -126,7 +127,7 @@ export class BrokerPlatformAuthService {
     return decodedToken.realm_access?.roles
       ? decodedToken.realm_access.roles.includes('broker')
       : decodedToken?.loginOwnerId !== null &&
-      decodedToken?.loginOwnerUserName !== null;
+          decodedToken?.loginOwnerUserName !== null;
   }
 
   getBroker(): Broker | null {
@@ -151,7 +152,7 @@ export class BrokerPlatformAuthService {
 
     const { broker } = userCookie;
     return broker && broker.user ? broker.user.userType : null;
-  };
+  }
 
   getUserProfile(): ProfileEnum | null {
     let userProfile: ProfileEnum | null = null;
@@ -160,7 +161,8 @@ export class BrokerPlatformAuthService {
     const { token } = userCookie;
     const decodedToken = jwtDecode<UserAccessToken>(token);
     const isSuperUser = decodedToken && decodedToken.loginOwnerUserName;
-    const isUserBroker = decodedToken && decodedToken.realm_access?.roles.includes('broker');
+    const isUserBroker =
+      decodedToken && decodedToken.realm_access?.roles.includes('broker');
     if (isSuperUser) {
       userProfile = ProfileEnum.COMMERCIAL;
     } else if (isUserBroker) {
@@ -169,7 +171,14 @@ export class BrokerPlatformAuthService {
       userProfile = ProfileEnum.POLICYHOLDER;
     }
     return userProfile;
-  };
+  }
+
+  userHasPermission(permissionKey: string): boolean {
+    const userCookie = this.getUserAccessCookie();
+    if (!userCookie) return false;
+    const { permissions } = userCookie;
+    return permissions.includes(permissionKey);
+  }
 
   async logout() {
     const { token, refreshToken } = this.getUserAccessCookie();

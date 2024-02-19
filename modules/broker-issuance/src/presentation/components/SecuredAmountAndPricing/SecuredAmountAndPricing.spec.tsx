@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { fireEvent, render } from '../../../config/testUtils';
 import {
   createQuoteMock,
@@ -89,5 +90,27 @@ describe('SecuredAmountAndPricing', () => {
     expect(await findByText('R$ 38,00')).toBeInTheDocument();
     expect(await findByText('20%')).toBeInTheDocument();
     expect(await findByText('0,26%')).toBeInTheDocument();
+  });
+
+  it('should be able to not display quote fee data if the profile is a policyholder', async () => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockReturnValue(ProfileEnum.POLICYHOLDER);
+    jest
+      .spyOn(QuotationPricingApi, 'getPolicyholderBalanceLimits')
+      .mockImplementation(async () => ({
+        availableLimit: 10000,
+        availableFlexibilizationLimit: 15000,
+        showFlexibilizationLimit: true,
+      }));
+    jest
+      .spyOn(QuoteApi, 'postQuotation')
+      .mockImplementation(async () => quoteResultMock);
+    await store.dispatch(postQuotation(createQuoteMock));
+    const { queryByText } = render(<SecuredAmountAndPricing />);
+    expect(await queryByText('R$ 190,00')).not.toBeInTheDocument();
+    expect(await queryByText('R$ 38,00')).not.toBeInTheDocument();
+    expect(await queryByText('20%')).not.toBeInTheDocument();
+    expect(await queryByText('0,26%')).not.toBeInTheDocument();
   });
 });

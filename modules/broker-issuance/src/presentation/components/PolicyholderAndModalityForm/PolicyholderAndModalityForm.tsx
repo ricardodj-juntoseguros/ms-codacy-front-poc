@@ -1,56 +1,30 @@
-import {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Button,
-  Dropdown,
-  LinkButton,
-  UploadFile,
-  makeToast,
-} from 'junto-design-system';
+import { Button, Dropdown, LinkButton } from 'junto-design-system';
+import Cookies from 'js-cookie';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
-import { useHistory } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { HELP_ID, REDIRECT_TO_V3_INFOS } from '../../../constants';
-import {
-  policyholderSelectionActions,
-  selectPolicyholder,
-} from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
-import handleError from '../../../helpers/handlerError';
 import { ModalityModel } from '../../../application/types/model';
 import { selectModality } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
-import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
 import {
   quoteSliceActions,
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
 import PolicyholderAppointmentLetter from '../PolicyholderAppointmentLetter';
 import PolicyholderSelection from '../PolicyholderSelection';
-import styles from './PolicyholderAndModalityForm.module.scss';
 import { MODALITY_STEPS } from '../../../constants/steps/modalitySteps';
+import styles from './PolicyholderAndModalityForm.module.scss';
 
 const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   name,
 }) => {
   const [needAppointmentLetter, setNeedAppointmentLetter] = useState(false);
-  const [appointmentLetter, setAppointmentLetter] = useState<UploadFile[]>([]);
-  const [uploadAppointmentLetterLoading, setUploadAppointmentLetterLoading] =
-    useState(false);
   const { advanceStep, setSteps, steps } = useFlow();
   const { modalityOptions, loadingModalities } = useSelector(selectModality);
   const { policyholder, modality, isQuoteResume, currentQuote, loadingQuote } =
     useSelector(selectQuote);
-  const { policyholderSearchValue } = useSelector(selectPolicyholder);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { clearPolicyholderSelection, setCurrentAppointmentLetter } =
-    policyholderSelectionActions;
   const { setModality } = quoteSliceActions;
   const userProfile = BrokerPlatformAuthService.getUserProfile();
 
@@ -70,7 +44,11 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
           domain: `${process.env.NX_GLOBAL_COOKIE_DOMAIN}`,
         },
       );
-      window.location.href = process.env.NX_GLOBAL_MODALITIES_EXPRESS || '';
+      const redirectUrl =
+        userProfile !== ProfileEnum.POLICYHOLDER
+          ? process.env.NX_GLOBAL_MODALITIES_EXPRESS
+          : process.env.NX_GLOBAL_MODALITIES_EXPRESS_POLICYHOLDER;
+      window.location.href = redirectUrl || '';
     }
     if (modalitySteps && steps.length === 1) {
       setSteps(modalitySteps);
@@ -79,31 +57,12 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   }, [modality, steps]);
 
   const disabledSubmitButton = useMemo(() => {
-    if (needAppointmentLetter) {
-      return appointmentLetter.length === 0;
-    }
-    return !policyholder || !modality;
-  }, [appointmentLetter, modality, needAppointmentLetter, policyholder]);
+    return needAppointmentLetter || !policyholder || !modality;
+  }, [modality, needAppointmentLetter, policyholder]);
 
   const isReadonlyFields = useMemo(() => {
     return isQuoteResume || !!currentQuote;
   }, [isQuoteResume, currentQuote]);
-
-  const handleUploadFile = (files: UploadFile[]) => {
-    setAppointmentLetter(files);
-    const { file } = files[0];
-    dispatch(
-      setCurrentAppointmentLetter({
-        filename: file.name,
-        size: file.size,
-      }),
-    );
-  };
-
-  const handleRemoveFile = (id: string) => {
-    setAppointmentLetter(prev => prev.filter(item => item.id !== id));
-    dispatch(setCurrentAppointmentLetter(null));
-  };
 
   const handleModalitySelected = (optionSelected: ModalityModel) => {
     dispatch(setModality(optionSelected));
@@ -112,41 +71,8 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (loadingQuote) return;
-    if (needAppointmentLetter && appointmentLetter.length !== 0) {
-      handleUploadAppointmentLetter();
-      return;
-    }
     advanceStep(name);
   };
-
-  const handleUploadAppointmentLetter = useCallback(async () => {
-    const broker = BrokerPlatformAuthService.getBroker();
-    if (!broker || !broker.externalId) {
-      return;
-    }
-
-    setUploadAppointmentLetterLoading(true);
-    await PolicyholderSelectionApi.postAppointmentLetter(
-      policyholderSearchValue.replace(/[^\d]/g, ''),
-      broker.externalId,
-      appointmentLetter[0].file,
-    )
-      .then(() => {
-        dispatch(clearPolicyholderSelection());
-        history.push('/appointment-sent');
-      })
-      .catch(error => {
-        const message = handleError(error);
-        makeToast('error', message);
-      })
-      .finally(() => setUploadAppointmentLetterLoading(false));
-  }, [
-    appointmentLetter,
-    clearPolicyholderSelection,
-    dispatch,
-    history,
-    policyholderSearchValue,
-  ]);
 
   const handleRedirectModalityHelp = () => {
     const dateExpire = new Date(new Date().getTime() + 1000 * 60); // in 1 minute
@@ -157,19 +83,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
     window.open(`${process.env.NX_GLOBAL_BROKER_HELP_URL}`, '_blank');
   };
 
-  const renderAppointmentLetter = () => {
-    if (!needAppointmentLetter) return null;
-    return (
-      <PolicyholderAppointmentLetter
-        file={appointmentLetter}
-        onUploadFile={handleUploadFile}
-        onRemoveFile={handleRemoveFile}
-      />
-    );
-  };
-
   const renderSelectModality = () => {
-    if (needAppointmentLetter) return null;
     return (
       <div
         className={styles['policyholder-and-modality-form__modality-wrapper']}
@@ -204,21 +118,27 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
       onSubmit={e => handleSubmit(e)}
     >
       <PolicyholderSelection
+        userProfile={userProfile}
         readonlyFields={isReadonlyFields}
         needAppointmentLetter={needAppointmentLetter}
         setNeedAppointmentLetter={setNeedAppointmentLetter}
       />
-      {renderAppointmentLetter()}
-      {renderSelectModality()}
-      <Button
-        id="policyholderAndModality-submit-button"
-        data-testid="policyholderAndModality-submit-button"
-        type="submit"
-        disabled={disabledSubmitButton}
-        loading={uploadAppointmentLetterLoading || loadingQuote}
-      >
-        Continuar
-      </Button>
+      {needAppointmentLetter ? (
+        <PolicyholderAppointmentLetter />
+      ) : (
+        <>
+          {renderSelectModality()}
+          <Button
+            id="policyholderAndModality-submit-button"
+            data-testid="policyholderAndModality-submit-button"
+            type="submit"
+            disabled={disabledSubmitButton}
+            loading={loadingQuote}
+          >
+            Continuar
+          </Button>
+        </>
+      )}
     </form>
   );
 };
