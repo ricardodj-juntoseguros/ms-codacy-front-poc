@@ -223,7 +223,6 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
       accountDigit: brokerInformation.bankDetails.accounDigit,
       accountType: ACCOUNT_BANK_TYPES.CheckingAccount,
     };
-
     await ListBankApi.validateBankAccount(payload)
       .then(response => {
         if (response.validation.valid) {
@@ -240,20 +239,15 @@ const BrokerDetailsContainer = ({ history }: RouteComponentProps) => {
           setIsDisableGoNextStep(true);
         }
       })
-      .catch(error => {
-        if (error.status === 504) {
-          dispatch(brokerInformationSliceActions.setbankIsValid(false));
-          dispatch(brokerInformationSliceActions.setSignupDirect(false));
-          fetchRegisterResponsibleBroker(
-            brokerInformation,
-            responsibleInformation,
-            brokerInformation.pathUpdate,
-            false,
-          );
-        }
-        setIsSubmitting(false);
-        setIsDisableGoNextStep(true);
-        setShowAlertErrorValidateBank(true);
+      .catch(() => {
+        dispatch(brokerInformationSliceActions.setbankIsValid(false));
+        dispatch(brokerInformationSliceActions.setSignupDirect(false));
+        fetchRegisterResponsibleBroker(
+          brokerInformation,
+          responsibleInformation,
+          brokerInformation.pathUpdate,
+          false,
+        );
       });
   };
 
