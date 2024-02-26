@@ -13,3 +13,5 @@ export * from './proposalMock';
 export * from './customClauseMock';
 export * from './objectPreviewMock';
 export * from './objectPreviewResultMock';
+export * from './searchAddressMock';
+export * from './newInsuredAddressMock';

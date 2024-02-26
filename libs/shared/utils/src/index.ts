@@ -13,3 +13,4 @@ export * from './currencyFormatter';
 export * from './downloadFile';
 export * from './chatUtils';
 export * from './stringToInt';
+export * from './zipcodeFormatter';

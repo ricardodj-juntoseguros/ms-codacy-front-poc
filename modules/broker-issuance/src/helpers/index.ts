@@ -7,3 +7,4 @@ export * from './mapInstallmentOptions';
 export * from './getMaxFirstDueDate';
 export * from './getMinFirstDueDate';
 export * from './mapInsuredAddressesOption';
+export * from './zipcodeInputMask';

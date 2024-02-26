@@ -1,6 +1,6 @@
 import { FunctionComponent, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown, SearchInput } from 'junto-design-system';
+import { Dropdown, LinkButton, Modal, SearchInput } from 'junto-design-system';
 import { useDebounce } from '@shared/hooks';
 import { mapInsuredAddressesOption } from '../../../helpers';
 import { InsuredAddressDTO } from '../../../application/types/dto';
@@ -14,12 +14,13 @@ import {
   searchInsured,
   selectInsuredSelection,
 } from '../../../application/features/insuredSelection/InsuredSelectionSlice';
+import NewInsuredAddressForm from '../NewInsuredAddressForm';
 import { useProposal } from '../../hooks';
-
 import styles from './InsuredSelection.module.scss';
 
 const InsuredSelection: FunctionComponent = () => {
   const [showEmptyOptions, setShowEmptyOptions] = useState(false);
+  const [newAddressModalOpen, setNewAddressModalOpen] = useState(false);
   const dispatch = useDispatch();
   const {
     insuredSearchValue,
@@ -108,7 +109,7 @@ const InsuredSelection: FunctionComponent = () => {
   };
 
   return (
-    <div>
+    <div className={styles['insured-selection__wrapper']}>
       <SearchInput
         id="insuredSelection-search-input"
         data-testid="insuredSelection-search-input"
@@ -137,6 +138,25 @@ const InsuredSelection: FunctionComponent = () => {
         disabled={insured === null}
         loading={false}
       />
+      <div>
+        <LinkButton
+          disabled={!insured}
+          label="Adicionar novo endereço"
+          icon="plus"
+          size="large"
+          onClick={() => setNewAddressModalOpen(true)}
+        />
+        <Modal
+          open={newAddressModalOpen}
+          onCloseButtonClick={() => setNewAddressModalOpen(false)}
+          size="large"
+          width={640}
+        >
+          <NewInsuredAddressForm
+            closeModalCallback={() => setNewAddressModalOpen(false)}
+          />
+        </Modal>
+      </div>
     </div>
   );
 };

@@ -106,4 +106,20 @@ describe('InsuredSelectionSlice', () => {
     store.dispatch(insuredSelectionActions.setInsuredOptions(optionsMock));
     expect(store.getState().insuredSelection.insuredOptions.length).toBe(1);
   });
+
+  it('should be able to add a insured address option', () => {
+    store.dispatch(
+      insuredSelectionActions.addInsuredAddressOption({
+        addressId: 1,
+        city: 'Curitiba',
+        state: 'PR',
+        street: 'Rua Teste, N. 1',
+        value: '1',
+        label: 'Rua Teste, N. 1 - Curitiba, PR',
+      }),
+    );
+    expect(
+      store.getState().insuredSelection.insuredAddressesOptions.length,
+    ).toBe(1);
+  });
 });

@@ -39,6 +39,7 @@ export const insuredSelectionSlice = createSlice({
       state.insuredSearchValue = '';
       state.insuredOptions = [];
       state.loadingSearchInsureds = false;
+      state.insuredAddressesOptions = [];
     },
     setInsuredOptions: (state, action: PayloadAction<InsuredModel[]>) => {
       state.insuredOptions = action.payload;
@@ -47,9 +48,19 @@ export const insuredSelectionSlice = createSlice({
       if (!action.payload) state.insuredOptions = [];
       state.insuredSearchValue = action.payload;
     },
-    setInsuredAddressesOptions: (state, action: PayloadAction<InsuredAddressDTO[]>) => {
-      state.insuredAddressesOptions = action.payload.map((address: InsuredAddressDTO) =>
-        mapInsuredAddressesOption(address)) as InsuredAddressModel[];
+    setInsuredAddressesOptions: (
+      state,
+      action: PayloadAction<InsuredAddressDTO[]>,
+    ) => {
+      state.insuredAddressesOptions = action.payload.map(
+        (address: InsuredAddressDTO) => mapInsuredAddressesOption(address),
+      ) as InsuredAddressModel[];
+    },
+    addInsuredAddressOption: (
+      state,
+      action: PayloadAction<InsuredAddressModel>,
+    ) => {
+      state.insuredAddressesOptions.push(action.payload);
     },
   },
   extraReducers: builder => {

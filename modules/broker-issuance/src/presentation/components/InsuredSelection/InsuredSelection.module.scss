@@ -1,5 +1,11 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
+.insured-selection__wrapper {
+  & > div:last-child {
+    margin-top: spacing('m');
+  }
+}
+
 .insured-selection__type {
   @include color('background-color', 'grey-100');
   @include rounded('card');
