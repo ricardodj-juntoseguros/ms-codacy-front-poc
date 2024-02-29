@@ -1,0 +1,13 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.incentive-trail-list__wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: spacing('l');
+  list-style: none;
+  padding: 0;
+
+  @media screen and (max-width: 680px) {
+    grid-template-columns: 1fr;
+  }
+}

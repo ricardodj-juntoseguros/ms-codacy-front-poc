@@ -1,0 +1,70 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.incentive-trail-card-skeleton__wrapper {
+  @include border(1, 'solid', 'grey-300');
+  @include rounded('card');
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: spacing('m') spacing('xs');
+  max-width: 420px;
+  width: 100%;
+  padding: spacing('xl') spacing('l');
+  box-sizing: border-box;
+
+  & > div:first-child {
+    min-width: 155px;
+
+    & > div:first-child {
+      margin-bottom: 4px;
+    }
+
+    & > div:nth-child(3) {
+      margin-top: 4px;
+    }
+  }
+
+  & > div:nth-child(2) {
+    min-width: 155px;
+
+    & > div:first-child {
+      margin-bottom: 4px;
+    }
+  }
+
+  & > div:nth-child(3) {
+
+    display: flex;
+    align-items: center;
+    max-width: 174px;
+  }
+
+  & > div:nth-child(4) {
+    min-width: 155px;
+  }
+
+  @media screen and (max-width: 880px) {
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 680px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 100%;
+
+    & > div:nth-child(2) {
+      justify-self: end;
+    }
+
+    & > div:nth-child(4) {
+      justify-self: end;
+    }
+  }
+
+
+  @media screen and (max-width: 540px) {
+    display: flex;
+    flex-direction: column;
+  }
+}

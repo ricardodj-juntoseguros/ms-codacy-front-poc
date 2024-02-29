@@ -1,0 +1,33 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.incentive-trail-summary__wrapper {
+  width: 100%;
+
+  & > div:last-child {
+    width: 100% !important;
+  }
+}
+
+.incentive-trail-summary__title {
+  @include font('l-emphasys');
+  @include color('color', 'dark');
+
+  margin-bottom: spacing('xl');
+}
+
+.incentive-trail-summary__total-amount {
+  @include font('xl-2-emphasys');
+  @include color('color', 'dark');
+
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  margin-bottom: spacing('l');
+
+  & > span {
+    @include font('xs');
+    @include color('color', 'grey-500');
+
+    margin-bottom: spacing('xs');
+  }
+}
