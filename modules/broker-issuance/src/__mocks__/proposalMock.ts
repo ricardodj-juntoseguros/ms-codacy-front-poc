@@ -46,4 +46,5 @@ export const proposalResumeMock = {
   observations: '',
   firstDueDate: '2024-01-02T00:00:00Z',
   selectedNumberOfInstallments: 1,
+  isPolicyInProgress: true,
 } as ProposalResumeDTO;

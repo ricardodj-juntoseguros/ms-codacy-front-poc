@@ -25,10 +25,10 @@ describe('OpportunityDetailsSecurityAmountFilter', () => {
 
     fireEvent.mouseDown(getByTestId('fiscal-securityAmount-filter'));
     fireEvent.change(getByTestId('min-security-amount-input'), {
-      target: { value: '12000' },
+      target: { value: '1200000' },
     });
     fireEvent.change(getByTestId('max-security-amount-input'), {
-      target: { value: '15000' },
+      target: { value: '1500000' },
     });
     fireEvent.click(getByTestId('security-amount-filter-apply-btn'));
 

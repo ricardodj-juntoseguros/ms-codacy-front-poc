@@ -73,6 +73,7 @@ const initialState: QuoteModel = {
   hasQuoteChanges: false,
   isQuoteResume: false,
   hasQuoteErrors: false,
+  isPolicyInProgress: false,
 };
 
 export const quoteSlice = createSlice({
@@ -90,6 +91,7 @@ export const quoteSlice = createSlice({
         proposalFee,
         commissionFlex,
         feeFlex,
+        isPolicyInProgress,
       } = action.payload;
       state.isQuoteResume = true;
       state.hasQuoteChanges = true;
@@ -116,6 +118,7 @@ export const quoteSlice = createSlice({
       if (feeFlex || commissionFlex) {
         state.toggleRateFlex = true;
       }
+      state.isPolicyInProgress = isPolicyInProgress;
     },
     setPolicyholder: (
       state,
@@ -226,6 +229,10 @@ export const quoteSlice = createSlice({
     },
     setCommissionFlex: (state, action: PayloadAction<number>) => {
       state.commissionFlex = action.payload;
+      state.hasQuoteChanges = true;
+    },
+    toggleIsPolicyInProgress: state => {
+      state.isPolicyInProgress = !state.isPolicyInProgress;
       state.hasQuoteChanges = true;
     },
   },

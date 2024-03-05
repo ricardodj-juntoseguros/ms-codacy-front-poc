@@ -20,4 +20,6 @@ export interface QuotationDTO {
   numberOfInstallments?: number;
   additionalLaborCoverage: boolean;
   brokerFederalId?: string;
+  firstDueDate?: string | null;
+  isPolicyInProgress: boolean;
 }

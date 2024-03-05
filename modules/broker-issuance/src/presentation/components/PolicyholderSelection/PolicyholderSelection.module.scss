@@ -5,10 +5,6 @@
   flex-direction: column;
   gap: spacing('l');
   width: 100%;
-
-  & > div:last-child {
-    width: 100% !important;
-  }
 }
 
 .policyholder-selection__input {

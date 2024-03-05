@@ -265,6 +265,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     if (policyholderAffiliate?.label === label) {
       return (
         <Alert
+          fullWidth
           data-testid="policyholderSelection-not-found-affiliate-alert"
           variant="neutral"
           arrow="top-start"

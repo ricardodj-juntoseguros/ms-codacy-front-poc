@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 import { FunctionComponent, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { UploadFile } from 'junto-design-system';
+import { UploadFile, RadioGroup, RadioButton } from 'junto-design-system';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
 import CommercialAuthorizationApi from '../../../application/features/CommercialAuthorization/CommercialAuthorizationApi';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
@@ -10,7 +10,6 @@ import {
   selectCommercialAuthorization,
 } from '../../../application/features/CommercialAuthorization/CommercialAuthorizationSlice';
 import { CommercialAuthorizationTypeEnum } from '../../../application/types/model';
-import { RadioButton } from '../RadioButton';
 import ContactInputList from '../ContactInputList';
 import UploadDocument from '../UploadDocument';
 import styles from './CommercialAuthorization.module.scss';
@@ -134,26 +133,28 @@ const CommercialAuthorization: FunctionComponent = () => {
         está ciente dessa emissão. Você pode enviar essa proposta para aprovação
         ou anexar uma autorização.
       </p>
-      <div className={styles['commercial-authorization__radio-wrapper']}>
-        <RadioButton
-          id="commercialAuthorization-sendToApproval-radio-button"
-          data-testid="commercialAuthorization-sendToApproval-radio-button"
-          name="typeOfAuthorization"
-          value="sendToApproval"
-          label="Enviar para aprovação do corretor"
-          selectedValue={typeOfAuthorization}
-          onChange={handleSetTypeOfAuthorization}
-        />
-        <RadioButton
-          id="commercialAuthorization-hasAuthorization-radio-button"
-          data-testid="commercialAuthorization-hasAuthorization-radio-button"
-          name="typeOfAuthorization"
-          value="hasAuthorization"
-          label="Tenho uma autorização para emissão"
-          selectedValue={typeOfAuthorization}
-          onChange={handleSetTypeOfAuthorization}
-        />
-      </div>
+      <RadioGroup
+        name="typeOfAuthorization"
+        value={typeOfAuthorization}
+        onChange={v =>
+          handleSetTypeOfAuthorization(v as CommercialAuthorizationTypeEnum)
+        }
+      >
+        <div className={styles['commercial-authorization__radio-wrapper']}>
+          <RadioButton
+            id="commercialAuthorization-sendToApproval-radio-button"
+            data-testid="commercialAuthorization-sendToApproval-radio-button"
+            value="sendToApproval"
+            label="Enviar para aprovação do corretor"
+          />
+          <RadioButton
+            id="commercialAuthorization-hasAuthorization-radio-button"
+            data-testid="commercialAuthorization-hasAuthorization-radio-button"
+            value="hasAuthorization"
+            label="Tenho uma autorização para emissão"
+          />
+        </div>
+      </RadioGroup>
       {renderComponent()}
     </div>
   );

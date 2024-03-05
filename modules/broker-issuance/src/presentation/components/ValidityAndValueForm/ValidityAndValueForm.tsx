@@ -81,6 +81,7 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
       {hasQuoteErrors && (
         <div className={styles['validity-and-value-form__resume-alert']}>
           <Alert
+            fullWidth
             variant="error"
             icon="x-circle"
             text={

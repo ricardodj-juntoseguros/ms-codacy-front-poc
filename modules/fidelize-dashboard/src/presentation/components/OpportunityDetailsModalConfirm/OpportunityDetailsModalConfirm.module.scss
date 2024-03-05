@@ -61,9 +61,6 @@
 
 .opportunity-details-modal-confirm__policyholder-feedback {
   padding-bottom: spacing('l');
-  & > div {
-    width: 100% !important;
-  }
 
   &--loading,
   &--error {

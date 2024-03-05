@@ -119,10 +119,12 @@ describe('ContractData', () => {
     );
 
     await act(async () => {
-      await fireEvent.change(contractValueInput, { target: { value: 12345 } });
+      await fireEvent.change(contractValueInput, {
+        target: { value: `12345` },
+      });
     });
     expect(mockDispatch).toHaveBeenCalledWith(
-      proposalActions.setContractValue(12345),
+      proposalActions.setContractValue(123.45),
     );
 
     await act(async () => {

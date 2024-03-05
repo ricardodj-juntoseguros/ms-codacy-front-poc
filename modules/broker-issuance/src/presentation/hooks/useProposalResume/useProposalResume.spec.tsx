@@ -209,6 +209,7 @@ describe('UseProposalResume Hook', () => {
     // Asserts other quote data
     expect(quote.securedAmount).toEqual(45000);
     expect(quote.durationInDays).toEqual(120);
+    expect(quote.isPolicyInProgress).toBe(true);
 
     // Asserts insured selection rehydrate
     expect(insuredSearchMock).toHaveBeenLastCalledWith(insuredMock.name);

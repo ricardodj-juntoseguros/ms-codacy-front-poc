@@ -24,6 +24,7 @@ export const quotationAdapter = (
     commissionFlex,
     feeFlex,
     toggleRateFlex,
+    isPolicyInProgress,
   } = quote;
   const firstDueDateFormatted = firstDueDate
     ? parseStringToDate(firstDueDate)
@@ -64,6 +65,7 @@ export const quotationAdapter = (
       : null,
     additionalLaborCoverage: hasAdditionalCoverageLabor || false,
     brokerFederalId,
+    isPolicyInProgress,
   } as QuotationDTO;
 
   if (isUpdate) {

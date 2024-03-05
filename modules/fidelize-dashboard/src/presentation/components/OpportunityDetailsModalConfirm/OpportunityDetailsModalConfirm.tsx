@@ -139,7 +139,7 @@ const OpportunityDetailsModalConfirm: React.FC<OpportunityDetailsModalConfirmPro
             ],
           )}
         >
-          <Alert text={text} variant={variant as any} icon={icon} />
+          <Alert fullWidth text={text} variant={variant as any} icon={icon} />
         </div>
       );
     };

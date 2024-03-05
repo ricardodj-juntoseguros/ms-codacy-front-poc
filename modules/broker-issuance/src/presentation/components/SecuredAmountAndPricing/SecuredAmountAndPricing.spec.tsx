@@ -66,7 +66,7 @@ describe('SecuredAmountAndPricing', () => {
       'securedAmountAndPricing-input-securedAmount',
     );
     fireEvent.change(input, {
-      target: { value: '20000' },
+      target: { value: '2000000' },
     });
     fireEvent.blur(input);
     expect(store.getState().quote.securedAmount).toEqual(20000);

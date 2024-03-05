@@ -135,6 +135,7 @@ const NewInsuredAddressForm: React.FC<NewInsuredAddressFormProps> = ({
           />
           {zipcodeError && (
             <Alert
+              fullWidth
               variant="error"
               text="Não conseguimos localizar o endereço através do CEP inserido. Por favor, preencha os campos a seguir com os demais dados."
             />

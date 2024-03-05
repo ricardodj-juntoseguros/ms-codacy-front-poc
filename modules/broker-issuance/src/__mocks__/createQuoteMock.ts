@@ -20,4 +20,6 @@ export const createQuoteMock = {
   additionalLaborCoverage: false,
   brokerFederalId: '06465132135429',
   numberOfInstallments: 1,
+  firstDueDate: null,
+  isPolicyInProgress: false,
 } as QuotationDTO;

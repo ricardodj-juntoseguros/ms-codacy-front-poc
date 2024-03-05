@@ -95,6 +95,7 @@ const PolicyholderAppointmentLetter: FunctionComponent = () => {
   return (
     <div className={styles['policyholder-appointment-letter__wrapper']}>
       <Alert
+        fullWidth
         variant="error"
         icon="x-circle"
         arrow="top-start"

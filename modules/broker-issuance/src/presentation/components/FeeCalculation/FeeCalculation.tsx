@@ -121,6 +121,7 @@ const FeeCalculation: React.FC<FeeCalculationProps> = ({
           text={`Você pode ter uma comissão de até ${currencyFormatter(
             commissionFlexMaxValue || 0,
           )}.`}
+          fullWidth
         />
       )}
     </div>

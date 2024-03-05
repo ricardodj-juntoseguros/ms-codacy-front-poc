@@ -25,10 +25,6 @@
   flex-direction: column;
   gap: spacing('m');
   margin-top: spacing('m');
-
-  & > div:first-child {
-    width: 100% !important;
-  }
 }
 
 .contractual-conditions__radio-wrapper {
@@ -43,7 +39,7 @@
   margin: spacing('m') 0 0 0;
 }
 
-.contractual-conditions__legal-terms-title{
+.contractual-conditions__legal-terms-title {
   @include font('xs-emphasys');
   @include color('color', 'dark');
   display: flex;

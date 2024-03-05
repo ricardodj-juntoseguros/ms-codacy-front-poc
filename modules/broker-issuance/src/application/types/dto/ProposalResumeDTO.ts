@@ -27,4 +27,5 @@ export interface ProposalResumeDTO {
   paymentType: number | null;
   firstDueDate: string | null;
   selectedNumberOfInstallments: number;
+  isPolicyInProgress: boolean;
 }

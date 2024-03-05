@@ -1,10 +1,16 @@
-import { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import { FunctionComponent, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Dropdown, LinkButton } from 'junto-design-system';
+import {
+  Button,
+  Dropdown,
+  LinkButton,
+  Toggle,
+  Tooltip,
+} from 'junto-design-system';
 import Cookies from 'js-cookie';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
-import { HELP_ID, REDIRECT_TO_V3_INFOS } from '../../../constants';
+import { DISCLAIMERS, HELP_ID, REDIRECT_TO_V3_INFOS } from '../../../constants';
 import { ModalityModel } from '../../../application/types/model';
 import { selectModality } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
 import {
@@ -15,17 +21,29 @@ import PolicyholderAppointmentLetter from '../PolicyholderAppointmentLetter';
 import PolicyholderSelection from '../PolicyholderSelection';
 import { MODALITY_STEPS } from '../../../constants/steps/modalitySteps';
 import styles from './PolicyholderAndModalityForm.module.scss';
+import { useQuotation } from '../../hooks';
 
 const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   name,
 }) => {
+  const tooltipButtonRef = useRef<HTMLButtonElement>(null);
   const [needAppointmentLetter, setNeedAppointmentLetter] = useState(false);
+  const [policyInProgressTooltipVisible, setPolicyInProgressTooltipVisible] =
+    useState(false);
   const { advanceStep, setSteps, steps } = useFlow();
   const { modalityOptions, loadingModalities } = useSelector(selectModality);
-  const { policyholder, modality, isQuoteResume, currentQuote, loadingQuote } =
-    useSelector(selectQuote);
+  const {
+    policyholder,
+    modality,
+    hasQuoteChanges,
+    isQuoteResume,
+    currentQuote,
+    loadingQuote,
+    isPolicyInProgress,
+  } = useSelector(selectQuote);
   const dispatch = useDispatch();
-  const { setModality } = quoteSliceActions;
+  const createOrUpdateQuote = useQuotation();
+  const { setModality, toggleIsPolicyInProgress } = quoteSliceActions;
   const userProfile = BrokerPlatformAuthService.getUserProfile();
 
   useEffect(() => {
@@ -55,6 +73,13 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modality, steps]);
+
+  useEffect(() => {
+    if (currentQuote && currentQuote.pricing && hasQuoteChanges) {
+      createOrUpdateQuote(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPolicyInProgress, currentQuote]);
 
   const disabledSubmitButton = useMemo(() => {
     return needAppointmentLetter || !policyholder || !modality;
@@ -110,6 +135,46 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
     );
   };
 
+  const renderPolicyInProgressToggle = () => {
+    if (
+      !policyholder ||
+      !policyholder.disabledFeatures ||
+      policyholder.disabledFeatures.policyInProgress
+    )
+      return null;
+    return (
+      <div
+        className={styles['policyholder-and-modality-form__policy-in-progress']}
+      >
+        <Toggle
+          data-testid="policyholderAndModalityForm-in-progress-toggle"
+          name="tgl-policy-in-progress"
+          label="Essa proposta trata-se de uma apólice em andamento"
+          checked={isPolicyInProgress}
+          onChange={() => dispatch(toggleIsPolicyInProgress())}
+        />
+        <button
+          ref={tooltipButtonRef}
+          data-testid="policyholderAndModalityForm-in-progress-tooltip"
+          type="button"
+          className={
+            styles['policyholder-and-modality-form__policy-in-progress-tooltip']
+          }
+          onMouseEnter={() => setPolicyInProgressTooltipVisible(true)}
+          onMouseLeave={() => setPolicyInProgressTooltipVisible(false)}
+        >
+          <i className="icon-info" />
+        </button>
+        <Tooltip
+          anchorRef={tooltipButtonRef}
+          text={DISCLAIMERS.policyInProgress}
+          visible={policyInProgressTooltipVisible}
+          position="top"
+        />
+      </div>
+    );
+  };
+
   return (
     <form
       id="policyholderAndModality-form"
@@ -128,6 +193,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
       ) : (
         <>
           {renderSelectModality()}
+          {renderPolicyInProgressToggle()}
           <Button
             id="policyholderAndModality-submit-button"
             data-testid="policyholderAndModality-submit-button"
