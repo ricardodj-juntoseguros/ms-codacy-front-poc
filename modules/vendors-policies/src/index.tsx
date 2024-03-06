@@ -8,7 +8,6 @@ const VendorsPolicies = () => {
   useEffect(() => {
     VendorsAuthService.initInsuredChat();
   }, []);
-
   return (
     <>
       <VendorsHeader />
