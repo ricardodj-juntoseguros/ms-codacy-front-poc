@@ -36,6 +36,7 @@ const IncentiveTrailCard: FunctionComponent<IncentiveTrailCardProps> = ({
     ) {
       return null;
     }
+
     switch (status) {
       case IncentiveTrailStepStatusEnum.expired:
         label = expirationDate ? `${label} ${expirationDate}` : '';
@@ -58,6 +59,7 @@ const IncentiveTrailCard: FunctionComponent<IncentiveTrailCardProps> = ({
       default:
         break;
     }
+
     return (
       <p className={styles['incentive-trail-card__status']}>
         <i
