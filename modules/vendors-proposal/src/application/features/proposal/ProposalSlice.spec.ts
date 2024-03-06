@@ -30,6 +30,7 @@ describe('ProposalSlice', () => {
   it('should set insured values correctly', async () => {
     await store.dispatch(
       proposalActions.setInsuredValues({
+        id: 12345,
         federalId: '11223344556677',
         name: 'Teste Segurado',
       }),
@@ -177,7 +178,7 @@ describe('ProposalSlice', () => {
           PolicyId: 12345,
           NewQuoterId: 12345,
           QuotationId: 12345,
-          createdAt: formatISO(new Date())
+          createdAt: formatISO(new Date()),
         }),
       );
 
@@ -213,7 +214,7 @@ describe('ProposalSlice', () => {
           PolicyId: 123,
           NewQuoterId: 1234,
           QuotationId: 12345,
-          createdAt: formatISO(new Date())
+          createdAt: formatISO(new Date()),
         }),
       );
 

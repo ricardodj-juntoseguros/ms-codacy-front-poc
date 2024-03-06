@@ -12,9 +12,10 @@ export const incentiveTrailAdapter = (
     stepPercentage: Number(step.percentageCompleted.toFixed()),
     status: step.status,
     valueLeft: currencyFormatter(step.amountLeft),
-    expirationDate: step.expirationDate,
+    expirationDate: step.expirationDate
+      ? format(new Date(step.expirationDate), 'dd/MM/yyyy')
+      : null,
   }));
-
   return {
     accumulatedValue: currencyFormatter(campaignData.valueAccumulation),
     steps,

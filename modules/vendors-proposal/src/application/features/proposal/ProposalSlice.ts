@@ -59,6 +59,7 @@ const initialState: ProposalModel = {
   identification: null,
   contractNumber: '',
   contractValue: 0,
+  insuredId: 0,
   insuredName: '',
   insuredFederalId: '',
   insuredAddressId: 0,
@@ -101,9 +102,10 @@ export const proposalSlice = createSlice({
     },
     setInsuredValues: (
       state,
-      action: PayloadAction<{ federalId: string; name: string }>,
+      action: PayloadAction<{ id: number; federalId: string; name: string }>,
     ) => {
-      const { federalId, name } = action.payload;
+      const { id, federalId, name } = action.payload;
+      state.insuredId = id;
       state.insuredFederalId = federalId;
       state.insuredName = name;
       state.insuredAddressId = 0;

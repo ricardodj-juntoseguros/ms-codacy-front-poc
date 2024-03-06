@@ -15,9 +15,11 @@ class IncentiveTrailApi {
   getCampaignData = async (
     campaignId: number,
     brokerFederalId: string,
+    isCommercial = false,
   ): Promise<IncentiveTrailDTO> => {
+    const commercialPartialUrl = isCommercial ? 'superuser/' : '';
     const params: IHttpClientRequestParameters = {
-      url: `ms-bonus-journey/producttion/calculate`,
+      url: `${commercialPartialUrl}ms-bonus-journey/producttion/calculate`,
       params: {
         campaignId,
         brokerFederalId,

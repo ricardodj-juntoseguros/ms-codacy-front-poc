@@ -65,15 +65,16 @@ const IncentiveTrailContainer: FunctionComponent = () => {
     if (!campaignConfig || !broker) return;
     const { campaignId } = campaignConfig;
     const { federalId } = broker;
+    const isCommercial = profile === ProfileEnum.COMMERCIAL;
     setLoadingCampaignData(true);
-    await IncentiveTrailApi.getCampaignData(campaignId, federalId)
+    await IncentiveTrailApi.getCampaignData(campaignId, federalId, isCommercial)
       .then(result => setCampaignData(incentiveTrailAdapter(result)))
       .catch(() => {
         makeToast('error', 'Houve um erro ao buscar os dados da campanha');
         setCampaignData(NO_ACCEPT_LIST_VALUES);
       })
       .finally(() => setLoadingCampaignData(false));
-  }, [broker, campaignConfig]);
+  }, [broker, campaignConfig, profile]);
 
   const renderLastUpdate = () => {
     if (!campaignData?.lastUpdate) return null;

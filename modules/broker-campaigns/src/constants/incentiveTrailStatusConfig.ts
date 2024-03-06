@@ -5,9 +5,17 @@ export const INCENTIVE_TRAIL_STATUS_CONFIG = {
     label: 'RESGATE ATÉ',
     icon: 'icon-dollar-sign',
   },
+  [IncentiveTrailStepStatusEnum.toExpire]: {
+    label: 'RESGATE ATÉ',
+    icon: 'icon-dollar-sign',
+  },
   [IncentiveTrailStepStatusEnum.expired]: {
     label: 'BÔNUS EXPIRADO EM',
     icon: 'icon-slash',
+  },
+  [IncentiveTrailStepStatusEnum.requested]: {
+    label: 'RESGATE ATÉ',
+    icon: 'icon-dollar-sign',
   },
   [IncentiveTrailStepStatusEnum.paid]: {
     label: 'RESGATE REALIZADO',

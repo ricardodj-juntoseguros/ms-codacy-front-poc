@@ -27,12 +27,11 @@ const InsuredSelector: React.FC<InsuredSelectorProps> = ({
 
   useEffect(() => {
     const fetchInsureds = () => {
-      InsuredAndPolicyholderSelectionApi
-        .getInsuredList()
+      InsuredAndPolicyholderSelectionApi.getInsuredList()
         .then(data => {
           if (data.length === 1) {
-            const { federalId, name } = data[0];
-            dispatch(proposalActions.setInsuredValues({ federalId, name }));
+            const { externalId: id, federalId, name } = data[0];
+            dispatch(proposalActions.setInsuredValues({ id, federalId, name }));
           }
           setInsuredsData(data);
         })
@@ -58,8 +57,8 @@ const InsuredSelector: React.FC<InsuredSelectorProps> = ({
     const { value } = option;
     const insured = insuredsData.find(ins => ins.federalId === value);
     if (insured) {
-      const { federalId, name } = insured;
-      dispatch(proposalActions.setInsuredValues({ federalId, name }));
+      const { externalId: id, federalId, name } = insured;
+      dispatch(proposalActions.setInsuredValues({ id, federalId, name }));
     }
   };
 

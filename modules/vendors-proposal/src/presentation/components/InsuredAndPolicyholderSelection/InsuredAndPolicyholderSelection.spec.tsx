@@ -59,6 +59,7 @@ describe('InsuredAndPolicyholderSelection', () => {
     act(() => {
       store.dispatch(
         proposalActions.setInsuredValues({
+          id: 123,
           name: 'Teste segurado',
           federalId: '11223344556677',
         }),
@@ -112,6 +113,7 @@ describe('InsuredAndPolicyholderSelection', () => {
     act(() => {
       store.dispatch(
         proposalActions.setInsuredValues({
+          id: 123,
           name: 'Teste segurado',
           federalId: '11223344556677',
         }),
@@ -169,6 +171,7 @@ describe('InsuredAndPolicyholderSelection', () => {
     act(() => {
       store.dispatch(
         proposalActions.setInsuredValues({
+          id: 123,
           name: 'Teste segurado',
           federalId: '11223344556677',
         }),

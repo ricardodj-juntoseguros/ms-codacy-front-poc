@@ -33,6 +33,7 @@ export const proposalAdapter = (
           proposal.policyholder.affiliateFederalId,
       }),
     biddingNumber: proposal.contractNumber,
+    insuredId: proposal.insuredId,
     insuredFederalId: proposal.insuredFederalId,
     insuredAddressId: proposal.insuredAddressId,
     modalityId: proposal.modality.modalityId,

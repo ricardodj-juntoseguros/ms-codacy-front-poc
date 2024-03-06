@@ -18,6 +18,7 @@ describe('InsuredAddressSelector', () => {
   it('With insured selected, should render loading, fetch addresses and display dropdown if there is more than one address', async () => {
     await store.dispatch(
       proposalActions.setInsuredValues({
+        id: 123,
         federalId: '11223344556677',
         name: 'Segurado',
       }),
@@ -38,6 +39,7 @@ describe('InsuredAddressSelector', () => {
   it('With insured selected, should render loading, fetch addresses and display readonly input if there is only one address', async () => {
     await store.dispatch(
       proposalActions.setInsuredValues({
+        id: 123,
         federalId: '11223344556677',
         name: 'Segurado',
       }),
@@ -63,6 +65,7 @@ describe('InsuredAddressSelector', () => {
   it('Should change store value with selected address on dropdown', async () => {
     await store.dispatch(
       proposalActions.setInsuredValues({
+        id: 123,
         federalId: '11223344556677',
         name: 'Segurado',
       }),

@@ -1,5 +1,5 @@
 import { IHttpClientRequestParameters } from '@infrastructure/http-client';
-import { ProposalDTO, UpdateProposalStatusDTO } from '../../types/dto';
+import { ProposalDTO } from '../../types/dto';
 import { ProposalResultDTO } from '../../types/dto/ProposalResultDTO';
 import { getInstance } from '../VendorsProposalBaseApi';
 

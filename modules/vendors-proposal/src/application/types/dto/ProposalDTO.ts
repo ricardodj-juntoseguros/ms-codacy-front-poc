@@ -2,6 +2,7 @@ export interface ProposalDTO {
   policyholderFederalId: string;
   policyholderAffiliateFederalId?: string | undefined;
   biddingNumber: string;
+  insuredId: number;
   insuredFederalId: string;
   insuredAddressId: number;
   modalityId: number;

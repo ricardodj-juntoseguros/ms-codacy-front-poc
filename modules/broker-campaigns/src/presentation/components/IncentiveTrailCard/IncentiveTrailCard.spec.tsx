@@ -22,9 +22,7 @@ describe('IncentiveTrailCard', () => {
     );
     expect(getByText('R$ 150.000,00')).toBeInTheDocument();
     expect(getByText('R$ 150,00')).toBeInTheDocument();
-    expect(
-      getByText(`RESGATE ATÉ ${formatDateString(date, 'dd/MM/yyyy')}`),
-    ).toBeInTheDocument();
+    expect(getByText(`RESGATE ATÉ ${date}`)).toBeInTheDocument();
     expect(getByText('100%')).toBeInTheDocument();
     expect(getByTestId('incentiveTrailCard-button-redeem')).toBeInTheDocument();
   });
@@ -66,9 +64,7 @@ describe('IncentiveTrailCard', () => {
     );
     expect(getByText('R$ 150.000,00')).toBeInTheDocument();
     expect(getByText('R$ 150,00')).toBeInTheDocument();
-    expect(
-      getByText(`BÔNUS EXPIRADO EM ${formatDateString(date, 'dd/MM/yyyy')}`),
-    ).toBeInTheDocument();
+    expect(getByText(`BÔNUS EXPIRADO EM ${date}`)).toBeInTheDocument();
     expect(getByText('50%')).toBeInTheDocument();
     expect(getByText('50%')).toHaveClass('j-tag__wrapper--warning');
     expect(

@@ -12,6 +12,7 @@ export interface ProposalModel {
   } | null;
   contractNumber: string;
   contractValue: number;
+  insuredId: number;
   insuredFederalId: string;
   insuredName: string;
   insuredAddressId: number;
@@ -28,5 +29,5 @@ export interface ProposalModel {
   totalValue: number;
   createProposalLoading: boolean;
   createProposalSuccess: boolean;
-  createdAt: string
+  createdAt: string;
 }

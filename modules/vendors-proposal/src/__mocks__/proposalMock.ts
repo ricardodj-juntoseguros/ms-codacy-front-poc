@@ -4,6 +4,7 @@ import { ProposalDTO } from '../application/types/dto';
 export const proposalMock: ProposalDTO = {
   policyholderFederalId: '91833813000118',
   policyholderAffiliateFederalId: '',
+  insuredId: 1,
   insuredFederalId: '91833813000118',
   biddingNumber: '12345',
   insuredAddressId: 21,

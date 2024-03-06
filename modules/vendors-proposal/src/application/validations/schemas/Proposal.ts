@@ -3,7 +3,8 @@ import { array, boolean, number, object, string } from 'yup';
 export const ProposalSchema = object().shape({
   policyholderFederalId: string().required(),
   policyholderAffiliateFederalId: string().notRequired(),
-  insuredFederalId: string().required(),
+  insuredId: number().required(),
+  insuredFederalId: string().notRequired(),
   insuredAddressId: number().required(),
   modalityId: number().required(),
   subModalityId: number().required(),

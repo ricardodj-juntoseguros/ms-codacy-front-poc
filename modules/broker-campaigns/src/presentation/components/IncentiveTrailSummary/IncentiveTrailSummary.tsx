@@ -59,10 +59,10 @@ const IncentiveTrailSummary: FunctionComponent<IncentiveTrailSummaryProps> = ({
       <h1 className={styles['incentive-trail-summary__title']}>
         Resultado parcial de {campaignYear}
       </h1>
-      <p className={styles['incentive-trail-summary__total-amount']}>
+      <div className={styles['incentive-trail-summary__total-amount']}>
         <span>Produção atual*</span>
         {renderAmount()}
-      </p>
+      </div>
       {renderAcceptAlert()}
     </article>
   );

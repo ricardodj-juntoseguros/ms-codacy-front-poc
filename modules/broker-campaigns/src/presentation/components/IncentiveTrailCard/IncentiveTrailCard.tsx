@@ -1,7 +1,6 @@
 import { FunctionComponent, useMemo } from 'react';
 import { Button, Tag } from 'junto-design-system';
 import classNames from 'classnames';
-import { formatDateString } from '@shared/utils';
 import { INCENTIVE_TRAIL_STATUS_CONFIG } from '../../../constants';
 import {
   IncentiveTrailStep,
@@ -39,14 +38,16 @@ const IncentiveTrailCard: FunctionComponent<IncentiveTrailCardProps> = ({
     }
     switch (status) {
       case IncentiveTrailStepStatusEnum.expired:
-        label = `${label} ${
-          expirationDate && formatDateString(expirationDate, 'dd/MM/yyyy')
-        }`;
+        label = expirationDate ? `${label} ${expirationDate}` : '';
+        break;
+      case IncentiveTrailStepStatusEnum.toExpire:
+        label = expirationDate ? `${label} ${expirationDate}` : '';
         break;
       case IncentiveTrailStepStatusEnum.available:
-        label = `${label} ${
-          expirationDate && formatDateString(expirationDate, 'dd/MM/yyyy')
-        }`;
+        label = expirationDate ? `${label} ${expirationDate}` : '';
+        break;
+      case IncentiveTrailStepStatusEnum.requested:
+        label = expirationDate ? `${label} ${expirationDate}` : '';
         break;
       case IncentiveTrailStepStatusEnum.unavailable:
         label = `${label} ${valueLeft}`;
@@ -72,7 +73,11 @@ const IncentiveTrailCard: FunctionComponent<IncentiveTrailCardProps> = ({
   };
 
   const renderRedeemButton = () => {
-    if (status !== IncentiveTrailStepStatusEnum.available) return null;
+    if (
+      status === IncentiveTrailStepStatusEnum.expired ||
+      status === IncentiveTrailStepStatusEnum.unavailable
+    )
+      return null;
     return (
       <Button
         id="incentiveTrailCard-button-redeem"
