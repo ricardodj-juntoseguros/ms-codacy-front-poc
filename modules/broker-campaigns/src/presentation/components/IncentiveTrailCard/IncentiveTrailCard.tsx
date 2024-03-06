@@ -52,6 +52,9 @@ const IncentiveTrailCard: FunctionComponent<IncentiveTrailCardProps> = ({
       case IncentiveTrailStepStatusEnum.unavailable:
         label = `${label} ${valueLeft}`;
         break;
+      case IncentiveTrailStepStatusEnum.paid:
+        label = `${label}`;
+        break;
       default:
         break;
     }
@@ -75,7 +78,8 @@ const IncentiveTrailCard: FunctionComponent<IncentiveTrailCardProps> = ({
   const renderRedeemButton = () => {
     if (
       status === IncentiveTrailStepStatusEnum.expired ||
-      status === IncentiveTrailStepStatusEnum.unavailable
+      status === IncentiveTrailStepStatusEnum.unavailable ||
+      status === IncentiveTrailStepStatusEnum.paid
     )
       return null;
     return (
