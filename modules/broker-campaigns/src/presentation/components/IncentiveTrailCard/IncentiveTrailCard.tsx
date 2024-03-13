@@ -82,8 +82,9 @@ const IncentiveTrailCard: FunctionComponent<IncentiveTrailCardProps> = ({
       status === IncentiveTrailStepStatusEnum.expired ||
       status === IncentiveTrailStepStatusEnum.unavailable ||
       status === IncentiveTrailStepStatusEnum.paid
-    )
+    ) {
       return null;
+    }
     return (
       <Button
         id="incentiveTrailCard-button-redeem"

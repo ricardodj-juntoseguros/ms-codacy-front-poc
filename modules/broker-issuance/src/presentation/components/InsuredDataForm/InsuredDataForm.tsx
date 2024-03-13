@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { Button, InputBase } from 'junto-design-system';
@@ -14,11 +15,15 @@ import {
 } from '../../../application/features/proposal/ProposalSlice';
 import InsuredSelection from '../InsuredSelection';
 import { useProposal } from '../../hooks';
-
-import styles from './InsuredDataForm.module.scss';
+import {
+  selectValidation,
+  validationActions,
+} from '../../../application/features/validation/ValidationSlice';
 import ContractualCondition from '../ContractualCondition';
 import ContractualConditionSkeleton from '../Skeletons/ContractualConditionSkeleton';
 import ObjectPreviewModal from '../ObjectPreviewModal';
+
+import styles from './InsuredDataForm.module.scss';
 
 const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
   name,
@@ -42,6 +47,8 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     text,
     requestedBy,
   } = useSelector(selectContractualCondition);
+  const { errors } = useSelector(selectValidation);
+  const { setErrorMessages, removeErrorMessage } = validationActions;
   const { setBiddingNumber, setBiddingDescription } = proposalActions;
 
   useEffect(() => {
@@ -56,6 +63,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
       insured?.insuredId &&
       insuredAddress?.addressId &&
       biddingNumber &&
+      errors.biddingNumber === undefined &&
       identification?.PolicyId;
     const hasContratualCondition = text && requestedBy;
     return (
@@ -76,6 +84,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     openContractualConditions,
     requestedBy,
     text,
+    errors,
   ]);
 
   const disabledObjectPreviewButton = useMemo(
@@ -88,6 +97,14 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
 
   const handleBiddingNumberChange = (biddingNumber: string) => {
     dispatch(setBiddingNumber(biddingNumber));
+    dispatch(removeErrorMessage('biddingNumber'));
+    if (biddingNumber.length > 500) {
+      return dispatch(
+        setErrorMessages({
+          biddingNumber: ['Limite de 500 caracteres excedido'],
+        }),
+      );
+    }
   };
 
   const handleBiddingDescriptionChange = (biddingDescription: string) => {
@@ -136,6 +153,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
             value={biddingNumber}
             onChange={e => handleBiddingNumberChange(e.target.value)}
             onBlur={() => updateProposal()}
+            errorMessage={errors.biddingNumber && errors.biddingNumber[0]}
           />
           <InputBase
             id="insuredDataForm-biddingDescription-input"

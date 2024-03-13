@@ -42,7 +42,12 @@ export const CommonProposalSchema = object().shape({
       if (!brokerFederalId) return false;
       return federalIdValidator(brokerFederalId, 'full');
     }),
-  biddingNumber: string().required(),
+  biddingNumber: string()
+    .required()
+    .test('maxBiddingNumber', function maxBiddingNumber() {
+      const { biddingNumber } = this.parent;
+      return biddingNumber.length < 500;
+    }),
   biddingDescription: string().nullable().notRequired(),
   contacts: array().nullable().notRequired(),
   obeservation: string().nullable().notRequired(),
