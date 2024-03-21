@@ -68,8 +68,8 @@ export const useIssuance = () => {
       comments,
       currentQuote,
       history,
-      onNext,
       typeOfAuthorization,
+      onNext,
     ],
   );
 
