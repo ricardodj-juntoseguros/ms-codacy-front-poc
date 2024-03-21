@@ -8,3 +8,4 @@ export * from './documentsNecessary';
 export * from './fileTypes';
 export * from './commercialAuthorization';
 export * from './surveys';
+export * from './quoteErrorFeedbacks';

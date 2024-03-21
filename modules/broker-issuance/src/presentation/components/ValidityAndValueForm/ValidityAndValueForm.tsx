@@ -6,7 +6,7 @@ import { GenericComponentProps, useFlow } from '@shared/hooks';
 import { downloadFile } from '@shared/utils';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import ValidityFields from '../ValidityFields';
-import { DISCLAIMERS } from '../../../constants';
+import { DISCLAIMERS, QUOTE_ERROR_FEEDBACKS } from '../../../constants';
 import { useQuotation } from '../../hooks';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
@@ -24,6 +24,7 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
     hasQuoteChanges,
     isQuoteResume,
     hasQuoteErrors,
+    errorMessage,
   } = useSelector(selectQuote);
   const profile = BrokerPlatformAuthService.getUserProfile();
 
@@ -71,6 +72,31 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
       .finally(() => setLoadingDownloadQuote(false));
   };
 
+  const renderQuoteErrorFeedback = () => {
+    if (!errorMessage) return null;
+    const alertProps = {
+      text: isQuoteResume
+        ? 'Ops! Parece que tivemos um problema ao recarregar sua proposta. %ACTION_BUTTON%'
+        : 'Ops! Parece que tivemos um problema ao gerar a sua cotação. %ACTION_BUTTON%',
+      actionButtonText: 'Clique aqui para tentar novamente.',
+      onActionButtonClick: () => createOrUpdateQuote() as any,
+    };
+    const errorWithCustomFeedback = QUOTE_ERROR_FEEDBACKS.find(
+      err => err.keyMessage === errorMessage,
+    );
+    if (errorWithCustomFeedback) {
+      alertProps.text = errorWithCustomFeedback.text;
+      alertProps.actionButtonText = errorWithCustomFeedback.actionButtonText;
+      alertProps.onActionButtonClick =
+        errorWithCustomFeedback.onActionButtonClick;
+    }
+    return (
+      <div className={styles['validity-and-value-form__resume-alert']}>
+        <Alert fullWidth variant="error" icon="x-circle" {...alertProps} />
+      </div>
+    );
+  };
+
   return (
     <form
       className={styles['validity-and-value-form__wrapper']}
@@ -78,22 +104,7 @@ const ValidityAndValueForm: React.FC<GenericComponentProps> = ({ name }) => {
     >
       <ValidityFields />
       <SecuredAmountAndPricing />
-      {hasQuoteErrors && (
-        <div className={styles['validity-and-value-form__resume-alert']}>
-          <Alert
-            fullWidth
-            variant="error"
-            icon="x-circle"
-            text={
-              isQuoteResume
-                ? 'Ops! Parece que tivemos um problema ao recarregar sua proposta. %ACTION_BUTTON%'
-                : 'Ops! Parece que tivemos um problema ao gerar a sua cotação. %ACTION_BUTTON%'
-            }
-            actionButtonText="Clique aqui para tentar novamente."
-            onActionButtonClick={() => createOrUpdateQuote()}
-          />
-        </div>
-      )}
+      {hasQuoteErrors && renderQuoteErrorFeedback()}
       <div className={styles['validity-and-value-form__legal-terms']}>
         <h3 className={styles['validity-and-value-form__legal-terms-title']}>
           <i className="icon icon-alert-circle" />

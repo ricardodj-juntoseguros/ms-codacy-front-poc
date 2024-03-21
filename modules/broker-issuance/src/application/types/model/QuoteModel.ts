@@ -27,5 +27,6 @@ export interface QuoteModel {
   hasQuoteChanges: boolean;
   isQuoteResume: boolean;
   hasQuoteErrors: boolean;
+  errorMessage?: string;
   isPolicyInProgress: boolean;
 }

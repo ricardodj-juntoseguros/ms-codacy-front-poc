@@ -23,6 +23,7 @@ import {
 } from '../../types/dto';
 import { parseStringToDate } from '../../../helpers';
 import { PolicyholderAffiliatesModel } from '../../types/model/PolicyholderAffiliatesModel';
+import handleError from '../../../helpers/handlerError';
 
 export const postQuotation = createAsyncThunk<
   QuoteResultDTO,
@@ -33,7 +34,13 @@ export const postQuotation = createAsyncThunk<
   async (quoteData: QuotationDTO, { rejectWithValue }) => {
     return QuoteApi.postQuotation(quoteData)
       .then(response => response)
-      .catch(error => rejectWithValue(error.data));
+      .catch(error => {
+        const defaultMessage = 'Ocorreu um erro ao gerar a cotação.';
+        const message = error.data
+          ? handleError(error.data, defaultMessage)
+          : defaultMessage;
+        return rejectWithValue(message);
+      });
   },
 );
 
@@ -46,7 +53,13 @@ export const putQuotation = createAsyncThunk<
   async ({ proposalId, quoteData }, { rejectWithValue }) => {
     return QuoteApi.putQuotation(proposalId, quoteData)
       .then(response => response)
-      .catch(error => rejectWithValue(error.data));
+      .catch(error => {
+        const defaultMessage = 'Ocorreu um erro ao atualizar a cotação.';
+        const message = error.data
+          ? handleError(error.data, defaultMessage)
+          : defaultMessage;
+        return rejectWithValue(message);
+      });
   },
 );
 
@@ -257,6 +270,7 @@ export const quoteSlice = createSlice({
         state.loadingQuote = false;
         state.hasQuoteChanges = false;
         state.hasQuoteErrors = false;
+        state.errorMessage = undefined;
       })
       .addCase(putQuotation.fulfilled, (state, action) => {
         const { payload } = action;
@@ -271,19 +285,26 @@ export const quoteSlice = createSlice({
         state.loadingQuote = false;
         state.hasQuoteChanges = false;
         state.hasQuoteErrors = false;
+        state.errorMessage = undefined;
         state.toggleRateFlex = !!(feeFlex || commissionFlex);
       })
-      .addCase(postQuotation.rejected, state => {
+      .addCase(postQuotation.rejected, (state, action) => {
         state.loadingQuote = false;
         state.hasQuoteChanges = true;
         state.hasQuoteErrors = true;
-        makeToast('error', 'Ocorreu um erro ao gerar a cotação');
+        if (action.payload) {
+          state.errorMessage = action.payload;
+          makeToast('error', action.payload);
+        }
       })
-      .addCase(putQuotation.rejected, state => {
+      .addCase(putQuotation.rejected, (state, action) => {
         state.loadingQuote = false;
         state.hasQuoteChanges = true;
         state.hasQuoteErrors = true;
-        makeToast('error', 'Ocorreu um erro ao atualizar os dados da cotação');
+        if (action.payload) {
+          state.errorMessage = action.payload;
+          makeToast('error', action.payload);
+        }
       });
   },
 });

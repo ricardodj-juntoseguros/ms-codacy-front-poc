@@ -148,7 +148,7 @@
     "decode-uri-component": "0.2.1",
     "ejs": ">=3.1.7",
     "express": "4.17.3",
-    "follow-redirects": "1.15.4",
+    "follow-redirects": "1.15.6",
     "glob-parent": "^6.0.1",
     "ip": "1.1.9",
     "json5": "2.2.2",

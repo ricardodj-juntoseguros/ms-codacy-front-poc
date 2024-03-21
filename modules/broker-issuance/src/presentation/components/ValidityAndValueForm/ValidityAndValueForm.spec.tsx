@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 import '@testing-library/jest-dom';
 import { downloadFile } from '@shared/utils';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
@@ -140,9 +141,15 @@ describe('ValidityAndValueForm', () => {
   });
 
   it('Should display error alert if a quotation update or create fails', async () => {
-    jest
-      .spyOn(QuoteApi, 'putQuotation')
-      .mockImplementation(async () => Promise.reject());
+    jest.spyOn(QuoteApi, 'putQuotation').mockImplementation(async () =>
+      Promise.reject({
+        data: {
+          data: {
+            message: 'Erro',
+          },
+        },
+      }),
+    );
     const { findByText } = render(
       <ValidityAndValueForm name="validityAndValue" />,
     );
@@ -152,6 +159,27 @@ describe('ValidityAndValueForm', () => {
     expect(
       await findByText(
         'Ops! Parece que tivemos um problema ao gerar a sua cotação.',
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it('Should display correct error alert if quotation fails for policyholder with no fee', async () => {
+    jest.spyOn(QuoteApi, 'postQuotation').mockImplementation(async () =>
+      Promise.reject({
+        data: {
+          data: {
+            message: 'Taxa do tomador não encontrada.',
+          },
+        },
+      }),
+    );
+    const { findByText } = render(
+      <ValidityAndValueForm name="validityAndValue" />,
+    );
+    await store.dispatch(postQuotation({} as QuotationDTO));
+    expect(
+      await findByText(
+        /Ops! Parece que tivemos um problema com a configuração da taxa do Tomador. Por favor,/,
       ),
     ).toBeInTheDocument();
   });
