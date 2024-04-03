@@ -12,6 +12,13 @@ jest.mock('junto-design-system', () => {
   };
 });
 
+jest.mock('react-gtm-module', () => {
+  return {
+    ...(jest.requireActual('react-gtm-module') as any),
+    dataLayer: jest.fn(),
+  };
+});
+
 describe('IncentiveTrailAcceptModal', () => {
   const onCloseModal = jest.fn();
   const onGetIncentiveTrailCampaignData = jest.fn();
