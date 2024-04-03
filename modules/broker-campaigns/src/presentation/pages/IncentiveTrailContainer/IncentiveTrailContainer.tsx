@@ -11,7 +11,7 @@ import {
   IncentiveTrailService,
   ProfileEnum,
 } from '@services';
-import { isAfter } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import { NO_ACCEPT_LIST_VALUES } from '../../../constants';
 import { incentiveTrailAdapter } from '../../../application/features/incentiveTrail/adapters/IncentiveTrailAdapter';
 import IncentiveTrailApi from '../../../application/features/incentiveTrail/IncentiveTrailApi';
@@ -41,12 +41,11 @@ const IncentiveTrailContainer: FunctionComponent = () => {
     const dateLimit = campaignConfig?.dateLimitAccept
       ? new Date(campaignConfig?.dateLimitAccept)
       : new Date();
-    const canAcceptCampaign = isAfter(new Date(dateLimit), new Date());
-
+    const daysLeftForAcceptance = differenceInDays(dateLimit, new Date());
     if (
       isEligible &&
       !isAccept &&
-      canAcceptCampaign &&
+      daysLeftForAcceptance > 0 &&
       profile === ProfileEnum.BROKER
     ) {
       setToogleAcceptModal(true);
@@ -112,7 +111,6 @@ const IncentiveTrailContainer: FunctionComponent = () => {
         <IncentiveTrailSummary
           dateStart={campaignConfig?.dateStart}
           accumulatedValue={campaignData?.accumulatedValue}
-          dateLimitToAccept={campaignConfig?.dateLimitAccept}
           isAccept={isAccept}
           onToogleAcceptModal={handleToogleAcceptModal}
           loading={loadingCampaignData}
