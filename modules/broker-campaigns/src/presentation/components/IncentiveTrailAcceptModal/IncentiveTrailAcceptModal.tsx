@@ -6,7 +6,9 @@ import {
   Modal,
   makeToast,
 } from 'junto-design-system';
-import { IncentiveTrailService } from '@services';
+import { BrokerPlatformAuthService, IncentiveTrailService } from '@services';
+import TagManager from 'react-gtm-module';
+import { format } from 'date-fns';
 import { redirectIncentiveTrailTerms } from '../../../helpers';
 import IncentiveTrailApi from '../../../application/features/incentiveTrail/IncentiveTrailApi';
 import styles from './IncentiveTrailAcceptModal.module.scss';
@@ -27,6 +29,7 @@ const IncentiveTrailAcceptModal: FunctionComponent<IncentiveTrailAcceptModalProp
   }) => {
     const [checkBoxTerms, setCheckBoxTerms] = useState(false);
     const [loading, setLoading] = useState(false);
+    const broker = BrokerPlatformAuthService.getBroker();
 
     const handleCheckBoxTerms = (isChecked: boolean) => {
       setCheckBoxTerms(isChecked);
@@ -40,6 +43,13 @@ const IncentiveTrailAcceptModal: FunctionComponent<IncentiveTrailAcceptModalProp
         await IncentiveTrailApi.postAcceptIncentiveTrail(campaignId)
           .then(() => {
             IncentiveTrailService.updateIncentiveTrailAcceptTerm(true);
+            TagManager.dataLayer({
+              dataLayer: {
+                event: 'ClickAcceptIncentiveTrailTerms',
+                brokerName: broker?.name,
+                acceptDate: format(new Date(), 'dd/MM/yyyy HH:mm:ss'),
+              },
+            });
             onCloseModal();
             onGetIncentiveTrailCampaignData();
           })
@@ -51,7 +61,7 @@ const IncentiveTrailAcceptModal: FunctionComponent<IncentiveTrailAcceptModalProp
           )
           .finally(() => setLoading(false));
       },
-      [campaignId, onCloseModal, onGetIncentiveTrailCampaignData],
+      [broker, campaignId, onCloseModal, onGetIncentiveTrailCampaignData],
     );
 
     return (

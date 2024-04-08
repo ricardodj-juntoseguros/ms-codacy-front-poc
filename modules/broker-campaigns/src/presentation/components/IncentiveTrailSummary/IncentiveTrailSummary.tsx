@@ -1,5 +1,5 @@
 import { FunctionComponent, useMemo } from 'react';
-import { getYear } from 'date-fns';
+import { getYear, isAfter } from 'date-fns';
 import { Alert, Skeleton } from 'junto-design-system';
 import { motion } from 'framer-motion';
 import { ProfileEnum } from '@services';
@@ -8,6 +8,7 @@ import styles from './IncentiveTrailSummary.module.scss';
 interface IncentiveTrailSummaryProps {
   dateStart?: string | null;
   accumulatedValue?: string;
+  dateLimitToAccept?: string | null;
   isAccept: boolean;
   onToogleAcceptModal: () => void;
   loading: boolean;
@@ -17,6 +18,7 @@ interface IncentiveTrailSummaryProps {
 const IncentiveTrailSummary: FunctionComponent<IncentiveTrailSummaryProps> = ({
   dateStart,
   accumulatedValue,
+  dateLimitToAccept,
   isAccept,
   onToogleAcceptModal,
   loading,
@@ -28,7 +30,13 @@ const IncentiveTrailSummary: FunctionComponent<IncentiveTrailSummaryProps> = ({
   );
 
   const renderAcceptAlert = () => {
-    if (isAccept || profile !== ProfileEnum.BROKER) return null;
+    const dateLimit = dateLimitToAccept
+      ? new Date(dateLimitToAccept)
+      : new Date();
+    const canAcceptCampaign = isAfter(new Date(dateLimit), new Date());
+    if (isAccept || profile !== ProfileEnum.BROKER || !canAcceptCampaign) {
+      return null;
+    }
     return (
       <Alert
         text="Atenção, seus resultados ainda não estão sendo contabilizados! %ACTION_BUTTON% e aceite os termos do regulamento para participar."
