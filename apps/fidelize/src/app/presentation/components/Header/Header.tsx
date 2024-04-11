@@ -36,7 +36,7 @@ const Header: React.FC = () => {
       <div className={styles['header__back-button-wrapper']}>
         <LinkButton
           data-testid="header-back-btn"
-          label="Ir para a lista de processos"
+          label="Ir para a home"
           icon="arrow-left"
           onClick={() => handleBackButtonClick()}
         />

@@ -28,7 +28,7 @@ const Header: FunctionComponent = () => {
       </div>
       <div className={styles['header__go-back-wrapper']}>
         <LinkButton
-          label="Ir para lista de processos"
+          label="Ir para home"
           icon="arrow-left"
           onClick={() => handleGoToProcessList()}
         />

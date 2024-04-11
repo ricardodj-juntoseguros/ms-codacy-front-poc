@@ -61,7 +61,9 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
   }, []);
 
   const handleGoToProcessList = () => {
-    window.location.assign(process.env.NX_GLOBAL_BROKER_PROCESSES_URL || '');
+    window.location.assign(
+      process.env.NX_GLOBAL_BROKER_PROCESSES_LIST_URL || '',
+    );
   };
 
   const renderIcon = () => {

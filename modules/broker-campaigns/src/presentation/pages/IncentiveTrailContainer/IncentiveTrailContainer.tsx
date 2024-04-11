@@ -99,7 +99,7 @@ const IncentiveTrailContainer: FunctionComponent = () => {
     <>
       <header className={styles['incentive-trail-container__header']}>
         <LinkButton
-          label="Ir para lista de processos"
+          label="Ir para home"
           icon="arrow-left"
           onClick={() => handleGoToProcessList()}
         />

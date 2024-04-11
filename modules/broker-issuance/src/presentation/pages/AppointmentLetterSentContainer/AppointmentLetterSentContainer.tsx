@@ -48,7 +48,7 @@ const AppointmentLetterSentContainer: FunctionComponent = () => {
             variant="secondary"
             onClick={handleGoToProcessList}
           >
-            Ir para lista de processos
+            Ir para home
           </Button>
         </div>
       </div>

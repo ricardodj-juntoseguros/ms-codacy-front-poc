@@ -33,7 +33,7 @@ jest.mock('@shared/utils', () => {
 });
 
 describe('ProposalFinishContainer', () => {
-  process.env.NX_GLOBAL_BROKER_PROCESSES_URL = '/url-processos';
+  process.env.NX_GLOBAL_BROKER_PROCESSES_LIST_URL = '/url-processos';
   const mockHistoryPush = jest.fn();
 
   beforeAll(async () => {
