@@ -133,15 +133,21 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
 
   useEffect(() => {
     if (isValidFederalId) {
-      const option = policyholderOptions[0];
-      handlePolicyholderSelected({
-        ...option,
-        label: option ? option.label : policyholderSearchValue,
-        value: option ? option.value : policyholderSearchValue,
-      });
+      const option = policyholderOptions.find(
+        p =>
+          p.label === policyholderSearchValue ||
+          p.federalId === policyholderSearchValue.replace(/[^\d]+/g, ''),
+      );
+      if (option) {
+        handlePolicyholderSelected({
+          ...option,
+          label: option ? option.label : policyholderSearchValue,
+          value: option ? option.value : policyholderSearchValue,
+        });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isValidFederalId]);
+  }, [isValidFederalId, userProfile]);
 
   useEffect(() => {
     if (currentQuote && currentQuote.totalPrize) {

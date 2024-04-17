@@ -108,8 +108,12 @@ export const policyholderSelectionSlice = createSlice({
       })
       .addCase(searchPolicyholder.fulfilled, (state, action) => {
         if (federalIdValidator(state.policyholderSearchValue, 'full')) {
-          state.policyholderSearchValue =
-            action.payload[0]?.label || state.policyholderSearchValue;
+          const policyholder = action.payload.find(
+            p =>
+              p.federalId ===
+              state.policyholderSearchValue.replace(/[^\d]+/g, ''),
+          );
+          if (policyholder) state.policyholderSearchValue = policyholder.label;
           state.isValidFederalId = true;
         }
         state.loadingSearchPolicyholder = false;
