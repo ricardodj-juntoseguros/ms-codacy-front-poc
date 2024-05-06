@@ -11,12 +11,14 @@ export const SURVEYS_DATA = {
     placeholderForScoreEqualOrGreaterThanFour:
       'Como foi sua experiência no novo fluxo?',
   },
-  [SurveyTypeEnum.NPS]: {
-    title: '',
-    modalTitle: '',
-    finishMessageTitle: '',
-    finishMessage: '',
-    placeholderForScoreEqualOrBelowThree: '',
-    placeholderForScoreEqualOrGreaterThanFour: '',
+  [SurveyTypeEnum.NPS_DIRECT]: {
+    title:
+      'Qual a probabilidade de você recomendar a Junto Seguros a um amigo ou parceiro?',
+    subtitles: undefined,
+  },
+  [SurveyTypeEnum.NPS_INTERNALIZED]: {
+    title:
+      'Qual a probabilidade de você recomendar a Junto Seguros a um amigo ou parceiro?',
+    subtitles: undefined,
   },
 };

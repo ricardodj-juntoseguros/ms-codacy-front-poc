@@ -4,7 +4,7 @@ import { downloadFile } from '@shared/utils';
 import { RouteComponentProps } from 'react-router';
 import {
   Button,
-  CSATWidget,
+  NPSWidget,
   LinkButton,
   Tag,
   makeToast,
@@ -32,9 +32,17 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
   const { identification, protocols } = useSelector(selectProposal);
   const { currentQuote } = useSelector(selectQuote);
   const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
-  const [showWidget, widgetProps, getSurveyInvite, answerSurvey] = useSurvey(
-    SurveyTypeEnum.CSAT,
-  );
+  const npsType =
+    feedbackType === ProposalFinishEnum.success
+      ? SurveyTypeEnum.NPS_DIRECT
+      : SurveyTypeEnum.NPS_INTERNALIZED;
+  const [
+    showWidget,
+    widgetProps,
+    getSurveyInvite,
+    answerSurvey,
+    setShouldAnswer,
+  ] = useSurvey(npsType);
   const { PolicyId } = identification || { PolicyId: null };
   const userProfile = BrokerPlatformAuthService.getUserProfile();
 
@@ -154,22 +162,13 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
           />
         )}
       </motion.div>
-      {showWidget && (
-        <motion.div
-          className={styles['proposal-finish-container__csat-widget']}
-          initial={{ opacity: 0, translateY: '50px' }}
-          whileInView={{ opacity: 1, translateY: '0px' }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-        >
-          <CSATWidget
-            onFeedbackSubmit={(score, feedback) =>
-              answerSurvey(score, feedback)
-            }
-            {...widgetProps}
-          />
-        </motion.div>
-      )}
+      <NPSWidget
+        id="proposalFinishContainer"
+        isOpen={showWidget}
+        onSubmit={answerSurvey}
+        onClose={() => setShouldAnswer(false)}
+        {...widgetProps}
+      />
     </div>
   );
 };

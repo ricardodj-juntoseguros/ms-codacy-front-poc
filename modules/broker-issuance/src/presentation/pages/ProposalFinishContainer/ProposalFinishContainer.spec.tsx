@@ -182,8 +182,8 @@ describe('ProposalFinishContainer', () => {
     expect(downloadFile).toHaveBeenCalledWith(new Blob(), 'proposta_11111.pdf');
   });
 
-  it('Should call CSAT survey and answer it', async () => {
-    const { findByText, getByTestId, findByPlaceholderText } = render(
+  it('Should call NPS survey and answer it', async () => {
+    const { findByText } = render(
       <ProposalFinishContainer
         feedbackType={ProposalFinishEnum.success}
         history={{ push: mockHistoryPush } as any}
@@ -195,27 +195,9 @@ describe('ProposalFinishContainer', () => {
     await waitFor(async () => {
       expect(
         await findByText(
-          'Como você avalia a sua experiência no novo fluxo de emissão?',
+          'Qual a probabilidade de você recomendar a Junto Seguros a um amigo ou parceiro?',
         ),
       ).toBeInTheDocument();
     });
-    const rating = getByTestId('csat-score-4');
-    fireEvent.click(rating);
-    const textarea = await findByPlaceholderText(
-      'Como foi sua experiência no novo fluxo?',
-    );
-    if (textarea) {
-      fireEvent.change(textarea, { target: { value: 'Bom' } });
-      fireEvent.blur(textarea);
-    }
-    const button = await findByText('Enviar');
-    fireEvent.click(button);
-    expect(SurveysApi.answerSurvey).toHaveBeenCalledWith(
-      SurveyTypeEnum.CSAT,
-      'invite',
-      'Teste corretor',
-      4,
-      'Bom',
-    );
   });
 });

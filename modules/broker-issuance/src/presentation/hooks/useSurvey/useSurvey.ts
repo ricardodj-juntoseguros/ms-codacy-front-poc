@@ -47,5 +47,11 @@ export function useSurvey(surveyType: SurveyTypeEnum) {
     [shouldAnswer, inviteId, broker, surveyType],
   );
 
-  return [shouldAnswer, componentData, getSurveyInvite, answerSurvey] as const;
+  return [
+    shouldAnswer,
+    componentData,
+    getSurveyInvite,
+    answerSurvey,
+    setShouldAnswer,
+  ] as const;
 }

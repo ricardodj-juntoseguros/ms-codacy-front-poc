@@ -1,4 +1,5 @@
 export enum SurveyTypeEnum {
   CSAT = 'csat',
-  NPS = 'nps',
+  NPS_DIRECT = 'nps_direct',
+  NPS_INTERNALIZED = 'nps_internalized',
 }
