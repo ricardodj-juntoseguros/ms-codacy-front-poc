@@ -6,6 +6,7 @@ import {
   ProfileEnum,
 } from '@services';
 import { makeToast } from 'junto-design-system';
+import { add } from 'date-fns';
 import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import IncentiveTrailApi from '../../../application/features/incentiveTrail/IncentiveTrailApi';
 import { IncentiveTrailStepStatusEnum } from '../../../application/types/model';
@@ -55,10 +56,10 @@ describe('IncentiveTrailContainer', () => {
       .spyOn(IncentiveTrailService, 'getIncentiveTrailCampaign')
       .mockImplementation(() => ({
         campaignId: 5,
-        dateStart: '2024-01-01T00:00:00',
-        dateEnd: '2024-12-31T23:59:05',
-        dateLimitRescue: '2025-01-17T23:59:59',
-        dateLimitAccept: '2024-04-30T23:59:59',
+        dateStart: new Date().toISOString(),
+        dateEnd: add(new Date(), { days: 365 }).toISOString(),
+        dateLimitRescue: add(new Date(), { days: 2 }).toISOString(),
+        dateLimitAccept: add(new Date(), { days: 1 }).toISOString(),
         name: 'Jornada de Bônus 2024',
       }));
     getIncentiveTrailIsEligibleMock = jest
@@ -113,7 +114,9 @@ describe('IncentiveTrailContainer', () => {
     const { getByTestId, getAllByText, queryByTestId } = render(
       <IncentiveTrailContainer />,
     );
-    expect(getByTestId('incentiveTrailAcceptModal-form')).toBeInTheDocument();
+    await expect(
+      queryByTestId('incentiveTrailAcceptModal-form'),
+    ).toBeInTheDocument();
     await waitFor(async () => {
       await fireEvent.click(getByTestId('modal-close-button'));
       await expect(
@@ -124,7 +127,9 @@ describe('IncentiveTrailContainer', () => {
     await waitFor(async () => {
       await fireEvent.click(getByTestId('alert-linkButton'));
     });
-    expect(getByTestId('incentiveTrailAcceptModal-form')).toBeInTheDocument();
+    expect(
+      await getByTestId('incentiveTrailAcceptModal-form'),
+    ).toBeInTheDocument();
   });
 
   it('should be able to display an error message if the call fails', async () => {
