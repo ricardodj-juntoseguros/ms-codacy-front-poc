@@ -163,7 +163,12 @@ describe('UseProposalResume Hook', () => {
     const insuredSearchMock = jest
       .spyOn(InsuredSelectionApi, 'searchInsured')
       .mockImplementation(async () => {
-        return { hasMore: false, records: [insuredMock] };
+        return {
+          hasMore: false,
+          records: [insuredMock],
+          numberOfRecords: 0,
+          hasInsuredInactive: false,
+        };
       });
 
     const { result, waitFor } = renderHook(() => useProposalResume(), {
@@ -394,7 +399,12 @@ describe('UseProposalResume Hook', () => {
     const insuredSearchMock = jest
       .spyOn(InsuredSelectionApi, 'searchInsured')
       .mockImplementation(async () => {
-        return { hasMore: false, records: [] };
+        return {
+          hasMore: false,
+          records: [],
+          hasInsuredInactive: false,
+          numberOfRecords: 0,
+        };
       });
 
     const { result, waitFor } = renderHook(() => useProposalResume(), {

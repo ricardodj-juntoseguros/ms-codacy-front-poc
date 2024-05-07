@@ -176,4 +176,63 @@ describe('InsuredSelection', () => {
       label: `${insuredMock.addresses[0].street} - ${insuredMock.addresses[0].city}, ${insuredMock.addresses[0].state}`,
     });
   });
+
+  it('should be able to render alert when hasInsuredInactive is true', async () => {
+    insuredSearchMock = jest
+      .spyOn(InsuredSelectionApi, 'searchInsured')
+      .mockImplementation(() =>
+        Promise.resolve({
+          numberOfRecords: 0,
+          hasInsuredInactive: true,
+          hasMore: false,
+          records: [],
+        } as InsuredSearchDTO),
+      );
+
+    const { getByTestId, findByText } = render(<InsuredSelection />);
+    fireEvent.change(getByTestId('insuredSelection-search-input'), {
+      target: { value: 'prefeitura' },
+    });
+    jest.runAllTimers();
+    await waitFor(() =>
+      expect(InsuredSelectionApi.searchInsured).toHaveBeenCalledWith(
+        'prefeitura',
+      ),
+    );
+    const alert = await findByText(
+      'Parece que esse segurado está inativo na companhia. Você só pode prosseguir com segurados ativos. Em caso de dúvida, entre em contato via chat.',
+    );
+
+    expect(alert).toBeInTheDocument();
+  });
+
+  it('should be able to not render alert when hasInsuredInactive is false', async () => {
+    insuredSearchMock = jest
+      .spyOn(InsuredSelectionApi, 'searchInsured')
+      .mockImplementation(() =>
+        Promise.resolve({
+          numberOfRecords: 0,
+          hasInsuredInactive: false,
+          hasMore: false,
+          records: [],
+        } as InsuredSearchDTO),
+      );
+
+    const { getByTestId, queryByText } = render(<InsuredSelection />);
+    fireEvent.change(getByTestId('insuredSelection-search-input'), {
+      target: { value: 'prefeitura' },
+    });
+    jest.runAllTimers();
+    await waitFor(() =>
+      expect(InsuredSelectionApi.searchInsured).toHaveBeenCalledWith(
+        'prefeitura',
+      ),
+    );
+
+    expect(
+      queryByText(
+        'Parece que esse segurado está inativo na companhia. Você só pode prosseguir com segurados ativos. Em caso de dúvida, entre em contato via chat.',
+      ),
+    ).not.toBeInTheDocument();
+  });
 });

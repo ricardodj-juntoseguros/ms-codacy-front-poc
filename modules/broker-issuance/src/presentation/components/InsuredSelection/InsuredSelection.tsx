@@ -1,6 +1,12 @@
 import { FunctionComponent, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown, LinkButton, Modal, SearchInput } from 'junto-design-system';
+import {
+  Alert,
+  Dropdown,
+  LinkButton,
+  Modal,
+  SearchInput,
+} from 'junto-design-system';
 import { useDebounce } from '@shared/hooks';
 import { mapInsuredAddressesOption } from '../../../helpers';
 import { InsuredAddressDTO } from '../../../application/types/dto';
@@ -27,6 +33,7 @@ const InsuredSelection: FunctionComponent = () => {
     insuredOptions,
     loadingSearchInsureds,
     insuredAddressesOptions,
+    hasInsuredInactive,
   } = useSelector(selectInsuredSelection);
   const { setInsuredSearchValue, setInsuredAddressesOptions } =
     insuredSelectionActions;
@@ -125,6 +132,18 @@ const InsuredSelection: FunctionComponent = () => {
         loading={loadingSearchInsureds}
         autoComplete="off"
       />
+      {insuredOptions.length === 0 && hasInsuredInactive && (
+        <div className={styles['insured-selection__alert']}>
+          <Alert
+            data-testid="insuredSelection-search-alert"
+            variant="error"
+            icon="x-circle"
+            arrow="top-start"
+            text="Parece que esse segurado está inativo na companhia. Você só pode prosseguir com segurados ativos. Em caso de dúvida, entre em contato via chat."
+            fullWidth
+          />
+        </div>
+      )}
       {renderInsuredType()}
       <p className={styles['insured-selection__description']}>Endereço</p>
       <Dropdown

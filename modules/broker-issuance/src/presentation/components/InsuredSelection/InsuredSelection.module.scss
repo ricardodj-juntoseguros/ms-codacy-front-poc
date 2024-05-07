@@ -34,3 +34,7 @@
   @include color('color', 'dark');
   margin: spacing('xl') 0 spacing('m') 0;
 }
+
+.insured-selection__alert{
+  margin-top: spacing('m');
+}

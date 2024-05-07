@@ -4,22 +4,14 @@ import { RootState } from '../../../config/store';
 import { InsuredSelectionModel } from '../../types/model/InsuredSelectionModel';
 import InsuredSelectionApi from './InsuredSelectionApi';
 import { InsuredModel } from '../../types/model';
-import { InsuredAddressDTO } from '../../types/dto';
+import { InsuredAddressDTO, InsuredSearchDTO } from '../../types/dto';
 import { InsuredAddressModel } from '../../types/model/InsuredAddressModel';
 
 export const searchInsured = createAsyncThunk(
   'insuredSelection/searchInsured',
   async (query: string, { rejectWithValue }) => {
     return InsuredSelectionApi.searchInsured(query)
-      .then(response => {
-        if (!response.records) return [];
-        const data: InsuredModel[] = response.records.map(insured => ({
-          ...insured,
-          value: insured.insuredId.toString(),
-          label: insured.name,
-        }));
-        return data;
-      })
+      .then(response => response)
       .catch(error => rejectWithValue(error.data));
   },
 );
@@ -29,6 +21,7 @@ const initialState: InsuredSelectionModel = {
   insuredOptions: [],
   loadingSearchInsureds: false,
   insuredAddressesOptions: [],
+  hasInsuredInactive: false,
 };
 
 export const insuredSelectionSlice = createSlice({
@@ -40,6 +33,7 @@ export const insuredSelectionSlice = createSlice({
       state.insuredOptions = [];
       state.loadingSearchInsureds = false;
       state.insuredAddressesOptions = [];
+      state.hasInsuredInactive = false;
     },
     setInsuredOptions: (state, action: PayloadAction<InsuredModel[]>) => {
       state.insuredOptions = action.payload;
@@ -68,10 +62,21 @@ export const insuredSelectionSlice = createSlice({
       .addCase(searchInsured.pending, state => {
         state.loadingSearchInsureds = true;
       })
-      .addCase(searchInsured.fulfilled, (state, action) => {
-        state.loadingSearchInsureds = false;
-        state.insuredOptions = action.payload;
-      })
+      .addCase(
+        searchInsured.fulfilled,
+        (state, action: PayloadAction<InsuredSearchDTO>) => {
+          const { records, hasInsuredInactive } = action.payload;
+          state.loadingSearchInsureds = false;
+          state.insuredOptions = records
+            ? records.map(insured => ({
+                ...insured,
+                value: insured.insuredId.toString(),
+                label: insured.name,
+              }))
+            : [];
+          state.hasInsuredInactive = hasInsuredInactive;
+        },
+      )
       .addCase(searchInsured.rejected, state => {
         state.loadingSearchInsureds = false;
       });
