@@ -25,6 +25,7 @@ export const quotationAdapter = (
     feeFlex,
     toggleRateFlex,
     isPolicyInProgress,
+    isQuoteResume,
   } = quote;
   const firstDueDateFormatted = firstDueDate
     ? parseStringToDate(firstDueDate)
@@ -71,6 +72,7 @@ export const quotationAdapter = (
   if (isUpdate) {
     basePayload = {
       ...basePayload,
+      isQuotationRetake: isQuoteResume,
       pricing: {
         proposalFee: proposalFee || null,
         commissionFlex: (toggleRateFlex && commissionFlex) || null,

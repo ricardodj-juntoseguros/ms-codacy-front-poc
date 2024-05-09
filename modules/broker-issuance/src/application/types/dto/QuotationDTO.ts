@@ -22,4 +22,5 @@ export interface QuotationDTO {
   brokerFederalId?: string;
   firstDueDate?: string | null;
   isPolicyInProgress: boolean;
+  isQuotationRetake?: boolean;
 }
