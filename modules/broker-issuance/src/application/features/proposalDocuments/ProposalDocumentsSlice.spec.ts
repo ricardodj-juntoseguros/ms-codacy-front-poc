@@ -1,6 +1,10 @@
-import { store } from "../../../config/store";
-import { getProposalDocuments, proposalDocumentsActions } from "./ProposalDocumentsSlice";
-import ProposalDocumentsApi from "./ProposalDocumentsApi";
+import { store } from '../../../config/store';
+import {
+  getInternalizeDocumentList,
+  getProposalDocuments,
+  proposalDocumentsActions,
+} from './ProposalDocumentsSlice';
+import ProposalDocumentsApi from './ProposalDocumentsApi';
 
 jest.mock('junto-design-system', () => {
   const original = jest.requireActual('junto-design-system');
@@ -11,13 +15,15 @@ jest.mock('junto-design-system', () => {
 });
 
 describe('ProposalDocumentsSlice', () => {
-  const mockResult = [{
-    size: 12321312321,
-    url: 'url',
-    extension: 'pdf',
-    filename: 'test',
-    metadata: null,
-  }];
+  const mockResult = [
+    {
+      size: 12321312321,
+      url: 'url',
+      extension: 'pdf',
+      filename: 'test',
+      metadata: null,
+    },
+  ];
 
   beforeEach(() => {
     store.dispatch(proposalDocumentsActions.clearProposalDocuments());
@@ -31,11 +37,13 @@ describe('ProposalDocumentsSlice', () => {
     const { proposalDocuments } = store.getState();
     expect(getProposalDocumentsMock).toHaveBeenCalled();
     expect(getProposalDocumentsMock).toHaveBeenCalledWith(12345);
-    expect(proposalDocuments.proposalDocuments).toEqual([{
-      size: 12321312321,
-      url: 'url',
-      name: 'test',
-    }]);
+    expect(proposalDocuments.proposalDocuments).toEqual([
+      {
+        size: 12321312321,
+        url: 'url',
+        name: 'test',
+      },
+    ]);
   });
 
   it('Should not update the store if the call returns an error', async () => {
@@ -68,5 +76,43 @@ describe('ProposalDocumentsSlice', () => {
     const { proposalDocuments } = store.getState();
     expect(proposalDocuments.proposalDocuments).toEqual([]);
     expect(proposalDocuments.loadingDocuments).toEqual(false);
+  });
+
+  it('should be able to get the documents list to internalize', async () => {
+    const mockData = [
+      {
+        documentId: 8,
+        name: 'Edital de licitação',
+        description:
+          'Edital de Licitação com todos os anexos ou a Carta Convite Minuta do Contrato',
+        required: true,
+      },
+      {
+        documentId: 9,
+        name: 'Minuta do Termo de Constituição',
+        description:
+          'Em caso de consórcio, envie a Minuta do Termo de Constituição de Consórcio ou da SPE',
+        required: true,
+      },
+    ];
+    const getProposalDocumentsMock = jest
+      .spyOn(ProposalDocumentsApi, 'getDocumentsToInternalize')
+      .mockImplementation(async () => mockData);
+    await store.dispatch(getInternalizeDocumentList(99));
+    const { proposalDocuments } = store.getState();
+    expect(getProposalDocumentsMock).toHaveBeenCalled();
+    expect(getProposalDocumentsMock).toHaveBeenCalledWith(99);
+    expect(proposalDocuments.internalizeDocumentsList).toEqual([
+      {
+        documentId: 8,
+        description:
+          'Edital de Licitação com todos os anexos ou a Carta Convite Minuta do Contrato',
+      },
+      {
+        documentId: 9,
+        description:
+          'Em caso de consórcio, envie a Minuta do Termo de Constituição de Consórcio ou da SPE',
+      },
+    ]);
   });
 });

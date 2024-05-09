@@ -1,14 +1,17 @@
 /* eslint-disable prefer-promise-reject-errors */
 import '@testing-library/jest-dom';
 import { BrokerPlatformAuthService } from '@services';
-import { makeToast } from 'junto-design-system';
 import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
 import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { putProposal } from '../../../application/features/proposal/ProposalSlice';
 import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
-import { proposalMock, modalityBidderMock } from '../../../__mocks__';
+import {
+  proposalMock,
+  modalityBidderMock,
+  internalizeDocumentsBidderMock,
+} from '../../../__mocks__';
 import ProposalDocuments from './ProposalDocuments';
 import { store } from '../../../config/store';
 
@@ -81,18 +84,23 @@ describe('ProposalDocuments', () => {
     });
   });
 
-  it('should be able to render the necessary documents for submission', () => {
+  it('should fetch the necessary documents to internalize on mount by modality bidder (99)', async () => {
     jest
       .spyOn(ProposalDocumentsApi, 'getProposalDocuments')
       .mockImplementation(() => Promise.resolve(mockResult));
-    const { getByText } = render(<ProposalDocuments />);
+    jest
+      .spyOn(ProposalDocumentsApi, 'getDocumentsToInternalize')
+      .mockImplementation(() =>
+        Promise.resolve(internalizeDocumentsBidderMock),
+      );
+    const { findByText } = render(<ProposalDocuments />);
     expect(
-      getByText(
+      await findByText(
         '- Edital de Licitação com todos os anexos ou a Carta Convite Minuta do Contrato.',
       ),
     ).toBeInTheDocument();
     expect(
-      getByText(
+      await findByText(
         '- Em caso de consórcio, envie a Minuta do Termo de Constituição de Consórcio ou da SPE.',
       ),
     ).toBeInTheDocument();

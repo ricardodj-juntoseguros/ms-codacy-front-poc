@@ -4,7 +4,6 @@ export * from './common';
 export * from './validationMessages';
 export * from './disclaimers';
 export * from './termsAndConditions';
-export * from './documentsNecessary';
 export * from './fileTypes';
 export * from './commercialAuthorization';
 export * from './surveys';

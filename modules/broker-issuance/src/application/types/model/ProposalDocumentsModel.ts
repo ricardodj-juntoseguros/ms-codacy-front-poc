@@ -5,4 +5,9 @@ export interface ProposalDocumentsModel {
     size: number;
   }[];
   loadingDocuments: boolean;
+  loadingInternalizeDocumentsList: boolean;
+  internalizeDocumentsList: {
+    documentId: number;
+    description: string;
+  }[];
 }

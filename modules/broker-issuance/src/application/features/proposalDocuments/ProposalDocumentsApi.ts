@@ -3,7 +3,7 @@ import {
   IHttpClientRequestParameters,
 } from '@infrastructure/http-client';
 import BrokerInssuanceBaseApi from '../BrokerIssuanceBaseApi';
-import { ProposalDocumentDTO } from '../../types/dto';
+import { InternalizeDocumentsDTO, ProposalDocumentDTO } from '../../types/dto';
 
 class ProposalDocumentsApi {
   private instance: AxiosHttpClient;
@@ -52,6 +52,13 @@ class ProposalDocumentsApi {
       responseType: 'arraybuffer',
     };
     return this.instance.get(params);
+  }
+
+  async getDocumentsToInternalize(modalityId: number) {
+    const params: IHttpClientRequestParameters = {
+      url: `/v1/products/${modalityId}/internalize-documents`,
+    }
+    return this.instance.get<InternalizeDocumentsDTO[]>(params);
   }
 }
 

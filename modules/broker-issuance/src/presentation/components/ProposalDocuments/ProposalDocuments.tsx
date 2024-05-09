@@ -1,31 +1,40 @@
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { UploadFile } from 'junto-design-system';
-import { nanoid } from '@reduxjs/toolkit';
 import { BrokerPlatformAuthService } from '@services';
 import {
+  getInternalizeDocumentList,
   getProposalDocuments,
   selectProposalDocuments,
 } from '../../../application/features/proposalDocuments/ProposalDocumentsSlice';
 import ProposalDocumentsApi from '../../../application/features/proposalDocuments/ProposalDocumentsApi';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
-import { DOCUMENTS_NECESSARY } from '../../../constants';
 import UploadDocument from '../UploadDocument';
 import styles from './ProposalDocuments.module.scss';
+import { InternalizeDocumentsSkeleton } from '../Skeletons';
 
 const ProposalDocuments: FunctionComponent = () => {
   const [hasError, setHasError] = useState(false);
   const dispatch = useDispatch();
   const { modality } = useSelector(selectQuote);
   const { identification } = useSelector(selectProposal);
-  const { proposalDocuments } = useSelector(selectProposalDocuments);
+  const {
+    proposalDocuments,
+    loadingInternalizeDocumentsList,
+    internalizeDocumentsList,
+  } = useSelector(selectProposalDocuments);
 
   useEffect(() => {
     if (!identification?.PolicyId) return;
     dispatch(getProposalDocuments(identification.PolicyId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!modality) return;
+    dispatch(getInternalizeDocumentList(modality.id));
+  }, [modality, dispatch]);
 
   const postProposalDocuments = useCallback(
     async (files: UploadFile[]) => {
@@ -61,9 +70,14 @@ const ProposalDocuments: FunctionComponent = () => {
 
   const renderDocumentsNecessaryList = () => {
     if (!modality) return null;
-    return DOCUMENTS_NECESSARY[modality.id].map(document => (
-      <li key={nanoid(5)} className={styles['proposal-documents__list-item']}>
-        {document}
+    if (loadingInternalizeDocumentsList)
+      return <InternalizeDocumentsSkeleton />;
+    return internalizeDocumentsList.map(document => (
+      <li
+        key={`document-${document.documentId}`}
+        className={styles['proposal-documents__list-item']}
+      >
+        - {document.description}.
       </li>
     ));
   };

@@ -25,3 +25,4 @@ export * from './ProposalDraftDTO';
 export * from './SubmitToApprovalOrIssuanceDTO';
 export * from './SubmitToApprovalOrIssuanceResultDTO';
 export * from './SurveyInviteDTO';
+export * from './InternalizeDocumentsDTO'

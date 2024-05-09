@@ -15,3 +15,4 @@ export * from './objectPreviewMock';
 export * from './objectPreviewResultMock';
 export * from './searchAddressMock';
 export * from './newInsuredAddressMock';
+export * from './internalizeDocumentsMock';
