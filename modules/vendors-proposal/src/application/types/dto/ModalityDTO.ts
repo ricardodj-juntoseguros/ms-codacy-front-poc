@@ -1,6 +1,7 @@
 export interface SubmodalityDTO {
   subModalityId: number;
   externalDescription: string;
+  additionalCoverage: boolean;
 }
 
 export interface ModalityDTO {

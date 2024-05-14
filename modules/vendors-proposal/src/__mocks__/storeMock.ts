@@ -77,8 +77,14 @@ export const storeMock = {
         allowsAdditionalCoverageLabor: true,
         submodalities: [
           {
-            subModalityId: 90,
+            subModalityId: 1,
             externalDescription: 'Convencional',
+            additionalCoverage: false,
+          },
+          {
+            subModalityId: 26,
+            externalDescription: 'Trabalhista e Previdenciária',
+            additionalCoverage: true,
           },
         ],
         label: 'Executante construtor',

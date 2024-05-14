@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import * as reactRedux from 'react-redux';
-import { fetchModalities } from 'modules/vendors-proposal/src/application/features/ModalitySelection/ModalitySelectionSlice';
+import { ptBR } from 'date-fns/locale';
+import { format } from 'date-fns';
 import { MODALITIES_INFORMATION } from '../../../constants';
 import ModalitySelectionAPI from '../../../application/features/ModalitySelection/ModalitySelectionAPI';
 import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
@@ -94,8 +95,14 @@ describe('WarrantyData', () => {
           allowsAdditionalCoverageLabor: true,
           submodalities: [
             {
-              subModalityId: 90,
+              subModalityId: 1,
               externalDescription: 'Convencional',
+              additionalCoverage: false,
+            },
+            {
+              submodalityId: 26,
+              externalDescription: 'Trabalhista e Previdenciária',
+              additionalCoverage: true,
             },
           ],
           label: 'Executante construtor',
@@ -122,6 +129,16 @@ describe('WarrantyData', () => {
       />,
     );
 
+    expect(mockDispatch).toHaveBeenCalledWith(
+      proposalActions.setInitialValidity({
+        value: format(new Date(), 'dd/MM/yyyy', { locale: ptBR }),
+        isValid: true,
+      }),
+    );
+    expect(mockDispatch).toHaveBeenCalledWith(
+      proposalActions.setEndValidity({ value: '', isValid: false }),
+    );
+
     const warrantyPercentageInput = getByTestId(
       'warrantyData-input-warranty-percentage',
     );
@@ -146,7 +163,9 @@ describe('WarrantyData', () => {
     await act(async () => {
       await fireEvent.click(modality);
     });
-    expect(mockDispatch).toHaveBeenCalledWith(
+
+    expect(mockDispatch).toHaveBeenNthCalledWith(
+      6,
       proposalActions.setModality({
         ...modalityListMock[0],
         label: modalityListMock[0].externalDescription,

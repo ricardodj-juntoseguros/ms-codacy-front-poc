@@ -3,9 +3,6 @@ import { parseStringToDate } from '@shared/utils';
 import {
   CONVENTIONAL_SUBMODALITY,
   NO_AFFILIATE_OPTION,
-  SUBMODALITY_662,
-  SUBMODALITY_662_WITH_COVERAGE_LABOR,
-  MODALITIES,
 } from '../../../../constants';
 import { ModalityDTO, ProposalDTO } from '../../../types/dto';
 import { ProposalModel } from '../../../types/model';
@@ -17,6 +14,7 @@ export const proposalAdapter = (
   const securedAmount = Number(
     ((proposal.contractValue / 100) * proposal.warrantyPercentage).toFixed(2),
   );
+
   const subModalityId = getSubmodalityId(
     proposal.modality,
     proposal.additionalCoverageLabor,
@@ -56,10 +54,9 @@ const getSubmodalityId = (
   modality: ModalityDTO,
   additionalLaborCoverage: boolean,
 ) => {
-  const is662Modality = modality.modalityId !== MODALITIES.advancePayment;
-  if (!is662Modality) return CONVENTIONAL_SUBMODALITY;
-
-  return modality.allowsAdditionalCoverageLabor && additionalLaborCoverage
-    ? SUBMODALITY_662_WITH_COVERAGE_LABOR
-    : SUBMODALITY_662;
+  const { submodalities } = modality;
+  const submodality = submodalities.find(
+    sub => sub.additionalCoverage === additionalLaborCoverage,
+  );
+  return submodality ? submodality.subModalityId : CONVENTIONAL_SUBMODALITY;
 };

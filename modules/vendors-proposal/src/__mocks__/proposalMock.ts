@@ -9,7 +9,7 @@ export const proposalMock: ProposalDTO = {
   biddingNumber: '12345',
   insuredAddressId: 21,
   modalityId: 97,
-  subModalityId: 90,
+  subModalityId: 1,
   validityStartDate: format(new Date(), 'dd/MM/yyyy'),
   validityDurationInDays: 360,
   securedAmount: 1000,
