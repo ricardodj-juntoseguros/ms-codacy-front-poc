@@ -28,4 +28,8 @@ export interface ProposalResumeDTO {
   firstDueDate: string | null;
   selectedNumberOfInstallments: number;
   isPolicyInProgress: boolean;
+  additionalCoverage: {
+    labor: boolean;
+    rateAggravation: boolean;
+  };
 }

@@ -19,10 +19,6 @@ export interface QuoteModel {
   commissionFlex?: number | null;
   feeFlex?: number | null;
   paymentType?: number;
-  additionalCoverage?: [];
-  hasAdditionalCoverageLabor?: boolean;
-  hasAdditionalCoverageGuarantee?: boolean;
-  hasAdditionalCoverageVigilance?: boolean;
   loadingQuote?: boolean;
   hasQuoteChanges: boolean;
   isQuoteResume: boolean;

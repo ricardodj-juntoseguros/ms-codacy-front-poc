@@ -18,7 +18,10 @@ export interface QuotationDTO {
   };
   securedAmount?: number;
   numberOfInstallments?: number;
-  additionalLaborCoverage: boolean;
+  additionalCoverage: {
+    labor: boolean;
+    rateAggravation: boolean;
+  };
   brokerFederalId?: string;
   firstDueDate?: string | null;
   isPolicyInProgress: boolean;

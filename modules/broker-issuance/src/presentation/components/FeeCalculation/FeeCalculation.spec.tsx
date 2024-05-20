@@ -10,34 +10,39 @@ import {
 import { QuoteResultDTO } from '../../../application/types/dto';
 import FeeCalculation from './FeeCalculation';
 
+const createOrUpdateQuoteMock = jest.fn();
+
+jest.mock('../../hooks', () => {
+  const rest = jest.requireActual('../../hooks');
+  return {
+    ...rest,
+    useQuotation: () => createOrUpdateQuoteMock,
+  };
+});
+
 describe('FeeCalculation', () => {
   beforeEach(() => {
     store.dispatch(quoteSliceActions.resetQuote());
   });
 
   it('Should dispatch proposalFee to store on fill', async () => {
-    const { findByTestId } = render(
-      <FeeCalculation onCalculateCallback={jest.fn()} />,
-    );
+    const { findByTestId } = render(<FeeCalculation />);
     const input = await findByTestId('feeCalculation-input-proposalFee');
     fireEvent.change(input, { target: { value: '1,50' } });
     expect(store.getState().quote.proposalFee).toEqual(1.5);
   });
 
-  it('Should call onCalculateCallback prop on calculate button click', async () => {
-    const mockFn = jest.fn();
+  it('Should call create createOrUpdateQuote on calculate button click', async () => {
     jest
       .spyOn(QuoteApi, 'postQuotation')
       .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
-    const { findByTestId } = render(
-      <FeeCalculation onCalculateCallback={mockFn} />,
-    );
+    const { findByTestId } = render(<FeeCalculation />);
     const input = await findByTestId('feeCalculation-input-proposalFee');
     fireEvent.change(input, { target: { value: '1,50' } });
     const button = await findByTestId('feeCalculation-button-calculate');
     fireEvent.click(button);
-    expect(mockFn).toHaveBeenCalled();
+    expect(createOrUpdateQuoteMock).toHaveBeenCalled();
   });
 
   it('Should display commission flex input correctly and dispatch value to store on fill', async () => {
@@ -46,9 +51,7 @@ describe('FeeCalculation', () => {
       .mockImplementation(async () => quoteResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     store.dispatch(quoteSliceActions.setToggleRateFlex());
-    const { findByTestId, getByText } = render(
-      <FeeCalculation onCalculateCallback={jest.fn()} />,
-    );
+    const { findByTestId, getByText } = render(<FeeCalculation />);
     const input = await findByTestId('feeCalculation-input-commissionFlex');
     fireEvent.change(input, { target: { value: 'R$ 75,00' } });
     expect(store.getState().quote.commissionFlex).toEqual(75);
@@ -73,9 +76,7 @@ describe('FeeCalculation', () => {
       .mockImplementation(async () => modifiedResultMock);
     await store.dispatch(postQuotation(createQuoteMock));
     store.dispatch(quoteSliceActions.setToggleRateFlex());
-    const { findByTestId } = render(
-      <FeeCalculation onCalculateCallback={jest.fn()} />,
-    );
+    const { findByTestId } = render(<FeeCalculation />);
     const input = await findByTestId('feeCalculation-input-feeFlex');
     fireEvent.change(input, { target: { value: '30,00' } });
     expect(store.getState().quote.feeFlex).toEqual(30);

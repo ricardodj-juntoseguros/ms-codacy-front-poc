@@ -151,7 +151,8 @@ const ValidityFields: React.FC = () => {
     <div className={styles['validity-fields__form-wrapper']}>
       <div>
         <DateInput
-          data-testid="validityAndValueForm-dateinput-start-validity"
+          id="validityFields-dateinput-start-validity"
+          data-testid="validityFields-dateinput-start-validity"
           label="Início da vigência"
           value={dates.validityStartDate}
           onChange={handleChangeStartDate}
@@ -165,7 +166,8 @@ const ValidityFields: React.FC = () => {
           onBlur={() => createOrUpdateQuote()}
         />
         <DateInput
-          data-testid="validityAndValueForm-dateinput-end-validity"
+          id="validityFields-dateinput-end-validity"
+          data-testid="validityFields-dateinput-end-validity"
           label="Fim da vigência"
           value={dates.validityEndDate}
           onChange={handleChangeEndDate}
@@ -177,7 +179,8 @@ const ValidityFields: React.FC = () => {
       </div>
       <div>
         <NumberInput
-          data-testid="validityAndValueForm-input-validity-days"
+          id="validityFields-input-validity-days"
+          data-testid="validityFields-input-validity-days"
           label="Vigência do seguro em dias"
           placeholder="Ex: 100 dias"
           allowNegative={false}

@@ -3,10 +3,11 @@ import brLocale from 'date-fns/locale/pt-BR';
 import { BrokerPlatformAuthService } from '@services';
 import { parseStringToDate } from '@shared/utils';
 import { QuotationDTO } from '../../../types/dto';
-import { QuoteModel } from '../../../types/model';
+import { AdditionalCoverageModel, QuoteModel } from '../../../types/model';
 
 export const quotationAdapter = (
   quote: QuoteModel,
+  additionalCoverage: AdditionalCoverageModel,
   firstDueDate: string | null,
   numberOfInstallments: number | null,
   isUpdate: boolean,
@@ -19,7 +20,6 @@ export const quotationAdapter = (
     startDateValidity,
     durationInDays,
     securedAmount,
-    hasAdditionalCoverageLabor,
     proposalFee,
     commissionFlex,
     feeFlex,
@@ -27,6 +27,7 @@ export const quotationAdapter = (
     isPolicyInProgress,
     isQuoteResume,
   } = quote;
+  const { labor: useCoverageLabor, rateAggravation } = additionalCoverage;
   const firstDueDateFormatted = firstDueDate
     ? parseStringToDate(firstDueDate)
     : null;
@@ -64,7 +65,10 @@ export const quotationAdapter = (
     firstDueDate: firstDueDateFormatted
       ? firstDueDateFormatted.toISOString()
       : null,
-    additionalLaborCoverage: hasAdditionalCoverageLabor || false,
+    additionalCoverage: {
+      labor: useCoverageLabor,
+      rateAggravation,
+    },
     brokerFederalId,
     isPolicyInProgress,
   } as QuotationDTO;

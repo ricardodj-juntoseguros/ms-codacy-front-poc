@@ -20,6 +20,7 @@ import {
   ProposalResumeDTO,
   QuotationDTO,
   QuoteResultDTO,
+  SubmodalityDTO,
 } from '../../types/dto';
 import { parseStringToDate } from '../../../helpers';
 import { PolicyholderAffiliatesModel } from '../../types/model/PolicyholderAffiliatesModel';
@@ -78,10 +79,6 @@ const initialState: QuoteModel = {
   feeFlex: NaN,
   commissionFlex: NaN,
   paymentType: 0,
-  additionalCoverage: [],
-  hasAdditionalCoverageLabor: false,
-  hasAdditionalCoverageGuarantee: false,
-  hasAdditionalCoverageVigilance: false,
   loadingQuote: false,
   hasQuoteChanges: false,
   isQuoteResume: false,
@@ -153,6 +150,10 @@ export const quoteSlice = createSlice({
         action.payload.submodalities.find(
           modality => modality.id === DEFAULT_SUBMODALITY_ID,
         ) || null;
+      state.hasQuoteChanges = true;
+    },
+    setSubmodality: (state, action: PayloadAction<SubmodalityDTO>) => {
+      state.submodality = action.payload;
       state.hasQuoteChanges = true;
     },
     setStartDateValidity: (state, action: PayloadAction<string | null>) => {

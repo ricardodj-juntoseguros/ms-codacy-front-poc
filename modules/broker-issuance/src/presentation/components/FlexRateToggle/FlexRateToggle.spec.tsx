@@ -37,7 +37,7 @@ describe('FlexRateToggle', () => {
     fireEvent.mouseEnter(button);
     expect(
       getByText(
-        'A taxa flex está desabilitada para esse tomador, mas você pode prosseguir normalmente com sua proposta. Em caso de dúvidas, entre em contato via chat.',
+        'A taxa flex é desabilitada quando não considerado os 50% de agravo na cobertura trabalhista, ou caso não esteja disponível para o tomador.',
       ),
     ).toBeInTheDocument();
   });

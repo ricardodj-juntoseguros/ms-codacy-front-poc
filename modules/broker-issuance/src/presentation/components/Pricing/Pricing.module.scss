@@ -1,35 +1,19 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.secured-amount-pricing__wrapper {
-  @include border(1, 'solid', 'grey-400');
-  @include rounded('card');
-  padding: spacing('xl');
-
-  @media screen and (max-width: 500px) {
-    padding: spacing('l');
-  }
-}
-
-.secured-amount-pricing__title {
-  @include font('base-emphasys');
-  @include color('color', 'dark');
-  margin: 0 0 spacing('l') 0;
-}
-
-.secured-amount-pricing__pricing-wrapper {
+.pricing_wrapper {
   display: flex;
   flex-direction: column;
   gap: spacing('xl');
   margin-top: spacing('xl');
 }
 
-.secured-amount-pricing__pricing-data {
+.pricing__data {
   display: flex;
   flex-direction: column;
   gap: spacing('m');
 }
 
-.secured-amount-pricing__pricing-data-item {
+.pricing__data-item {
   display: grid;
   grid-template-columns: 100px auto;
 

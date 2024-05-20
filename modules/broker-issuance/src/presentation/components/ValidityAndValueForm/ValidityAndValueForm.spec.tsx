@@ -1,25 +1,22 @@
 /* eslint-disable prefer-promise-reject-errors */
 import '@testing-library/jest-dom';
-import { downloadFile } from '@shared/utils';
-import { BrokerPlatformAuthService, ProfileEnum } from '@services';
-import {
-  postQuotation,
-  putQuotation,
-  quoteSliceActions,
-} from '../../../application/features/quote/QuoteSlice';
+import { addDays, startOfDay } from 'date-fns';
+import { BrokerPlatformAuthService } from '@services';
+import { parseDateToString } from '../../../helpers';
+import QuotationPricingApi from '../../../application/features/quotationPricing/QuotationPricingApi';
+import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
 import { store } from '../../../config/store';
-import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
+import { fireEvent, render, waitFor } from '../../../config/testUtils';
 import ValidityAndValueForm from './ValidityAndValueForm';
 import {
-  createQuoteMock,
-  proposalResumeMock,
+  brokerMock,
+  modalityBidderMock,
+  policyholderDetailsMock,
   quoteResultMock,
 } from '../../../__mocks__';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
-import { QuotationDTO } from '../../../application/types/dto';
 
 const advanceStepMock = jest.fn();
-const mockHook = jest.fn();
 
 jest.mock('@shared/hooks', () => {
   const originalModule = jest.requireActual('@shared/hooks');
@@ -39,13 +36,6 @@ jest.mock('@shared/utils', () => {
     downloadFile: jest.fn(),
   };
 });
-jest.mock('../../hooks', () => {
-  const rest = jest.requireActual('../../hooks');
-  return {
-    ...rest,
-    useQuotation: () => mockHook,
-  };
-});
 jest.mock('junto-design-system', () => {
   const original = jest.requireActual('junto-design-system');
   return {
@@ -54,133 +44,102 @@ jest.mock('junto-design-system', () => {
   };
 });
 describe('ValidityAndValueForm', () => {
+  let getPolicyholderBalanceLimitsMock: jest.SpyInstance;
+  const todayFormatted = parseDateToString(startOfDay(new Date()));
+
   beforeEach(() => {
     store.dispatch(quoteSliceActions.resetQuote());
-  });
-
-  it('Should have submit button disabled if there is no currentQuote in store', async () => {
-    const { findByTestId } = render(
-      <ValidityAndValueForm name="validityAndValue" />,
-    );
-    expect(await findByTestId('validityAndValue-button-submit')).toBeDisabled();
-  });
-
-  it('Should have submit button disabled if hasQuoteChanges flag in store is true', async () => {
+    getPolicyholderBalanceLimitsMock = jest
+      .spyOn(QuotationPricingApi, 'getPolicyholderBalanceLimits')
+      .mockImplementation(() =>
+        Promise.resolve({
+          availableLimit: 10000,
+          availableFlexibilizationLimit: 15000,
+          showFlexibilizationLimit: true,
+        }),
+      );
     jest
+      .spyOn(BrokerPlatformAuthService, 'getBroker')
+      .mockReturnValue(brokerMock);
+  });
+
+  it('should be able to create quotation or update quotation and advance to next step', async () => {
+    const postQuotation = jest
       .spyOn(QuoteApi, 'postQuotation')
       .mockImplementation(async () => quoteResultMock);
-    await store.dispatch(postQuotation(createQuoteMock));
-    store.dispatch(quoteSliceActions.setProposalFee(0.5));
-
-    const { findByTestId } = render(
-      <ValidityAndValueForm name="validityAndValue" />,
-    );
-    expect(await findByTestId('validityAndValue-button-submit')).toBeDisabled();
-  });
-
-  it('Should call advanceStep on useFlow hook on submit', async () => {
-    jest
-      .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResultMock);
-    const { findByTestId } = render(
-      <ValidityAndValueForm name="validityAndValue" />,
-    );
-    await store.dispatch(postQuotation(createQuoteMock));
-    const submit = await findByTestId('validityAndValue-button-submit');
-    expect(submit).not.toBeDisabled();
-    await act(async () => {
-      await fireEvent.click(submit);
-    });
-    expect(advanceStepMock).toHaveBeenCalledWith('validityAndValue');
-  });
-
-  it('Should be able to download quotation document if there is a valid current quote', async () => {
-    jest
-      .spyOn(QuoteApi, 'postQuotation')
+    const putQuotation = jest
+      .spyOn(QuoteApi, 'putQuotation')
       .mockImplementation(async () => quoteResultMock);
     const downloadMock = jest
       .spyOn(QuoteApi, 'getQuotationDocument')
       .mockImplementation(async () => 'Ok');
-    const { findByTestId } = render(
+    await store.dispatch(
+      quoteSliceActions.setPolicyholder(
+        policyholderDetailsMock.registrationData,
+      ),
+    );
+    await store.dispatch(quoteSliceActions.setModality(modalityBidderMock));
+    let state = store.getState();
+    const { getByTestId, getByText, findByTestId } = render(
       <ValidityAndValueForm name="validityAndValue" />,
     );
-    await store.dispatch(postQuotation(createQuoteMock));
-    const download = await findByTestId('validityAndValue-button-download');
-    await act(async () => {
-      await fireEvent.click(download);
+    await waitFor(async () => {
+      await expect(getPolicyholderBalanceLimitsMock).toHaveBeenCalledWith(
+        31832,
+        99,
+      );
+      await expect(
+        getByText('Limite disponível: R$ 15.000,00'),
+      ).toBeInTheDocument();
     });
+    expect(getByTestId('validityAndValueFooter-button-submit')).toBeDisabled();
+    fireEvent.change(getByTestId('validityFields-dateinput-start-validity'), {
+      target: { value: todayFormatted },
+    });
+    fireEvent.change(getByTestId('validityFields-dateinput-end-validity'), {
+      target: {
+        value: parseDateToString(startOfDay(addDays(new Date(), 30))),
+      },
+    });
+    state = store.getState();
+    expect(state.quote.startDateValidity).toBe(todayFormatted);
+    expect(state.quote.endDateValidity).toBe(
+      parseDateToString(startOfDay(addDays(new Date(), 30))),
+    );
+    expect(state.quote.durationInDays).toBe(30);
+    fireEvent.change(getByTestId('securedAmount-input-securedAmount'), {
+      target: { value: 12345 },
+    });
+    fireEvent.blur(getByTestId('securedAmount-input-securedAmount'));
+    state = store.getState();
+    await waitFor(async () => {
+      await expect(state.quote.securedAmount).toBe(123.45);
+      await expect(postQuotation).toHaveBeenCalled();
+    });
+    expect(getByText('R$ 190,00')).toBeInTheDocument();
+    expect(getByText('R$ 38,00')).toBeInTheDocument();
+    expect(getByText('20%')).toBeInTheDocument();
+    expect(getByText('0,26%')).toBeInTheDocument();
+    await waitFor(async () => {
+      await fireEvent.click(getByTestId('flexRateToggle-toggle-input'));
+    });
+    const commissionFlex = await findByTestId(
+      'feeCalculation-input-commissionFlex',
+    );
+    fireEvent.change(commissionFlex, { target: { value: '30,00' } });
+    state = store.getState();
+    expect(state.quote.toggleRateFlex).toBeTruthy();
+    expect(state.quote.commissionFlex).toBe(30);
+    fireEvent.click(getByTestId('feeCalculation-button-calculate'));
+    await waitFor(async () => {
+      await expect(putQuotation).toHaveBeenCalled();
+    });
+    fireEvent.click(getByTestId('validityAndValueFooter-button-download'));
     expect(downloadMock).toHaveBeenCalledWith(1868859);
-    expect(downloadFile).toHaveBeenCalled();
-  });
-
-  it('should be able to not display the quotation download button if the profile is a policyholder', async () => {
-    jest
-      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
-      .mockReturnValue(ProfileEnum.POLICYHOLDER);
-    jest
-      .spyOn(QuoteApi, 'postQuotation')
-      .mockImplementation(async () => quoteResultMock);
-    const { queryByTestId } = render(
-      <ValidityAndValueForm name="validityAndValue" />,
-    );
-    await store.dispatch(postQuotation(createQuoteMock));
-    const download = await queryByTestId('validityAndValue-button-download');
-    expect(download).not.toBeInTheDocument();
-  });
-
-  it('Should call useQuotation hook on render if there is current quote without prize and isQuoteResume is true', async () => {
-    store.dispatch(quoteSliceActions.setQuoteResumeData(proposalResumeMock));
-    const { container } = render(
-      <ValidityAndValueForm name="validityAndValue" />,
-    );
-    expect(container).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(mockHook).toHaveBeenCalled();
-    });
-  });
-
-  it('Should display error alert if a quotation update or create fails', async () => {
-    jest.spyOn(QuoteApi, 'putQuotation').mockImplementation(async () =>
-      Promise.reject({
-        data: {
-          data: {
-            message: 'Erro',
-          },
-        },
-      }),
-    );
-    const { findByText } = render(
-      <ValidityAndValueForm name="validityAndValue" />,
-    );
-    store.dispatch(
-      putQuotation({ proposalId: 90895, quoteData: {} as QuotationDTO }),
-    );
     expect(
-      await findByText(
-        'Ops! Parece que tivemos um problema ao gerar a sua cotação.',
-      ),
-    ).toBeInTheDocument();
-  });
-
-  it('Should display correct error alert if quotation fails for policyholder with no fee', async () => {
-    jest.spyOn(QuoteApi, 'postQuotation').mockImplementation(async () =>
-      Promise.reject({
-        data: {
-          data: {
-            message: 'Taxa do tomador não encontrada.',
-          },
-        },
-      }),
-    );
-    const { findByText } = render(
-      <ValidityAndValueForm name="validityAndValue" />,
-    );
-    await store.dispatch(postQuotation({} as QuotationDTO));
-    expect(
-      await findByText(
-        /Ops! Parece que tivemos um problema com a configuração da taxa do Tomador. Por favor,/,
-      ),
-    ).toBeInTheDocument();
+      getByTestId('validityAndValueFooter-button-submit'),
+    ).not.toBeDisabled();
+    fireEvent.click(getByTestId('validityAndValueFooter-button-submit'));
+    expect(advanceStepMock).toHaveBeenCalledWith('validityAndValue');
   });
 });

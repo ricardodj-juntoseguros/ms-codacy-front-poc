@@ -1,10 +1,22 @@
-import { StepComponentModel } from "@shared/hooks";
-import { COMMON_STEPS } from "./commonSteps";
+import { StepComponentModel } from '@shared/hooks';
+import { ModalityTypeEnum } from '../../application/types/model';
+import { COMMON_STEPS } from './commonSteps';
+import { SERVICE_PROVIDER_PERFORMER_STEPS } from './serviceProviderPerformerSteps';
 
 interface ModalitySteps {
-  [x: number]: StepComponentModel[]
+  [x: number]: StepComponentModel[];
 }
 
-export const MODALITY_STEPS: ModalitySteps = {
-  99: COMMON_STEPS, // Licitante
-}
+const ACTIVE_MODALITIES: ModalitySteps = {
+  [ModalityTypeEnum.BIDDER]: COMMON_STEPS,
+};
+
+const DEVELOPMENT_MODALITIES = {
+  [ModalityTypeEnum.SERVICE_PROVIDER_PERFORMER]:
+    SERVICE_PROVIDER_PERFORMER_STEPS,
+};
+
+export const MODALITY_STEPS: ModalitySteps =
+  process.env.NX_GLOBAL_ENVIROMENT === 'qa'
+    ? Object.assign(ACTIVE_MODALITIES, DEVELOPMENT_MODALITIES)
+    : ACTIVE_MODALITIES;

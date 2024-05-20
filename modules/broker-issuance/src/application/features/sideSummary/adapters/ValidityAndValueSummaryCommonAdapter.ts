@@ -2,7 +2,7 @@ import { currencyFormatter, thousandSeparator } from '@shared/utils';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { QuoteResultDTO } from '../../../types/dto';
 
-export const validityAndValueSummaryAdapter = (
+export const validityAndValueSummaryCommonAdapter = (
   startDateValidity?: string | null,
   endDateValidity?: string | null,
   durationInDays?: number | null,

@@ -8,6 +8,7 @@ import ProposalSlice from '../application/features/proposal/ProposalSlice';
 import ContractualConditionSlice from '../application/features/contractualCondition/ContractualConditionSlice';
 import ProposalDocumentsSlice from '../application/features/proposalDocuments/ProposalDocumentsSlice';
 import CommercialAuthorizationSlice from '../application/features/CommercialAuthorization/CommercialAuthorizationSlice';
+import AdditionalCoverageSlice from '../application/features/additionalCoverage/AdditionalCoverageSlice';
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     contractualCondition: ContractualConditionSlice,
     proposalDocuments: ProposalDocumentsSlice,
     commercialAuthorization: CommercialAuthorizationSlice,
+    additionalCoverage: AdditionalCoverageSlice,
     validation: validationSlice,
   },
 });

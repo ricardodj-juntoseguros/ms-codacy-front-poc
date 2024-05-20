@@ -1,0 +1,7 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.validity-and-value-form__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('m');
+}

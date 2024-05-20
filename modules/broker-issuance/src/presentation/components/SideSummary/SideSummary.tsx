@@ -53,7 +53,7 @@ const SideSummary: FunctionComponent = () => {
     return (
       <motion.div
         initial={{ maxHeight: 0 }}
-        animate={{ maxHeight: 250 }}
+        animate={{ maxHeight: 260 }}
         exit={{ maxHeight: 0 }}
         transition={{ duration: 0.6, ease: 'easeInOut' }}
         className={styles['side-summary__step-details']}

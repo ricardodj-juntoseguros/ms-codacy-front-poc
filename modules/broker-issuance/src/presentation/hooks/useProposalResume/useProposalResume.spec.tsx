@@ -191,6 +191,7 @@ describe('UseProposalResume Hook', () => {
     const {
       policyholderSelection,
       quote,
+      additionalCoverage,
       modalitySelecion,
       insuredSelection,
       proposal,
@@ -215,6 +216,8 @@ describe('UseProposalResume Hook', () => {
     expect(quote.securedAmount).toEqual(45000);
     expect(quote.durationInDays).toEqual(120);
     expect(quote.isPolicyInProgress).toBe(true);
+    expect(additionalCoverage.labor).toBe(false);
+    expect(additionalCoverage.rateAggravation).toBe(false);
 
     // Asserts insured selection rehydrate
     expect(insuredSearchMock).toHaveBeenLastCalledWith(insuredMock.name);

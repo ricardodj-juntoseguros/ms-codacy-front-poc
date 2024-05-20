@@ -9,11 +9,11 @@ import { modalityBidderMock, modalityDefaultMock } from '../../../__mocks__';
 
 const todayFormatted = parseDateToString(startOfDay(new Date()));
 const getStartInput = (container: HTMLElement) =>
-  getByTestId(container, 'validityAndValueForm-dateinput-start-validity');
+  getByTestId(container, 'validityFields-dateinput-start-validity');
 const getEndInput = (container: HTMLElement) =>
-  getByTestId(container, 'validityAndValueForm-dateinput-end-validity');
+  getByTestId(container, 'validityFields-dateinput-end-validity');
 const getDurationInput = (container: HTMLElement) =>
-  getByTestId(container, 'validityAndValueForm-input-validity-days');
+  getByTestId(container, 'validityFields-input-validity-days');
 
 describe('ValidityFields', () => {
   afterEach(() => {

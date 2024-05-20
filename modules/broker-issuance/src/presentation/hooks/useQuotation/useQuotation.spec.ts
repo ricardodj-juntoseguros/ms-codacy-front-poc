@@ -1,8 +1,13 @@
 import '@testing-library/jest-dom';
+import * as reactRedux from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
 import { Broker, BrokerPlatformAuthService } from '@services';
-import * as reactRedux from 'react-redux';
-import { insuredMock, quoteResultMock, storeMock } from '../../../__mocks__';
+import {
+  insuredMock,
+  modalityDefaultMock,
+  quoteResultMock,
+  storeMock,
+} from '../../../__mocks__';
 import QuoteApi from '../../../application/features/quote/QuoteApi';
 import { useQuotation } from './useQuotation';
 
@@ -44,6 +49,11 @@ describe('useQuotation Hook', () => {
       createProposalSuccess: false,
       hasProposalChanges: true,
     },
+    additionalCoverage: {
+      labor: true,
+      rateAggravation: true,
+      hasAdditionalCoverageChanges: true,
+    },
   };
 
   beforeEach(() => {
@@ -79,6 +89,12 @@ describe('useQuotation Hook', () => {
         currentQuote: quoteResultMock,
         hasQuoteChanges: true,
         proposalFee: 0.26,
+        modality: modalityDefaultMock,
+      },
+      additionalCoverage: {
+        labor: true,
+        rateAggravation: true,
+        hasAdditionalCoverageChanges: true,
       },
       proposal: {
         identification: {

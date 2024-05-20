@@ -5,6 +5,7 @@ import {
   quoteSliceActions,
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
+import { selectAdditionalCoverage } from '../../../application/features/additionalCoverage/AdditionalCoverageSlice';
 import styles from './FlexRateToggle.module.scss';
 
 const FlexRateToggle: React.FunctionComponent = () => {
@@ -14,6 +15,7 @@ const FlexRateToggle: React.FunctionComponent = () => {
     currentQuote,
     proposalFee: inputProposalFee,
   } = useSelector(selectQuote);
+  const { labor, rateAggravation } = useSelector(selectAdditionalCoverage);
   const [flexTooltipVisible, setFlexTooltipVisible] = useState<boolean>(false);
   const flexTooltipButtonRef = useRef<HTMLButtonElement>(null);
   const { setToggleRateFlex } = quoteSliceActions;
@@ -26,9 +28,10 @@ const FlexRateToggle: React.FunctionComponent = () => {
     } = currentQuote;
     return (
       (!feeFlexEnabled && !commissionFlexEnabled) ||
-      inputProposalFee !== proposalFee
+      inputProposalFee !== proposalFee ||
+      (labor && !rateAggravation)
     );
-  }, [currentQuote, inputProposalFee]);
+  }, [currentQuote, inputProposalFee, labor, rateAggravation]);
 
   const getTooltipText = () => {
     if (!currentQuote) return '';
@@ -36,8 +39,11 @@ const FlexRateToggle: React.FunctionComponent = () => {
       pricing: { feeFlexEnabled, commissionFlexEnabled },
       proposalFee,
     } = currentQuote;
-    if (!feeFlexEnabled && !commissionFlexEnabled) {
-      return 'A taxa flex está desabilitada para esse tomador, mas você pode prosseguir normalmente com sua proposta. Em caso de dúvidas, entre em contato via chat.';
+    if (
+      (!feeFlexEnabled && !commissionFlexEnabled) ||
+      (labor && !rateAggravation)
+    ) {
+      return 'A taxa flex é desabilitada quando não considerado os 50% de agravo na cobertura trabalhista, ou caso não esteja disponível para o tomador.';
     }
     if (inputProposalFee !== proposalFee) {
       return 'A taxa flex está desabilitada pois você deve recalcular sua cotação após a alteração da taxa padrão. Clique em "Calcular" para habilitar novamente.';

@@ -1,12 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { selectAdditionalCoverage } from '../../../application/features/additionalCoverage/AdditionalCoverageSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import {
   policyholderAndModalitySummaryAdapter,
-  validityAndValueSummaryAdapter,
+  validityAndValueSummaryCommonAdapter,
   documentsSummaryAdapter,
   insuredDataSummaryAdapter,
   additionalDataSummaryAdapter,
+  additionalCoverageSummaryAdapter,
 } from '../../../application/features/sideSummary/adapters';
 import { selectPolicyholder } from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
 import { selectContractualCondition } from '../../../application/features/contractualCondition/ContractualConditionSlice';
@@ -25,6 +27,7 @@ export function useFormSummary() {
     securedAmount,
     currentQuote,
   } = useSelector(selectQuote);
+  const { labor, rateAggravation } = useSelector(selectAdditionalCoverage);
   const {
     insured,
     insuredAddress,
@@ -47,8 +50,8 @@ export function useFormSummary() {
     );
   }, [policyholder, policyholderAffiliate, modality]);
 
-  const validityAndValueFormSummary = useMemo(() => {
-    return validityAndValueSummaryAdapter(
+  const validityAndValueFormCommonSummary = useMemo(() => {
+    return validityAndValueSummaryCommonAdapter(
       startDateValidity,
       endDateValidity,
       durationInDays,
@@ -60,6 +63,29 @@ export function useFormSummary() {
     endDateValidity,
     durationInDays,
     securedAmount,
+    currentQuote,
+  ]);
+
+  const validityAndValueCoverageFormSummary = useMemo(() => {
+    const commonValues = validityAndValueSummaryCommonAdapter(
+      startDateValidity,
+      endDateValidity,
+      durationInDays,
+      securedAmount,
+      currentQuote,
+    );
+    const additionalCoverageValues = additionalCoverageSummaryAdapter(
+      labor,
+      rateAggravation,
+    );
+    return [...commonValues, ...additionalCoverageValues];
+  }, [
+    startDateValidity,
+    endDateValidity,
+    durationInDays,
+    securedAmount,
+    labor,
+    rateAggravation,
     currentQuote,
   ]);
 
@@ -96,7 +122,8 @@ export function useFormSummary() {
         [x: string]: { key: string; label: string; value: string }[];
       } = {
         PolicyholderAndModalityForm: policyholderAndModalityFormSummary,
-        ValidityAndValueForm: validityAndValueFormSummary,
+        ValidityAndValueForm: validityAndValueFormCommonSummary,
+        ValidityAndValueCoverageForm: validityAndValueCoverageFormSummary,
         InsuredDataForm: insuredDataFormSummary,
         AdditionalDataForm: additionalDataFormSummary,
       };
@@ -104,7 +131,8 @@ export function useFormSummary() {
     },
     [
       policyholderAndModalityFormSummary,
-      validityAndValueFormSummary,
+      validityAndValueFormCommonSummary,
+      validityAndValueCoverageFormSummary,
       insuredDataFormSummary,
       additionalDataFormSummary,
     ],

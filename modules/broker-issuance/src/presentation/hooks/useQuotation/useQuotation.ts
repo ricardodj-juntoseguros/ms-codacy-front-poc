@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { useDispatch, useSelector } from 'react-redux';
 import {
   postQuotation,
@@ -10,32 +11,39 @@ import {
 } from '../../../application/features/proposal/ProposalSlice';
 import { quotationAdapter } from '../../../application/features/quote/adapters';
 import { useValidate } from '../useValidate';
-import {
-  CreateQuotationSchema,
-  UpdateQuotationSchema,
-} from '../../../application/validations';
+import { QUOTATITON_MODALITY_SCHEMAS } from '../../../application/validations';
 import { ValidationTypesEnum } from '../../../application/types/model';
+import {
+  additionalCoverageActions,
+  selectAdditionalCoverage,
+} from '../../../application/features/additionalCoverage/AdditionalCoverageSlice';
+import { AppDispatch } from '../../../config/store';
 
 export const useQuotation = () => {
   const validate = useValidate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const quote = useSelector(selectQuote);
   const {
     firstDueDate,
     numberOfInstallments,
     identification: proposalIdentification,
   } = useSelector(selectProposal);
+  const additionalCoverage = useSelector(selectAdditionalCoverage);
+  const { hasAdditionalCoverageChanges } = additionalCoverage;
+  const { setHasAdditionalCoverageChanges } = additionalCoverageActions;
   const { currentQuote, hasQuoteChanges, loadingQuote } = quote;
 
   const createQuotation = async () => {
+    if (!quote.modality) return;
     const payload = quotationAdapter(
       quote,
+      additionalCoverage,
       firstDueDate,
       numberOfInstallments,
       false,
     );
     const valid = await validate(
-      CreateQuotationSchema,
+      QUOTATITON_MODALITY_SCHEMAS[quote.modality.id],
       payload,
       ValidationTypesEnum.full,
       [],
@@ -47,23 +55,28 @@ export const useQuotation = () => {
   };
 
   const updateQuotation = async () => {
-    if (!currentQuote) return;
+    if (!currentQuote || !quote.modality) return;
     const payload = quotationAdapter(
       quote,
+      additionalCoverage,
       firstDueDate,
       numberOfInstallments,
       true,
     );
     const valid = await validate(
-      UpdateQuotationSchema,
-      payload,
+      QUOTATITON_MODALITY_SCHEMAS[quote.modality.id],
+      { ...payload, hasUpdate: true },
       ValidationTypesEnum.full,
       [],
       true,
     );
     if (valid) {
       const proposalId = currentQuote.identification.ProposalId;
-      dispatch(putQuotation({ proposalId, quoteData: payload }));
+      dispatch(putQuotation({ proposalId, quoteData: payload })).then(() => {
+        if (hasAdditionalCoverageChanges) {
+          dispatch(setHasAdditionalCoverageChanges(false));
+        }
+      });
       if (proposalIdentification) {
         dispatch(proposalActions.setHasProposalChanges(true));
       }
@@ -76,7 +89,7 @@ export const useQuotation = () => {
       createQuotation();
       return;
     }
-    if (hasQuoteChanges || isSyncUpdate) {
+    if (hasQuoteChanges || isSyncUpdate || hasAdditionalCoverageChanges) {
       updateQuotation();
     }
   };

@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import { BrokerPlatformAuthService } from '@services';
 import { nanoid } from 'nanoid/non-secure';
 import { stringToInt } from '@shared/utils';
+import { additionalCoverageActions } from '../../../application/features/additionalCoverage/AdditionalCoverageSlice';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { ProposalResumeDTO } from '../../../application/types/dto';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
@@ -29,6 +30,7 @@ export const useProposalResume = () => {
     setPolicyholderAffiliate,
     setModality,
   } = quoteSliceActions;
+  const { setLabor, setRateAggravation } = additionalCoverageActions;
   const {
     setPolicyholderOptions,
     setPolicyholderAffiliatesOptions,
@@ -87,6 +89,7 @@ export const useProposalResume = () => {
       selectedNumberOfInstallments,
       observations,
       firstDueDate,
+      additionalCoverage,
     } = data;
 
     const broker = BrokerPlatformAuthService.getBroker();
@@ -180,6 +183,8 @@ export const useProposalResume = () => {
 
     dispatch(setModality(modalityToSet));
     dispatch(setQuoteResumeData(data));
+    dispatch(setLabor(additionalCoverage.labor));
+    dispatch(setRateAggravation(additionalCoverage.rateAggravation));
 
     if (insuredId && insuredName) {
       const insureds = await InsuredSelectionApi.searchInsured(insuredName)

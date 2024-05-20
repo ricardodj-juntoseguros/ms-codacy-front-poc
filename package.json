@@ -11,6 +11,7 @@
     "start:fidelize:squad6": "cp ./environments/.env.qa.squad6 .env && cp ./apps/fidelize/src/environments/.env.qa.squad6 ./apps/fidelize/.env && nx serve fidelize",
     "start:fidelize:squad7": "cp ./environments/.env.qa.squad7 .env && cp ./apps/fidelize/src/environments/.env.qa.squad7 ./apps/fidelize/.env && nx serve fidelize",
     "start:plataforma": "cp ./environments/.env.qa .env && cp ./apps/plataforma/src/environments/.env.qa ./apps/plataforma/.env && nx serve plataforma",
+    "start:plataforma:local": "cp ./environments/.env.local .env && cp ./apps/plataforma/src/environments/.env.qa ./apps/plataforma/.env && nx serve plataforma",
     "start:plataforma:squad2": "cp ./environments/.env.qa.squad2 .env && cp ./apps/plataforma/src/environments/.env.qa.squad2 ./apps/plataforma/.env && nx serve plataforma",
     "start:plataforma:squad5": "cp ./environments/.env.qa.squad5 .env && cp ./apps/plataforma/src/environments/.env.qa.squad5 ./apps/plataforma/.env && nx serve plataforma",
     "start:plataforma:squad6": "cp ./environments/.env.qa.squad6 .env && cp ./apps/plataforma/src/environments/.env.qa.squad6 ./apps/plataforma/.env && nx serve plataforma",

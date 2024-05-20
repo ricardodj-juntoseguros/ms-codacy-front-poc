@@ -9,15 +9,10 @@ import {
 } from '../../../application/features/quote/QuoteSlice';
 import { MAX_STANDARD_FEE } from '../../../constants';
 import { selectValidation } from '../../../application/features/validation/ValidationSlice';
+import { useQuotation } from '../../hooks';
 import styles from './FeeCalculation.module.scss';
 
-interface FeeCalculationProps {
-  onCalculateCallback: () => void;
-}
-
-const FeeCalculation: React.FC<FeeCalculationProps> = ({
-  onCalculateCallback,
-}) => {
+const FeeCalculation: React.FC = () => {
   const dispatch = useDispatch();
   const { proposalFee, currentQuote, toggleRateFlex, commissionFlex, feeFlex } =
     useSelector(selectQuote);
@@ -31,6 +26,7 @@ const FeeCalculation: React.FC<FeeCalculationProps> = ({
       feeFlexMaxValue,
     },
   } = currentQuote || { pricing: {} };
+  const createOrUpdateQuote = useQuotation();
 
   const calculateButtonDisabled = useMemo(() => {
     return !(currentQuote && proposalFee && proposalFee <= MAX_STANDARD_FEE);
@@ -109,7 +105,7 @@ const FeeCalculation: React.FC<FeeCalculationProps> = ({
           data-testid="feeCalculation-button-calculate"
           variant="secondary"
           disabled={calculateButtonDisabled}
-          onClick={() => onCalculateCallback()}
+          onClick={() => createOrUpdateQuote()}
         >
           Calcular
         </Button>

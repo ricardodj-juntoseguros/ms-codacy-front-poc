@@ -17,7 +17,10 @@ export const createQuoteMock = {
     durationInDays: 365,
   },
   securedAmount: 1000,
-  additionalLaborCoverage: false,
+  additionalCoverage: {
+    labor: true,
+    rateAggravation: true,
+  },
   brokerFederalId: '06465132135429',
   numberOfInstallments: 1,
   firstDueDate: null,

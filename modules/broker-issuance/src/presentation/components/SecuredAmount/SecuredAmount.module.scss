@@ -1,0 +1,17 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.secured-amount__wrapper {
+  @include border(1, 'solid', 'grey-400');
+  @include rounded('card');
+  padding: spacing('xl');
+
+  @media screen and (max-width: 500px) {
+    padding: spacing('l');
+  }
+}
+
+.secured-amount__title {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  margin: 0 0 spacing('l') 0;
+}
