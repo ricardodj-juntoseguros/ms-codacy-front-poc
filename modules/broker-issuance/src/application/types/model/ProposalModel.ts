@@ -1,6 +1,6 @@
-import { InsuredAddressModel } from "./InsuredAddressModel";
-import { InsuredModel } from "./InsuredModel";
-import { SubmitToApprovalOrIssuanceResultDTO, ProposalDTO } from "../dto";
+import { InsuredAddressModel } from './InsuredAddressModel';
+import { InsuredModel } from './InsuredModel';
+import { SubmitToApprovalOrIssuanceResultDTO, ProposalDTO } from '../dto';
 
 export interface ProposalModel {
   identification: {
@@ -22,6 +22,7 @@ export interface ProposalModel {
   hasOnlyFinancialPending: boolean;
   hasProposalChanges: boolean;
   issuedAt: string;
-  protocols: SubmitToApprovalOrIssuanceResultDTO['protocols']
+  protocols: SubmitToApprovalOrIssuanceResultDTO['protocols'];
   loadingCanAuthorize: boolean;
+  contacts: string[];
 }

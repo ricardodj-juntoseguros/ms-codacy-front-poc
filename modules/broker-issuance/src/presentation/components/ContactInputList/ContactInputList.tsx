@@ -43,6 +43,14 @@ const ContactInputList: FunctionComponent<ContactInputListProps> = ({
     setContact('');
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      handleChangeContacts();
+    }
+  };
+
   const renderContactList = () => {
     if (contacts.length === 0) return null;
     return (
@@ -81,6 +89,7 @@ const ContactInputList: FunctionComponent<ContactInputListProps> = ({
           value={contact}
           onChange={e => handleSetContact(e.target.value)}
           errorMessage={error}
+          onKeyDown={e => handleKeyDown(e)}
         />
         <Button
           id={`${idPrefix}-button-add`}

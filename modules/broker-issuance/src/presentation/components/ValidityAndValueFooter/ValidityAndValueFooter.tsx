@@ -46,7 +46,7 @@ const ValidityAndValueFooter: FunctionComponent = () => {
     <footer
       className={className(styles['validity-and-value-footer__wrapper'], {
         [styles['validity-and-value-footer__wrapper--policyholder']]:
-          profile !== ProfileEnum.POLICYHOLDER,
+          profile === ProfileEnum.POLICYHOLDER,
       })}
     >
       {profile !== ProfileEnum.POLICYHOLDER && (

@@ -1,0 +1,49 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.proposal_contacts__wrapper {
+  @include border(1, 'solid', 'grey-300');
+  @include rounded('card');
+  padding: spacing('l') spacing('xl');
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l');
+}
+
+.proposal_contacts__title-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  & > button:last-child {
+    align-self: center;
+    & > i {
+      transition: all 0.2s linear;
+      margin-right: 0px !important;
+    }
+  }
+
+  &--expanded {
+    & > button:last-child > i {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.proposal_contacts__title {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  margin: 0;
+}
+
+.proposal_contacts__content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l');
+  overflow: hidden;
+}
+
+.proposal_contacts__content-label {
+  @include font('base');
+  @include color('color', 'grey-600');
+  margin: 0;
+}

@@ -7,6 +7,7 @@ import * as ALL_STEPS from '../../../constants/steps';
 import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
 import { PolicyholderAffiliatesModel } from '../../../application/types/model';
 import { policyholderSelectionActions } from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
+import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
 import SideSummary from './SideSummary';
 
 describe('SideSummary', () => {
@@ -148,5 +149,20 @@ describe('SideSummary', () => {
     expect(getByText('Documentos enviados')).toBeInTheDocument();
     expect(getByText('carta-nomeacao.pdf')).toBeInTheDocument();
     expect(getByText('0.19 MB')).toBeInTheDocument();
+  });
+
+  it('should be able to render proposal contacts summary', async () => {
+    store.dispatch(proposalActions.setContacts(['teste@juntoseguros.com']));
+    const { getByText } = render(
+      <FlowProvider
+        allSteps={Object.values(ALL_STEPS).flat()}
+        initialSteps={ALL_STEPS.DEFAULT_STEP}
+        showFinishedSteps={false}
+      >
+        <SideSummary />
+      </FlowProvider>,
+    );
+    expect(getByText('Envio de apólice por e-mail')).toBeInTheDocument();
+    expect(getByText('teste@juntoseguros.com')).toBeInTheDocument();
   });
 });

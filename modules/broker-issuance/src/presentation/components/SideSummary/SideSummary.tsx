@@ -1,8 +1,10 @@
 import { FunctionComponent, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LinkButton } from 'junto-design-system';
 import classNames from 'classnames';
 import { StepStatusEnum, useFlow } from '@shared/hooks';
+import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import { useFormSummary } from '../../hooks';
 import styles from './SideSummary.module.scss';
 
@@ -14,6 +16,7 @@ const SideSummary: FunctionComponent = () => {
   );
   const { steps, setEditableStep } = useFlow();
   const { getSummaryData, uploadedDocumentsSummary } = useFormSummary();
+  const { contacts } = useSelector(selectProposal);
 
   useEffect(() => {
     const editableStep = steps.find(
@@ -175,6 +178,25 @@ const SideSummary: FunctionComponent = () => {
     );
   };
 
+  const renderContactList = () => {
+    if (contacts.length === 0) return null;
+    return (
+      <li className={styles['side-summary__contacts']}>
+        <p>Envio de apólice por e-mail</p>
+        <div className={styles['side-summary__contacts-list']}>
+          {contacts.map(contact => (
+            <div
+              key={`contact-${contact}`}
+              className={styles['side-summary__contacts-listitem']}
+            >
+              <p>{contact}</p>
+            </div>
+          ))}
+        </div>
+      </li>
+    );
+  };
+
   return (
     <aside
       id="sideSummary-container-aside"
@@ -195,6 +217,7 @@ const SideSummary: FunctionComponent = () => {
       </div>
       <ul className={styles['side-summary__list-steps']}>
         {renderSummarySteps()}
+        {renderContactList()}
         {renderUploadedDocuments()}
       </ul>
     </aside>

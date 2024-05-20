@@ -220,12 +220,32 @@
   }
 }
 
-.side-summary__uploaded-documents {
+.side-summary__contacts {
+  margin-top: -(spacing('l'));
+
   & > p {
     @include font('sm-emphasys');
     @include color('color', 'dark');
     margin: 0;
     padding-bottom: spacing('m');
+  }
+
+  @media screen and (max-width: 768px) {
+    margin-top: 0px;
+    margin-bottom: spacing('l');
+  }
+}
+
+.side-summary__contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('m');
+}
+
+.side-summary__contacts-listitem {
+  @include font('sm');
+  & > p {
+    margin: 0px;
   }
 }
 

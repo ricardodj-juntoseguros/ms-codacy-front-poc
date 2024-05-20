@@ -22,7 +22,7 @@ export const useIssuance = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { currentQuote } = useSelector(selectQuote);
-  const { comments, isAutomaticPolicy } = useSelector(selectProposal);
+  const { comments, isAutomaticPolicy, contacts } = useSelector(selectProposal);
   const { typeOfAuthorization, approvalContacts } = useSelector(
     selectCommercialAuthorization,
   );
@@ -48,7 +48,7 @@ export const useIssuance = () => {
       setLoadingIssuance(true);
       const payload = issuanceAdapter(
         comments,
-        [],
+        contacts,
         isCommercial ? approvalContacts : [],
         isCommercial ? typeOfAuthorization : '',
       );
@@ -70,6 +70,7 @@ export const useIssuance = () => {
       history,
       typeOfAuthorization,
       onNext,
+      contacts,
     ],
   );
 
@@ -79,7 +80,7 @@ export const useIssuance = () => {
       setLoadingIssuance(true);
       const payload = issuanceAdapter(
         comments,
-        [],
+        contacts,
         approvalContacts,
         typeOfAuthorization,
       );
@@ -100,6 +101,7 @@ export const useIssuance = () => {
       typeOfAuthorization,
       onNext,
       history,
+      contacts,
     ],
   );
 

@@ -5,7 +5,11 @@ import { format, parse, startOfDay } from 'date-fns';
 import { RootState } from '../../../config/store';
 import handleError from '../../../helpers/handlerError';
 import { ProposalModel } from '../../types/model/ProposalModel';
-import { CanAuthorizeDTO, ProposalDTO, ProposalResultDTO } from '../../types/dto';
+import {
+  CanAuthorizeDTO,
+  ProposalDTO,
+  ProposalResultDTO,
+} from '../../types/dto';
 import ProposalApi from './ProposalApi';
 import CanAuthorizeApi from '../canAuthorize/CanAuthorizeApi';
 
@@ -38,7 +42,7 @@ export const canAuthorizeProposal = createAsyncThunk<
     return CanAuthorizeApi.getCanAuthorize(policyId)
       .then(response => response)
       .catch(error => rejectWithValue(handleError(error)));
-  }
+  },
 );
 
 const initialState: ProposalModel = {
@@ -61,6 +65,7 @@ const initialState: ProposalModel = {
   issuedAt: '',
   protocols: [],
   loadingCanAuthorize: false,
+  contacts: [],
 };
 
 export const proposaSlice = createSlice({
@@ -85,6 +90,7 @@ export const proposaSlice = createSlice({
       state.issuedAt = '';
       state.protocols = [];
       state.loadingCanAuthorize = false;
+      state.contacts = [];
     },
     setProposalResumeData: (state, action) => {
       const {
@@ -140,17 +146,17 @@ export const proposaSlice = createSlice({
       state.hasProposalChanges = true;
     },
     setPaymentType: (state, action: PayloadAction<number>) => {
-      if(state.paymentType === action.payload) return;
+      if (state.paymentType === action.payload) return;
       state.paymentType = action.payload;
       state.hasProposalChanges = true;
     },
     setFirstDueDate: (state, action: PayloadAction<string | null>) => {
-      if(state.firstDueDate === action.payload) return;
+      if (state.firstDueDate === action.payload) return;
       state.firstDueDate = action.payload;
       state.hasProposalChanges = true;
     },
     setNumberOfInstallments: (state, action: PayloadAction<number>) => {
-      if(state.numberOfInstallments === action.payload) return;
+      if (state.numberOfInstallments === action.payload) return;
       state.numberOfInstallments = action.payload;
       state.hasProposalChanges = true;
     },
@@ -178,6 +184,9 @@ export const proposaSlice = createSlice({
     setProtocols: (state, action) => {
       state.protocols = action.payload;
     },
+    setContacts: (state, action: PayloadAction<string[]>) => {
+      state.contacts = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
@@ -187,10 +196,7 @@ export const proposaSlice = createSlice({
       })
       .addCase(putProposal.fulfilled, (state, action) => {
         const {
-          payload: {
-            createdAt,
-            PolicyId,
-          },
+          payload: { createdAt, PolicyId },
         } = action;
         state.identification = {
           PolicyId,

@@ -37,6 +37,7 @@ import CommercialAuthorization from '../CommercialAuthorization';
 import { useIssuance } from '../../hooks/useIssuance';
 import CommercialAuthorizationModal from '../CommercialAuthorizationModal';
 import styles from './AdditionalDataForm.module.scss';
+import ProposalContacts from '../ProposalContacts';
 
 const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
   name,
@@ -194,6 +195,7 @@ const AdditionalDataForm: FunctionComponent<GenericComponentProps> = ({
     >
       {renderProposalDocuments()}
       <PaymentFields />
+      <ProposalContacts />
       <section className={styles['additional-data-form__comments-wrapper']}>
         <p className={styles['additional-data-form__comments-text']}>
           Observações
