@@ -125,6 +125,7 @@ export function useFormSummary() {
         ValidityAndValueForm: validityAndValueFormCommonSummary,
         ValidityAndValueCoverageForm: validityAndValueCoverageFormSummary,
         InsuredDataForm: insuredDataFormSummary,
+        InsuredDataBidderForm: insuredDataFormSummary,
         AdditionalDataForm: additionalDataFormSummary,
       };
       return formSummariesData[formName] || [];

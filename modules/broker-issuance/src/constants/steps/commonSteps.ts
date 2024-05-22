@@ -18,7 +18,7 @@ export const COMMON_STEPS = [
     name: 'InsuredDataForm',
     status: StepStatusEnum.HIDDEN,
     component: InsuredDataForm,
-    summaryTitle: 'Dados do segurado',
+    summaryTitle: 'Dados do segurado e proposta',
     title: {
       text: 'Nessa etapa, indique os %STRONG% que irá fazer parte dessa garantia.',
       boldWords: ['dados do segurado'],
@@ -34,5 +34,5 @@ export const COMMON_STEPS = [
       text: 'Estamos quase lá! Basta completar os dados para que possamos %STRONG%',
       boldWords: ['finalizar sua emissão'],
     },
-  }
+  },
 ];

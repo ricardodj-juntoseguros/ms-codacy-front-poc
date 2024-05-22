@@ -25,7 +25,7 @@ const FlowProvider: React.FC<FlowProviderProps> = ({
   );
 
   const setSteps = (steps: StepModel[]) => {
-    setCurrentSteps(prevState => prevState.concat(steps));
+    setCurrentSteps(steps);
   };
 
   const setTitle = (stepName: string, text: string, boldWords: string[]) => {

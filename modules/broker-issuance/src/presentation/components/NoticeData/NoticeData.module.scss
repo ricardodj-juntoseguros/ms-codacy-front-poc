@@ -1,0 +1,14 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.notice-data__wrapper,
+.notice-data__fields {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('m');
+}
+
+.notice-data__description {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  margin: 0;
+}

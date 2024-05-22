@@ -4,6 +4,9 @@
   @include border(1, 'solid', 'grey-400');
   @include rounded('card');
   padding: spacing('xl');
+  flex-direction: column;
+  display: flex;
+  gap: spacing('l');
 
   @media screen and (max-width: 500px) {
     padding: spacing('l');
@@ -13,5 +16,5 @@
 .secured-amount__title {
   @include font('base-emphasys');
   @include color('color', 'dark');
-  margin: 0 0 spacing('l') 0;
+  margin: 0 0 spacing('m') 0;
 }

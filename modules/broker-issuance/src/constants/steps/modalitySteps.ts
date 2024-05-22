@@ -1,6 +1,6 @@
 import { StepComponentModel } from '@shared/hooks';
 import { ModalityTypeEnum } from '../../application/types/model';
-import { COMMON_STEPS } from './commonSteps';
+import { BIDDER_STEPS } from './bidderSteps';
 import { SERVICE_PROVIDER_PERFORMER_STEPS } from './serviceProviderPerformerSteps';
 
 interface ModalitySteps {
@@ -8,7 +8,7 @@ interface ModalitySteps {
 }
 
 const ACTIVE_MODALITIES: ModalitySteps = {
-  [ModalityTypeEnum.BIDDER]: COMMON_STEPS,
+  [ModalityTypeEnum.BIDDER]: BIDDER_STEPS,
 };
 
 const DEVELOPMENT_MODALITIES = {

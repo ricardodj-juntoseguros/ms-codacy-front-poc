@@ -29,6 +29,7 @@ export const useProposalResume = () => {
     setPolicyholder,
     setPolicyholderAffiliate,
     setModality,
+    setSubmodality,
   } = quoteSliceActions;
   const { setLabor, setRateAggravation } = additionalCoverageActions;
   const {
@@ -79,6 +80,7 @@ export const useProposalResume = () => {
       policyholderFederalId,
       policyholderAffiliateFederalId,
       modalityId,
+      subModalityId,
       insuredId,
       insuredName,
       insuredFederalId,
@@ -181,7 +183,17 @@ export const useProposalResume = () => {
       return;
     }
 
+    const submodalityToSet = modalityToSet.submodalities.find(
+      submodality => submodality.id === subModalityId,
+    );
+
+    if (!submodalityToSet) {
+      makeToast('error', 'Submodalidade do documento inválida');
+      return;
+    }
+
     dispatch(setModality(modalityToSet));
+    dispatch(setSubmodality(submodalityToSet));
     dispatch(setQuoteResumeData(data));
     dispatch(setLabor(additionalCoverage.labor));
     dispatch(setRateAggravation(additionalCoverage.rateAggravation));

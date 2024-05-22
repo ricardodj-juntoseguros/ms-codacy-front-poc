@@ -46,7 +46,7 @@ export const CommonProposalSchema = object().shape({
     .required()
     .test('maxBiddingNumber', function maxBiddingNumber() {
       const { biddingNumber } = this.parent;
-      return biddingNumber.length < 500;
+      return biddingNumber.length <= 500;
     }),
   biddingDescription: string().nullable().notRequired(),
   contacts: array().nullable().notRequired(),

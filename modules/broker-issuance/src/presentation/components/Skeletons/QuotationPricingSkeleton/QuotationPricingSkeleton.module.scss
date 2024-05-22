@@ -1,12 +1,10 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
 .quotation-pricing-skeleton__wrapper {
-  margin-top: spacing('xl');
-
   & > div:first-child {
     display: flex;
     flex-direction: column;
-    gap: spacing('xl');
+    gap: spacing('l');
 
     & > div:nth-child(2) {
       display: grid;
@@ -26,12 +24,12 @@
       grid-template-columns: 50% 50%;
       justify-content: space-between;
       gap: spacing('m');
-      
+
       & > div {
         display: grid;
         gap: spacing('m');
       }
-      
+
       & > div:last-child {
         justify-content: flex-end;
       }

@@ -1,13 +1,14 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
 .coverage-labor__wrapper {
-  margin-top: spacing('xl');
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l')
 }
 
 .coverage-labor__content {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: spacing('l');
 
   & > div:first-child {
     max-width: 348px;

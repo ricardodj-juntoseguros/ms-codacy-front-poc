@@ -8,7 +8,10 @@ import {
   startOfDay,
   parseISO,
 } from 'date-fns';
-import { DEFAULT_SUBMODALITY_ID } from '../../../constants';
+import {
+  DEFAULT_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID,
+  DEFAULT_SUBMODALITY_ID,
+} from '../../../constants';
 import { RootState } from '../../../config/store';
 import {
   PolicyholderModel,
@@ -148,7 +151,9 @@ export const quoteSlice = createSlice({
       state.modality = action.payload;
       state.submodality =
         action.payload.submodalities.find(
-          modality => modality.id === DEFAULT_SUBMODALITY_ID,
+          modality =>
+            modality.id === DEFAULT_SUBMODALITY_ID ||
+            modality.id === DEFAULT_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID,
         ) || null;
       state.hasQuoteChanges = true;
     },

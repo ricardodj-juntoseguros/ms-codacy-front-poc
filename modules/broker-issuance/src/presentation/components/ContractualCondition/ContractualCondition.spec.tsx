@@ -1,14 +1,53 @@
+import '@testing-library/jest-dom';
 import { act, fireEvent, render } from '../../../config/testUtils';
+import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
+import { putProposal } from '../../../application/features/proposal/ProposalSlice';
 import { store } from '../../../config/store';
 import ContractualCondition from './ContractualCondition';
 import ContractualConditionApi from '../../../application/features/contractualCondition/ContractualConditionApi';
-import { customClauseMock } from '../../../__mocks__';
+import ProposalApi from '../../../application/features/proposal/ProposalApi';
+import {
+  customClauseMock,
+  policyholderMock,
+  proposalMock,
+} from '../../../__mocks__';
 import { getCustomClause } from '../../../application/features/contractualCondition/ContractualConditionSlice';
 
 describe('ContractualCondition', () => {
+  const mockResult = {
+    ProposalId: 12345,
+    PolicyId: 11111,
+    QuotationId: 12223,
+    NewQuoterId: 123333,
+    createdAt: '2024-01-01T12:00:00.000Z',
+  };
+
+  beforeAll(async () => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+    jest
+      .spyOn(ProposalApi, 'putProposal')
+      .mockImplementation(() => Promise.resolve(mockResult));
+  });
+
   it('should be able to insert data for a customized clause', async () => {
-    const { getByTestId, findByTestId } = render(<ContractualCondition />);
-    const contractualConditionToggle = getByTestId(
+    await store.dispatch(quoteSliceActions.setPolicyholder(policyholderMock));
+    await store.dispatch(
+      putProposal({ proposalId: 12345, proposalData: proposalMock }),
+    );
+    const { findByTestId } = render(<ContractualCondition />);
+    const contractualConditionToggle = await findByTestId(
       'contractualConditions-toggle-show',
     );
     await act(async () => {
@@ -32,9 +71,13 @@ describe('ContractualCondition', () => {
     const patchCustomClauseMock = jest
       .spyOn(ContractualConditionApi, 'patchCustomClause')
       .mockImplementation(() => Promise.resolve());
+    await store.dispatch(quoteSliceActions.setPolicyholder(policyholderMock));
+    await store.dispatch(
+      putProposal({ proposalId: 12345, proposalData: proposalMock }),
+    );
     await store.dispatch(getCustomClause(12345));
-    const { getByTestId } = render(<ContractualCondition />);
-    const contractualConditionToggle = getByTestId(
+    const { findByTestId } = render(<ContractualCondition />);
+    const contractualConditionToggle = await findByTestId(
       'contractualConditions-toggle-show',
     );
     await act(async () => {

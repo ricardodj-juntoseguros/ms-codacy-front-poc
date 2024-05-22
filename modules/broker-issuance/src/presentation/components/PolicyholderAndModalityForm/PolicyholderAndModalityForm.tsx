@@ -10,6 +10,7 @@ import {
 import Cookies from 'js-cookie';
 import { GenericComponentProps, useFlow } from '@shared/hooks';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
+import { DEFAULT_STEP } from '../../../constants/steps';
 import { DISCLAIMERS, HELP_ID, REDIRECT_TO_V3_INFOS } from '../../../constants';
 import { ModalityModel } from '../../../application/types/model';
 import { selectModality } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
@@ -20,8 +21,8 @@ import {
 import PolicyholderAppointmentLetter from '../PolicyholderAppointmentLetter';
 import PolicyholderSelection from '../PolicyholderSelection';
 import { MODALITY_STEPS } from '../../../constants/steps/modalitySteps';
-import styles from './PolicyholderAndModalityForm.module.scss';
 import { useQuotation } from '../../hooks';
+import styles from './PolicyholderAndModalityForm.module.scss';
 
 const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   name,
@@ -30,7 +31,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   const [needAppointmentLetter, setNeedAppointmentLetter] = useState(false);
   const [policyInProgressTooltipVisible, setPolicyInProgressTooltipVisible] =
     useState(false);
-  const { advanceStep, setSteps, steps } = useFlow();
+  const { advanceStep, setSteps } = useFlow();
   const { modalityOptions, loadingModalities } = useSelector(selectModality);
   const {
     policyholder,
@@ -68,11 +69,9 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
           : process.env.NX_GLOBAL_MODALITIES_EXPRESS_POLICYHOLDER;
       window.location.href = redirectUrl || '';
     }
-    if (modalitySteps && steps.length === 1) {
-      setSteps(modalitySteps);
-    }
+    if (modalitySteps) setSteps([...DEFAULT_STEP, ...modalitySteps]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modality, steps]);
+  }, [modality]);
 
   useEffect(() => {
     if (currentQuote && currentQuote.pricing && hasQuoteChanges) {

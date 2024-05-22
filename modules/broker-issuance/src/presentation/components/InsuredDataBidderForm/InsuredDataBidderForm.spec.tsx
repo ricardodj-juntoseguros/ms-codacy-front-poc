@@ -17,7 +17,7 @@ import {
 } from '../../../__mocks__';
 import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
 import { store } from '../../../config/store';
-import InsuredDataForm from './InsuredDataForm';
+import InsuredDataBidderForm from './InsuredDataBidderForm';
 import ObjectPreviewApi from '../../../application/features/objectPreview/ObjectPreviewApi';
 
 const advanceStepMock = jest.fn();
@@ -41,7 +41,7 @@ jest.mock('../../hooks', () => {
   };
 });
 
-describe('InsuredDataForm', () => {
+describe('InsuredDataBidderForm', () => {
   const mockResult = {
     ProposalId: 12345,
     PolicyId: 11111,
@@ -77,7 +77,9 @@ describe('InsuredDataForm', () => {
   });
 
   it('should be able to enter the bidding number in the store', async () => {
-    const { getByTestId } = render(<InsuredDataForm name="InsuredDataForm" />);
+    const { getByTestId } = render(
+      <InsuredDataBidderForm name="InsuredDataBidderForm" />,
+    );
     const biddingNumberInput = getByTestId('noticeData-biddingNumber-input');
     await act(async () => {
       await fireEvent.change(biddingNumberInput, {
@@ -87,6 +89,24 @@ describe('InsuredDataForm', () => {
     });
     const state = store.getState();
     expect(state.proposal.biddingNumber).toEqual('123456');
+    expect(createProposalMock).toHaveBeenCalled();
+  });
+
+  it('should be able to enter the bidding description in the store', async () => {
+    const { getByTestId } = render(
+      <InsuredDataBidderForm name="InsuredDataBidderForm" />,
+    );
+    const biddingDescriptionInput = getByTestId(
+      'noticeAnnex-biddingDescription-input',
+    );
+    await act(async () => {
+      await fireEvent.change(biddingDescriptionInput, {
+        target: { value: '12345' },
+      });
+      await fireEvent.blur(biddingDescriptionInput);
+    });
+    const state = store.getState();
+    expect(state.proposal.biddingDescription).toEqual('12345');
     expect(createProposalMock).toHaveBeenCalled();
   });
 
@@ -109,7 +129,9 @@ describe('InsuredDataForm', () => {
     await store.dispatch(
       putProposal({ proposalId: 12345, proposalData: proposalMock }),
     );
-    const { getByTestId } = render(<InsuredDataForm name="InsuredDataForm" />);
+    const { getByTestId } = render(
+      <InsuredDataBidderForm name="InsuredDataBidderForm" />,
+    );
     const submitButton = getByTestId('insuredDataFooter-submit-button');
     await waitFor(async () => {
       await expect(contractualConditionApiMock).toHaveBeenCalled();
@@ -147,7 +169,9 @@ describe('InsuredDataForm', () => {
     await store.dispatch(
       putProposal({ proposalId: 12345, proposalData: proposalMock }),
     );
-    const { getByTestId } = render(<InsuredDataForm name="InsuredDataForm" />);
+    const { getByTestId } = render(
+      <InsuredDataBidderForm name="InsuredDataBidderForm" />,
+    );
     const objectPreviewButton = getByTestId(
       'insuredDataFooter-show-object-preview-button',
     );
@@ -183,7 +207,9 @@ describe('InsuredDataForm', () => {
         policyholderDetailsMock.registrationData,
       ),
     );
-    const { getByTestId } = render(<InsuredDataForm name="InsuredDataForm" />);
+    const { getByTestId } = render(
+      <InsuredDataBidderForm name="InsuredDataBidderForm" />,
+    );
     await waitFor(async () => {
       await expect(
         getByTestId('contractualConditions-toggle-show'),
@@ -216,7 +242,7 @@ describe('InsuredDataForm', () => {
       }),
     );
     const { queryByTestId } = render(
-      <InsuredDataForm name="InsuredDataForm" />,
+      <InsuredDataBidderForm name="InsuredDataBidderForm" />,
     );
     await waitFor(async () => {
       await expect(

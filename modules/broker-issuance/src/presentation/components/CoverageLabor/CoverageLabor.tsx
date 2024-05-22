@@ -9,7 +9,9 @@ import {
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
 import {
+  COVERAGE_LABOR_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID,
   COVERAGE_LABOR_SUBMODALITY_ID,
+  DEFAULT_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID,
   DEFAULT_SUBMODALITY_ID,
 } from '../../../constants';
 import {
@@ -49,8 +51,13 @@ const CoverageLabor: FunctionComponent = () => {
     const submodalityId = !labor
       ? COVERAGE_LABOR_SUBMODALITY_ID
       : DEFAULT_SUBMODALITY_ID;
+    const containmentAndRescueSubmodalityId = !labor
+      ? COVERAGE_LABOR_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID
+      : DEFAULT_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID;
     const coverageLaborSubmodality = modality?.submodalities.find(
-      submodality => submodality.id === submodalityId,
+      submodality =>
+        submodality.id === submodalityId ||
+        submodality.id === containmentAndRescueSubmodalityId,
     );
     if (coverageLaborSubmodality) {
       dispatch(setSubmodality(coverageLaborSubmodality));
