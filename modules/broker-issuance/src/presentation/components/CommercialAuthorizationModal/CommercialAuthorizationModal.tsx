@@ -6,7 +6,7 @@ import { COMMERCIAL_AUTHORIZATION_MODAL_DATA } from '../../../constants';
 
 interface CommercialAuthorizationModalProps {
   isModalOpen: boolean;
-  onToggleModal: (type: string) => void;
+  onToggleModal: (type: boolean) => void;
   onConfirm: () => Promise<void>;
   modalType: CommercialAuthorizationTypeEnum;
 }
@@ -27,12 +27,16 @@ const CommercialAuthorizationModal: FunctionComponent<CommercialAuthorizationMod
     };
 
     const handleSubmit = async () => {
-      onToggleModal('');
+      onToggleModal(false);
       onConfirm();
     };
 
     return (
-      <Modal open={isModalOpen} onClose={() => onToggleModal('')} size="large">
+      <Modal
+        open={isModalOpen}
+        onClose={() => onToggleModal(false)}
+        size="large"
+      >
         <div className={styles['commercial-authorization-modal__wrapper']}>
           {getIcon()}
           <h2 className={styles['commercial-authorization-modal__title']}>
@@ -52,7 +56,7 @@ const CommercialAuthorizationModal: FunctionComponent<CommercialAuthorizationMod
             <Button
               id="commercialAuthorizationModal-button-close"
               data-testid="commercialAuthorizationModal-button-close"
-              onClick={() => onToggleModal('')}
+              onClick={() => onToggleModal(false)}
               variant="secondary"
             >
               {currentTypeConfig.buttonsLabels.secondary}

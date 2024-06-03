@@ -12,6 +12,7 @@ import QuoteApi from '../../../application/features/quote/QuoteApi';
 import { createQuoteMock, quoteResultMock } from '../../../__mocks__';
 import { store } from '../../../config/store';
 import { useIssuance } from './useIssuance';
+import { issuanceActions } from '../../../application/features/issuance/IssuanceSlice';
 
 const advanceStepMock = jest.fn();
 jest.mock('@shared/hooks', () => {
@@ -270,6 +271,28 @@ describe('useIssuance', () => {
       contacts: [],
       internalizedReason: '',
       isAutomatic: true,
+    });
+  });
+
+  it('should call issuance api correctly if is commercial profile and force internalization is on', async () => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.COMMERCIAL);
+    store.dispatch(issuanceActions.setForceInternalize(true));
+    store.dispatch(
+      issuanceActions.setInternalizeReason('test internalize reason'),
+    );
+    const { result } = renderHook(() => useIssuance(), {
+      wrapper: HookWrapper,
+    });
+    await result.current[0]('stepName');
+    expect(postIssuanceMock).toHaveBeenCalledWith(1397190, {
+      acceptTermsId: null,
+      approvalContacts: [],
+      comments: 'comments',
+      contacts: [],
+      internalizedReason: 'PALAVRAS DO COMERCIAL: test internalize reason',
+      isAutomatic: false,
     });
   });
 });

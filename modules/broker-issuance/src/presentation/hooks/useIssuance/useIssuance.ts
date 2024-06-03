@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { makeToast } from 'junto-design-system';
@@ -16,9 +16,12 @@ import handleError from '../../../helpers/handlerError';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { POLICYHOLDER_ISSUE_PERMISSION } from '../../../constants';
 import { selectCommercialAuthorization } from '../../../application/features/CommercialAuthorization/CommercialAuthorizationSlice';
+import {
+  issuanceActions,
+  selectIssuance,
+} from '../../../application/features/issuance/IssuanceSlice';
 
 export const useIssuance = () => {
-  const [loadingIssuance, setLoadingIssuance] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const { currentQuote } = useSelector(selectQuote);
@@ -26,6 +29,8 @@ export const useIssuance = () => {
   const { typeOfAuthorization, approvalContacts } = useSelector(
     selectCommercialAuthorization,
   );
+  const { loadingIssuance, forceInternalize, internalizeReason } =
+    useSelector(selectIssuance);
   const { advanceStep } = useFlow();
   const { setIssuedAt, setProtocols } = proposalActions;
 
@@ -45,12 +50,14 @@ export const useIssuance = () => {
   const submitToApproval = useCallback(
     (stepName: string, isCommercial: boolean) => {
       if (!currentQuote) return;
-      setLoadingIssuance(true);
+      dispatch(issuanceActions.setLoadingIssuance(true));
       const payload = issuanceAdapter(
         comments,
         contacts,
         isCommercial ? approvalContacts : [],
         isCommercial ? typeOfAuthorization : '',
+        forceInternalize,
+        internalizeReason || '',
       );
       ProposalApi.submitToApproval(
         currentQuote.identification.NewQuoterId,
@@ -61,9 +68,12 @@ export const useIssuance = () => {
           history.push('/send-to-approval');
         })
         .catch(error => makeToast('error', handleError(error)))
-        .finally(() => setLoadingIssuance(false));
+        .finally(() => {
+          dispatch(issuanceActions.setLoadingIssuance(false));
+        });
     },
     [
+      dispatch,
       approvalContacts,
       comments,
       currentQuote,
@@ -71,18 +81,22 @@ export const useIssuance = () => {
       typeOfAuthorization,
       onNext,
       contacts,
+      forceInternalize,
+      internalizeReason,
     ],
   );
 
   const postIssuance = useCallback(
     (stepName: string) => {
       if (!currentQuote) return;
-      setLoadingIssuance(true);
+      dispatch(issuanceActions.setLoadingIssuance(true));
       const payload = issuanceAdapter(
         comments,
         contacts,
         approvalContacts,
         typeOfAuthorization,
+        forceInternalize,
+        internalizeReason || '',
       );
       IssuanceApi.postIssuance(currentQuote.identification.NewQuoterId, payload)
         .then(response => {
@@ -92,9 +106,12 @@ export const useIssuance = () => {
             : history.push('/analysis');
         })
         .catch(error => makeToast('error', handleError(error)))
-        .finally(() => setLoadingIssuance(false));
+        .finally(() => {
+          dispatch(issuanceActions.setLoadingIssuance(false));
+        });
     },
     [
+      dispatch,
       currentQuote,
       comments,
       approvalContacts,
@@ -102,6 +119,8 @@ export const useIssuance = () => {
       onNext,
       history,
       contacts,
+      forceInternalize,
+      internalizeReason,
     ],
   );
 
@@ -110,9 +129,11 @@ export const useIssuance = () => {
       const userProfile = BrokerPlatformAuthService.getUserProfile();
       const isCommercial = userProfile === ProfileEnum.COMMERCIAL;
       const isPolicyholder = userProfile === ProfileEnum.POLICYHOLDER;
+      if (loadingIssuance) return;
       if (
         (isAutomaticPolicy &&
           isCommercial &&
+          !forceInternalize &&
           typeOfAuthorization === 'sendToApproval') ||
         (isPolicyholder &&
           !BrokerPlatformAuthService.userHasPermission(
@@ -124,8 +145,15 @@ export const useIssuance = () => {
       }
       postIssuance(stepName);
     },
-    [isAutomaticPolicy, postIssuance, submitToApproval, typeOfAuthorization],
+    [
+      isAutomaticPolicy,
+      postIssuance,
+      submitToApproval,
+      typeOfAuthorization,
+      loadingIssuance,
+      forceInternalize,
+    ],
   );
 
-  return [createIssuanceOrSubmitToApproval, loadingIssuance] as const;
+  return [createIssuanceOrSubmitToApproval] as const;
 };

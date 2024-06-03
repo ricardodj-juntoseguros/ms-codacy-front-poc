@@ -1,0 +1,7 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.additional-data-form__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('xl');
+}

@@ -16,11 +16,16 @@ import {
   proposalMock,
   quoteResultMock,
 } from '../../../__mocks__';
-import { postQuotation } from '../../../application/features/quote/QuoteSlice';
+import {
+  postQuotation,
+  quoteSliceActions,
+} from '../../../application/features/quote/QuoteSlice';
 import { parseDateToString } from '../../../helpers';
-import AdditionalDataForm from './AdditionalDataForm';
+import AdditionalDataCommercialInternalizeForm from './AdditionalDataCommercialInternalizeForm';
 import { act, fireEvent, render, waitFor } from '../../../config/testUtils';
 import CanAuthorizeApi from '../../../application/features/canAuthorize/CanAuthorizeApi';
+import { issuanceActions } from '../../../application/features/issuance/IssuanceSlice';
+import { PolicyholderModel } from '../../../application/types/model';
 
 jest.mock('junto-design-system', () => {
   const original = jest.requireActual('junto-design-system');
@@ -50,7 +55,7 @@ jest.mock('@shared/hooks', () => {
   };
 });
 
-describe('AdditionalDataForm', () => {
+describe('AdditionalDataCommercialInternalizeForm', () => {
   let getProposalDraftMock: any = null;
   beforeAll(async () => {
     Object.defineProperty(window, 'matchMedia', {
@@ -134,7 +139,7 @@ describe('AdditionalDataForm', () => {
         }),
       );
     const { getByTestId } = render(
-      <AdditionalDataForm name="AdditionalDataForm" />,
+      <AdditionalDataCommercialInternalizeForm name="AdditionalDataCommercialInternalizeForm" />,
     );
     await waitFor(async () => {
       await expect(getProposalDraftMock).toHaveBeenCalled();
@@ -146,54 +151,16 @@ describe('AdditionalDataForm', () => {
     await waitFor(
       async () => await expect(postIssuanceMock).toHaveBeenCalled(),
     );
-    expect(advanceStepMock).toHaveBeenCalledWith('AdditionalDataForm');
+    expect(advanceStepMock).toHaveBeenCalledWith(
+      'AdditionalDataCommercialInternalizeForm',
+    );
     expect(mockHistoryPush).toHaveBeenCalledWith('/success');
   });
-
-  // it('should be able to render the internalization screen if the response is internalization', async () => {
-  //   const postIssuanceMock = jest
-  //     .spyOn(IssuanceApi, 'postIssuance')
-  //     .mockImplementation(() =>
-  //       Promise.resolve({
-  //         createdAt: '2024-01-17T14:36:51.3166667',
-  //         issued: true,
-  //         issuedAt: '2024-01-17T14:40:24.683',
-  //         protocols: [
-  //           {
-  //             number: '4280784',
-  //             dateTime: '2024-01-17T14:36:51.3166667',
-  //             text: 'Proposta 4280784, 17/01/2024 às 14h36',
-  //           },
-  //           {
-  //             number: '02-0775-0991403',
-  //             dateTime: '2024-01-17T14:40:24.683',
-  //             text: 'Contratada em 17/01/2024, às 14h36',
-  //           },
-  //         ],
-  //         status: 3,
-  //       }),
-  //     );
-  //   const { getByTestId } = render(
-  //     <AdditionalDataForm name="AdditionalDataForm" />,
-  //   );
-  //   await waitFor(async () => {
-  //     await expect(getProposalDraftMock).toHaveBeenCalled();
-  //   });
-  //   const submitButton = getByTestId('additionalDataForm-submit-button');
-  //   await act(async () => {
-  //     await fireEvent.click(submitButton);
-  //   });
-  //   await waitFor(
-  //     async () => await expect(postIssuanceMock).toHaveBeenCalled(),
-  //   );
-  //   expect(advanceStepMock).toHaveBeenCalledWith('AdditionalDataForm');
-  //   expect(mockHistoryPush).toHaveBeenCalledWith('/analysis');
-  // });
 
   it('should be able to render the financial pending screen if the authorize response has financial pending', async () => {
     store.dispatch(proposalActions.setHasOnlyFinancialPending(true));
     const { getByTestId } = render(
-      <AdditionalDataForm name="AdditionalDataForm" />,
+      <AdditionalDataCommercialInternalizeForm name="AdditionalDataCommercialInternalizeForm" />,
     );
     await waitFor(async () => {
       await expect(getProposalDraftMock).toHaveBeenCalled();
@@ -209,7 +176,7 @@ describe('AdditionalDataForm', () => {
   it('should be able to render the internalization screen if the response is internalization', async () => {
     store.dispatch(proposalActions.setIsAutomaticPolicy(false));
     const { getByText } = render(
-      <AdditionalDataForm name="AdditionalDataForm" />,
+      <AdditionalDataCommercialInternalizeForm name="AdditionalDataCommercialInternalizeForm" />,
     );
     await waitFor(async () => {
       await expect(getProposalDraftMock).toHaveBeenCalled();
@@ -227,7 +194,7 @@ describe('AdditionalDataForm', () => {
       .spyOn(IssuanceApi, 'postIssuance')
       .mockImplementation(() => Promise.reject({ data: { message: 'error' } }));
     const { getByTestId } = render(
-      <AdditionalDataForm name="AdditionalDataForm" />,
+      <AdditionalDataCommercialInternalizeForm name="AdditionalDataCommercialInternalizeForm" />,
     );
     await waitFor(async () => {
       await expect(getProposalDraftMock).toHaveBeenCalled();
@@ -248,8 +215,38 @@ describe('AdditionalDataForm', () => {
       .mockImplementation(() => ProfileEnum.COMMERCIAL);
     store.dispatch(proposalActions.setIsAutomaticPolicy(true));
     const { getByText } = render(
-      <AdditionalDataForm name="AdditionalDataForm" />,
+      <AdditionalDataCommercialInternalizeForm name="AdditionalDataCommercialInternalizeForm" />,
     );
     expect(getByText('Autorizar emissão da apólice')).toBeInTheDocument();
+  });
+
+  it('should not render commercial authorization component if user is commercial and forced internalization is set to true', async () => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.COMMERCIAL);
+    store.dispatch(proposalActions.setIsAutomaticPolicy(true));
+    store.dispatch(issuanceActions.setForceInternalize(true));
+    const { queryByText } = render(
+      <AdditionalDataCommercialInternalizeForm name="AdditionalDataCommercialInternalizeForm" />,
+    );
+    expect(queryByText('Autorizar emissão da apólice')).not.toBeInTheDocument();
+  });
+
+  it('Should render commercial internalize component if is automatic policy and user is commercial', async () => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.COMMERCIAL);
+    store.dispatch(proposalActions.setIsAutomaticPolicy(true));
+    store.dispatch(
+      quoteSliceActions.setPolicyholder({
+        disabledFeatures: { forcedInternalization: false },
+      } as PolicyholderModel),
+    );
+    const { getByText } = render(
+      <AdditionalDataCommercialInternalizeForm name="AdditionalDataCommercialInternalizeForm" />,
+    );
+    expect(
+      getByText('Preciso de uma análise da subscrição para este processo.'),
+    ).toBeInTheDocument();
   });
 });

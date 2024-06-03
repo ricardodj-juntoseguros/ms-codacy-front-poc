@@ -21,3 +21,4 @@ export * from './SurveyTypeEnum';
 export * from './PolicyholderAffiliatesModel';
 export * from './AdditionalCoverageModel';
 export * from './ModalitySchemaModel';
+export * from './IssuanceModel';

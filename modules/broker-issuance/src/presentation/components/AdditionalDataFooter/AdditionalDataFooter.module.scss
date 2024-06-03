@@ -1,32 +1,6 @@
 @import 'junto-design-system/dist/core/scss/styles.scss';
 
-.additional-data-form__wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: spacing('xl');
-}
-
-.additional-data-form__comments-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: spacing('m');
-
-  & > div > div {
-    min-width: auto;
-  }
-
-  & > div > span {
-    margin: 0;
-  }
-}
-
-.additional-data-form__comments-text {
-  @include font('base-emphasys');
-  @include color('color', 'dark');
-  margin: 0;
-}
-
-.additional-data-form__footer-link-wrapper {
+.additional-data-footer__link-wrapper {
   display: flex;
   align-items: center;
   gap: spacing('l');
@@ -38,7 +12,7 @@
   }
 }
 
-.additional-data-form__footer {
+.additional-data-footer__wrapper {
   display: flex;
   justify-content: space-between;
   margin-top: spacing('m');

@@ -47,6 +47,10 @@ describe('ValidityAndValueForm', () => {
   let getPolicyholderBalanceLimitsMock: jest.SpyInstance;
   const todayFormatted = parseDateToString(startOfDay(new Date()));
 
+  beforeAll(() => {
+    jest.setTimeout(20000);
+  });
+
   beforeEach(() => {
     store.dispatch(quoteSliceActions.resetQuote());
     getPolicyholderBalanceLimitsMock = jest

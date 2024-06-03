@@ -117,4 +117,15 @@ describe('ProposalDocumentsApi', () => {
     });
     expect(result).toEqual(mockData);
   });
+
+  it('deleteAllProposalDocuments should call bff service correclty', async () => {
+    const mockDelete = jest
+      .spyOn(AxiosHttpClient.prototype, 'delete')
+      .mockImplementation(async () => true);
+    const result = await ProposalDocumentsApi.deleteAllProposalDocuments(12345);
+    expect(mockDelete).toHaveBeenCalledWith({
+      url: '/v1/proposals/12345/documents',
+    });
+    expect(result).toEqual(true);
+  });
 });

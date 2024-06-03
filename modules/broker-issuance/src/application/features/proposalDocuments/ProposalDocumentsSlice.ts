@@ -32,6 +32,19 @@ export const getInternalizeDocumentList = createAsyncThunk<
   },
 );
 
+export const deleteAllProposalDocuments = createAsyncThunk<
+  boolean,
+  number,
+  { rejectValue: string }
+>(
+  'proposalDocuments/deleteAllProposalDocuments',
+  async (policyId, { rejectWithValue }) => {
+    return ProposalDocumentsApi.deleteAllProposalDocuments(policyId)
+      .then(() => true)
+      .catch(error => rejectWithValue(handleError(error.data)));
+  },
+);
+
 const initialState: ProposalDocumentsModel = {
   proposalDocuments: [],
   loadingDocuments: false,
@@ -85,6 +98,12 @@ export const proposalDocumentsSlice = createSlice({
       })
       .addCase(getInternalizeDocumentList.rejected, (state, action) => {
         state.loadingInternalizeDocumentsList = false;
+        if (action.payload) makeToast('error', action.payload);
+      })
+      .addCase(deleteAllProposalDocuments.fulfilled, state => {
+        state.proposalDocuments = [];
+      })
+      .addCase(deleteAllProposalDocuments.rejected, (state, action) => {
         if (action.payload) makeToast('error', action.payload);
       });
   },

@@ -21,7 +21,7 @@ describe('CommercialAuthorizationModal', () => {
     );
     fireEvent.click(buttonSubmit);
     expect(onConfirmMock).toHaveBeenCalled();
-    expect(onToggleModalMock).toHaveBeenCalledWith('');
+    expect(onToggleModalMock).toHaveBeenCalledWith(false);
   });
 
   it('should be able to open the modal and click the close button', () => {
@@ -37,6 +37,6 @@ describe('CommercialAuthorizationModal', () => {
       'commercialAuthorizationModal-button-close',
     );
     fireEvent.click(buttonClose);
-    expect(onToggleModalMock).toHaveBeenCalledWith('');
+    expect(onToggleModalMock).toHaveBeenCalledWith(false);
   });
 });

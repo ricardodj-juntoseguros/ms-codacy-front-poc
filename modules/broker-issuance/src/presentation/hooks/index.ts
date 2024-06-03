@@ -5,3 +5,4 @@ export * from './useProposalResume';
 export * from './useSurvey';
 export * from './useFormSummary';
 export * from './useRehydrateData';
+export * from './useIssuance';

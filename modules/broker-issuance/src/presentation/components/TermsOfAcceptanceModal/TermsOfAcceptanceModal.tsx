@@ -7,13 +7,17 @@ import styles from './TermsOfAcceptanceModal.module.scss';
 
 export interface TermsOfAcceptanceModalProps {
   isModalOpen: boolean;
-  onToggleModal: (type: string) => void;
+  onToggleModal: (type: boolean) => void;
 }
 
 const TermsOfAcceptanceModal: FunctionComponent<TermsOfAcceptanceModalProps> =
   ({ isModalOpen, onToggleModal }) => {
     return (
-      <Modal open={isModalOpen} onClose={() => onToggleModal('')} size="large">
+      <Modal
+        open={isModalOpen}
+        onClose={() => onToggleModal(false)}
+        size="large"
+      >
         <header className={styles['terms-of-acceptance-modal__header']}>
           <JuntoLogoDark />
         </header>
@@ -33,7 +37,7 @@ const TermsOfAcceptanceModal: FunctionComponent<TermsOfAcceptanceModalProps> =
             id="termsOfAcceptanceModal-button-close"
             data-testid="termsOfAcceptanceModal-button-close"
             type="button"
-            onClick={() => onToggleModal('')}
+            onClick={() => onToggleModal(false)}
           >
             Ok, entendi.
           </Button>

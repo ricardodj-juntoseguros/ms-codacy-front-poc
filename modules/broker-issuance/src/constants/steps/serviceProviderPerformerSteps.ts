@@ -1,7 +1,7 @@
 import { StepStatusEnum } from '@shared/hooks';
 import ValidityAndValueCoverageLaborForm from '../../presentation/components/ValidityAndValueCoverageLaborForm';
 import InsuredDataForm from '../../presentation/components/InsuredDataForm';
-import AdditionalDataForm from '../../presentation/components/AdditionalDataForm';
+import AdditionalDataCommercialInternalizeForm from '../../presentation/components/AdditionalDataCommercialInternalizeForm';
 
 export const SERVICE_PROVIDER_PERFORMER_STEPS = [
   {
@@ -25,9 +25,9 @@ export const SERVICE_PROVIDER_PERFORMER_STEPS = [
     },
   },
   {
-    name: 'AdditionalDataForm',
+    name: 'AdditionalDataCommercialInternalizeForm',
     status: StepStatusEnum.HIDDEN,
-    component: AdditionalDataForm,
+    component: AdditionalDataCommercialInternalizeForm,
     summaryTitle: 'Finalizar emissão',
 
     title: {

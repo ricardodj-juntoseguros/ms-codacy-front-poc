@@ -1,24 +1,44 @@
-import { FunctionComponent, useMemo } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { useSelector } from 'react-redux';
 import { Button, makeToast } from 'junto-design-system';
 import { downloadFile } from '@shared/utils';
-
+import ProposalApi from '../../../application/features/proposal/ProposalApi';
+import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
+import { selectIssuance } from '../../../application/features/issuance/IssuanceSlice';
+import handleError from '../../../helpers/handlerError';
 import styles from './DraftDownload.module.scss';
 
-interface DraftDownloadProps {
-  isAutomaticPolicy: boolean;
-  proposalDraft: string;
-}
+const DraftDownload: FunctionComponent = () => {
+  const { identification, isAutomaticPolicy } = useSelector(selectProposal);
+  const { forceInternalize } = useSelector(selectIssuance);
+  const [proposalDraft, setProposalDraft] = useState<string>('');
 
-const DraftDownload: FunctionComponent<DraftDownloadProps> = ({
-  isAutomaticPolicy,
-  proposalDraft,
-}) => {
+  useEffect(() => {
+    getProposalDraft();
+  }, []);
+
+  const getProposalDraft = useCallback(() => {
+    if (!identification?.PolicyId) return;
+    ProposalApi.getProposalDraft(identification.PolicyId)
+      .then(response => {
+        setProposalDraft(response.draftLink);
+      })
+      .catch(error => makeToast('error', handleError(error)));
+  }, [identification]);
+
   const text = useMemo(
     () =>
-      isAutomaticPolicy
+      isAutomaticPolicy && !forceInternalize
         ? 'Tudo certo até aqui! Agora você já pode baixar a sua minuta.'
         : 'Agora você já pode baixar a sua minuta e validar sua garantia.',
-    [isAutomaticPolicy],
+    [isAutomaticPolicy, forceInternalize],
   );
 
   const handleCopyDraftLink = () => {
@@ -40,6 +60,7 @@ const DraftDownload: FunctionComponent<DraftDownloadProps> = ({
           size="large"
           variant="secondary"
           onClick={() => handleCopyDraftLink()}
+          disabled={!proposalDraft}
         >
           Copiar link
         </Button>
@@ -49,6 +70,7 @@ const DraftDownload: FunctionComponent<DraftDownloadProps> = ({
           size="large"
           variant="secondary"
           onClick={() => handleDownloadDraft()}
+          disabled={!proposalDraft}
         >
           Baixar minuta
         </Button>

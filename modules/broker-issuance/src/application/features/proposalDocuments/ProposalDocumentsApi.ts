@@ -57,8 +57,15 @@ class ProposalDocumentsApi {
   async getDocumentsToInternalize(modalityId: number) {
     const params: IHttpClientRequestParameters = {
       url: `/v1/products/${modalityId}/internalize-documents`,
-    }
+    };
     return this.instance.get<InternalizeDocumentsDTO[]>(params);
+  }
+
+  async deleteAllProposalDocuments(policyId: number) {
+    const params: IHttpClientRequestParameters = {
+      url: `/v1/proposals/${policyId}/documents`,
+    };
+    return this.instance.delete(params);
   }
 }
 

@@ -101,7 +101,7 @@ jobs:
   scan-app:
     working_directory: /tmp/persist_to_workspace
     machine:
-      image: ubuntu-2004:202101-01
+      image: default
     environment:
       TERM: xterm
       LC_ALL: C.UTF-8
@@ -166,7 +166,7 @@ jobs:
       - attach_workspace:
           at: /tmp/persist_to_workspace
       - setup_remote_docker:
-          version: 19.03.13
+          version: default
           docker_layer_caching: true
       - restore_cache:
           keys:

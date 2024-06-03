@@ -72,7 +72,7 @@ const PaymentFields: FunctionComponent = () => {
   }, [loadingField]);
 
   useEffect(() => {
-    if (loadingProposal === false) setLoadingField('');
+    if (!loadingProposal) setLoadingField('');
   }, [loadingProposal]);
 
   useEffect(() => {
