@@ -17,4 +17,14 @@ export const NOTICE_DATA_LABELS: NoticeDataLabels = {
     placeholder:
       'Ex. nº 000/0000, oriundo da Concorrência nº 00/0000, firmado em 00/00/0000',
   },
+  [ModalityTypeEnum.SUPPLIER_PERFORMER]: {
+    label: 'Número do edital ou contrato',
+    placeholder:
+      'Ex. nº 000/0000, oriundo da Concorrência nº 00/0000, firmado em 00/00/0000',
+  },
+  [ModalityTypeEnum.BUILDER_PERFORMER]: {
+    label: 'Número do edital ou contrato',
+    placeholder:
+      'Ex. nº 000/0000, oriundo da Concorrência nº 00/0000, firmado em 00/00/0000',
+  },
 };
