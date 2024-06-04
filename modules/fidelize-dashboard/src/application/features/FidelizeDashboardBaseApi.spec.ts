@@ -7,8 +7,8 @@ import FidelizeDashboardBaseApi from './FidelizeDashboardBaseApi';
 describe('FidelizeDashboardBaseApi', () => {
   const mockCookie = `{"token": "any_token", "refreshToken": "refresh_token", "useRefreshToken": true }`;
   beforeAll(() => {
-    process.env.NX_GLOBAL_FIDELIZE_BFF_URL = 'any_url';
     process.env.NX_GLOBAL_BROKER_PLATFORM_URL = 'broker_login_url';
+    process.env.NX_GLOBAL_FIDELIZE_BFF_URL = 'any_url';
     process.env.NX_FID_APP_URL = 'fidelize_app_url';
 
     Object.defineProperty(window, 'location', {
