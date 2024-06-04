@@ -1,7 +1,7 @@
 import { federalIdValidator } from '@shared/utils';
 import { isAfter, isBefore, isSameDay, parse, startOfDay } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { array, boolean, number, object, string } from 'yup';
+import { array, number, object, string } from 'yup';
 import { getMaxFirstDueDate, getMinFirstDueDate } from '../../../../helpers';
 import { store } from '../../../../config/store';
 
@@ -51,12 +51,4 @@ export const CommonProposalSchema = object().shape({
   biddingDescription: string().nullable().notRequired(),
   contacts: array().nullable().notRequired(),
   obeservation: string().nullable().notRequired(),
-  specialAnalysis: object().shape({
-    required: boolean().required(),
-    description: string().when('required', {
-      is: (required: boolean) => required,
-      then: string().required().max(250),
-      otherwise: string().notRequired(),
-    }),
-  }),
 });

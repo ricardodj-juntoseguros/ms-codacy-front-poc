@@ -12,7 +12,6 @@ export const insuredDataSummaryAdapter = (
   biddingDescription: string,
   openContractualConditions: boolean,
   contractualConditionsRequestedBy: CustomClauseRequestedByEnum | null,
-  specialAnalysisRequired: boolean,
 ) => {
   const result = [] as { key: string; label: string; value: string }[];
 
@@ -66,10 +65,5 @@ export const insuredDataSummaryAdapter = (
       value: `Novo ou modificado ${requestedByLabel}`,
     });
   }
-  result.push({
-    key: 'specialAnalysisRequired',
-    label: 'Particularidades na proposta',
-    value: specialAnalysisRequired ? 'Sim' : 'Não',
-  });
   return result;
 };

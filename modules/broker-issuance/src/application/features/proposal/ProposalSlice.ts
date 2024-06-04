@@ -66,8 +66,6 @@ const initialState: ProposalModel = {
   protocols: [],
   loadingCanAuthorize: false,
   contacts: [],
-  specialAnalysisRequired: false,
-  specialAnalysisDescription: '',
 };
 
 export const proposaSlice = createSlice({
@@ -93,8 +91,6 @@ export const proposaSlice = createSlice({
       state.protocols = [];
       state.loadingCanAuthorize = false;
       state.contacts = [];
-      state.specialAnalysisRequired = false;
-      state.specialAnalysisDescription = '';
     },
     setProposalResumeData: (state, action) => {
       const {
@@ -109,7 +105,6 @@ export const proposaSlice = createSlice({
           firstDueDate,
           numberOfInstallments,
           createdAt,
-          specialAnalysis,
         },
       } = action;
       state.insured = insured;
@@ -129,8 +124,6 @@ export const proposaSlice = createSlice({
         ),
         'dd/MM/yyyy',
       );
-      state.specialAnalysisRequired = specialAnalysis.required;
-      state.specialAnalysisDescription = specialAnalysis.description;
     },
     setInsured: (state, action) => {
       state.insured = action.payload;
@@ -193,17 +186,6 @@ export const proposaSlice = createSlice({
     },
     setContacts: (state, action: PayloadAction<string[]>) => {
       state.contacts = action.payload;
-    },
-    setSpecialAnalysisRequired: (state, action: PayloadAction<boolean>) => {
-      state.specialAnalysisRequired = action.payload;
-      if (!action.payload && state.specialAnalysisDescription !== '') {
-        state.specialAnalysisDescription = '';
-        state.hasProposalChanges = true;
-      }
-    },
-    setSpecialAnalysisDescription: (state, action: PayloadAction<string>) => {
-      state.specialAnalysisDescription = action.payload;
-      state.hasProposalChanges = true;
     },
   },
   extraReducers: builder => {

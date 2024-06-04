@@ -14,8 +14,4 @@ export interface ProposalDTO {
   biddingDescription?: string | null;
   contacts?: string[] | null;
   observations?: string | null;
-  specialAnalysis: {
-    required: boolean;
-    description: string;
-  };
 }

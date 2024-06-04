@@ -36,7 +36,6 @@ export function useFormSummary() {
     paymentType,
     numberOfInstallments,
     firstDueDate,
-    specialAnalysisRequired,
   } = useSelector(selectProposal);
   const { openContractualConditions, requestedBy } = useSelector(
     selectContractualCondition,
@@ -98,7 +97,6 @@ export function useFormSummary() {
       biddingDescription,
       openContractualConditions,
       requestedBy,
-      specialAnalysisRequired,
     );
   }, [
     insured,
@@ -107,7 +105,6 @@ export function useFormSummary() {
     biddingDescription,
     openContractualConditions,
     requestedBy,
-    specialAnalysisRequired,
   ]);
 
   const additionalDataFormSummary = useMemo(() => {

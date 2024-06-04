@@ -17,8 +17,6 @@ export const proposalAdapter = (
     paymentType,
     numberOfInstallments,
     comments,
-    specialAnalysisRequired,
-    specialAnalysisDescription,
   } = proposal;
   const { currentQuote, submodality } = quote;
 
@@ -55,9 +53,5 @@ export const proposalAdapter = (
     biddingDescription,
     contacts: [],
     observations: comments,
-    specialAnalysis: {
-      required: specialAnalysisRequired,
-      description: specialAnalysisDescription,
-    },
   };
 };

@@ -5,6 +5,7 @@ import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { waitFor } from '@testing-library/react';
 import {
   contractualConditionActions,
+  patchCustomClause,
   postCustomClause,
 } from '../../../application/features/contractualCondition/ContractualConditionSlice';
 import ContractualConditionApi from '../../../application/features/contractualCondition/ContractualConditionApi';
@@ -122,10 +123,6 @@ describe('useProposal', () => {
         numberOfInstallments: 1,
         paymentType: 1,
       },
-      specialAnalysis: {
-        description: '',
-        required: false,
-      },
     });
     waitFor(async () => {
       await expect(canAuthorizeProposalMock).toHaveBeenCalledWith(11111);
@@ -155,10 +152,6 @@ describe('useProposal', () => {
         firstDueDate: firstDueDateMock,
         numberOfInstallments: 1,
         paymentType: 1,
-      },
-      specialAnalysis: {
-        description: '',
-        required: false,
       },
     });
     expect(postCustomClauseMock).toHaveBeenCalledWith(11111, 1, 'test');
@@ -195,10 +188,6 @@ describe('useProposal', () => {
         firstDueDate: firstDueDateMock,
         numberOfInstallments: 1,
         paymentType: 1,
-      },
-      specialAnalysis: {
-        description: '',
-        required: false,
       },
     });
     expect(patchCustomClausMock).toHaveBeenCalledWith(

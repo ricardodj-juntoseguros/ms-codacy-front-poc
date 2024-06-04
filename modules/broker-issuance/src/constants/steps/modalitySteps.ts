@@ -1,5 +1,4 @@
 import { StepComponentModel } from '@shared/hooks';
-import { BrokerPlatformAuthService } from '@services';
 import { ModalityTypeEnum } from '../../application/types/model';
 import { BIDDER_STEPS } from './bidderSteps';
 import { SERVICE_PROVIDER_PERFORMER_STEPS } from './serviceProviderPerformerSteps';
@@ -20,9 +19,7 @@ const DEVELOPMENT_MODALITIES = {
   [ModalityTypeEnum.SUPPLIER_PERFORMER]: COMMON_COVERAGE_LABOR_STEPS,
 };
 
-const username = BrokerPlatformAuthService.getUsername();
 export const MODALITY_STEPS: ModalitySteps =
-  process.env.NX_GLOBAL_ENVIROMENT === 'qa' ||
-  (username && username === 'testecorretor_cor')
+  process.env.NX_GLOBAL_ENVIROMENT === 'qa'
     ? Object.assign(ACTIVE_MODALITIES, DEVELOPMENT_MODALITIES)
     : ACTIVE_MODALITIES;

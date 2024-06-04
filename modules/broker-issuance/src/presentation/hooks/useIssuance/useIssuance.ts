@@ -25,13 +25,7 @@ export const useIssuance = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { currentQuote } = useSelector(selectQuote);
-  const {
-    comments,
-    isAutomaticPolicy,
-    contacts,
-    specialAnalysisRequired,
-    specialAnalysisDescription,
-  } = useSelector(selectProposal);
+  const { comments, isAutomaticPolicy, contacts } = useSelector(selectProposal);
   const { typeOfAuthorization, approvalContacts } = useSelector(
     selectCommercialAuthorization,
   );
@@ -64,8 +58,6 @@ export const useIssuance = () => {
         isCommercial ? typeOfAuthorization : '',
         forceInternalize,
         internalizeReason || '',
-        specialAnalysisRequired,
-        specialAnalysisDescription,
       );
       ProposalApi.submitToApproval(
         currentQuote.identification.NewQuoterId,
@@ -91,8 +83,6 @@ export const useIssuance = () => {
       contacts,
       forceInternalize,
       internalizeReason,
-      specialAnalysisRequired,
-      specialAnalysisDescription,
     ],
   );
 
@@ -107,8 +97,6 @@ export const useIssuance = () => {
         typeOfAuthorization,
         forceInternalize,
         internalizeReason || '',
-        specialAnalysisRequired,
-        specialAnalysisDescription,
       );
       IssuanceApi.postIssuance(currentQuote.identification.NewQuoterId, payload)
         .then(response => {
@@ -133,8 +121,6 @@ export const useIssuance = () => {
       contacts,
       forceInternalize,
       internalizeReason,
-      specialAnalysisRequired,
-      specialAnalysisDescription,
     ],
   );
 
