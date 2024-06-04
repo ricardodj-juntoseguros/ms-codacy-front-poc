@@ -43,7 +43,7 @@ jest.mock('junto-design-system', () => {
     makeToast: jest.fn(),
   };
 });
-describe('ValidityAndValueForm', () => {
+describe('ValidityAndValueCoverageLaborForm', () => {
   let getPolicyholderBalanceLimitsMock: jest.SpyInstance;
   const todayFormatted = parseDateToString(startOfDay(new Date()));
 

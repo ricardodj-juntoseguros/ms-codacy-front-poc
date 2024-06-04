@@ -152,7 +152,7 @@ describe('UseFormSummary hook', () => {
       wrapper: HookWrapper,
     });
     const data = result.current.getSummaryData('InsuredDataForm');
-    expect(data.length).toBe(6);
+    expect(data.length).toBe(7);
     expect(data[0].label).toEqual('CNPJ');
     expect(data[0].value).toEqual('42.498.733/0001-48');
     expect(data[1].label).toEqual('Razão Social');
@@ -167,6 +167,7 @@ describe('UseFormSummary hook', () => {
     expect(data[4].value).toEqual('98765');
     expect(data[5].label).toEqual('Condições');
     expect(data[5].value).toEqual('Novo ou modificado (Tomador)');
+    expect(data[6].value).toEqual('Não');
   });
 
   it('Should return correct summary data for AdditionalDataForm', async () => {

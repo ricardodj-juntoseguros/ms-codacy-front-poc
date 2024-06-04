@@ -32,4 +32,8 @@ export interface ProposalResumeDTO {
     labor: boolean;
     rateAggravation: boolean;
   };
+  specialAnalysis: {
+    required: boolean;
+    description: string;
+  };
 }
