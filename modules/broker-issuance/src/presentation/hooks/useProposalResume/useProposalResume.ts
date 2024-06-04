@@ -92,6 +92,7 @@ export const useProposalResume = () => {
       observations,
       firstDueDate,
       additionalCoverage,
+      specialAnalysis,
     } = data;
 
     const broker = BrokerPlatformAuthService.getBroker();
@@ -246,6 +247,7 @@ export const useProposalResume = () => {
           firstDueDate,
           observations,
           createdAt,
+          specialAnalysis,
         }),
       );
     }

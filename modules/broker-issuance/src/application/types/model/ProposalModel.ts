@@ -25,4 +25,6 @@ export interface ProposalModel {
   protocols: SubmitToApprovalOrIssuanceResultDTO['protocols'];
   loadingCanAuthorize: boolean;
   contacts: string[];
+  specialAnalysisRequired: boolean;
+  specialAnalysisDescription: string;
 }

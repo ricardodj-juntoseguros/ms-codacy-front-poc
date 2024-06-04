@@ -16,6 +16,10 @@ export const proposalMock = {
   biddingDescription: '98765',
   contacts: [],
   observations: 'test',
+  specialAnalysis: {
+    required: false,
+    description: '',
+  },
 };
 
 export const proposalResumeMock = {
@@ -50,5 +54,9 @@ export const proposalResumeMock = {
   additionalCoverage: {
     labor: false,
     rateAggravation: false,
+  },
+  specialAnalysis: {
+    required: false,
+    description: '',
   },
 } as ProposalResumeDTO;

@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'react';
 import { GenericComponentProps } from '@shared/hooks';
 import InsuredSelection from '../InsuredSelection';
-import ContractualCondition from '../ContractualCondition';
 import NoticeData from '../NoticeData';
 import InsuredDataFooter from '../InsuredDataFooter';
 import InsuredDataFormWrapper from '../InsuredDataFormWrapper';
+import ProposalParticularities from '../ProposalParticularities';
 
 const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
   name,
@@ -13,7 +13,7 @@ const InsuredDataForm: FunctionComponent<GenericComponentProps> = ({
     <InsuredDataFormWrapper name={name}>
       <InsuredSelection />
       <NoticeData />
-      <ContractualCondition />
+      <ProposalParticularities />
       <InsuredDataFooter />
     </InsuredDataFormWrapper>
   );

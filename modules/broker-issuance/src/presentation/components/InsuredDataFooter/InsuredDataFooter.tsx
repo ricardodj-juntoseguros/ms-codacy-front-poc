@@ -17,6 +17,8 @@ const InsuredDataFooter: FunctionComponent = () => {
     loadingProposal,
     loadingCanAuthorize,
     identification,
+    specialAnalysisRequired,
+    specialAnalysisDescription,
   } = useSelector(selectProposal);
   const {
     loadingContractualCondition,
@@ -34,9 +36,12 @@ const InsuredDataFooter: FunctionComponent = () => {
       errors.biddingNumber === undefined &&
       identification?.PolicyId;
     const hasContratualCondition = text && requestedBy;
+    const needSpecialAnalysis =
+      specialAnalysisRequired && specialAnalysisDescription.length === 0;
     return (
       !hasDefaultFields ||
       (openContractualConditions && !hasContratualCondition) ||
+      needSpecialAnalysis ||
       loadingContractualCondition ||
       loadingProposal ||
       loadingCanAuthorize
@@ -52,6 +57,8 @@ const InsuredDataFooter: FunctionComponent = () => {
     openContractualConditions,
     requestedBy,
     text,
+    specialAnalysisRequired,
+    specialAnalysisDescription,
     errors,
   ]);
 
