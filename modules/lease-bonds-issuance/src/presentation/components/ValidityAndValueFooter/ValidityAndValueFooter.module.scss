@@ -1,0 +1,23 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.validity-and-value-footer__wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: spacing('m');
+
+  & > button {
+    max-width: 312px;
+  }
+
+  &--policyholder {
+    justify-content: flex-end;
+  }
+
+  @media screen and (max-width: 1080px) {
+    flex-wrap: wrap;
+
+    & > button {
+      max-width: 100%;
+    }
+  }
+}

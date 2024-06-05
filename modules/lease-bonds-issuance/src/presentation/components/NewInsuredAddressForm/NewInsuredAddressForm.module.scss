@@ -1,0 +1,66 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.new-insured-address-form__wrapper {
+  & > button {
+    margin-top: spacing('m');
+  }
+}
+
+.new-insured-address-form__title {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  margin: 0px;
+}
+
+.new-insured-address-form__form {
+  margin-top: spacing('xxl');
+  display: flex;
+  flex-direction: column;
+  gap: spacing('m');
+
+  & > div:first-child > button {
+    margin-top: spacing('s');
+  }
+
+  & > div:first-child > div:last-child {
+    margin-top: spacing('s');
+  }
+
+  & > div:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    gap: spacing('m');
+
+    @media screen and (max-width: 768px) {
+      display: grid;
+      grid-template-columns: 4fr 2fr;
+    }
+  }
+
+  & > div:nth-child(4) {
+    display: flex;
+    flex-direction: row;
+    gap: spacing('m');
+
+    @media screen and (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  & > div:last-child {
+    display: flex;
+    flex-direction: row;
+    gap: spacing('m');
+    padding-top: spacing('xxl-2');
+
+    & > button {
+      width: 100%;
+    }
+
+    @media screen and (max-width: 768px) {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+}

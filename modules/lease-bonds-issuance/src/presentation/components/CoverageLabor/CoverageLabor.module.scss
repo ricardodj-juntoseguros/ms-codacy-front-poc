@@ -1,0 +1,24 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.coverage-labor__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l')
+}
+
+.coverage-labor__content {
+  display: flex;
+  justify-content: flex-start;
+
+  & > div:first-child {
+    max-width: 348px;
+  }
+}
+
+.coverage-labor__info-button {
+  @include color('color', 'brand-primary');
+  border: none;
+  background: transparent;
+  padding: 0px;
+  cursor: help;
+}

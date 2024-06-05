@@ -1,0 +1,19 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.object-preview-modal__title {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+}
+
+.object-preview-modal__content {
+  @include color('color', 'dark');
+  @include font('base');
+  max-height: calc(100vh - 250px);
+  overflow-x: hidden;
+  padding-right: spacing('l');
+  scrollbar-width: thin;
+
+  & b {
+    @include font('base-emphasys');
+  }
+}

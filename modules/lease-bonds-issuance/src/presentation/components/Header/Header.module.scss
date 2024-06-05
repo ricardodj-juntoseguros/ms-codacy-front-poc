@@ -1,0 +1,54 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.header__wrapper {
+  @include border(1, 'solid', 'grey-200');
+  @include color('background-color', 'white');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  padding: spacing('xl');
+  box-sizing: border-box;
+  position: fixed;
+  border-right: 0;
+  z-index: 2;
+
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+  }
+
+  @media screen and (max-width: 576px) {
+    height: 56px;
+    justify-content: flex-start;
+    border: 0;
+    padding: 0;
+    margin: spacing('xl') 0 0 spacing('xl');
+    position: relative;
+  }
+}
+
+.header__logo {
+  display: none;
+
+  @media screen and (max-width: 576px) {
+    display: block;
+  }
+}
+
+.header__go-back-wrapper {
+  position: absolute;
+  left: spacing('xl');
+
+  @media screen and (max-width: 576px) {
+    display: none;
+  }
+}
+
+.header__title {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+
+  @media screen and (max-width: 576px) {
+    display: none;
+  }
+}

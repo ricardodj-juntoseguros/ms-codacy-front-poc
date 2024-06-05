@@ -1,0 +1,11 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.object-preview-skeleton__wrapper {
+
+  & > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: spacing('l');
+    margin-bottom: spacing('xxl-2');
+  }
+}

@@ -385,6 +385,116 @@
       },
       "tags": []
     },
+    "lease-bonds": {
+      "root": "apps/lease-bonds",
+      "sourceRoot": "apps/lease-bonds/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/lease-bonds",
+            "index": "apps/lease-bonds/src/index.html",
+            "main": "apps/lease-bonds/src/main.tsx",
+            "polyfills": "apps/lease-bonds/src/polyfills.ts",
+            "tsConfig": "apps/lease-bonds/tsconfig.app.json",
+            "assets": ["apps/lease-bonds/src/favicon.ico"],
+            "styles": ["apps/lease-bonds/src/styles.scss"],
+            "scripts": [],
+            "webpackConfig": "apps/lease-bonds/webpack.config.js"
+          },
+          "configurations": {
+            "quality": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            },
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/lease-bonds/src/environments/environment.ts",
+                  "with": "apps/lease-bonds/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "lease-bonds:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "lease-bonds:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/lease-bonds/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/lease-bonds"],
+          "options": {
+            "jestConfig": "apps/lease-bonds/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "lease-bonds-issuance": {
+      "root": "modules/lease-bonds-issuance",
+      "sourceRoot": "modules/lease-bonds-issuance/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["modules/lease-bonds-issuance/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/modules/lease-bonds-issuance"],
+          "options": {
+            "jestConfig": "modules/lease-bonds-issuance/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "plataforma": {
       "root": "apps/plataforma",
       "sourceRoot": "apps/plataforma/src",

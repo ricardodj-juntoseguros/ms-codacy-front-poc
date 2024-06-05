@@ -30,6 +30,7 @@
       "@modules/fidelize-mapeamentos-import": [
         "modules/fidelize-mapeamentos-import/src/index.tsx"
       ],
+      "@modules/lease-bonds-issuance": ["modules/lease-bonds-issuance/src/index.tsx"],
       "@modules/vendors-authentication": [
         "modules/vendors-authentication/src/index.tsx"
       ],

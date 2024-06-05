@@ -1,0 +1,43 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.commercial-authorization__wrapper {
+  @include border(1, 'solid', 'grey-300');
+  @include rounded('card');
+
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l');
+  padding: spacing('xl');
+}
+
+.commercial-authorization__title {
+  @include font('base-emphasys');
+  @include color('color', 'dark');
+  margin: 0;
+}
+
+.commercial-authorization__text {
+  @include font('base');
+  @include color('color', 'grey-600');
+  margin: 0;
+}
+
+.commercial-authorization__radio-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & > div:last-child {
+    margin-right: spacing('l');
+  }
+
+  @media screen and (max-width: 1200px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: spacing('m');
+
+    & > div:last-child {
+      margin-left: 0;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.appointment-letter-sent-container__wrapper {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: spacing('m');
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.appointment-letter-sent-container__header {
+  height: 4.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.appointment-letter-sent-container__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: spacing('xxl-4');
+  max-width: 31.81rem;
+}
+
+.appointment-letter-sent-container__title {
+  @include font('xl-emphasys');
+  @include color('color', 'dark');
+  text-align: center;
+  margin: spacing('m') 0 spacing('s') 0;
+}
+
+.appointment-letter-sent-container__text {
+  @include font('base');
+  @include color('color', 'dark');
+  text-align: center;
+}
+
+.appointment-letter-sent-container__buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('l');
+  margin-top: spacing('xl');
+}
