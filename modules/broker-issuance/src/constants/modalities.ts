@@ -1,4 +1,4 @@
-import { ModalityTypeEnum } from '../application/types/model';
+import { ModalityTypeEnum, PaymentTypeEnum } from '../application/types/model';
 
 export const DEFAULT_SUBMODALITY_ID = 1;
 
@@ -14,3 +14,9 @@ export const VARIANT_RETROACTIVE_DATE_MODALITIES = [
   ModalityTypeEnum.JUDICIAL_DEFAULT,
   ModalityTypeEnum.BIDDER,
 ];
+
+export const DEFAULT_PAYMENT_TYPE = PaymentTypeEnum.BILL;
+
+export const MODALITY_OTHER_PAYMENT_TYPE: { [x: number]: PaymentTypeEnum } = {
+  [ModalityTypeEnum.JUDICIAL_RECURSAL]: PaymentTypeEnum.INVOICE,
+};

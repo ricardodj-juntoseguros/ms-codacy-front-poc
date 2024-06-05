@@ -22,6 +22,10 @@ import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import { useProposal, useQuotation } from '../../hooks';
 import styles from './PaymentFields.module.scss';
 import { selectValidation } from '../../../application/features/validation/ValidationSlice';
+import {
+  DEFAULT_PAYMENT_TYPE,
+  MODALITY_OTHER_PAYMENT_TYPE,
+} from '../../../constants';
 
 const PaymentFields: FunctionComponent = () => {
   const [loadingField, setLoadingField] = useState('');
@@ -30,7 +34,7 @@ const PaymentFields: FunctionComponent = () => {
   const updateProposal = useProposal();
   const { paymentType, numberOfInstallments, firstDueDate, loadingProposal } =
     useSelector(selectProposal);
-  const { currentQuote, submodality, endDateValidity, loadingQuote } =
+  const { currentQuote, modality, submodality, endDateValidity, loadingQuote } =
     useSelector(selectQuote);
   const { errors } = useSelector(selectValidation);
   const {
@@ -76,8 +80,10 @@ const PaymentFields: FunctionComponent = () => {
   }, [loadingProposal]);
 
   useEffect(() => {
-    if (paymentType === null && paymentTypeOptions.length > 0) {
-      dispatch(setPaymentType(stringToInt(paymentTypeOptions[0].value)));
+    if (modality && paymentType === null && paymentTypeOptions.length > 0) {
+      const defaultPaymentType =
+        MODALITY_OTHER_PAYMENT_TYPE[modality.id] || DEFAULT_PAYMENT_TYPE;
+      dispatch(setPaymentType(defaultPaymentType));
     }
   }, [paymentType, paymentTypeOptions]);
 
@@ -129,7 +135,6 @@ const PaymentFields: FunctionComponent = () => {
   };
 
   const renderPaymentType = () => {
-    if (paymentTypeOptions.length <= 1) return null;
     if (loadingField === 'paymentType' && loadingProposal) {
       return <Skeleton height={64} width="100%" />;
     }
@@ -140,6 +145,7 @@ const PaymentFields: FunctionComponent = () => {
         label="Selecione a forma de pagamento"
         placeholder="Selecione uma opção"
         options={paymentTypeOptions}
+        readOnly={paymentTypeOptions.length === 1}
         value={
           paymentTypeOptions.find(
             option => option.value === `${paymentType}`,

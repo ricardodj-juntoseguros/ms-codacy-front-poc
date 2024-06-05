@@ -130,6 +130,7 @@ export function useFormSummary() {
         InsuredDataForm: insuredDataFormSummary,
         InsuredDataBidderForm: insuredDataFormSummary,
         AdditionalDataForm: additionalDataFormSummary,
+        AdditionalDataCommercialInternalizeForm: additionalDataFormSummary,
       };
       return formSummariesData[formName] || [];
     },
