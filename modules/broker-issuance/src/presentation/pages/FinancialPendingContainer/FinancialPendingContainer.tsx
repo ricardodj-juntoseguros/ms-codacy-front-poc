@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
-import { ReactComponent as WarningIcon } from '../../assets/warning-icon.svg';
+import { ReactComponent as WarningIcon } from './assets/warning-icon.svg';
 
 import styles from './FinancialPendingContainer.module.scss';
 

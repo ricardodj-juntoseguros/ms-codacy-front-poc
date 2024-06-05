@@ -34,7 +34,10 @@ const AdditionalDataFormWrapper: FunctionComponent<GenericComponentProps> = ({
       setIsCommercialModalOpen(true);
       return;
     }
-    if (hasOnlyFinancialPending) history.push('/financial-pending');
+    if (hasOnlyFinancialPending) {
+      history.push('/financial-pending');
+      return;
+    }
     createIssuanceOrSubmitToApproval(name);
   };
   return (

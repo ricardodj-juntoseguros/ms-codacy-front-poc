@@ -1,0 +1,37 @@
+  <svg xmlns="http://www.w3.org/2000/svg" width="67" height="80" viewBox="0 0 67 80">
+    <defs>
+      <linearGradient id="prefix__a" x1="50%" x2="50%" y1="0%" y2="100%">
+        <stop offset="0%" stopColor="#FC3" />
+        <stop offset="100%" stopColor="#F96" />
+      </linearGradient>
+    </defs>
+    <g fill="none" fillRule="evenodd">
+      <path
+        fill="url(#prefix__a)"
+        fillRule="nonzero"
+        d="M0 3.333v73.334A3.333 3.333 0 003.333 80h60.334A3.333 3.333 0 0067 76.667V21.58c0-.444-.177-.869-.491-1.182L46.496.485A1.666 1.666 0 0045.321 0H3.333A3.333 3.333 0 000 3.333z"
+        opacity=".8"
+      />
+      <path
+        stroke="#FFF"
+        strokeWidth="2"
+        d="M36.242 24.884a3 3 0 00-5.194 0L14.65 53.231a3 3 0 002.597 4.502h32.798a3 3 0 002.597-4.502l-16.4-28.347h0z"
+        opacity=".5"
+      />
+      <path
+        stroke="#FFF"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M33.5 33L33.5 47"
+        opacity=".504"
+      />
+      <circle cx="33.5" cy="52" r="1" fill="#FFF" fillRule="nonzero" opacity=".497" />
+      <path
+        fill="#F96"
+        fillRule="nonzero"
+        d="M46.063 0v17.227a3.333 3.333 0 003.333 3.333h17.337"
+        opacity=".4"
+      />
+    </g>
+  </svg>
