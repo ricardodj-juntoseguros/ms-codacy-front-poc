@@ -9,15 +9,10 @@ import {
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
 import {
-  COVERAGE_LABOR_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID,
-  COVERAGE_LABOR_SUBMODALITY_ID,
-  DEFAULT_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID,
-  DEFAULT_SUBMODALITY_ID,
-} from '../../../constants';
-import {
   additionalCoverageActions,
   selectAdditionalCoverage,
 } from '../../../application/features/additionalCoverage/AdditionalCoverageSlice';
+import { getDefaultSubmodality } from '../../../helpers';
 import { useQuotation } from '../../hooks';
 import styles from './CoverageLabor.module.scss';
 
@@ -42,34 +37,31 @@ const CoverageLabor: FunctionComponent = () => {
     () => {
       createOrUpdateQuote();
     },
-    250,
+    350,
     [labor, rateAggravation],
   );
 
-  const handleLaborChange = () => {
-    dispatch(setLabor(!labor));
-    const submodalityId = !labor
-      ? COVERAGE_LABOR_SUBMODALITY_ID
-      : DEFAULT_SUBMODALITY_ID;
-    const containmentAndRescueSubmodalityId = !labor
-      ? COVERAGE_LABOR_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID
-      : DEFAULT_CONTAINMENT_AND_RESCUE_SUBMODALITY_ID;
-    const coverageLaborSubmodality = modality?.submodalities.find(
-      submodality =>
-        submodality.id === submodalityId ||
-        submodality.id === containmentAndRescueSubmodalityId,
-    );
-    if (coverageLaborSubmodality) {
-      dispatch(setSubmodality(coverageLaborSubmodality));
+  const resetAllFees = () => {
+    if (toggleRateFlex) dispatch(setToggleRateFlex());
+    dispatch(setProposalFee(currentQuote?.pricing.feeStandard || 0));
+    dispatch(setFeeFlex(NaN));
+    dispatch(setCommissionFlex(NaN));
+  };
+
+  const handleLaborChange = (newLaborValue: boolean) => {
+    if (modality) {
+      const submodality = getDefaultSubmodality(newLaborValue, modality);
+      if (submodality) {
+        dispatch(setSubmodality(submodality));
+      }
     }
+    resetAllFees();
+    dispatch(setLabor(newLaborValue));
   };
 
   const handleRateAggravationChange = () => {
+    resetAllFees();
     dispatch(setRateAggravation(!rateAggravation));
-    if (toggleRateFlex) dispatch(setToggleRateFlex());
-    dispatch(setProposalFee(currentQuote?.pricing.feeStandard || 0));
-    dispatch(setCommissionFlex(NaN));
-    dispatch(setFeeFlex(NaN));
   };
 
   const renderRateAggravation = () => {
@@ -96,7 +88,7 @@ const CoverageLabor: FunctionComponent = () => {
           data-testid="coverageLabor-labor-toggle"
           checked={labor}
           name="coverageLabor-labor-toggle"
-          onChange={() => handleLaborChange()}
+          onChange={() => handleLaborChange(!labor)}
           label="Emitir com cobertura adicional trabalhista?"
           disabled={loadingQuote}
         />

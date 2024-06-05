@@ -8,3 +8,4 @@ export * from './getMaxFirstDueDate';
 export * from './getMinFirstDueDate';
 export * from './mapInsuredAddressesOption';
 export * from './zipcodeInputMask';
+export * from './getDefaultSubmodality';
