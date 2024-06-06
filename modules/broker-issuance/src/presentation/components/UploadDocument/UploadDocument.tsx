@@ -86,8 +86,8 @@ const UploadDocument: FunctionComponent<UploadDocumentProps> = ({
         maxFileSize={30}
         multipleFiles={multipleFiles}
         types={FILE_TYPES.default}
-        showMaxFileSize={false}
         onCallbackUpload={handleUploadDocument}
+        errorMessage="Formato inválido. Utilize arquivos: .jpg, .jpeg, .pdf, .png, .doc, .docx, .xls, .xlsx, .tiff, .bmp e .rtf."
       />
       <UploadListFiles
         items={documents}
