@@ -11,14 +11,13 @@ interface ModalitySteps {
 
 const ACTIVE_MODALITIES: ModalitySteps = {
   [ModalityTypeEnum.BIDDER]: BIDDER_STEPS,
-};
-
-const DEVELOPMENT_MODALITIES = {
   [ModalityTypeEnum.SERVICE_PROVIDER_PERFORMER]:
     SERVICE_PROVIDER_PERFORMER_STEPS,
   [ModalityTypeEnum.BUILDER_PERFORMER]: COMMON_COVERAGE_LABOR_STEPS,
   [ModalityTypeEnum.SUPPLIER_PERFORMER]: COMMON_COVERAGE_LABOR_STEPS,
 };
+
+const DEVELOPMENT_MODALITIES = {};
 
 const username = BrokerPlatformAuthService.getUsername();
 export const MODALITY_STEPS: ModalitySteps =
