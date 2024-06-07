@@ -18,7 +18,7 @@ const Header: FunctionComponent = () => {
     if (identification) return `Proposta Nº ${identification.PolicyId}`;
     if (currentQuote)
       return `Cotação Nº ${currentQuote.identification.NewQuoterId}`;
-    return 'Nova cotação fiança locatícia';
+    return 'Novo orçamento';
   }, [currentQuote, identification]);
 
   return (

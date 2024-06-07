@@ -26,3 +26,6 @@ export * from './SubmitToApprovalOrIssuanceDTO';
 export * from './SubmitToApprovalOrIssuanceResultDTO';
 export * from './SurveyInviteDTO';
 export * from './InternalizeDocumentsDTO'
+export * from './RealStateSearchDTO'
+export * from './RealStateDTO'
+export * from './InternalizeDocumentsDTO'

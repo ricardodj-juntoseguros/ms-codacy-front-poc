@@ -1,14 +1,14 @@
 import { StepStatusEnum } from '@shared/hooks';
-import PolicyholderAndModalityForm from '../../presentation/components/PolicyholderAndModalityForm';
+import LeaseBondsForm from '../../presentation/components/LeaseBondsForm';
 
 export const DEFAULT_STEP = [
   {
-    name: 'PolicyholderAndModalityForm',
+    name: 'LeaseBondsForm',
     status: StepStatusEnum.EDITABLE,
-    component: PolicyholderAndModalityForm,
-    summaryTitle: 'Dados do tomador e modalidade',
+    component: LeaseBondsForm,
+    summaryTitle: 'Teste',
     title: {
-      text: 'Para iniciar uma cotação, precisamos dos %STRONG%',
+      text: 'Para começar, precisamos dos %STRONG%',
       boldWords: ['dados da locação'],
     },
   },
