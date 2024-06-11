@@ -32,7 +32,7 @@
   @include color('color', 'dark');
   margin: 0px;
   margin-bottom: spacing('s');
-  max-width: 400px;
+  max-width: 450px;
   text-align: center;
 
   @media screen and (max-width: 430px) {
@@ -47,6 +47,10 @@
   max-width: 400px;
   text-align: center;
   margin: 0px;
+
+  &--internalized {
+    max-width: 450px !important;
+  }
 }
 
 .proposal-finish-container__buttons {
@@ -54,7 +58,7 @@
   flex-direction: column;
   width: 312px;
   align-items: center;
-  gap: spacing('xl');
+  gap: spacing('l');
 
   @media screen and (max-width: 430px) {
     padding-top: spacing('m');

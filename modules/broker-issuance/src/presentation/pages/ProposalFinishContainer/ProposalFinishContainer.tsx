@@ -10,6 +10,7 @@ import {
   makeToast,
 } from 'junto-design-system';
 import { useSelector } from 'react-redux';
+import classNames from 'classnames';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import {
   ProposalFinishEnum,
@@ -68,10 +69,30 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleGoToProcessList = () => {
+  const goToProcessList = () => {
     window.location.assign(
       process.env.NX_GLOBAL_BROKER_PROCESSES_LIST_URL || '',
     );
+  };
+
+  const goToProposalDetails = () => {
+    window.location.assign(
+      `${process.env.NX_GLOBAL_BROKER_PROCESSES_URL}/details?documentNumber=${identification?.PolicyId}`,
+    );
+  };
+
+  const handlePrimaryButtonClick = () => {
+    if (feedbackType === ProposalFinishEnum.analysis) {
+      goToProposalDetails();
+      return;
+    }
+    goToProcessList();
+  };
+
+  const handleSecondaryButtonClick = () => {
+    if (feedbackType === ProposalFinishEnum.analysis) {
+      goToProcessList();
+    }
   };
 
   const renderIcon = () => {
@@ -133,7 +154,10 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
           whileInView={{ opacity: 1, translateY: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.3, delay: 0.9 }}
-          className={styles['proposal-finish-container__text']}
+          className={classNames(styles['proposal-finish-container__text'], {
+            [styles['proposal-finish-container__text--internalized']]:
+              feedbackType === ProposalFinishEnum.analysis,
+          })}
         >
           {componentData.description}
         </motion.p>
@@ -146,18 +170,29 @@ const ProposalFinishContainer: React.FC<ProposalFinishContainerProps> = ({
         className={styles['proposal-finish-container__buttons']}
       >
         <Button
-          data-testid="proposalFinishContainer-processes-button"
+          data-testid="proposalFinishContainer-primary-button"
           variant="primary"
-          onClick={() => handleGoToProcessList()}
+          onClick={() => handlePrimaryButtonClick()}
         >
-          Ir para a lista de processos
+          {componentData.primaryButton}
         </Button>
+        {componentData.secondaryButton && (
+          <Button
+            data-testid="proposalFinishContainer-secondary-button"
+            variant="secondary"
+            onClick={() => handleSecondaryButtonClick()}
+          >
+            {componentData.secondaryButton}
+          </Button>
+        )}
         {feedbackType === ProposalFinishEnum.analysis && (
           <LinkButton
             data-testid="proposalFinishContainer-download-button"
             loading={loadingDownload}
-            label="Download da proposta"
+            label="Baixar proposta"
             size="small"
+            icon="download"
+            iconPosition="left"
             onClick={() => handleDownloadProposalClick()}
           />
         )}

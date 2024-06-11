@@ -34,6 +34,7 @@ jest.mock('@shared/utils', () => {
 
 describe('ProposalFinishContainer', () => {
   process.env.NX_GLOBAL_BROKER_PROCESSES_LIST_URL = '/url-processos';
+  process.env.NX_GLOBAL_BROKER_PROCESSES_URL = '/url-detalhes';
   const mockHistoryPush = jest.fn();
 
   beforeAll(async () => {
@@ -103,14 +104,47 @@ describe('ProposalFinishContainer', () => {
       getByText('Proposta 11111 - 01/01/2024 às 12h00'),
     ).toBeInTheDocument();
     expect(
-      getByText('Em breve você receberá o retorno da nossa equipe.'),
+      getByText(/Em breve você receberá o retorno da nossa equipe./),
     ).toBeInTheDocument();
     expect(
       getByTestId('proposalFinishContainer-download-button'),
     ).toBeInTheDocument();
     expect(
-      getByTestId('proposalFinishContainer-processes-button'),
+      getByTestId('proposalFinishContainer-primary-button'),
     ).toBeInTheDocument();
+    expect(
+      getByTestId('proposalFinishContainer-secondary-button'),
+    ).toBeInTheDocument();
+  });
+
+  it('should go to process details page on primary button click with analysis feedback type', async () => {
+    const { getByTestId } = render(
+      <ProposalFinishContainer
+        feedbackType={ProposalFinishEnum.analysis}
+        history={{ push: mockHistoryPush } as any}
+        location={{} as any}
+        match={{} as any}
+      />,
+    );
+
+    fireEvent.click(getByTestId('proposalFinishContainer-primary-button'));
+    expect(window.location.assign).toHaveBeenCalledWith(
+      '/url-detalhes/details?documentNumber=11111',
+    );
+  });
+
+  it('should go to process list page on secondary button click with analysis feedback type', async () => {
+    const { getByTestId } = render(
+      <ProposalFinishContainer
+        feedbackType={ProposalFinishEnum.analysis}
+        history={{ push: mockHistoryPush } as any}
+        location={{} as any}
+        match={{} as any}
+      />,
+    );
+
+    fireEvent.click(getByTestId('proposalFinishContainer-secondary-button'));
+    expect(window.location.assign).toHaveBeenCalledWith('/url-processos');
   });
 
   it('Should render accordingly with success feedback type', async () => {
@@ -129,11 +163,11 @@ describe('ProposalFinishContainer', () => {
       ),
     ).toBeInTheDocument();
     expect(
-      getByTestId('proposalFinishContainer-processes-button'),
+      getByTestId('proposalFinishContainer-primary-button'),
     ).toBeInTheDocument();
   });
 
-  it('Should go to process list on button click', async () => {
+  it('Should go to process list on primary button click and success feedback type', async () => {
     const { getByTestId } = render(
       <ProposalFinishContainer
         feedbackType={ProposalFinishEnum.success}
@@ -142,7 +176,7 @@ describe('ProposalFinishContainer', () => {
         match={{} as any}
       />,
     );
-    const button = getByTestId('proposalFinishContainer-processes-button');
+    const button = getByTestId('proposalFinishContainer-primary-button');
     fireEvent.click(button);
     expect(window.location.assign).toHaveBeenCalledWith('/url-processos');
   });
