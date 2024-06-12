@@ -10,7 +10,7 @@ describe('RealStateSelectionApi', () => {
     jest.clearAllMocks();
   });
 
-  it('searchRealState should call bff service correctly', async () => {
+  it('getRealStateDetails should call bff service correctly', async () => {
     const mockData = {
       hasMore: false,
       records: [
@@ -28,10 +28,10 @@ describe('RealStateSelectionApi', () => {
         return mockData;
       });
 
-    const result = await RealStateSelectionApi.searchRealState('test');
+    const result = await RealStateSelectionApi.getRealStateDetails('test');
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/v1/real-state/search',
+      url: '/v1/real-state',
       params: { q: 'test' },
     });
     expect(result).toBe(mockData);

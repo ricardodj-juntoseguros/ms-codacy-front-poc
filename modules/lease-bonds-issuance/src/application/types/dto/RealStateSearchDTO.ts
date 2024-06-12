@@ -1,8 +1,6 @@
 export interface RealStateSearchDTO {
-  hasMore: boolean;
-  records: Array<{
-    id: number;
-    name: string;
-    federalId: string;
-  }>;
+  id: number;
+  federalId: string;
+  name: string;
+  businessName: string;
 }

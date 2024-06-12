@@ -385,24 +385,24 @@
       },
       "tags": []
     },
-    "lease-bonds": {
-      "root": "apps/lease-bonds",
-      "sourceRoot": "apps/lease-bonds/src",
+    "locaticia": {
+      "root": "apps/locaticia",
+      "sourceRoot": "apps/locaticia/src",
       "projectType": "application",
       "targets": {
         "build": {
           "executor": "@nrwl/web:webpack",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/lease-bonds",
-            "index": "apps/lease-bonds/src/index.html",
-            "main": "apps/lease-bonds/src/main.tsx",
-            "polyfills": "apps/lease-bonds/src/polyfills.ts",
-            "tsConfig": "apps/lease-bonds/tsconfig.app.json",
-            "assets": ["apps/lease-bonds/src/favicon.ico"],
-            "styles": ["apps/lease-bonds/src/styles.scss"],
+            "outputPath": "dist/apps/locaticia",
+            "index": "apps/locaticia/src/index.html",
+            "main": "apps/locaticia/src/main.tsx",
+            "polyfills": "apps/locaticia/src/polyfills.ts",
+            "tsConfig": "apps/locaticia/tsconfig.app.json",
+            "assets": ["apps/locaticia/src/favicon.ico"],
+            "styles": ["apps/locaticia/src/styles.scss"],
             "scripts": [],
-            "webpackConfig": "apps/lease-bonds/webpack.config.js"
+            "webpackConfig": "apps/locaticia/webpack.config.js"
           },
           "configurations": {
             "quality": {
@@ -424,8 +424,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/lease-bonds/src/environments/environment.ts",
-                  "with": "apps/lease-bonds/src/environments/environment.prod.ts"
+                  "replace": "apps/locaticia/src/environments/environment.ts",
+                  "with": "apps/locaticia/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -448,25 +448,25 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "lease-bonds:build"
+            "buildTarget": "locaticia:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "lease-bonds:build:production"
+              "buildTarget": "locaticia:build:production"
             }
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lease-bonds/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": ["apps/locaticia/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/lease-bonds"],
+          "outputs": ["coverage/apps/locaticia"],
           "options": {
-            "jestConfig": "apps/lease-bonds/jest.config.js",
+            "jestConfig": "apps/locaticia/jest.config.js",
             "passWithNoTests": true
           }
         }

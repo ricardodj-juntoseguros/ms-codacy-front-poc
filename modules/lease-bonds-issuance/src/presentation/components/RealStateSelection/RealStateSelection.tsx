@@ -8,7 +8,9 @@ import {
   makeToast,
 } from 'junto-design-system';
 import { useDebounce } from '@shared/hooks';
+import { BrokerPlatformAuthService } from '@services';
 import RealStateSelectionApi from '../../../application/features/realStateSelection/RealStateSelectionApi';
+import { RealStateSearchDTO } from '../../../application/types/dto';
 
 const RealStateSelection: FunctionComponent = () => {
   const [showEmptyOptions, setShowEmptyOptions] = useState(false);
@@ -17,24 +19,35 @@ const RealStateSelection: FunctionComponent = () => {
   const [realStateSearchValue, setRealStateSearchValue] = useState<string>('')
 
   const searchRealState = (search: string) => {
-    RealStateSelectionApi.searchRealState(search).then(result => {
+    const broker = BrokerPlatformAuthService.getBroker();
+    if (!broker || !broker?.federalId) {
+      makeToast('error', 'Houve um erro ao buscar os dados do estipulante');
+      return;
+    }
+
+    RealStateSelectionApi.searchRealState(broker?.federalId, search).then((result: RealStateSearchDTO) => {
       setShowEmptyOptions(false)
       setLoadingSearchRealState(true)
-      if (!result.records?.length) {
+      if (!result) {
         setShowEmptyOptions(true)
         setLoadingSearchRealState(false)
         return
       }
-      setRealStateOptions(result.records.map(item => ({
-        companyName: item.name,
-        federalId: item.federalId,
-        id: item.id,
-        label: item.name,
-        value: String(item.id),
-      })))
+      const label = `${result.federalId.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "$1.$2.$3/$4-$5")} - ${result.businessName}`;
+      const value = result.federalId;
+      setRealStateOptions([{
+        label,
+        value,
+      }])
       setLoadingSearchRealState(false)
-    }).catch(() => {
-      makeToast('error', 'Houve um erro ao buscar os dados do estipulante');
+    }).catch((error) => {
+      const defaultMessage = 'Houve um erro ao buscar os dados do estipulante';
+      if (error?.data?.data[0]?.code === 'UNDEFINED_0') {
+        makeToast('error', defaultMessage);
+        return;
+      }
+      const msg = error?.data?.data?.length ? (error.data.data[0]?.message ?? defaultMessage) : defaultMessage;
+      makeToast('error', msg);
     })
   }
 
@@ -45,6 +58,7 @@ const RealStateSelection: FunctionComponent = () => {
   );
 
   const handleSearchRealState = (search: string) => {
+    if (realStateOptions.some(item => item.label === search)) return;
     setRealStateSearchValue(search)
   };
 

@@ -4,7 +4,7 @@ import { BrokerPlatformAuthService } from '@services';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export class LeaseBondsInssuanceBaseApi {
-  private readonly BASE_URL = process.env.NX_GLOBAL_ISSUER_PLATFORM_BFF || '';
+  private readonly BASE_URL = process.env.NX_GLOBAL_LEASE_BONDS_BFF || '';
 
   private headers = {};
 

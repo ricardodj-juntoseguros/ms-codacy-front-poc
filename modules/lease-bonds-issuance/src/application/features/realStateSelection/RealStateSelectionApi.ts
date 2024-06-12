@@ -12,21 +12,21 @@ class RealStateSelectionApi {
     this.httpClient = new LeaseBondsIssuanceBaseApi().getInstance();
   }
 
-  async searchRealState(realStateLabel?: string) {
+  async getRealStateDetails(realStateLabel?: string) {
     const params: IHttpClientRequestParameters = {
-      url: `/v1/real-state/search`,
+      url: `/v1/real-state`,
       params: {
         q: realStateLabel,
       },
     };
-    return this.httpClient.get<RealStateSearchDTO>(params);
-  }
-  
-  async getRealStateDetails(brokerId: number, federalId: string) {
-    const params: IHttpClientRequestParameters = {
-      url: `/v1/real-state/${federalId}?brokerExternalId=${brokerId}`,
-    };
     return this.httpClient.get<RealStateDTO>(params);
+  }
+
+  async searchRealState(brokerId: string, federalId: string) {
+    const params: IHttpClientRequestParameters = {
+      url: `/v1/real-state/${federalId}?brokerFederalId=${brokerId}`,
+    };
+    return this.httpClient.get<RealStateSearchDTO>(params);
   }
 }
 
