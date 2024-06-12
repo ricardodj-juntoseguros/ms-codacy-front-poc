@@ -42,6 +42,7 @@ const initialState: PolicyholderSelectionModel = {
   affiliatesOptions: [],
   loadingDetails: false,
   loadingGetSubsidiaries: false,
+  needAppointmentLetter: false,
   currentAppointmentLetter: null,
 };
 
@@ -90,6 +91,9 @@ export const policyholderSelectionSlice = createSlice({
           Object.values(AFFILIATE_DEFAULT_OPTIONS),
         );
       }
+    },
+    setNeedAppointmentLetter: (state, action: PayloadAction<boolean>) => {
+      state.needAppointmentLetter = action.payload;
     },
     setCurrentAppointmentLetter: (
       state,

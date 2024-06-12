@@ -103,13 +103,13 @@ export const useProposal = () => {
       if (!isValid) return;
       dispatch(setCurrentProposal(payload));
       if (hasProposalChanges && !loadingProposal) {
-        dispatch(putProposal({ proposalId, proposalData: payload })).then(
+        await dispatch(putProposal({ proposalId, proposalData: payload })).then(
           async (response: any) => {
             if (
               !hasUsavedContractualCondition &&
               !hasContractualConditionUpdate
             ) {
-              dispatch(
+              await dispatch(
                 canAuthorizeProposal({ policyId: response.payload.PolicyId }),
               );
               if (stepName) onNext(stepName);

@@ -6,8 +6,6 @@ import {
   useState,
 } from 'react';
 import {
-  Alert,
-  Dropdown,
   LinkButton,
   SearchInput,
   SearchOptions,
@@ -16,7 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from '@shared/hooks';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
-import { ChatUtils, federalIdValidator } from '@shared/utils';
+import { federalIdValidator } from '@shared/utils';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
 import handleError from '../../../helpers/handlerError';
 import {
@@ -25,54 +23,41 @@ import {
 } from '../../../application/features/quote/QuoteSlice';
 import {
   PolicyholderModel,
-  PolicyholderAffiliatesModel,
   PolicyholderSearchModel,
 } from '../../../application/types/model';
 import { AppDispatch } from '../../../config/store';
-import { AFFILIATE_DEFAULT_OPTIONS } from '../../../constants';
 import {
   policyholderSelectionActions,
   searchPolicyholder,
   selectPolicyholder,
 } from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
-import {
-  fetchModalities,
-  modalitySelectionActions,
-} from '../../../application/features/modalitySelection/ModalitySelectionSlice';
-import { useQuotation } from '../../hooks';
+import { modalitySelectionActions } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
 import styles from './PolicyholderSelection.module.scss';
+import PolicyholderAffiliateSelection from '../PolicyholderAffiliateSelection';
 
-export interface PolicyholderSelectionProps {
-  userProfile: ProfileEnum | null;
-  needAppointmentLetter: boolean;
-  readonlyFields: boolean;
-  setNeedAppointmentLetter: (value: boolean) => void;
-}
-
-const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
-  userProfile,
-  needAppointmentLetter,
-  readonlyFields,
-  setNeedAppointmentLetter,
-}) => {
+const PolicyholderSelection: FunctionComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const createOrUpdateQuotation = useQuotation();
   const {
     policyholderOptions,
     policyholderSearchValue,
     affiliatesOptions,
     loadingSearchPolicyholder,
     isValidFederalId,
+    needAppointmentLetter,
   } = useSelector(selectPolicyholder);
-  const { policyholderAffiliate, policyholder, currentQuote, isQuoteResume } =
+  const { policyholder, currentQuote, isQuoteResume } =
     useSelector(selectQuote);
   const [showEmptyOptions, setShowEmptyOptions] = useState(false);
   const [loadingPolicyholderDetails, setLoadingPolicyholderDetails] =
     useState(false);
-  const { setPolicyholderSearchValue, setPolicyholderAffiliatesOptions } =
-    policyholderSelectionActions;
+  const {
+    setPolicyholderSearchValue,
+    setPolicyholderAffiliatesOptions,
+    setNeedAppointmentLetter,
+  } = policyholderSelectionActions;
   const { resetModalitySelection } = modalitySelectionActions;
-  const { setPolicyholder, setPolicyholderAffiliate } = quoteSliceActions;
+  const { setPolicyholder } = quoteSliceActions;
+  const userProfile = BrokerPlatformAuthService.getUserProfile();
 
   useDebounce(
     () => {
@@ -104,7 +89,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
         policyholderSearchValue.length >= 3 &&
         !isCurrentValueFromOptions
       ) {
-        setNeedAppointmentLetter(false);
+        dispatch(setNeedAppointmentLetter(false));
         dispatch(searchPolicyholder(policyholderSearchValue));
       }
     },
@@ -138,23 +123,14 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
           p.label === policyholderSearchValue ||
           p.federalId === policyholderSearchValue.replace(/[^\d]+/g, ''),
       );
-      if (option) {
-        handlePolicyholderSelected({
-          ...option,
-          label: option ? option.label : policyholderSearchValue,
-          value: option ? option.value : policyholderSearchValue,
-        });
-      }
+      handlePolicyholderSelected({
+        ...option,
+        label: option ? option.label : policyholderSearchValue,
+        value: option ? option.value : policyholderSearchValue,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidFederalId, userProfile]);
-
-  useEffect(() => {
-    if (currentQuote && currentQuote.totalPrize) {
-      createOrUpdateQuotation();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [policyholderAffiliate]);
 
   const isCurrentValueFromOptions = useMemo(() => {
     return !!policyholderOptions.find(
@@ -175,14 +151,15 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     return (
       (userProfile === ProfileEnum.POLICYHOLDER &&
         policyholderOptions.length === 1) ||
-      readonlyFields
+      isQuoteResume ||
+      !!currentQuote
     );
-  }, [userProfile, policyholderOptions, readonlyFields]);
+  }, [userProfile, policyholderOptions, isQuoteResume, currentQuote]);
 
   const getPolicyholderDetails = useCallback(
     (brokerExternalId: number, federalId: string) => {
       setLoadingPolicyholderDetails(true);
-      setNeedAppointmentLetter(false);
+      dispatch(setNeedAppointmentLetter(false));
       const searchValue = federalIdValidator(federalId, 'full')
         ? federalId.toString().replace(/[^\d]/g, '')
         : federalId;
@@ -194,7 +171,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
         .catch(error => {
           const message = handleError(error);
           if (message.indexOf('empresa está vinculada a outro corretor') > 0) {
-            setNeedAppointmentLetter(true);
+            dispatch(setNeedAppointmentLetter(true));
             dispatch(setPolicyholder({ federalId } as PolicyholderModel));
             return;
           }
@@ -203,7 +180,7 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
         .finally(() => setLoadingPolicyholderDetails(false));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setNeedAppointmentLetter],
+    [],
   );
 
   const handleSearchPolicyholder = (search: string) => {
@@ -233,55 +210,9 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
     );
     if (policyholderDetails) {
       const { affiliates, registrationData } = policyholderDetails;
-      const fetchModalitiesParams = {
-        brokerFederalId: broker.federalId,
-        policyholderFederalId: value,
-      };
       dispatch(setPolicyholderAffiliatesOptions(affiliates));
       dispatch(setPolicyholder(registrationData));
-      dispatch(fetchModalities(fetchModalitiesParams));
     }
-  };
-
-  const handlePolicyholderAffiliateSelected = (
-    optionSelected: PolicyholderAffiliatesModel,
-  ) => {
-    dispatch(setPolicyholderAffiliate(optionSelected));
-  };
-
-  const renderAffiliateSelection = () => {
-    if (affiliatesOptions.length === 0) return null;
-    return (
-      <Dropdown
-        id="policyholderAndModality-input-dropdown"
-        data-testid="policyholderAndModality-input-dropdown"
-        label="Selecione a filial (opcional)"
-        placeholder="Selecione uma opção"
-        options={affiliatesOptions}
-        value={policyholderAffiliate}
-        onValueSelected={handlePolicyholderAffiliateSelected}
-        disabled={affiliatesOptions.length === 0}
-        loading={loadingPolicyholderDetails}
-      />
-    );
-  };
-
-  const renderNotFoundAffiliateAlert = () => {
-    const { label } = AFFILIATE_DEFAULT_OPTIONS.notFoundAffiliate;
-    if (policyholderAffiliate?.label === label) {
-      return (
-        <Alert
-          fullWidth
-          data-testid="policyholderSelection-not-found-affiliate-alert"
-          variant="neutral"
-          arrow="top-start"
-          text="Seguiremos sua proposta com os dados da Matriz. Caso necessite cadastrar uma nova filial, entre em contato %ACTION_BUTTON%"
-          actionButtonText="via chat."
-          onActionButtonClick={() => ChatUtils.zenDesk.open()}
-        />
-      );
-    }
-    return null;
   };
 
   const renderPolicyholderDetailsLink = () => {
@@ -326,8 +257,11 @@ const PolicyholderSelection: FunctionComponent<PolicyholderSelectionProps> = ({
         />
         {renderPolicyholderDetailsLink()}
       </div>
-      {renderAffiliateSelection()}
-      {renderNotFoundAffiliateAlert()}
+      {affiliatesOptions.length !== 0 && (
+        <PolicyholderAffiliateSelection
+          loadingPolicyholderDetails={loadingPolicyholderDetails}
+        />
+      )}
     </div>
   );
 };

@@ -61,7 +61,7 @@ describe('ProposalParticularities', () => {
     const state = store.getState();
     expect(state.proposal.specialAnalysisRequired).toBe(true);
     expect(state.proposal.specialAnalysisDescription).toBe('test');
-    expect(createProposalMock).toBeCalledTimes(3);
+    expect(createProposalMock).toBeCalledTimes(1);
     expect(
       getByText(
         'Ao informar ajustes e particularidades na proposta, esta será automaticamente encaminhada para análise de nossa equipe. Após essa avaliação, entraremos em contato.',

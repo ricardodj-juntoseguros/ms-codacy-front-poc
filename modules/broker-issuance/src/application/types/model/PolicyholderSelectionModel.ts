@@ -9,5 +9,6 @@ export interface PolicyholderSelectionModel {
   affiliatesOptions: PolicyholderAffiliatesModel[];
   loadingDetails: boolean;
   loadingGetSubsidiaries: boolean;
+  needAppointmentLetter: boolean;
   currentAppointmentLetter: { filename: string; size: number } | null;
 }

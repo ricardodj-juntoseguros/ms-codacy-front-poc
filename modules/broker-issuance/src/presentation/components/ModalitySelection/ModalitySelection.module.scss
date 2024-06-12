@@ -1,0 +1,8 @@
+@import 'junto-design-system/dist/core/scss/styles.scss';
+
+.modality-selection__wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: spacing('s');
+}

@@ -90,7 +90,7 @@ describe('PolicyholderAndModalityForm', () => {
       );
       expect(fetchModalitiesMock).toHaveBeenCalledWith(
         '06465132135429',
-        '99999999999999',
+        '97837181000147',
       );
     });
     const modalityOption = getByText('Licitante');
@@ -142,7 +142,7 @@ describe('PolicyholderAndModalityForm', () => {
       );
       expect(fetchModalitiesMock).toHaveBeenCalledWith(
         '06465132135429',
-        '99999999999999',
+        '97837181000147',
       );
     });
     const modalityOption = getByText('Licitante');
@@ -177,9 +177,7 @@ describe('PolicyholderAndModalityForm', () => {
         },
       );
     });
-    expect(
-      queryByTestId('policyholderAndModalityForm-in-progress-toggle'),
-    ).not.toBeInTheDocument();
+    expect(queryByTestId('policyInProgress-toggle')).not.toBeInTheDocument();
     await waitFor(() => {
       expect(searchMock).toHaveBeenCalledTimes(1);
     });
@@ -193,22 +191,16 @@ describe('PolicyholderAndModalityForm', () => {
       );
       expect(fetchModalitiesMock).toHaveBeenCalledWith(
         '06465132135429',
-        '99999999999999',
+        '97837181000147',
       );
     });
     await waitFor(() => {
-      expect(
-        getByTestId('policyholderAndModalityForm-in-progress-toggle'),
-      ).toBeInTheDocument();
+      expect(getByTestId('policyInProgress-toggle')).toBeInTheDocument();
     });
 
-    fireEvent.click(
-      getByTestId('policyholderAndModalityForm-in-progress-toggle'),
-    );
+    fireEvent.click(getByTestId('policyInProgress-toggle'));
     expect(store.getState().quote.isPolicyInProgress).toBe(true);
-    fireEvent.mouseOver(
-      getByTestId('policyholderAndModalityForm-in-progress-tooltip'),
-    );
+    fireEvent.mouseOver(getByTestId('policyInProgress-tooltip'));
     expect(
       getByText(
         'Você deve utilizar essa opção para processos que são continuidade de uma apólice de outra seguradora ou em endosso com vigência encerrada.',

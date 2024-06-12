@@ -19,10 +19,6 @@ const ProposalParticularities: FunctionComponent = () => {
     proposalActions;
   const createOrUpdateProposal = useProposal();
 
-  useEffect(() => {
-    createOrUpdateProposal();
-  }, [specialAnalysisRequired]);
-
   const handleSpecialAnalysisRequired = () => {
     dispatch(setSpecialAnalysisRequired(!specialAnalysisRequired));
   };

@@ -27,7 +27,6 @@ jest.mock('../../hooks', () => {
 });
 
 describe('PolicyholderSelection', () => {
-  const setNeedAppointmentLetterMock = jest.fn();
   let policyholderSearchApiMock: any = null;
   let getPolicyholderDetails: any = null;
   jest.spyOn(ModalitySelecionApi, 'fetchModalities').mockResolvedValue([]);
@@ -52,6 +51,12 @@ describe('PolicyholderSelection', () => {
   });
 
   beforeEach(() => {
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.BROKER);
+  });
+
+  beforeEach(() => {
     jest.clearAllMocks();
     policyholderSearchApiMock = jest
       .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
@@ -66,28 +71,14 @@ describe('PolicyholderSelection', () => {
   });
 
   it('should render successfully', () => {
-    const { baseElement } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
+    const { baseElement } = render(<PolicyholderSelection />);
     expect(baseElement).toBeTruthy();
   });
 
   it('[AS BROKER] should not dispatch searchPolicyholders thunk if inputted search value is less than 3 chars length', async () => {
     jest.useFakeTimers();
     jest.spyOn(PolicyholderSelectionApi, 'searchPolicyHolder');
-    const { getByTestId } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
+    const { getByTestId } = render(<PolicyholderSelection />);
     const input = getByTestId('policyholderSelection-input-search');
     fireEvent.change(input, { target: { value: 'te' } });
     jest.runAllTimers();
@@ -101,14 +92,7 @@ describe('PolicyholderSelection', () => {
     policyholderSearchApiMock = jest
       .spyOn(PolicyholderSelectionApi, 'searchPolicyHolder')
       .mockImplementation(() => Promise.resolve(policyholderSearchMock));
-    const { getByTestId } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
+    const { getByTestId } = render(<PolicyholderSelection />);
     fireEvent.change(getByTestId('policyholderSelection-input-search'), {
       target: { value: 'test' },
     });
@@ -133,14 +117,7 @@ describe('PolicyholderSelection', () => {
       .spyOn(BrokerPlatformAuthService, 'getBroker')
       .mockReturnValue(brokerMock);
 
-    const { getByTestId, getByText } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
+    const { getByTestId, getByText } = render(<PolicyholderSelection />);
     fireEvent.change(getByTestId('policyholderSelection-input-search'), {
       target: { value: 'test' },
     });
@@ -180,14 +157,10 @@ describe('PolicyholderSelection', () => {
     jest
       .spyOn(BrokerPlatformAuthService, 'getBroker')
       .mockReturnValue(brokerMock);
-    const { getByTestId } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.POLICYHOLDER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
+    jest
+      .spyOn(BrokerPlatformAuthService, 'getUserProfile')
+      .mockImplementation(() => ProfileEnum.POLICYHOLDER);
+    const { getByTestId } = render(<PolicyholderSelection />);
     await waitFor(() => {
       expect(policyholderSearchApiMock).toHaveBeenCalledTimes(1);
     });
@@ -212,12 +185,7 @@ describe('PolicyholderSelection', () => {
       .mockReturnValue(brokerMock);
 
     const { getByTestId, getByText, getAllByText } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
+      <PolicyholderSelection />,
     );
     fireEvent.change(getByTestId('policyholderSelection-input-search'), {
       target: { value: 'test' },
@@ -245,14 +213,7 @@ describe('PolicyholderSelection', () => {
     getPolicyholderDetails = jest
       .spyOn(PolicyholderSelectionApi, 'getPolicyholderDetails')
       .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
-    const { getByTestId, getByText } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
+    const { getByTestId, getByText } = render(<PolicyholderSelection />);
     await act(async () => {
       fireEvent.change(getByTestId('policyholderSelection-input-search'), {
         target: { value: 'test' },
@@ -292,14 +253,7 @@ describe('PolicyholderSelection', () => {
 
   it('Should update current quote on affiliate change', async () => {
     store.dispatch(postQuotation(createQuoteMock));
-    const { getByTestId, getByText } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
+    const { getByTestId, getByText } = render(<PolicyholderSelection />);
     await act(async () => {
       fireEvent.change(getByTestId('policyholderSelection-input-search'), {
         target: { value: 'test' },
@@ -325,12 +279,7 @@ describe('PolicyholderSelection', () => {
       .spyOn(PolicyholderSelectionApi, 'getPolicyholderDetails')
       .mockImplementation(() => Promise.resolve(policyholderDetailsMock));
     const { getByTestId, getByText, findByText } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
+      <PolicyholderSelection />,
     );
     await act(async () => {
       await fireEvent.change(
@@ -377,14 +326,7 @@ describe('PolicyholderSelection', () => {
       .spyOn(BrokerPlatformAuthService, 'getBroker')
       .mockReturnValue(brokerMock);
 
-    const { getByTestId, getByText } = render(
-      <PolicyholderSelection
-        userProfile={ProfileEnum.BROKER}
-        needAppointmentLetter={false}
-        setNeedAppointmentLetter={setNeedAppointmentLetterMock}
-        readonlyFields={false}
-      />,
-    );
+    const { getByTestId, getByText } = render(<PolicyholderSelection />);
     fireEvent.change(getByTestId('policyholderSelection-input-search'), {
       target: { value: '99999999999999' },
     });
@@ -397,6 +339,7 @@ describe('PolicyholderSelection', () => {
         '99999999999999',
       );
     });
-    expect(setNeedAppointmentLetterMock.mock.calls[1][0]).toEqual(true);
+    const state = store.getState();
+    expect(state.policyholderSelection.needAppointmentLetter).toEqual(true);
   });
 });
