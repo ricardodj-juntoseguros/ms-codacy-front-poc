@@ -1,7 +1,7 @@
 export const VALIDATION_MESSAGES = {
   required: 'O preenchimento deste campo é obrigatório',
   phone: 'Número de telefone incompleto. Digite os 11 caracteres.',
-  phoneIsNull: 'Informe o número de telefone.',
+  phoneIsNull: 'Informe um número de celular ou telefone fixo.',
   nameResponsible: 'Digite o nome completo. Evite abreviar nome e sobrenome.',
   documentNumber: 'CPF inválido. Digite os 11 caracteres.',
   documentNumberIsNull: 'Informe o número do CPF.',

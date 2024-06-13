@@ -94,7 +94,7 @@ export const ResponsibleInformation: React.FC = () => {
         >
           <InputBase
             data-testid="broker-phone"
-            label="Telefone"
+            label="Celular/Telefone"
             placeholder="(00) 00000-0000"
             value={phoneNumberResponsable}
             onChange={e => {
