@@ -31,7 +31,7 @@ describe('RealStateSelectionApi', () => {
     const result = await RealStateSelectionApi.getRealStateDetails('test');
 
     expect(mockGet).toHaveBeenCalledWith({
-      url: '/v1/real-state',
+      url: '/real-state',
       params: { q: 'test' },
     });
     expect(result).toBe(mockData);

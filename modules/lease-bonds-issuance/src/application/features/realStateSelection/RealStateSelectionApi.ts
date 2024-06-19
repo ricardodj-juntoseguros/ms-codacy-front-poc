@@ -14,7 +14,7 @@ class RealStateSelectionApi {
 
   async getRealStateDetails(realStateLabel?: string) {
     const params: IHttpClientRequestParameters = {
-      url: `/v1/real-state`,
+      url: `/real-state`,
       params: {
         q: realStateLabel,
       },
@@ -24,8 +24,9 @@ class RealStateSelectionApi {
 
   async searchRealState(brokerId: string, federalId: string) {
     const params: IHttpClientRequestParameters = {
-      url: `/v1/real-state/${federalId}?brokerFederalId=${brokerId}`,
+      url: `/real-state/${federalId}?brokerFederalId=${brokerId}`,
     };
+
     return this.httpClient.get<RealStateSearchDTO>(params);
   }
 }
