@@ -37,6 +37,7 @@ export interface ProposalResumeDTO {
     required: boolean;
     description: string;
   };
+  campaignType?: number;
   renewal?: {
     isPolicyInProgress: boolean;
     type: PolicyRenewalTypeEnum;

@@ -35,6 +35,7 @@ export const storeMock = {
     policyholderAffiliate: null,
     loadingQuote: false,
     hasQuoteChanges: false,
+    isFidelizeProspection: false,
   } as QuoteModel,
   contractualCondition: {
     loadingContractualCondition: false,

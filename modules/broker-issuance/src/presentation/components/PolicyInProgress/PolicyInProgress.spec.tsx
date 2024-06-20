@@ -92,4 +92,16 @@ describe('PolicyInProgress', () => {
       await queryByText(DISCLAIMERS.policyInProgress),
     ).not.toBeInTheDocument();
   });
+
+  it('Should disable toggle and hide tooltip if is fidelize prospection', async () => {
+    await store.dispatch(
+      quoteSliceActions.setPolicyholder(
+        policyholderDetailsMock.registrationData,
+      ),
+    );
+    store.dispatch(quoteSliceActions.setIsFidelizeProspection(true));
+    const { getByTestId, queryByTestId } = render(<PolicyInProgress />);
+    expect(getByTestId('policyInProgress-toggle')).toBeDisabled();
+    expect(queryByTestId('policyInProgress-tooltip')).not.toBeInTheDocument();
+  });
 });

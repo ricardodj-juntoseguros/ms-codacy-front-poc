@@ -8,6 +8,7 @@ import ModalitySelection from '../ModalitySelection';
 import PolicyInProgress from '../PolicyInProgress';
 import PolicyholderAndModalityFooter from '../PolicyholderAndModalityFooter';
 import PolicyholderAndModalityFormWrapper from '../PolicyholderAndModalityFormWrapper';
+import FidelizeProspectionToggle from '../FidelizeProspectionToggle';
 
 const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
   name,
@@ -22,6 +23,7 @@ const PolicyholderAndModalityForm: FunctionComponent<GenericComponentProps> = ({
         <>
           <ModalitySelection />
           <PolicyInProgress />
+          <FidelizeProspectionToggle />
           <PolicyholderAndModalityFooter />
         </>
       )}

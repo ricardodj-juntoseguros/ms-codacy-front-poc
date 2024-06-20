@@ -54,7 +54,12 @@ export const useProposalResume = () => {
     setInsuredOptions,
   } = insuredSelectionActions;
   const { setProposalResumeData } = proposalActions;
-  const { setPolicyRenewalResume } = policyRenewalActions;
+  const {
+    setIsPolicyRenewal,
+    setPolicyRenewalType,
+    setMainPolicyNumber,
+    setPolicyRenewalResume,
+  } = policyRenewalActions;
 
   useEffect(() => {
     if (identification) {

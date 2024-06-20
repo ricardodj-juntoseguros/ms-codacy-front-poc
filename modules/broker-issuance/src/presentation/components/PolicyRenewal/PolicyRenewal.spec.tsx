@@ -184,4 +184,12 @@ describe('PolicyRenewal', () => {
       await queryByText(DISCLAIMERS.policyRenewal),
     ).not.toBeInTheDocument();
   });
+
+  it('Should disable toggle and hide tooltip if is fidelize prospection', async () => {
+    await store.dispatch(quoteSliceActions.setPolicyholder(policyholderMock));
+    store.dispatch(quoteSliceActions.setIsFidelizeProspection(true));
+    const { getByTestId, queryByTestId } = render(<PolicyRenewal />);
+    expect(getByTestId('policyRenewal-toggle-show')).toBeDisabled();
+    expect(queryByTestId('policyRenewal-tooltip')).not.toBeInTheDocument();
+  });
 });

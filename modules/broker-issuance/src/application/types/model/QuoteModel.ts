@@ -25,4 +25,5 @@ export interface QuoteModel {
   hasQuoteErrors: boolean;
   errorMessage?: string;
   isPolicyInProgress: boolean;
+  isFidelizeProspection: boolean;
 }

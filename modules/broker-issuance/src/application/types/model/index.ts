@@ -24,4 +24,5 @@ export * from './ModalitySchemaModel';
 export * from './IssuanceModel';
 export * from './PolicyRenewalModel';
 export * from './PolicyRenewalTypeEnum';
+export * from './CampaignTypeEnum';
 export * from './RenewalFileTypeEnum';

@@ -5,6 +5,7 @@ import { parseStringToDate } from '@shared/utils';
 import { QuotationDTO } from '../../../types/dto';
 import {
   AdditionalCoverageModel,
+  CampaignTypeEnum,
   PolicyRenewalModel,
   PolicyRenewalTypeEnum,
   QuoteModel,
@@ -32,6 +33,7 @@ export const quotationAdapter = (
     toggleRateFlex,
     isPolicyInProgress,
     isQuoteResume,
+    isFidelizeProspection,
   } = quote;
   const { isPolicyRenewal, policyRenewalType, mainPolicyNumber } =
     policyRenewal;
@@ -78,6 +80,9 @@ export const quotationAdapter = (
       rateAggravation,
     },
     brokerFederalId,
+    campaignType: isFidelizeProspection
+      ? CampaignTypeEnum.FIDELIZE
+      : CampaignTypeEnum.UNDEFINED,
   } as QuotationDTO;
 
   if (isUpdate) {

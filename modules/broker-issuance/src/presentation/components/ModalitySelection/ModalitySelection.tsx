@@ -18,19 +18,23 @@ import {
   quoteSliceActions,
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
-import { policyRenewalActions } from '../../../application/features/policyRenewal/PolicyRenewalSlice';
+import {
+  policyRenewalActions,
+  selectPolicyRenewal,
+} from '../../../application/features/policyRenewal/PolicyRenewalSlice';
 import styles from './ModalitySelection.module.scss';
 
 const ModalitySelection: FunctionComponent = () => {
   const dispatch = useDispatch();
   const { setSteps } = useFlow();
   const { modalityOptions, loadingModalities } = useSelector(selectModality);
+  const { isPolicyRenewal } = useSelector(selectPolicyRenewal);
   const {
     policyholder,
     modality,
-    isPolicyInProgress,
     isQuoteResume,
     currentQuote,
+    isPolicyInProgress,
   } = useSelector(selectQuote);
   const { setModality, toggleIsPolicyInProgress } = quoteSliceActions;
   const { setIsPolicyRenewal } = policyRenewalActions;
@@ -88,8 +92,8 @@ const ModalitySelection: FunctionComponent = () => {
   };
 
   const handleModalitySelected = (optionSelected: ModalityModel) => {
-    dispatch(setIsPolicyRenewal(false));
     if (isPolicyInProgress) dispatch(toggleIsPolicyInProgress());
+    if (isPolicyRenewal) dispatch(setIsPolicyRenewal(false));
     dispatch(setModality(optionSelected));
   };
 

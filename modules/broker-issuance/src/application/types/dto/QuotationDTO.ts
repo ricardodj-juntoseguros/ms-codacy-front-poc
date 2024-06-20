@@ -1,4 +1,4 @@
-import { PolicyRenewalTypeEnum } from '../model';
+import { PolicyRenewalTypeEnum, CampaignTypeEnum } from '../model';
 
 export interface QuotationDTO {
   policyholder: {
@@ -32,4 +32,5 @@ export interface QuotationDTO {
     type: PolicyRenewalTypeEnum;
     mainPolicyNumber: string;
   };
+  campaignType?: CampaignTypeEnum;
 }

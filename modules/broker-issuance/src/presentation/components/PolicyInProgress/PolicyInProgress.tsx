@@ -15,8 +15,13 @@ const PolicyInProgress: FunctionComponent = () => {
   const tooltipButtonRef = useRef<HTMLButtonElement>(null);
   const [policyInProgressTooltipVisible, setPolicyInProgressTooltipVisible] =
     useState(false);
-  const { policyholder, isPolicyInProgress, currentQuote, hasQuoteChanges } =
-    useSelector(selectQuote);
+  const {
+    policyholder,
+    isPolicyInProgress,
+    currentQuote,
+    hasQuoteChanges,
+    isFidelizeProspection,
+  } = useSelector(selectQuote);
   const { toggleIsPolicyInProgress } = quoteSliceActions;
 
   useEffect(() => {
@@ -48,24 +53,29 @@ const PolicyInProgress: FunctionComponent = () => {
           label="Essa proposta trata-se de uma apólice em andamento"
           checked={isPolicyInProgress}
           onChange={() => handleToggleIsPolicyInProgress()}
+          disabled={isFidelizeProspection}
         />
-        <button
-          id="policyInProgress-tooltip"
-          data-testid="policyInProgress-tooltip"
-          ref={tooltipButtonRef}
-          type="button"
-          className={styles['policy-in-progress__tooltip']}
-          onMouseEnter={() => setPolicyInProgressTooltipVisible(true)}
-          onMouseLeave={() => setPolicyInProgressTooltipVisible(false)}
-        >
-          <i className="icon-info" />
-        </button>
-        <Tooltip
-          anchorRef={tooltipButtonRef}
-          text={DISCLAIMERS.policyInProgress}
-          visible={policyInProgressTooltipVisible}
-          position="top"
-        />
+        {!isFidelizeProspection && (
+          <>
+            <button
+              id="policyInProgress-tooltip"
+              data-testid="policyInProgress-tooltip"
+              ref={tooltipButtonRef}
+              type="button"
+              className={styles['policy-in-progress__tooltip']}
+              onMouseEnter={() => setPolicyInProgressTooltipVisible(true)}
+              onMouseLeave={() => setPolicyInProgressTooltipVisible(false)}
+            >
+              <i className="icon-info" />
+            </button>
+            <Tooltip
+              anchorRef={tooltipButtonRef}
+              text={DISCLAIMERS.policyInProgress}
+              visible={policyInProgressTooltipVisible}
+              position="top"
+            />
+          </>
+        )}
       </div>
     );
   };

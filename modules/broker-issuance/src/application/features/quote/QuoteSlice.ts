@@ -18,6 +18,7 @@ import {
   ModalityModel,
   QuoteModel,
   PolicyRenewalTypeEnum,
+  CampaignTypeEnum,
 } from '../../types/model';
 import QuoteApi from './QuoteApi';
 import {
@@ -88,6 +89,7 @@ const initialState: QuoteModel = {
   isQuoteResume: false,
   hasQuoteErrors: false,
   isPolicyInProgress: false,
+  isFidelizeProspection: false,
 };
 
 export const quoteSlice = createSlice({
@@ -106,6 +108,7 @@ export const quoteSlice = createSlice({
         commissionFlex,
         feeFlex,
         renewal,
+        campaignType,
       } = action.payload;
       state.isQuoteResume = true;
       state.hasQuoteChanges = true;
@@ -135,6 +138,8 @@ export const quoteSlice = createSlice({
       if (renewal && renewal.type === PolicyRenewalTypeEnum.Undefined) {
         state.isPolicyInProgress = renewal.isPolicyInProgress;
       }
+      if (campaignType === CampaignTypeEnum.FIDELIZE)
+        state.isFidelizeProspection = true;
     },
     setPolicyholder: (
       state,
@@ -255,6 +260,10 @@ export const quoteSlice = createSlice({
     },
     toggleIsPolicyInProgress: state => {
       state.isPolicyInProgress = !state.isPolicyInProgress;
+      state.hasQuoteChanges = true;
+    },
+    setIsFidelizeProspection: (state, action: PayloadAction<boolean>) => {
+      state.isFidelizeProspection = action.payload;
       state.hasQuoteChanges = true;
     },
   },

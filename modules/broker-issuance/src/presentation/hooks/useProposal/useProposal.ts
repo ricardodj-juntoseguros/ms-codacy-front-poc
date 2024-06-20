@@ -99,7 +99,6 @@ export const useProposal = () => {
       if (!modality || !currentQuote) return;
       const schema = PROPOSAL_MODALITY_SCHEMAS[modality.id];
       const payload = proposalAdapter(proposal, quote, policyRenewal);
-
       const isValid = await validate(
         schema,
         payload,
@@ -160,6 +159,7 @@ export const useProposal = () => {
       createOrUpdateContractualCondition,
       requestedBy,
       text,
+      setHasPolicyRenewalChanges,
     ],
   );
 

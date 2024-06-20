@@ -34,7 +34,7 @@ const PolicyRenewal: FunctionComponent = () => {
     needEndorsement,
     verifyPolicyLoading,
   } = useSelector(selectPolicyRenewal);
-  const { policyholder } = useSelector(selectQuote);
+  const { policyholder, isFidelizeProspection } = useSelector(selectQuote);
   const { setIsPolicyRenewal, setMainPolicyNumber, setPolicyRenewalType } =
     policyRenewalActions;
 
@@ -155,26 +155,30 @@ const PolicyRenewal: FunctionComponent = () => {
           label="Essa proposta é uma renovação de garantia ou um contrato que já esta em andamento"
           name="policyRenewal-toggle-show"
           checked={isPolicyRenewal}
-          disabled={!policyholder}
+          disabled={!policyholder || isFidelizeProspection}
           onChange={() => handleToggleIsPolicyRenewal()}
         />
-        <button
-          id="policyRenewal-tooltip"
-          data-testid="policyRenewal-tooltip"
-          ref={tooltipButtonRef}
-          type="button"
-          className={styles['policy-renewal__tooltip']}
-          onMouseEnter={() => setPolicyInProgressTooltipVisible(true)}
-          onMouseLeave={() => setPolicyInProgressTooltipVisible(false)}
-        >
-          <i className="icon-info" />
-        </button>
-        <Tooltip
-          anchorRef={tooltipButtonRef}
-          text={DISCLAIMERS.policyRenewal}
-          visible={policyInProgressTooltipVisible}
-          position="top"
-        />
+        {!isFidelizeProspection && (
+          <>
+            <button
+              id="policyRenewal-tooltip"
+              data-testid="policyRenewal-tooltip"
+              ref={tooltipButtonRef}
+              type="button"
+              className={styles['policy-renewal__tooltip']}
+              onMouseEnter={() => setPolicyInProgressTooltipVisible(true)}
+              onMouseLeave={() => setPolicyInProgressTooltipVisible(false)}
+            >
+              <i className="icon-info" />
+            </button>
+            <Tooltip
+              anchorRef={tooltipButtonRef}
+              text={DISCLAIMERS.policyRenewal}
+              visible={policyInProgressTooltipVisible}
+              position="top"
+            />
+          </>
+        )}
       </div>
       {renderPolicyRenewalOptions()}
       {renderMainPolicyNumber()}
