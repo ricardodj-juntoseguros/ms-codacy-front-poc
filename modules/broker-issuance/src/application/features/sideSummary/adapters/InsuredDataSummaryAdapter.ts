@@ -2,6 +2,7 @@ import { federalIdFormatter } from '@shared/utils';
 import {
   CustomClauseRequestedByEnum,
   InsuredModel,
+  PolicyDocumentRenewalModel,
 } from '../../../types/model';
 import { InsuredAddressModel } from '../../../types/model/InsuredAddressModel';
 
@@ -13,6 +14,7 @@ export const insuredDataSummaryAdapter = (
   openContractualConditions: boolean,
   contractualConditionsRequestedBy: CustomClauseRequestedByEnum | null,
   specialAnalysisRequired: boolean,
+  renewalDocumentList: PolicyDocumentRenewalModel[],
 ) => {
   const result = [] as { key: string; label: string; value: string }[];
 
@@ -51,6 +53,20 @@ export const insuredDataSummaryAdapter = (
       value: biddingDescription,
     });
   }
+
+  if (renewalDocumentList.length > 0) {
+    const documentsActive = renewalDocumentList.filter(
+      document => document.active,
+    );
+    result.push({
+      key: 'renewalDocuments',
+      label: 'Documentos para renovação',
+      value: `${documentsActive.length} Selecionado${
+        documentsActive.length > 1 ? 's' : ''
+      }`,
+    });
+  }
+
   if (openContractualConditions) {
     let requestedByLabel = '';
     if (contractualConditionsRequestedBy) {
@@ -66,10 +82,12 @@ export const insuredDataSummaryAdapter = (
       value: `Novo ou modificado ${requestedByLabel}`,
     });
   }
+
   result.push({
     key: 'specialAnalysisRequired',
     label: 'Particularidades na proposta',
     value: specialAnalysisRequired ? 'Sim' : 'Não',
   });
+
   return result;
 };

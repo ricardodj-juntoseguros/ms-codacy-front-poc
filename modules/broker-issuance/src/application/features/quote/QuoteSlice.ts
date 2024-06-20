@@ -17,6 +17,7 @@ import {
   PolicyholderModel,
   ModalityModel,
   QuoteModel,
+  PolicyRenewalTypeEnum,
 } from '../../types/model';
 import QuoteApi from './QuoteApi';
 import {
@@ -104,7 +105,7 @@ export const quoteSlice = createSlice({
         proposalFee,
         commissionFlex,
         feeFlex,
-        isPolicyInProgress,
+        renewal,
       } = action.payload;
       state.isQuoteResume = true;
       state.hasQuoteChanges = true;
@@ -131,7 +132,9 @@ export const quoteSlice = createSlice({
       if (feeFlex || commissionFlex) {
         state.toggleRateFlex = true;
       }
-      state.isPolicyInProgress = isPolicyInProgress;
+      if (renewal && renewal.type === PolicyRenewalTypeEnum.Undefined) {
+        state.isPolicyInProgress = renewal.isPolicyInProgress;
+      }
     },
     setPolicyholder: (
       state,

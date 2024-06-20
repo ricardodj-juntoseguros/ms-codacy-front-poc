@@ -1,4 +1,5 @@
 export * from './defaultStep';
+export * from './defaultStepWithRenewal';
 export * from './commonSteps';
 export * from './bidderSteps';
 export * from './serviceProviderPerformerSteps';

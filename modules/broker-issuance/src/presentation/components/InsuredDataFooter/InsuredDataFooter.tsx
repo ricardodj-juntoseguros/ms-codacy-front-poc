@@ -6,6 +6,7 @@ import { selectProposal } from '../../../application/features/proposal/ProposalS
 import { selectContractualCondition } from '../../../application/features/contractualCondition/ContractualConditionSlice';
 import { selectValidation } from '../../../application/features/validation/ValidationSlice';
 import ObjectPreviewModal from '../ObjectPreviewModal';
+import { selectPolicyRenewal } from '../../../application/features/policyRenewal/PolicyRenewalSlice';
 import styles from './InsuredDataFooter.module.scss';
 
 const InsuredDataFooter: FunctionComponent = () => {
@@ -26,6 +27,7 @@ const InsuredDataFooter: FunctionComponent = () => {
     text,
     requestedBy,
   } = useSelector(selectContractualCondition);
+  const { documentList, isPolicyRenewal } = useSelector(selectPolicyRenewal);
   const { errors } = useSelector(selectValidation);
 
   const disabledSubmitButton = useMemo(() => {
@@ -35,13 +37,20 @@ const InsuredDataFooter: FunctionComponent = () => {
       biddingNumber &&
       errors.biddingNumber === undefined &&
       identification?.PolicyId;
+
     const hasContratualCondition = text && requestedBy;
     const needSpecialAnalysis =
       specialAnalysisRequired && specialAnalysisDescription.length === 0;
+    const documentListActives = documentList.filter(
+      document => document.active && document.inputValue,
+    );
+    const renewalDocuments = isPolicyRenewal && documentListActives.length < 1;
+
     return (
       !hasDefaultFields ||
       (openContractualConditions && !hasContratualCondition) ||
       needSpecialAnalysis ||
+      renewalDocuments ||
       loadingContractualCondition ||
       loadingProposal ||
       loadingCanAuthorize
@@ -59,6 +68,8 @@ const InsuredDataFooter: FunctionComponent = () => {
     text,
     specialAnalysisRequired,
     specialAnalysisDescription,
+    isPolicyRenewal,
+    documentList,
     errors,
   ]);
 

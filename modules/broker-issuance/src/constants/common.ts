@@ -12,3 +12,5 @@ export const POLICYHOLDER_ISSUE_PERMISSION = 'permission.policyholder.issue';
 
 export const URL_CORREIOS_BUSCACEP =
   'https://buscacepinter.correios.com.br/app/endereco/index.php';
+
+export const POLICY_NUMBER_MAX_LENGTH = 15;

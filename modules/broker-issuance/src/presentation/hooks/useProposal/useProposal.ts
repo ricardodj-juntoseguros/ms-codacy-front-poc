@@ -22,11 +22,16 @@ import {
   postCustomClause,
   selectContractualCondition,
 } from '../../../application/features/contractualCondition/ContractualConditionSlice';
+import {
+  policyRenewalActions,
+  selectPolicyRenewal,
+} from '../../../application/features/policyRenewal/PolicyRenewalSlice';
 
 export const useProposal = () => {
   const quote = useSelector(selectQuote);
   const proposal = useSelector(selectProposal);
   const contractualCondition = useSelector(selectContractualCondition);
+  const policyRenewal = useSelector(selectPolicyRenewal);
   const { currentQuote, modality } = quote;
   const { hasProposalChanges, loadingProposal } = proposal;
   const {
@@ -35,7 +40,9 @@ export const useProposal = () => {
     text,
     hasContractualConditionsChanges,
   } = contractualCondition;
+  const { hasPolicyRenewalChanges } = policyRenewal;
   const { setCurrentProposal, setCreateProposalSuccess } = proposalActions;
+  const { setHasPolicyRenewalChanges } = policyRenewalActions;
   const policyId = proposal.identification?.PolicyId;
   const dispatch: AppDispatch = useDispatch();
   const validate = useValidate();
@@ -91,7 +98,8 @@ export const useProposal = () => {
     async (stepName?: string) => {
       if (!modality || !currentQuote) return;
       const schema = PROPOSAL_MODALITY_SCHEMAS[modality.id];
-      const payload = proposalAdapter(proposal, quote);
+      const payload = proposalAdapter(proposal, quote, policyRenewal);
+
       const isValid = await validate(
         schema,
         payload,
@@ -102,7 +110,7 @@ export const useProposal = () => {
       const proposalId = currentQuote?.identification.ProposalId;
       if (!isValid) return;
       dispatch(setCurrentProposal(payload));
-      if (hasProposalChanges && !loadingProposal) {
+      if ((hasProposalChanges || hasPolicyRenewalChanges) && !loadingProposal) {
         await dispatch(putProposal({ proposalId, proposalData: payload })).then(
           async (response: any) => {
             if (
@@ -112,6 +120,9 @@ export const useProposal = () => {
               await dispatch(
                 canAuthorizeProposal({ policyId: response.payload.PolicyId }),
               );
+              if (hasPolicyRenewalChanges) {
+                await dispatch(setHasPolicyRenewalChanges(false));
+              }
               if (stepName) onNext(stepName);
             }
           },
@@ -131,22 +142,24 @@ export const useProposal = () => {
       if (stepName) onNext(stepName);
     },
     [
-      createOrUpdateContractualCondition,
-      currentQuote,
-      dispatch,
-      hasUsavedContractualCondition,
-      hasContractualConditionUpdate,
-      hasProposalChanges,
-      loadingProposal,
       modality,
-      onNext,
-      policyId,
+      currentQuote,
       proposal,
       quote,
-      requestedBy,
-      setCurrentProposal,
-      text,
+      policyRenewal,
       validate,
+      dispatch,
+      setCurrentProposal,
+      hasProposalChanges,
+      hasPolicyRenewalChanges,
+      loadingProposal,
+      policyId,
+      hasUsavedContractualCondition,
+      hasContractualConditionUpdate,
+      onNext,
+      createOrUpdateContractualCondition,
+      requestedBy,
+      text,
     ],
   );
 

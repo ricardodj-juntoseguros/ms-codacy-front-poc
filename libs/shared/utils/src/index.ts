@@ -14,3 +14,4 @@ export * from './downloadFile';
 export * from './chatUtils';
 export * from './stringToInt';
 export * from './zipcodeFormatter';
+export * from './policyNumberFormatter';

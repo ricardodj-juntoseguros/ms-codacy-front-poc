@@ -1,6 +1,6 @@
 import { StepStatusEnum } from '@shared/hooks';
 import ValidityAndValueCoverageLaborForm from '../../presentation/components/ValidityAndValueCoverageLaborForm';
-import InsuredDataForm from '../../presentation/components/InsuredDataForm';
+import InsuredDataServiceProviderWithRenewalForm from '../../presentation/components/InsuredDataServiceProviderWithRenewalForm';
 import AdditionalDataCommercialInternalizeForm from '../../presentation/components/AdditionalDataCommercialInternalizeForm';
 
 export const SERVICE_PROVIDER_PERFORMER_STEPS = [
@@ -15,9 +15,9 @@ export const SERVICE_PROVIDER_PERFORMER_STEPS = [
     },
   },
   {
-    name: 'InsuredDataForm',
+    name: 'InsuredDataServiceProviderWithRenewalForm',
     status: StepStatusEnum.HIDDEN,
-    component: InsuredDataForm,
+    component: InsuredDataServiceProviderWithRenewalForm,
     summaryTitle: 'Dados do segurado e proposta',
     title: {
       text: 'Nessa etapa, indique os %STRONG% que irá fazer parte dessa garantia.',

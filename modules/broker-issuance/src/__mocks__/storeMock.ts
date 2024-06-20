@@ -1,6 +1,8 @@
 import {
   ContractualConditionModel,
   ModalityModel,
+  PolicyRenewalModel,
+  PolicyRenewalTypeEnum,
   PolicyholderModel,
   PolicyholderSelectionModel,
   QuoteModel,
@@ -48,4 +50,19 @@ export const storeMock = {
     isValidForm: true,
     errors: {},
   } as ValidationModel,
+  additionalCoverage: {
+    labor: false,
+  },
+  policyRenewal: {
+    isPolicyRenewal: false,
+    policyRenewalType: PolicyRenewalTypeEnum.Undefined,
+    mainPolicyNumber: '',
+    documentNumber: null,
+    verifyErrorMessage: '',
+    needEndorsement: false,
+    verifyPolicyLoading: false,
+    hasPolicyRenewalChanges: false,
+    documentList: [],
+    getRenewalDocumentListLoading: false,
+  } as PolicyRenewalModel,
 } as RootState;

@@ -1,3 +1,5 @@
+import { PolicyRenewalTypeEnum, RenewalFileTypeEnum } from '../model';
+
 export interface ProposalResumeDTO {
   proposalId: number;
   createdAt: string;
@@ -27,7 +29,6 @@ export interface ProposalResumeDTO {
   paymentType: number | null;
   firstDueDate: string | null;
   selectedNumberOfInstallments: number;
-  isPolicyInProgress: boolean;
   additionalCoverage: {
     labor: boolean;
     rateAggravation: boolean;
@@ -36,4 +37,14 @@ export interface ProposalResumeDTO {
     required: boolean;
     description: string;
   };
+  renewal?: {
+    isPolicyInProgress: boolean;
+    type: PolicyRenewalTypeEnum;
+    mainPolicyNumber: string;
+    documentList: {
+      type: RenewalFileTypeEnum;
+      number: string;
+      hasOrdinaryNumbering: boolean;
+    }[];
+  } | null;
 }

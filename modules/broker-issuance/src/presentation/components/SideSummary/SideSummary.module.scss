@@ -197,7 +197,7 @@
     white-space: nowrap;
     animation: fadeIn 300ms linear;
   }
-  & > span:last-child {
+  & > .side-summary__step-details-values > span {
     @include font('sm-emphasys');
     text-align: right;
     animation: fadeIn 300ms linear;

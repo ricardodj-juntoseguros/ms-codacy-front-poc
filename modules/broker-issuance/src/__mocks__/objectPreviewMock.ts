@@ -1,34 +1,45 @@
-export const objectPreviewMock = {
+import { ObjectPreviewDTO } from '../application/types/dto';
+
+export const objectPreviewMock: ObjectPreviewDTO = {
   identification: {
-    policyId: 4236048
+    policyId: 4236048,
   },
   policyholder: {
-    federalId: "91833813000118",
+    federalId: '91833813000118',
     economicGroupId: 63076,
-    economicGroupName: "TOMADOR TESTE – SQUAD DESACOPLAMENTO"
+    economicGroupName: 'TOMADOR TESTE – SQUAD DESACOPLAMENTO',
   },
   insured: {
-    federalId: "42498733000148",
-    name: "PREFEITURA DA CIDADE DO RIO DE JANEIRO - PROCURADORIA GERAL DO MUNICIPIO",
+    federalId: '42498733000148',
+    name: 'PREFEITURA DA CIDADE DO RIO DE JANEIRO - PROCURADORIA GERAL DO MUNICIPIO',
     type: {
       id: 8,
-      description: "Pública"
-    }
+      description: 'Pública',
+    },
   },
   modality: {
     modalityId: 99,
-    description: "Licitante",
+    description: 'Licitante',
     submodality: {
       submodalityId: 1,
-      description: "Trabalhista"
-    }
+      description: 'Trabalhista',
+    },
   },
   proposal: {
-    biddingNumber: "12345",
-    biddingDescription: "98765",
+    biddingNumber: '12345',
+    biddingDescription: '98765',
     securedAmount: 1000000,
-    startDate: "2023-11-14",
-    endDate: "2024-11-14",
-    totalPrize: 190
-  }
-}
+    startDate: '2023-11-14',
+    endDate: '2024-11-14',
+    totalPrize: 190,
+  },
+  additionalCoverage: {
+    labor: false,
+  },
+  renewal: {
+    isPolicyInProgress: false,
+    type: 0,
+    mainPolicyNumber: '',
+    documentList: [],
+  },
+};

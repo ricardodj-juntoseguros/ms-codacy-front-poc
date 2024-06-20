@@ -20,6 +20,12 @@ export const proposalMock = {
     required: false,
     description: '',
   },
+  renewal: {
+    isPolicyInProgress: false,
+    type: 0,
+    mainPolicyNumber: '',
+    documentList: [],
+  },
 };
 
 export const proposalResumeMock = {
@@ -50,7 +56,6 @@ export const proposalResumeMock = {
   observations: '',
   firstDueDate: '2024-01-02T00:00:00Z',
   selectedNumberOfInstallments: 1,
-  isPolicyInProgress: true,
   additionalCoverage: {
     labor: false,
     rateAggravation: false,
@@ -59,4 +64,10 @@ export const proposalResumeMock = {
     required: false,
     description: '',
   },
+  renewal: {
+    isPolicyInProgress: true,
+    type: 0,
+    mainPolicyNumber: '',
+    documentList: [],
+  } as ProposalResumeDTO['renewal'],
 } as ProposalResumeDTO;

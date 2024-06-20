@@ -2,7 +2,8 @@
 
 .policyholder-and-modality-footer__wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  width: 100%;
 
   & > button {
     min-width: 19.5rem;

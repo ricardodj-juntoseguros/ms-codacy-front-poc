@@ -1,3 +1,5 @@
+import { PolicyRenewalTypeEnum, RenewalFileTypeEnum } from '../model';
+
 export interface ProposalDTO {
   insured: {
     id: number;
@@ -17,5 +19,15 @@ export interface ProposalDTO {
   specialAnalysis: {
     required: boolean;
     description: string;
+  };
+  renewal: {
+    isPolicyInProgress: boolean;
+    type: PolicyRenewalTypeEnum;
+    mainPolicyNumber: string;
+    documentList: {
+      type: RenewalFileTypeEnum;
+      number: string;
+      hasOrdinaryNumbering: boolean;
+    }[];
   };
 }

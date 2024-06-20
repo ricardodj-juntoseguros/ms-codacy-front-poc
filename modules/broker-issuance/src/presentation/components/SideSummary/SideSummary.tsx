@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LinkButton } from 'junto-design-system';
 import classNames from 'classnames';
 import { StepStatusEnum, useFlow } from '@shared/hooks';
+import { nanoid } from 'nanoid/non-secure';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
 import { useFormSummary } from '../../hooks';
 import styles from './SideSummary.module.scss';
@@ -56,7 +57,7 @@ const SideSummary: FunctionComponent = () => {
     return (
       <motion.div
         initial={{ maxHeight: 0 }}
-        animate={{ maxHeight: 260 }}
+        animate={{ maxHeight: 400 }}
         exit={{ maxHeight: 0 }}
         transition={{ duration: 0.6, ease: 'easeInOut' }}
         className={styles['side-summary__step-details']}
@@ -67,7 +68,19 @@ const SideSummary: FunctionComponent = () => {
             className={styles['side-summary__step-details-row']}
           >
             <span>{label}</span>
-            <span title={value}>{value}</span>
+            <div className={styles['side-summary__step-details-values']}>
+              {Array.isArray(value) ? (
+                <>
+                  {value.map(item => (
+                    <span key={nanoid(5)} title={item}>
+                      {item}
+                    </span>
+                  ))}
+                </>
+              ) : (
+                <span title={value}>{value}</span>
+              )}
+            </div>
           </div>
         ))}
       </motion.div>

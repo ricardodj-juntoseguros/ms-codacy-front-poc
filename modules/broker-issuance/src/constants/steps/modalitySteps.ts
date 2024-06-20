@@ -4,10 +4,23 @@ import { ModalityTypeEnum } from '../../application/types/model';
 import { BIDDER_STEPS } from './bidderSteps';
 import { SERVICE_PROVIDER_PERFORMER_STEPS } from './serviceProviderPerformerSteps';
 import { COMMON_COVERAGE_LABOR_STEPS } from './commonCoverageLaborSteps';
+import { DEFAULT_STEP } from './defaultStep';
+import { DEFAULT_STEP_WITH_RENEWAL } from './defaultStepWithRenewal';
 
 interface ModalitySteps {
   [x: number]: StepComponentModel[];
 }
+
+export const getDefaultStep = (modalityId: number): StepComponentModel[] => {
+  const DEFAULT_STEP_MODALITIES: ModalitySteps = {
+    [ModalityTypeEnum.BIDDER]: DEFAULT_STEP,
+    [ModalityTypeEnum.SERVICE_PROVIDER_PERFORMER]: DEFAULT_STEP_WITH_RENEWAL,
+    [ModalityTypeEnum.BUILDER_PERFORMER]: DEFAULT_STEP,
+    [ModalityTypeEnum.SUPPLIER_PERFORMER]: DEFAULT_STEP,
+  };
+
+  return DEFAULT_STEP_MODALITIES[modalityId];
+};
 
 const ACTIVE_MODALITIES: ModalitySteps = {
   [ModalityTypeEnum.BIDDER]: BIDDER_STEPS,

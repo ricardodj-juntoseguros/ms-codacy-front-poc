@@ -4,8 +4,10 @@ import Cookies from 'js-cookie';
 import { Dropdown, LinkButton } from 'junto-design-system';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { useFlow } from '@shared/hooks';
-import { MODALITY_STEPS } from '../../../constants/steps/modalitySteps';
-import { DEFAULT_STEP } from '../../../constants/steps';
+import {
+  MODALITY_STEPS,
+  getDefaultStep,
+} from '../../../constants/steps/modalitySteps';
 import { HELP_ID, REDIRECT_TO_V3_INFOS } from '../../../constants';
 import {
   fetchModalities,
@@ -16,15 +18,22 @@ import {
   quoteSliceActions,
   selectQuote,
 } from '../../../application/features/quote/QuoteSlice';
+import { policyRenewalActions } from '../../../application/features/policyRenewal/PolicyRenewalSlice';
 import styles from './ModalitySelection.module.scss';
 
 const ModalitySelection: FunctionComponent = () => {
   const dispatch = useDispatch();
   const { setSteps } = useFlow();
   const { modalityOptions, loadingModalities } = useSelector(selectModality);
-  const { policyholder, modality, isQuoteResume, currentQuote } =
-    useSelector(selectQuote);
-  const { setModality } = quoteSliceActions;
+  const {
+    policyholder,
+    modality,
+    isPolicyInProgress,
+    isQuoteResume,
+    currentQuote,
+  } = useSelector(selectQuote);
+  const { setModality, toggleIsPolicyInProgress } = quoteSliceActions;
+  const { setIsPolicyRenewal } = policyRenewalActions;
   const userProfile = BrokerPlatformAuthService.getUserProfile();
 
   const isReadonlyFields = useMemo(() => {
@@ -45,6 +54,7 @@ const ModalitySelection: FunctionComponent = () => {
   useEffect(() => {
     if (!modality) return;
     const modalitySteps = MODALITY_STEPS[modality.id];
+    const defaultStep = getDefaultStep(modality.id);
     if (!modalitySteps) {
       const dateExpire = new Date(new Date().getTime() + 1000 * 60); // in 1 minute
       Cookies.set(
@@ -64,7 +74,7 @@ const ModalitySelection: FunctionComponent = () => {
           : process.env.NX_GLOBAL_MODALITIES_EXPRESS_POLICYHOLDER;
       window.location.href = redirectUrl || '';
     }
-    if (modalitySteps) setSteps([...DEFAULT_STEP, ...modalitySteps]);
+    if (modalitySteps) setSteps([...defaultStep, ...modalitySteps]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modality]);
 
@@ -78,6 +88,8 @@ const ModalitySelection: FunctionComponent = () => {
   };
 
   const handleModalitySelected = (optionSelected: ModalityModel) => {
+    dispatch(setIsPolicyRenewal(false));
+    if (isPolicyInProgress) dispatch(toggleIsPolicyInProgress());
     dispatch(setModality(optionSelected));
   };
 

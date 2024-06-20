@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent } from 'react';
 import { Alert, TextArea, Toggle } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
 import {

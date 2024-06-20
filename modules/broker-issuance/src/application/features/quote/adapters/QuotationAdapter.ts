@@ -3,10 +3,16 @@ import brLocale from 'date-fns/locale/pt-BR';
 import { BrokerPlatformAuthService } from '@services';
 import { parseStringToDate } from '@shared/utils';
 import { QuotationDTO } from '../../../types/dto';
-import { AdditionalCoverageModel, QuoteModel } from '../../../types/model';
+import {
+  AdditionalCoverageModel,
+  PolicyRenewalModel,
+  PolicyRenewalTypeEnum,
+  QuoteModel,
+} from '../../../types/model';
 
 export const quotationAdapter = (
   quote: QuoteModel,
+  policyRenewal: PolicyRenewalModel,
   additionalCoverage: AdditionalCoverageModel,
   firstDueDate: string | null,
   numberOfInstallments: number | null,
@@ -27,6 +33,8 @@ export const quotationAdapter = (
     isPolicyInProgress,
     isQuoteResume,
   } = quote;
+  const { isPolicyRenewal, policyRenewalType, mainPolicyNumber } =
+    policyRenewal;
   const { labor: useCoverageLabor, rateAggravation } = additionalCoverage;
   const firstDueDateFormatted = firstDueDate
     ? parseStringToDate(firstDueDate)
@@ -70,7 +78,6 @@ export const quotationAdapter = (
       rateAggravation,
     },
     brokerFederalId,
-    isPolicyInProgress,
   } as QuotationDTO;
 
   if (isUpdate) {
@@ -81,6 +88,17 @@ export const quotationAdapter = (
         proposalFee: proposalFee || null,
         commissionFlex: (toggleRateFlex && commissionFlex) || null,
         feeFlex: (toggleRateFlex && feeFlex) || null,
+      },
+    };
+  }
+
+  if (isPolicyInProgress || isPolicyRenewal) {
+    basePayload = {
+      ...basePayload,
+      renewal: {
+        isPolicyInProgress: isPolicyInProgress || isPolicyRenewal,
+        type: policyRenewalType || PolicyRenewalTypeEnum.Undefined,
+        mainPolicyNumber: mainPolicyNumber || '',
       },
     };
   }

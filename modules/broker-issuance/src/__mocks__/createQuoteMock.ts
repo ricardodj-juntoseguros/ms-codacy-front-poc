@@ -24,5 +24,9 @@ export const createQuoteMock = {
   brokerFederalId: '06465132135429',
   numberOfInstallments: 1,
   firstDueDate: null,
-  isPolicyInProgress: false,
+  renewal: {
+    isPolicyInProgress: false,
+    type: 0,
+    mainPolicyNumber: '',
+  },
 } as QuotationDTO;

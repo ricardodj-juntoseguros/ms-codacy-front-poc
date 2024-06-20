@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 import { Modal, makeToast } from 'junto-design-system';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
 import { selectProposal } from '../../../application/features/proposal/ProposalSlice';
+import { selectPolicyRenewal } from '../../../application/features/policyRenewal/PolicyRenewalSlice';
 import handleError from '../../../helpers/handlerError';
 import ObjectPreviewSkeleton from '../Skeletons/ObjectPreviewSkeleton';
 import { objectPreviewAdapter } from '../../../application/features/objectPreview/adapters';
 import ObjectPreviewApi from '../../../application/features/objectPreview/ObjectPreviewApi';
-
+import { selectAdditionalCoverage } from '../../../application/features/additionalCoverage/AdditionalCoverageSlice';
 import styles from './ObjectPreviewModal.module.scss';
 
 export interface ObjectPreviewModalProps {
@@ -25,10 +26,17 @@ export const ObjectPreviewModal: FunctionComponent<ObjectPreviewModalProps> = ({
     useState<boolean>(true);
   const quote = useSelector(selectQuote);
   const proposal = useSelector(selectProposal);
+  const additionalCoverage = useSelector(selectAdditionalCoverage);
+  const policyRenewal = useSelector(selectPolicyRenewal);
 
   useEffect(() => {
     const getObjectPreview = async () => {
-      const payload = objectPreviewAdapter(quote, proposal);
+      const payload = objectPreviewAdapter(
+        quote,
+        proposal,
+        additionalCoverage,
+        policyRenewal,
+      );
       setLoadingObjectPreview(true);
       if (!payload) return;
       try {

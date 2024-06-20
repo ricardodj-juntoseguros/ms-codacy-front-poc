@@ -2,11 +2,12 @@ import { BrokerPlatformAuthService } from '@services';
 import { parseStringToDate } from '@shared/utils';
 import { ProposalDTO } from '../../../types/dto';
 import { ProposalModel } from '../../../types/model/ProposalModel';
-import { QuoteModel } from '../../../types/model';
+import { PolicyRenewalModel, QuoteModel } from '../../../types/model';
 
 export const proposalAdapter = (
   proposal: ProposalModel,
   quote: QuoteModel,
+  policyRenewal: PolicyRenewalModel,
 ): ProposalDTO => {
   const {
     insured,
@@ -20,7 +21,9 @@ export const proposalAdapter = (
     specialAnalysisRequired,
     specialAnalysisDescription,
   } = proposal;
-  const { currentQuote, submodality } = quote;
+  const { currentQuote, submodality, isPolicyInProgress } = quote;
+  const { isPolicyRenewal, mainPolicyNumber, policyRenewalType, documentList } =
+    policyRenewal;
 
   const brokerFederalId = BrokerPlatformAuthService.getBroker()?.federalId;
 
@@ -32,6 +35,15 @@ export const proposalAdapter = (
   const parsedFirstDueDate = firstDueDate
     ? parseStringToDate(firstDueDate)
     : null;
+
+  const renewalDocumentList = documentList.map(document => {
+    if (!document.active) return null;
+    return {
+      type: document.id,
+      number: document.inputValue,
+      hasOrdinaryNumbering: document.hasOrdinaryNumbering,
+    };
+  });
 
   return {
     insured: {
@@ -58,6 +70,14 @@ export const proposalAdapter = (
     specialAnalysis: {
       required: specialAnalysisRequired,
       description: specialAnalysisDescription,
+    },
+    renewal: {
+      isPolicyInProgress: isPolicyInProgress || isPolicyRenewal,
+      type: policyRenewalType,
+      mainPolicyNumber,
+      documentList: renewalDocumentList.filter(
+        document => document !== null,
+      ) as ProposalDTO['renewal']['documentList'],
     },
   };
 };

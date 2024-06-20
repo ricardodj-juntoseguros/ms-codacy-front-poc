@@ -3,6 +3,12 @@ import { ThemeProvider, Themes } from 'junto-design-system';
 import { Provider } from 'react-redux';
 import { BrokerPlatformAuthService, ProfileEnum } from '@services';
 import { waitFor } from '@testing-library/react';
+import { PolicyRenewalTypeEnum } from 'modules/broker-issuance/src/application/types/model';
+import PolicyRenewalApi from '../../../application/features/policyRenewal/PolicyRenewalApi';
+import {
+  getRenewalDocumentList,
+  policyRenewalActions,
+} from '../../../application/features/policyRenewal/PolicyRenewalSlice';
 import {
   contractualConditionActions,
   postCustomClause,
@@ -21,6 +27,7 @@ import {
   insuredMock,
   modalityBidderMock,
   quoteResultMock,
+  renewalDocumentListMock,
 } from '../../../__mocks__';
 import {
   postQuotation,
@@ -93,6 +100,10 @@ describe('useProposal', () => {
       })),
     }));
     jest
+      .spyOn(PolicyRenewalApi, 'getRenewalDocumentList')
+      .mockImplementation(() => Promise.resolve(renewalDocumentListMock));
+
+    jest
       .spyOn(BrokerPlatformAuthService, 'getUserProfile')
       .mockImplementation(() => ProfileEnum.BROKER);
     jest
@@ -103,12 +114,26 @@ describe('useProposal', () => {
     store.dispatch(proposalActions.setInsured(insuredMock));
     store.dispatch(proposalActions.setInsuredAddress(insuredMock.addresses[0]));
     store.dispatch(proposalActions.setBiddingNumber('123456'));
+    store.dispatch(policyRenewalActions.setIsPolicyRenewal(true));
+    store.dispatch(
+      policyRenewalActions.setPolicyRenewalType(
+        PolicyRenewalTypeEnum.OnGoingProcess,
+      ),
+    );
+    store.dispatch(getRenewalDocumentList());
   });
 
   it('should be able to update a proposal', async () => {
     const { result } = renderHook(() => useProposal(), {
       wrapper: HookWrapper,
     });
+    const { policyRenewal } = store.getState();
+    await store.dispatch(
+      policyRenewalActions.setDocument({
+        document: policyRenewal.documentList[2],
+        active: true,
+      }),
+    );
     await result.current('name');
     expect(putProposalMock).toHaveBeenCalledWith(90408, {
       biddingDescription: '',
@@ -125,6 +150,18 @@ describe('useProposal', () => {
       specialAnalysis: {
         description: '',
         required: false,
+      },
+      renewal: {
+        documentList: [
+          {
+            hasOrdinaryNumbering: false,
+            number: '',
+            type: 3,
+          },
+        ],
+        isPolicyInProgress: true,
+        mainPolicyNumber: '',
+        type: 1,
       },
     });
     waitFor(async () => {
@@ -159,6 +196,18 @@ describe('useProposal', () => {
       specialAnalysis: {
         description: '',
         required: false,
+      },
+      renewal: {
+        documentList: [
+          {
+            hasOrdinaryNumbering: false,
+            number: '',
+            type: 3,
+          },
+        ],
+        isPolicyInProgress: true,
+        mainPolicyNumber: '',
+        type: 1,
       },
     });
     expect(postCustomClauseMock).toHaveBeenCalledWith(11111, 1, 'test');
@@ -199,6 +248,18 @@ describe('useProposal', () => {
       specialAnalysis: {
         description: '',
         required: false,
+      },
+      renewal: {
+        documentList: [
+          {
+            hasOrdinaryNumbering: false,
+            number: '',
+            type: 3,
+          },
+        ],
+        isPolicyInProgress: true,
+        mainPolicyNumber: '',
+        type: 1,
       },
     });
     expect(patchCustomClausMock).toHaveBeenCalledWith(

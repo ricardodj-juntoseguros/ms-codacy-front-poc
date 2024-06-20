@@ -1,27 +1,37 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeToast } from 'junto-design-system';
 import { useParams } from 'react-router';
 import { BrokerPlatformAuthService } from '@services';
 import { nanoid } from 'nanoid/non-secure';
 import { stringToInt } from '@shared/utils';
+import PolicyRenewalApi from '../../../application/features/policyRenewal/PolicyRenewalApi';
+import {
+  policyRenewalActions,
+  selectPolicyRenewal,
+} from '../../../application/features/policyRenewal/PolicyRenewalSlice';
 import { additionalCoverageActions } from '../../../application/features/additionalCoverage/AdditionalCoverageSlice';
 import ProposalApi from '../../../application/features/proposal/ProposalApi';
 import { ProposalResumeDTO } from '../../../application/types/dto';
 import PolicyholderSelectionApi from '../../../application/features/policyholderSelection/PolicyholderSelectionApi';
 import InsuredSelectionApi from '../../../application/features/insuredSelection/InsuredSelectionApi';
 import ModalitySelecionApi from '../../../application/features/modalitySelection/ModalitySelecionApi';
-import { InsuredModel, ModalityModel } from '../../../application/types/model';
+import {
+  InsuredModel,
+  ModalityModel,
+  PolicyRenewalTypeEnum,
+} from '../../../application/types/model';
 import { quoteSliceActions } from '../../../application/features/quote/QuoteSlice';
 import { policyholderSelectionActions } from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
 import { modalitySelectionActions } from '../../../application/features/modalitySelection/ModalitySelectionSlice';
 import { insuredSelectionActions } from '../../../application/features/insuredSelection/InsuredSelectionSlice';
 import { proposalActions } from '../../../application/features/proposal/ProposalSlice';
 import { mapPolicyholderSearchOptions } from '../../../helpers';
+import { AppDispatch } from '../../../config/store';
 import handleError from '../../../helpers/handlerError';
 
 export const useProposalResume = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { identification } = useParams<{ identification: string }>();
   const [finishedLoading, setFinishedLoading] = useState<boolean>(false);
   const {
@@ -44,6 +54,7 @@ export const useProposalResume = () => {
     setInsuredOptions,
   } = insuredSelectionActions;
   const { setProposalResumeData } = proposalActions;
+  const { setPolicyRenewalResume } = policyRenewalActions;
 
   useEffect(() => {
     if (identification) {
@@ -93,6 +104,7 @@ export const useProposalResume = () => {
       firstDueDate,
       additionalCoverage,
       specialAnalysis,
+      renewal,
     } = data;
 
     const broker = BrokerPlatformAuthService.getBroker();
@@ -224,6 +236,43 @@ export const useProposalResume = () => {
         address => address.addressId === insuredAddressId,
       );
 
+      if (renewal && renewal.type !== PolicyRenewalTypeEnum.Undefined) {
+        const { isPolicyInProgress, type, mainPolicyNumber, documentList } =
+          renewal;
+        await PolicyRenewalApi.getRenewalDocumentList()
+          .then(response => {
+            const documentListMapped = response.data.map(document => {
+              const documentActive = documentList.find(
+                active => document.id === active.type,
+              );
+              return {
+                id: document.id,
+                description: document.description,
+                hasChoiceOfNumberingType: document.hasChoiceOfNumberingType,
+                active: !!documentActive,
+                inputValue: documentActive ? documentActive.number : '',
+                hasOrdinaryNumbering: documentActive
+                  ? documentActive.hasOrdinaryNumbering
+                  : false,
+                value: document.id.toString(),
+                label: document.description,
+                disabled: false,
+              };
+            });
+            dispatch(
+              setPolicyRenewalResume({
+                isPolicyRenewal: isPolicyInProgress,
+                documentList: documentListMapped,
+                type,
+                mainPolicyNumber,
+              }),
+            );
+          })
+          .catch(error => {
+            makeToast('error', handleError(error));
+          });
+      }
+
       dispatch(setInsuredOptions(mappedInsureds));
       dispatch(setInsuredSearchValue(insuredToSet.name));
       dispatch(setInsuredAddressesOptions(insuredToSet.addresses));
@@ -250,6 +299,7 @@ export const useProposalResume = () => {
           specialAnalysis,
         }),
       );
+      dispatch;
     }
   };
 

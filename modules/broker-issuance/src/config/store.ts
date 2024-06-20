@@ -9,6 +9,7 @@ import ContractualConditionSlice from '../application/features/contractualCondit
 import ProposalDocumentsSlice from '../application/features/proposalDocuments/ProposalDocumentsSlice';
 import CommercialAuthorizationSlice from '../application/features/CommercialAuthorization/CommercialAuthorizationSlice';
 import AdditionalCoverageSlice from '../application/features/additionalCoverage/AdditionalCoverageSlice';
+import policyRenewalSlice from '../application/features/policyRenewal/PolicyRenewalSlice';
 import IssuanceSlice from '../application/features/issuance/IssuanceSlice';
 
 export const store = configureStore({
@@ -22,8 +23,9 @@ export const store = configureStore({
     proposalDocuments: ProposalDocumentsSlice,
     commercialAuthorization: CommercialAuthorizationSlice,
     additionalCoverage: AdditionalCoverageSlice,
-    validation: validationSlice,
+    policyRenewal: policyRenewalSlice,
     issuance: IssuanceSlice,
+    validation: validationSlice,
   },
 });
 

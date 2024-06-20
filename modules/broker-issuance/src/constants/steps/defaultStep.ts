@@ -6,10 +6,10 @@ export const DEFAULT_STEP = [
     name: 'PolicyholderAndModalityForm',
     status: StepStatusEnum.EDITABLE,
     component: PolicyholderAndModalityForm,
-    summaryTitle: 'Dados do tomador e modalidade',
+    summaryTitle: 'Dados do segurado e proposta',
     title: {
-      text: 'Para iniciar uma cotação, precisamos do %STRONG% da garantia',
-      boldWords: ['nome ou CNPJ do tomador e modalidade'],
+      text: 'Nessa etapa, indique os %STRONG% que irá fazer parte dessa garantia.',
+      boldWords: ['dados do segurado'],
     },
   },
 ];

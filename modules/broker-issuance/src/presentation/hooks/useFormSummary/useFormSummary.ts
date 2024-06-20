@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAdditionalCoverage } from '../../../application/features/additionalCoverage/AdditionalCoverageSlice';
 import { selectQuote } from '../../../application/features/quote/QuoteSlice';
+import { selectPolicyRenewal } from '../../../application/features/policyRenewal/PolicyRenewalSlice';
 import {
   policyholderAndModalitySummaryAdapter,
   validityAndValueSummaryCommonAdapter,
@@ -9,6 +10,7 @@ import {
   insuredDataSummaryAdapter,
   additionalDataSummaryAdapter,
   additionalCoverageSummaryAdapter,
+  policyholderAndModalityWithRenewalSummaryAdapter,
 } from '../../../application/features/sideSummary/adapters';
 import { selectPolicyholder } from '../../../application/features/policyholderSelection/PolicyholderSelectionSlice';
 import { selectContractualCondition } from '../../../application/features/contractualCondition/ContractualConditionSlice';
@@ -27,6 +29,8 @@ export function useFormSummary() {
     securedAmount,
     currentQuote,
   } = useSelector(selectQuote);
+  const { isPolicyRenewal, mainPolicyNumber, policyRenewalType } =
+    useSelector(selectPolicyRenewal);
   const { labor, rateAggravation } = useSelector(selectAdditionalCoverage);
   const {
     insured,
@@ -38,6 +42,7 @@ export function useFormSummary() {
     firstDueDate,
     specialAnalysisRequired,
   } = useSelector(selectProposal);
+  const { documentList } = useSelector(selectPolicyRenewal);
   const { openContractualConditions, requestedBy } = useSelector(
     selectContractualCondition,
   );
@@ -50,6 +55,24 @@ export function useFormSummary() {
       modality,
     );
   }, [policyholder, policyholderAffiliate, modality]);
+
+  const policyholderAndModalityWithRenewalFormSummary = useMemo(() => {
+    return policyholderAndModalityWithRenewalSummaryAdapter(
+      policyholder,
+      policyholderAffiliate,
+      modality,
+      isPolicyRenewal,
+      policyRenewalType,
+      mainPolicyNumber,
+    );
+  }, [
+    policyholder,
+    policyholderAffiliate,
+    modality,
+    isPolicyRenewal,
+    policyRenewalType,
+    mainPolicyNumber,
+  ]);
 
   const validityAndValueFormCommonSummary = useMemo(() => {
     return validityAndValueSummaryCommonAdapter(
@@ -99,12 +122,36 @@ export function useFormSummary() {
       openContractualConditions,
       requestedBy,
       specialAnalysisRequired,
+      documentList,
     );
   }, [
     insured,
     insuredAddress,
     biddingNumber,
     biddingDescription,
+    openContractualConditions,
+    requestedBy,
+    specialAnalysisRequired,
+    documentList,
+  ]);
+
+  const insuredDataServiceProviderWithRenewalForm = useMemo(() => {
+    return insuredDataSummaryAdapter(
+      insured,
+      insuredAddress,
+      biddingNumber,
+      biddingDescription,
+      openContractualConditions,
+      requestedBy,
+      specialAnalysisRequired,
+      documentList,
+    );
+  }, [
+    biddingDescription,
+    biddingNumber,
+    documentList,
+    insured,
+    insuredAddress,
     openContractualConditions,
     requestedBy,
     specialAnalysisRequired,
@@ -122,13 +169,17 @@ export function useFormSummary() {
   const getSummaryData = useCallback(
     (formName: string) => {
       const formSummariesData: {
-        [x: string]: { key: string; label: string; value: string }[];
+        [x: string]: { key: string; label: string; value: string | string[] }[];
       } = {
         PolicyholderAndModalityForm: policyholderAndModalityFormSummary,
+        PolicyholderAndModalityWithRenewalForm:
+          policyholderAndModalityWithRenewalFormSummary,
         ValidityAndValueForm: validityAndValueFormCommonSummary,
         ValidityAndValueCoverageForm: validityAndValueCoverageFormSummary,
         InsuredDataForm: insuredDataFormSummary,
         InsuredDataBidderForm: insuredDataFormSummary,
+        InsuredDataServiceProviderWithRenewalForm:
+          insuredDataServiceProviderWithRenewalForm,
         AdditionalDataForm: additionalDataFormSummary,
         AdditionalDataCommercialInternalizeForm: additionalDataFormSummary,
       };
@@ -136,9 +187,11 @@ export function useFormSummary() {
     },
     [
       policyholderAndModalityFormSummary,
+      policyholderAndModalityWithRenewalFormSummary,
       validityAndValueFormCommonSummary,
       validityAndValueCoverageFormSummary,
       insuredDataFormSummary,
+      insuredDataServiceProviderWithRenewalForm,
       additionalDataFormSummary,
     ],
   );

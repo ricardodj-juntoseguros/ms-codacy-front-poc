@@ -25,4 +25,6 @@ export * from './ProposalDraftDTO';
 export * from './SubmitToApprovalOrIssuanceDTO';
 export * from './SubmitToApprovalOrIssuanceResultDTO';
 export * from './SurveyInviteDTO';
-export * from './InternalizeDocumentsDTO'
+export * from './InternalizeDocumentsDTO';
+export * from './VerifyPolicyDTO';
+export * from './RenewalDocumentDTO';

@@ -1,35 +1,47 @@
+import { PolicyRenewalTypeEnum } from '../model';
+import { ProposalDTO } from './ProposalDTO';
+
 export interface ObjectPreviewDTO {
   identification: {
-    policyId: number
-  },
+    policyId: number;
+  };
   policyholder: {
-    federalId?: string,
-    affiliateFederalId?: string,
-    economicGroupId?: number,
-    economicGroupName?: string
-  },
+    federalId?: string;
+    affiliateFederalId?: string;
+    economicGroupId?: number;
+    economicGroupName?: string;
+  };
   insured: {
-    federalId?: string,
-    name?: string,
+    federalId?: string;
+    name?: string;
     type?: {
-      id: number,
-      description: string
-    }
-  },
+      id: number;
+      description: string;
+    };
+  };
   modality: {
-    modalityId?: number,
-    description?: string,
+    modalityId?: number;
+    description?: string;
     submodality: {
-      submodalityId?: number,
-      description?: string
-    }
-  },
+      submodalityId?: number;
+      description?: string;
+    };
+  };
   proposal: {
-    biddingNumber: string,
-    biddingDescription: string,
-    securedAmount?: number,
-    startDate?: string | null,
-    endDate?: string | null,
-    totalPrize?: number
-  }
+    biddingNumber: string;
+    biddingDescription: string;
+    securedAmount?: number;
+    startDate?: string | null;
+    endDate?: string | null;
+    totalPrize?: number;
+  };
+  additionalCoverage: {
+    labor: boolean;
+  };
+  renewal: {
+    isPolicyInProgress: boolean;
+    type: PolicyRenewalTypeEnum;
+    mainPolicyNumber: string;
+    documentList: ProposalDTO['renewal']['documentList'];
+  };
 }

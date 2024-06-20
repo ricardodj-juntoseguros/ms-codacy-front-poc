@@ -1,4 +1,4 @@
-import { number, object, string } from 'yup';
+import { boolean, number, object, string } from 'yup';
 import { isAfter, isSameDay, parseISO, startOfDay, subDays } from 'date-fns';
 import { federalIdValidator } from '@shared/utils';
 import { store } from '../../../../config/store';
@@ -68,6 +68,14 @@ export const CommonQuotationSchema = object().shape({
       const { brokerFederalId } = this.parent;
       return federalIdValidator(brokerFederalId, 'full');
     }),
+  renewal: object()
+    .shape({
+      isPolicyInProgress: boolean().notRequired(),
+      type: number().notRequired(),
+      mainPolicyNumber: string().notRequired().max(15),
+    })
+    .optional()
+    .nullable(),
   pricing: object().when('hasUpdate', {
     is: (hasUpdate: boolean) => hasUpdate,
     then: object().shape({

@@ -10,6 +10,7 @@ import {
   quoteResultMock,
   storeMock,
 } from '../../../__mocks__';
+import { PolicyRenewalTypeEnum } from '../../../application/types/model';
 import ObjectPreviewModal from './ObjectPreviewModal';
 
 describe('ObjectPreviewModal', () => {

@@ -1,3 +1,5 @@
+import { PolicyRenewalTypeEnum } from '../model';
+
 export interface QuotationDTO {
   policyholder: {
     federalId?: string;
@@ -24,6 +26,10 @@ export interface QuotationDTO {
   };
   brokerFederalId?: string;
   firstDueDate?: string | null;
-  isPolicyInProgress: boolean;
   isQuotationRetake?: boolean;
+  renewal: {
+    isPolicyInProgress: boolean;
+    type: PolicyRenewalTypeEnum;
+    mainPolicyNumber: string;
+  };
 }
