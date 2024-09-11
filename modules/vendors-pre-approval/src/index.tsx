@@ -1,17 +1,17 @@
 import { ToastContainer } from 'junto-design-system';
 import { VendorsHeader } from '@shared/ui';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Routes from './config/routes';
 
 const VendorsPreApproval = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <>
       <VendorsHeader
         showMenuItems={false}
         backButton={() => {
-          history.push('/');
+          navigate('/');
         }}
       />
       <Routes />

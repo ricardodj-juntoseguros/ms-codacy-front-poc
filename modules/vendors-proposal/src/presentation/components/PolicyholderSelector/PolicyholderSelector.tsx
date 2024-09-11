@@ -16,10 +16,11 @@ import {
   selectProposalPolicyholder,
 } from '../../../application/features/proposal/ProposalSlice';
 import { isAffiliateFederalId } from '../../../helpers/isAffiliateFederalId';
+import { AppDispatch } from '../../../config/store';
 import styles from './PolicyholderSelector.module.scss';
 
 const PolicyholderSelector: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const {
     policyholderInputValue,
     policyholderResults,

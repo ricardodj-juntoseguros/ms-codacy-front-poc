@@ -15,9 +15,7 @@ jest.mock('react-router', () => {
 
   return {
     ...rest,
-    useHistory: () => ({
-      push: mockHistoryPush,
-    }),
+    useNavigate: () => mockHistoryPush,
   };
 });
 

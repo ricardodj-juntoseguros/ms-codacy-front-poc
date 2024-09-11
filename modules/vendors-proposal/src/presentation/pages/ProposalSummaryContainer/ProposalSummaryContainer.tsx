@@ -8,7 +8,7 @@ import {
 } from 'react';
 import className from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { currencyFormatter } from '@shared/utils';
 import { DetailField, FileList, VendorsHeader } from '@shared/ui';
 import { selectProjectSelection } from '../../../application/features/projectSelection/ProjectSelectionSlice';
@@ -21,12 +21,13 @@ import {
   selectProposal,
 } from '../../../application/features/proposal/ProposalSlice';
 import { useFiles } from '../../../config/filesContext';
-import styles from './ProposalSummaryContainer.module.scss';
 import ProposalSummaryAside from '../../components/ProposalSummaryAside/ProposalSummaryAside';
+import { AppDispatch } from '../../../config/store';
+import styles from './ProposalSummaryContainer.module.scss';
 
 const ProposalSummaryContainer: React.FunctionComponent = () => {
   const [issuanceLoading, setIssuanceLoading] = useState(false);
-  const [policyExternalId, setPolicyExternalId] = useState("");
+  const [policyExternalId, setPolicyExternalId] = useState('');
   const theme = useContext(ThemeContext);
   const {
     policyholder,
@@ -45,9 +46,9 @@ const ProposalSummaryContainer: React.FunctionComponent = () => {
     contractValue,
     insuredFederalId,
   } = useSelector(selectProposal);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { projectSearchValue } = useSelector(selectProjectSelection);
-  const history = useHistory();
+  const navigate = useNavigate();
   const { files, uploadDocuments } = useFiles();
 
   useEffect(() => {
@@ -55,9 +56,8 @@ const ProposalSummaryContainer: React.FunctionComponent = () => {
   }, []);
 
   useLayoutEffect(() => {
-    if (!identification?.proposalId || !identification?.policyId)
-      history.push('/');
-  }, [history, identification?.policyId, identification?.proposalId]);
+    if (!identification?.proposalId || !identification?.policyId) navigate('/');
+  }, [navigate, identification?.policyId, identification?.proposalId]);
 
   const renderFiles = () => {
     if (!files) return null;
@@ -80,7 +80,8 @@ const ProposalSummaryContainer: React.FunctionComponent = () => {
   const handleSubmit = async () => {
     if (!identification || !identification.proposalId) return;
     setIssuanceLoading(true);
-    if (!policyExternalId) await onlinkProject(identification.policyId, insuredFederalId);
+    if (!policyExternalId)
+      await onlinkProject(identification.policyId, insuredFederalId);
 
     const result = await uploadDocuments();
     if (!result) {
@@ -113,13 +114,13 @@ const ProposalSummaryContainer: React.FunctionComponent = () => {
   const onSubmitToApproval = useCallback(
     (policyId: number) => {
       return IssuanceAPI.submitToApproval(policyId)
-        .then(() => history.push('success'))
+        .then(() => navigate('success'))
         .catch(() => {
           makeToast('error', ERROR_MESSAGES.submitProposalToApproval);
           setIssuanceLoading(false);
         });
     },
-    [history],
+    [navigate],
   );
 
   const onlinkProject = useCallback(
@@ -131,9 +132,8 @@ const ProposalSummaryContainer: React.FunctionComponent = () => {
         policyId,
         insuredFederalId,
       )
-        .then((result) => {
+        .then(result => {
           setPolicyExternalId(result.policyExternalId);
-          
         })
         .catch(() => makeToast('error', ERROR_MESSAGES.error));
     },
@@ -142,7 +142,7 @@ const ProposalSummaryContainer: React.FunctionComponent = () => {
 
   const handleEditProposal = () => {
     dispatch(proposalActions.setCreateProposalSuccess(false));
-    history.push('/');
+    navigate('/');
   };
 
   return (

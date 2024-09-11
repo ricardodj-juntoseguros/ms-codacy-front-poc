@@ -15,7 +15,7 @@ import {
 } from 'react';
 import className from 'classnames';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { downloadFile } from '@shared/utils';
 import { ERROR_MESSAGES, REDIRECT_URLS } from '../../../constants';
@@ -27,7 +27,7 @@ const ProposalSuccessContainer: React.FunctionComponent = () => {
   const [isLoadingProposalDocument, setIsLoadingProposalDocument] =
     useState(false);
   const theme = useContext(ThemeContext);
-  const history = useHistory();
+  const navigate = useNavigate();
   const { identification, createdAt } = useSelector(selectProposal);
   const protocol = useMemo(
     () =>
@@ -39,9 +39,8 @@ const ProposalSuccessContainer: React.FunctionComponent = () => {
   );
 
   useLayoutEffect(() => {
-    if (!identification?.proposalId || !identification?.policyId)
-      history.push('/');
-  }, [history, identification?.policyId, identification?.proposalId]);
+    if (!identification?.proposalId || !identification?.policyId) navigate('/');
+  }, [navigate, identification?.policyId, identification?.proposalId]);
 
   const handleDownloadProposalDocument = useCallback(async () => {
     if (!identification?.proposalId) return;

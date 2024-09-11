@@ -7,10 +7,11 @@ import {
   proposalActions,
 } from '../../../application/features/proposal/ProposalSlice';
 import { PolicyholderAffiliateDTO } from '../../../application/types/dto';
+import { AppDispatch } from '../../../config/store';
 import { selectInsuredAndPolicyholderSelection } from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionSlice';
 
 const PolicyholderAffiliateSelector: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const {
     policyholder: { affiliateId, affiliateFederalId },
   } = useSelector(selectProposal);

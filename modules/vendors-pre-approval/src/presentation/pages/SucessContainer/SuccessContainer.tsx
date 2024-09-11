@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 import { ThemeContext, Button } from 'junto-design-system';
 
@@ -9,8 +9,8 @@ import styles from './SuccessContainer.module.scss';
 const SuccessContainer: React.FC = () => {
   const [url, setUrl] = useState('');
   const theme = useContext(ThemeContext);
-  const history = useHistory();
-  const hasApprove = history.location.state;
+  const location = useLocation();
+  const hasApprove = location.state;
 
   const redirectToHome = () => {
     setUrl(`${process.env}['NX_GLOBAL_VENDORS_PLATFORM_URL']/policies`);

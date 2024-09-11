@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { object, string, number, boolean } from 'yup';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import * as reactRedux from 'react-redux';
 import { ValidationTypesEnum } from 'modules/vendors-proposal/src/application/types/model';
 import { storeMock } from '../../../__mocks__';

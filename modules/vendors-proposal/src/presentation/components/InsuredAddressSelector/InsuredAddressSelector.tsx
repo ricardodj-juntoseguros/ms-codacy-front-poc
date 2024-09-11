@@ -13,10 +13,11 @@ import {
 } from '../../../application/features/proposal/ProposalSlice';
 import { InsuredAddressDTO } from '../../../application/types/dto';
 import InsuredAndPolicyholderSelectionApi from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionApi';
+import { AppDispatch } from '../../../config/store';
 import styles from './InsuredAddressSelector.module.scss';
 
 const InsuredAddressSelector: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { insuredFederalId, insuredAddressId } = useSelector(selectProposal);
   const [loadingAddresses, setLoadingAddresses] = useState<boolean>(false);
   const [addressesData, setAddressesData] = useState<InsuredAddressDTO[]>([]);

@@ -17,7 +17,7 @@ import {
 } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
 import className from 'classnames';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { flowActions } from '../../../application/features/flow/FlowSlice';
 import {
   fetchModalities,
@@ -43,6 +43,7 @@ import ModalitiesInformationModal from '../ModalitiesInformationModal';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import WarrantyDataCoverageValue from '../WarrantyDataCoverageValue/WarrantyDataCoverageValue';
 import ValidityFields from '../ValidityFields/ValidityFields';
+import { AppDispatch } from '../../../config/store';
 
 const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
   const proposal = useSelector(selectProposal);
@@ -62,12 +63,12 @@ const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
   } = proposal;
   const { modalityOptionsMapped } = useSelector(selectModalitySelection);
   const { errors } = useSelector(selectValidation);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const validate = useValidate();
   const createProposal = useCreateProposal();
   const [openModal, setOpenModal] = useState(false);
   const [proposalLoading, setProposalLoading] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const disabledButton = useMemo(
     () =>
@@ -88,8 +89,8 @@ const WarrantyData: React.FunctionComponent<GenericComponentProps> = () => {
   );
 
   useEffect(() => {
-    if (createProposalSuccess) history.push('/summary');
-  }, [createProposalSuccess, history]);
+    if (createProposalSuccess) navigate('/summary');
+  }, [createProposalSuccess, navigate]);
 
   useEffect(() => {
     dispatch(validationActions.setIsValidForm(false));

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 import {
   ThemeContext,
@@ -26,7 +26,7 @@ import { DECLINE_INFO, ERROR_MESSAGES } from '../../../constants';
 
 const PreApprovalContainer: React.FC = () => {
   const theme = useContext(ThemeContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [proposal, setProposal] = useState<PreApprovalDTO>();
   const [firstDueDate, setFirstDueDate] = useState('');
@@ -149,8 +149,7 @@ const PreApprovalContainer: React.FC = () => {
   };
 
   const handleRedirectToSucessPage = (hasApprove: boolean) => {
-    history.push({
-      pathname: 'success',
+    navigate('success', {
       state: hasApprove,
     });
   };

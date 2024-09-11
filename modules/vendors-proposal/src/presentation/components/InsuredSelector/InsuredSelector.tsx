@@ -12,6 +12,7 @@ import {
   selectProposal,
   proposalActions,
 } from '../../../application/features/proposal/ProposalSlice';
+import { AppDispatch } from '../../../config/store';
 import InsuredAndPolicyholderSelectionApi from '../../../application/features/insuredAndPolicyholderSelection/InsuredAndPolicyholderSelectionApi';
 
 interface InsuredSelectorProps {
@@ -21,7 +22,7 @@ interface InsuredSelectorProps {
 const InsuredSelector: React.FC<InsuredSelectorProps> = ({
   onLoadedInsureds,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { insuredFederalId, insuredName } = useSelector(selectProposal);
   const [insuredsData, setInsuredsData] = useState<InsuredDTO[]>([]);
 

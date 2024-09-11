@@ -11,8 +11,17 @@ import {
   SearchOptions,
 } from 'junto-design-system';
 import { useDispatch, useSelector } from 'react-redux';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { currencyFormatter, thousandSeparator } from '@shared/utils';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  currencyFormatter,
+  thousandSeparator,
+} from '@shared/utils';
 import className from 'classnames';
 import {
   fetchProjects,
@@ -28,9 +37,10 @@ import {
 import { MIME_TYPES } from '../../../constants';
 import { useValidate } from '../../hooks';
 import { useFiles } from '../../../config/filesContext';
+import { AppDispatch } from '../../../config/store';
+import { selectValidation } from '../../../application/features/validation/ValidationSlice';
 
 import styles from './ContractData.module.scss';
-import { selectValidation } from '../../../application/features/validation/ValidationSlice';
 
 const ContractData: React.FunctionComponent<GenericComponentProps> = ({
   handleNextStep,
@@ -44,7 +54,7 @@ const ContractData: React.FunctionComponent<GenericComponentProps> = ({
     useSelector(selectProjectSelection);
   const { handleSetFiles, deleteFile, files } = useFiles();
   const theme = useContext(ThemeContext);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const validate = useValidate();
 
   useEffect(() => {

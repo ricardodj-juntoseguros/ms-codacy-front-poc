@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { MemoryRouter, RouteComponentProps } from 'react-router-dom';
+import { MemoryRouter, NavigateProps } from 'react-router-dom';
 import { UserTypeEnum, VendorsAuthService } from '@services';
 import ProtectedRoute from './ProtectedRoute';
 
 process.env.NX_GLOBAL_VENDORS_PLATFORM_URL = '/vendorsUrl';
 
 const renderComponent = (
-  componentToRender: React.ComponentType<RouteComponentProps>,
+  componentToRender: React.ComponentType<NavigateProps>,
   allowedRoles: ('insured' | 'broker' | 'policyholder')[],
 ) => {
   return render(
@@ -42,7 +42,9 @@ describe('Vendors Protected Route', () => {
     const componentToRender = () => <h1>Teste 123</h1>;
 
     renderComponent(componentToRender, ['insured']);
-    expect(window.location.assign).toHaveBeenCalledWith('/vendorsUrl/login?redirectUrl=pre-approval?');
+    expect(window.location.assign).toHaveBeenCalledWith(
+      '/vendorsUrl/login?redirectUrl=pre-approval?',
+    );
   });
 
   it('Should redirect to default url if user type is not allowed to access route', () => {

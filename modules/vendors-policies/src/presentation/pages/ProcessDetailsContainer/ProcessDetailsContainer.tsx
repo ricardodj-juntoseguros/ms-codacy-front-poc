@@ -14,7 +14,7 @@ import {
 import className from 'classnames';
 import { UserTypeEnum, VendorsAuthService } from '@services';
 import { federalIdFormatter, currencyFormatter } from '@shared/utils';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { DetailField, FileList } from '@shared/ui';
 import { ProcessDetailsModel } from '../../../application/types/model';
@@ -32,7 +32,7 @@ function ProcessDetailsContainer() {
   const [processDetails, setProcessDetails] =
     useState<ProcessDetailsModel | null>(null);
   const [files, setFiles] = useState<any[]>([]);
-  const history = useHistory();
+  const navigate = useNavigate();
   const userType = VendorsAuthService.getUserType();
 
   // eslint-disable-next-line consistent-return
@@ -78,12 +78,12 @@ function ProcessDetailsContainer() {
             'error',
             'Ocorreu um erro ao buscar os detalhes da proposta.',
           );
-          history.push('/');
+          navigate('/');
         });
     };
 
     if (!Number.isSafeInteger(Number(proposalId))) {
-      history.push('/');
+      navigate('/');
     }
 
     getProcessDetails();
@@ -110,7 +110,7 @@ function ProcessDetailsContainer() {
             <LinkButton
               label="Voltar para meu painel"
               icon="arrow-left"
-              onClick={() => history.goBack()}
+              onClick={() => navigate(-1)}
             />
           </header>
           <section className={styles['process-details-container__content']}>

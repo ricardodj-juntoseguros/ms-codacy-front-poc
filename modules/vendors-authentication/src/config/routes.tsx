@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes as DomRoutes } from 'react-router-dom';
 import LoginContainer from '../presentation/pages/LoginContainer';
 import FirstAccessContainer from '../presentation/pages/FirstAccessContainer';
 import ForgotPasswordContainer from '../presentation/pages/ForgotPasswordContainer';
@@ -9,20 +9,35 @@ import RequestForgotPasswordFinishContainer from '../presentation/pages/RequestF
 import ForgotPasswordFinishContainer from '../presentation/pages/ForgotPasswordFinishContainer';
 import RequestResetPasswordInvalid from '../presentation/pages/RequestResetPasswordInvalid';
 
-
 const Routes: React.FC = () => (
-  <BrowserRouter basename="login">
-    <Switch>
-      <Route path="/" exact component={LoginContainer} />
-      <Route path="/first-access/:hash" exact component={FirstAccessContainer} />
-      <Route path="/forgot-password/:hash&:token" exact component={ForgotPasswordContainer} />
-      <Route path="/forgot-password-finish" exact component={ForgotPasswordFinishContainer} />
-      <Route path="/first-access-finish/:proposalId?/:guid?" exact component={FirstAccessFinishContainer} />
-      <Route path="/request-forgot-password" exact component={RequestForgotPasswordContainer} />
-      <Route path="/request-forgot-password-finish" exact component={RequestForgotPasswordFinishContainer} />
-      <Route path="/request-reset-password-invalid" exact component={RequestResetPasswordInvalid} />
-    </Switch>
-  </BrowserRouter>
+  <DomRoutes>
+    <Route path="/" element={<LoginContainer />} />
+    <Route path="/first-access/:hash" element={<FirstAccessContainer />} />
+    <Route
+      path="/forgot-password/:hash&:token"
+      element={<ForgotPasswordContainer />}
+    />
+    <Route
+      path="/forgot-password-finish"
+      element={<ForgotPasswordFinishContainer />}
+    />
+    <Route
+      path="/first-access-finish/:proposalId?/:guid?"
+      element={<FirstAccessFinishContainer />}
+    />
+    <Route
+      path="/request-forgot-password"
+      element={<RequestForgotPasswordContainer />}
+    />
+    <Route
+      path="/request-forgot-password-finish"
+      element={<RequestForgotPasswordFinishContainer />}
+    />
+    <Route
+      path="/request-reset-password-invalid"
+      element={<RequestResetPasswordInvalid />}
+    />
+  </DomRoutes>
 );
 
 export default Routes;

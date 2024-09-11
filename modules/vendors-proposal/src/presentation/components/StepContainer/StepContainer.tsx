@@ -6,6 +6,7 @@ import { nanoid } from '@reduxjs/toolkit';
 import { flowActions } from '../../../application/features/flow/FlowSlice';
 import { StepStatusEnum } from '../../../application/types/model';
 import { ALL_PROPOSAL_STEPS } from '../../../constants';
+import { AppDispatch } from '../../../config/store';
 import styles from './StepContainer.module.scss';
 
 export interface StepContainerProps {
@@ -27,7 +28,7 @@ const StepContainer: React.FC<StepContainerProps> = ({
   infoText,
 }) => {
   const theme = useContext(ThemeContext);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const stepTitle = useMemo(() => {
     let boldWordsIndex = 0;

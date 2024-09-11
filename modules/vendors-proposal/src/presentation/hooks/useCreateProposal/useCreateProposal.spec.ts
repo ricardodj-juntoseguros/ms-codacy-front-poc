@@ -1,6 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 import '@testing-library/jest-dom';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import * as reactRedux from 'react-redux';
 import { format } from 'date-fns';
 import { proposalActions } from '../../../application/features/proposal/ProposalSlice';

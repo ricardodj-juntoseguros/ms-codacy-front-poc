@@ -7,6 +7,7 @@ import { fireEvent, render } from '../../../config/testUtils';
 import ProcessDetailsContainer from './ProcessDetailsContainer';
 import ProcessDetailsAPI from '../../../application/features/processDetails/ProcessDetailsAPI';
 import { mockProcessDetails } from '../../../__mocks__/mockProcessDetails';
+import { useNavigate } from 'react-router-dom';
 
 const mockHistoryPush = jest.fn();
 const mockHistoryGoBack = jest.fn();
@@ -15,10 +16,7 @@ jest.mock('react-router', () => {
 
   return {
     ...rest,
-    useHistory: () => ({
-      push: mockHistoryPush,
-      goBack: mockHistoryGoBack,
-    }),
+    useNavigate: () => mockHistoryPush,
   };
 });
 

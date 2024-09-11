@@ -14,9 +14,9 @@ import {
   ValidationTypesEnum,
 } from '../../../application/types/model';
 import { useValidate } from '../../hooks';
-
-import styles from './PolicyholderContact.module.scss';
+import { AppDispatch } from '../../../config/store';
 import PolicyholderContactSkeleton from '../Skeletons/PolicyholderContactSkeleton/PolicyholderContactSkeleton';
+import styles from './PolicyholderContact.module.scss';
 
 const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
   handleNextStep,
@@ -24,7 +24,7 @@ const PolicyholderContact: React.FunctionComponent<GenericComponentProps> = ({
 }) => {
   const { policyholderContact, policyholder } = useSelector(selectProposal);
   const { errors } = useSelector(selectValidation);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const validate = useValidate();
   const [disabledFields, setDisabledFields] = useState(
     !!policyholderContact.id,

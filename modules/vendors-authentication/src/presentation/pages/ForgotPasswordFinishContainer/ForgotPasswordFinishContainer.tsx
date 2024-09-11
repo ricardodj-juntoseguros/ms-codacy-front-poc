@@ -1,29 +1,36 @@
-import { LinkButton } from "junto-design-system";
-import { useHistory } from 'react-router-dom';
+import { LinkButton } from 'junto-design-system';
+import { useNavigate } from 'react-router-dom';
 import styles from './ForgotPasswordFinishContainer.module.scss';
 import { ReactComponent as LogoVendors } from '../../assets/logoVendors.svg';
 import { ReactComponent as IconFinish } from '../../assets/iconFinish-vendors-blue.svg';
 
 function FirstAccessFinishContainer() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleGoPageLogin = () => {
-    history.push('/');
+    navigate('/');
   };
 
   return (
     <div className={styles['forgot_password_finish_container__wrapper']}>
-      <LogoVendors/>
+      <LogoVendors />
       <div className={styles['forgot_password_finish_box']}>
         <div className={styles['forgot_password_finish__illustration']}>
-        <IconFinish/>
+          <IconFinish />
         </div>
-        <div className={styles['forgot_password_finish_container__information']}><span>Senha alterada com sucesso.</span></div>
+        <div
+          className={styles['forgot_password_finish_container__information']}
+        >
+          <span>Senha alterada com sucesso.</span>
+        </div>
         <div className={styles['forgot_passowrd_redirect']}>
-            <LinkButton label="Voltar ao login" onClick={() => handleGoPageLogin()}/>
+          <LinkButton
+            label="Voltar ao login"
+            onClick={() => handleGoPageLogin()}
+          />
         </div>
+      </div>
     </div>
- </div>
   );
 }
 

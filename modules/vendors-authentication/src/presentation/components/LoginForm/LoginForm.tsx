@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { useState } from 'react';
 import { Button, InputBase, LinkButton, Alert } from 'junto-design-system';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { emailValidator } from '@shared/utils';
 import { VendorsAuthService } from '@services';
 import styles from './LoginForm.module.scss';
@@ -15,7 +15,7 @@ export function LoginForm() {
   const [showAlert, setShowAlert] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEmail, setisEmail] = useState(true);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const HandlerClick = () => {
     setShowPassword(!showPassword);
@@ -41,7 +41,7 @@ export function LoginForm() {
   };
 
   const handleGoPageForgotPassowrd = async () => {
-    history.push('/request-forgot-password');
+    navigate('/request-forgot-password');
   };
 
   const validateEmail = async () => {

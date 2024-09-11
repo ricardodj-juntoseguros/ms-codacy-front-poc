@@ -8,7 +8,7 @@ import {
   Modal,
   makeToast,
 } from 'junto-design-system';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { VendorsAuthService } from '@services';
 import styles from './FirstAccessForm.module.scss';
 import AuthApi from '../../../application/features/auth/AuthApi';
@@ -58,7 +58,7 @@ const FirstAccessForm: React.FC<FirstAccessProps> = ({
   const [showTerms, setShowTerms] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDisabledButton, setIsDisabledButton] = useState(true);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState<string>('');
 
   useEffect(() => {
@@ -138,12 +138,12 @@ const FirstAccessForm: React.FC<FirstAccessProps> = ({
         } else if (isFiristAccess) {
           handleLogin();
         } else {
-          history.push(`/forgot-password-finish`);
+          navigate('/forgot-password-finish');
         }
       })
       .catch(() => {
         setIsSubmitting(false);
-        history.push('/request-reset-password-invalid');
+        navigate('/request-reset-password-invalid');
       });
   };
 
@@ -174,9 +174,9 @@ const FirstAccessForm: React.FC<FirstAccessProps> = ({
           proposalId && guid
             ? `/first-access-finish/${proposalId}/${guid}`
             : `/first-access-finish`;
-        history.push(urlRedirect);
+        navigate(urlRedirect);
       })
-      .catch(() => history.push('/'));
+      .catch(() => navigate('/'));
     setIsSubmitting(false);
   };
 
@@ -201,7 +201,15 @@ const FirstAccessForm: React.FC<FirstAccessProps> = ({
 
   return (
     <div className={styles['first_access_wrapper']}>
-      <h1 className={styles[(isFiristAccess ? 'first_access_title' : 'forgot_password_title') ]}>{title}</h1>
+      <h1
+        className={
+          styles[
+            isFiristAccess ? 'first_access_title' : 'forgot_password_title'
+          ]
+        }
+      >
+        {title}
+      </h1>
       <div className={styles['first_access_form']}>
         <InputBase
           data-testid="first_access-input-password"
@@ -328,7 +336,7 @@ const FirstAccessForm: React.FC<FirstAccessProps> = ({
             />
             <span className={styles['span_terms']}>Li e aceito o&nbsp;</span>
             <LinkButton
-               onClick={() =>
+              onClick={() =>
                 window.open(
                   `${process.env.NX_GLOBAL_VENDORS_BFF_URL}/${terms}`,
                   '_blank',

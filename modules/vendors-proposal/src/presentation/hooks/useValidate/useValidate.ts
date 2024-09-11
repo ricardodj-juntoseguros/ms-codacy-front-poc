@@ -6,9 +6,10 @@ import {
   ValidationTypesEnum,
 } from '../../../application/types/model';
 import { VALIDATION_MESSAGES } from '../../../constants';
+import { AppDispatch } from '../../../config/store';
 
 export function useValidate() {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const validate = async <T>(
     validationSchema: AnyObjectSchema,

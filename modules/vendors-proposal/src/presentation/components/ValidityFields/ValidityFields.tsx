@@ -10,6 +10,7 @@ import styles from './ValidityFields.module.scss';
 import { MIN_VALIDITY_DAYS } from '../../../constants';
 import { selectValidation } from '../../../application/features/validation/ValidationSlice';
 import { useValidate } from '../../hooks';
+import { AppDispatch } from '../../../config/store';
 
 export interface ValidityFields {
   validationSchema: AnyObjectSchema;
@@ -20,7 +21,7 @@ const ValidityFields: React.FunctionComponent<ValidityFields> = ({
 }) => {
   const { errors } = useSelector(selectValidation);
   const validate = useValidate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { initialValidity, endValidity, validityInDays } =
     useSelector(selectProposal);
 

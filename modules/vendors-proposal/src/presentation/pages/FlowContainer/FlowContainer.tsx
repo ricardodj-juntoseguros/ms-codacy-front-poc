@@ -11,9 +11,10 @@ import {
 import { COMMON_PROPOSAL_STEPS, REDIRECT_URLS } from '../../../constants';
 import StepContainer from '../../components/StepContainer/StepContainer';
 import { getStepList } from '../../../helpers';
+import { AppDispatch } from '../../../config/store';
 
 function FlowContainer() {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { steps } = useSelector(selectFlow);
 
   useEffect(() => {

@@ -14,10 +14,11 @@ import { selectInsuredAndPolicyholderSelection } from '../../../application/feat
 import { ERROR_MESSAGES } from '../../../constants';
 import { useValidate } from '../useValidate';
 import { ValidationErrorModel } from '../../../application/types/model';
+import { AppDispatch } from '../../../config/store';
 
 export function useCreateProposal() {
   const validate = useValidate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const proposal = useSelector(selectProposal);
   const { policyholderInputValue } = useSelector(
     selectInsuredAndPolicyholderSelection,

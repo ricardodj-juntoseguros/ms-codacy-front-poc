@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
-import { waitFor } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { waitFor, renderHook } from '@testing-library/react';
 import { useDebounce } from './useDebounce';
 
 describe('useDebounce', () => {

@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { downloadFile, stringToInt } from '@shared/utils';
 import {
@@ -20,7 +20,7 @@ interface ProcessListCardProps {
 
 const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
   const theme = useContext(ThemeContext);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [openInfo, setOpenInfo] = useState<boolean>(false);
   const [isLoadingPolicy, setIsLoadingPolicy] = useState<boolean>(false);
   const {
@@ -179,7 +179,7 @@ const ProcessListCard: React.FC<ProcessListCardProps> = ({ proposal }) => {
         <Button
           data-testid={`processListCard-button-${proposalId}-details`}
           size="small"
-          onClick={() => history.push(`/details/${proposalId}`)}
+          onClick={() => navigate(`/details/${proposalId}`)}
         >
           Mais detalhes
         </Button>
